@@ -16,7 +16,6 @@
 
 	<script>
 	function exitApp(){
-			alert($.mobile.activePage);
 			if($.mobile.activePage.is('#page-home')){
 				e.preventDefault();
 				navigator.app.exitApp();
@@ -27,11 +26,9 @@
 		navigator.app.exitApp();
 	}
 	function onBackbutton(){
-		alert("BACK");
 		return false;
 	}
 	function onDeviceReady() {
-	  alert("READ1");
 		$.mobile.allowCrossDomainPages = true;
 		$.mobile.pushStateEnabled=false;
 	//	document.addEventListener("backbutton",onBackbutton, false);
@@ -161,9 +158,9 @@
 			<div data-role="fieldcontain" title="登录" >
 		
 					<h1>创造一张明信片</h1>
-					<a href="index.html?1" data-role="button" data-inline="true">选择照片</a>
+					<a href="#page-edit" data-role="button" data-inline="true">选择照片</a>
 					<br />
-					<a href="index.html?2" data-role="button" data-inline="true">拍摄照片</a>
+					<a href="#page-edit" data-role="button" data-inline="true">拍摄照片</a>
 					
 			</div>
 			<!--
@@ -177,7 +174,6 @@
 			
 			</div>
 			-->
-		<p>View internal page called <a href="#page-edit" data-transition="slide">page-edit</a></p>	
 		
 		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
 		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
@@ -190,8 +186,8 @@
 			<a href="index.html?1" data-role="button">关于</a>
 			<a href="index.html?2" data-role="button">信箱(1)</a>
 			<a href="#page-login" data-role="button" data-rel="dialog" data-transition="slidedown">登录</a>
-			<a href="#page-login" data-role="button" data-rel="dialog" data-transition="slidedown">注册</a>
-			<a href="javascript:exitApp()" data-role="button">exit</a>
+			<a href="#page-register" data-role="button" data-rel="dialog" data-transition="slidedown">注册</a>
+			<!--<a href="javascript:exitApp()" data-role="button">exit</a>-->
 			
 		</div>
 	</div><!-- /content -->
@@ -259,34 +255,48 @@
 	<div data-role="content" align="center">	
 
 		<form action="form.php" method="post"> 
-		
-			<div data-role="fieldcontain" title="登录" >
-		
-					<h1>创造一张明信片</h1>
-					<a href="index.html?1" data-role="button" data-inline="true">选择照片</a>
-					<br />
-					<a href="index.html?2" data-role="button" data-inline="true">拍摄照片</a>
-					
-			</div>
+
+				<input type="text" placeholder="收件人姓名" name="name" value="">
+
+				<input type="text" placeholder="收件人手机号" name="name" value="">
+
+				<input type="text" placeholder="收件人地区" name="name" value="">
+
+				<input type="text" placeholder="收件人邮编" name="name" value="">
+
+				<textarea  type="text" placeholder="收件人详细地址" name="name" value=""></textarea>
+				<textarea  type="text" placeholder="输入留言" name="name" value=""></textarea>
+
+
+
 			<!--
-			<div data-role="fieldcontain" title="登录">
-			 <label for="name-a">用户名/EMail</label>
-			 <input type="text" name="name" id="name-a" value="">
+			<div	 data-role="fieldcontain">
+			 <label for="name-a">收件人姓名</label>
+			 <input type="text" name="name" value="" style="width:150px">
 			</div>
-			<div data-role="fieldcontain" title="登录">
-			<a href="index.html" data-role="button" data-inline="true">Cancel</a>
-			<a href="index.html" data-role="button" data-inline="true" data-theme="b">Save</a>
-			
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人手机号</label>
+			 <input type="text" name="name" value="" style="width:150px">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人地区</label>
+			 <input type="text" name="name" value="">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人邮编</label>
+			 <input type="text" name="name" value="" style="width:150px">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人详细地址</label>
+			 <textarea  type="text" name="name" value=""></textarea>
 			</div>
 			-->
-		<p>View internal page called <a href="#page-edit" data-transition="slide">page-edit</a></p>	
-		
 		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
 		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
 		-->
 		</form>
 
-		
+		<!--
 		<div data-role="controlgroup" align="CENTER" data-type="horizontal" data-position="fixed">
 			
 			<a href="index.html?1" data-role="button">关于</a>
@@ -295,6 +305,7 @@
 			<a href="index.html?4" data-role="button">注册</a>
 			
 		</div>
+		-->
 	</div><!-- /content -->
 	<!--
 	<div data-role="footer" data-position="fixed" >
@@ -327,39 +338,17 @@
 		
 			<div data-role="fieldcontain" title="登录" >
 		
-					<h1>创造一张明信片</h1>
-					<a href="index.html?1" data-role="button" data-inline="true">选择照片</a>
-					<br />
-					<a href="index.html?2" data-role="button" data-inline="true">拍摄照片</a>
+					<h1>明信片预览</h1>
+					<div>给XXX的明信片</div>
+					<div>地址：</div>
+					<div>留言：</div>
+					<div><img width="323" /></div>
 					
 			</div>
-			<!--
-			<div data-role="fieldcontain" title="登录">
-			 <label for="name-a">用户名/EMail</label>
-			 <input type="text" name="name" id="name-a" value="">
-			</div>
-			<div data-role="fieldcontain" title="登录">
-			<a href="index.html" data-role="button" data-inline="true">Cancel</a>
-			<a href="index.html" data-role="button" data-inline="true" data-theme="b">Save</a>
-			
-			</div>
-			-->
-		<p>View internal page called <a href="#page-edit" data-transition="slide">page-edit</a></p>	
-		
-		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
-		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
-		-->
-		</form>
 
 		
-		<div data-role="controlgroup" align="CENTER" data-type="horizontal" data-position="fixed">
-			
-			<a href="index.html?1" data-role="button">关于</a>
-			<a href="index.html?2" data-role="button">信箱(1)</a>
-			<a href="index.html?3" data-role="button">登录</a>
-			<a href="index.html?4" data-role="button">注册</a>
-			
-		</div>
+		</form>
+
 	</div><!-- /content -->
 	<!--
 	<div data-role="footer" data-position="fixed" >
@@ -388,25 +377,10 @@
 		
 			<div data-role="fieldcontain" title="登录" >
 		
-					<h1>乐兑明信片-发送中。。。</h1>
-					
+					<h1>最后支付</h1>
+					<div>你还需要最后一步，支付$32，对方就能收到你的明信片了</div>
+					<a href="http://youku.fm" rel="external" data-ajax="false" data-role="button" data-inline="true" data-transition="slide">支付$32</a>
 			</div>
-			<!--
-			<div data-role="fieldcontain" title="登录">
-			 <label for="name-a">用户名/EMail</label>
-			 <input type="text" name="name" id="name-a" value="">
-			</div>
-			<div data-role="fieldcontain" title="登录">
-			<a href="index.html" data-role="button" data-inline="true">Cancel</a>
-			<a href="index.html" data-role="button" data-inline="true" data-theme="b">Save</a>
-			
-			</div>
-			-->
-		<p>View internal page called <a href="#page-edit" data-transition="slide">page-edit</a></p>	
-		
-		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
-		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
-		-->
 		</form>
 
 	</div><!-- /content -->
@@ -446,22 +420,53 @@
 	<div data-role="content" align="center">	
 
 		<form action="form.php" method="post"> 
+			 <br />
+		
+			
+			 <input type="text" placeholder="用户名/EMail" name="name" id="name-a" value="">
+			 <br />
+			 <input type="password" placeholder="密码" name="name" id="name-a" value="">
+
 		
 			<div data-role="fieldcontain" title="登录" >
 		
-					<h1>乐兑明信片-登录</h1>
-					
+					<a href="index.html?1" data-role="button" data-inline="true">登录</a>
+					<a href="index.html?1" data-role="button" data-inline="true">取消</a>
 			</div>
+		
+		</form>
+
+	</div>
+</div>
+
+
+
+<div data-role="dialog" id="page-register"  >
+
+	<div data-role="header" data-theme="d">
+
+		<h1 role="heading">乐兑明信片-注册</h1>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<form action="form.php" method="post"> 
+			 <br />
+		
 			
-			<div data-role="fieldcontain" title="登录">
-			 <label for="name-a">用户名/EMail</label>
-			 <input type="text" name="name" id="name-a" value="">
+			 <input type="text" placeholder="Email" name="name" id="name-a" value="">
+			 <br />
+			 <input type="password" placeholder="密码" name="name" id="name-a" value="">
+			 <br />
+			 <input type="password" placeholder="密码重复" name="name" id="name-a" value="">
+
+		
+			<div data-role="fieldcontain" title="登录" >
+		
+					<a href="index.html?1" data-role="button" data-inline="true">注册</a>
+					<a href="index.html?1" data-role="button" data-inline="true">取消</a>
 			</div>
-			<div data-role="fieldcontain" title="登录">
-			<a href="index.html" data-role="button" data-inline="true">Cancel</a>
-			<a href="index.html" data-role="button" data-inline="true" data-theme="b">Save</a>
-			
-			</div>
+		
 		</form>
 
 	</div>
