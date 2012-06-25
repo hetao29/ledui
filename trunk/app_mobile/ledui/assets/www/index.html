@@ -31,20 +31,22 @@
 	function onDeviceReady() {
 		$.mobile.allowCrossDomainPages = true;
 		$.mobile.pushStateEnabled=false;
-	//	document.addEventListener("backbutton",onBackbutton, false);
-		document.addEventListener("deviceready", function(e){alert("deviceready");}, false);
+
+		document.addEventListener("deviceready", function(e){
+			document.addEventListener("backbutton", function(e){
+				if($.mobile.activePage.is('#page-home')){
+					e.preventDefault();
+					navigator.app.exitApp();
+				}
+				else {
+					navigator.app.backHistory()
+				}
+			}, false);
+		}, false);
+		/*
 		document.addEventListener("pause", function(e){alert("pause");}, false);
 		document.addEventListener("resume", function(e){alert("resume");}, false);
-		document.addEventListener("backbutton", function(e){
-			alert("BACK");
-			if($.mobile.activePage.is('#page-home')){
-				e.preventDefault();
-				navigator.app.exitApp();
-			}
-			else {
-				navigator.app.backHistory()
-			}
-		}, false);
+		*/
 
 		$( '#page-edit' ).live( 'pageshow',function(event, ui){
 		  $("#target").attr("src",$("#target").attr("_src"));
@@ -153,7 +155,6 @@
 
 	<div data-role="content" align="center">	
 
-		<form action="form.php" method="post"> 
 		
 			<div data-role="fieldcontain" title="登录" >
 		
@@ -178,7 +179,6 @@
 		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
 		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
 		-->
-		</form>
 
 		
 		<div data-role="controlgroup" align="CENTER" data-type="horizontal" data-position="fixed">
