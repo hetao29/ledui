@@ -10,7 +10,7 @@
 		乐兑明信片，好用的明信片
 	</description>
 
-	<author href="http://alunny.github.com"
+	<author href="http://www.ledui.com/"
 		email="hetao@ledui.com">
 		Hetal
 	</author>
@@ -27,10 +27,10 @@
 	<feature name="http://api.phonegap.com/1.0/notification"/>
 	<feature name="http://api.phonegap.com/1.0/device"/>
 
-	<preference name="orientation" value="default" />
+	<!--<preference name="orientation" value="default" />-->
 	<preference name="phonegap-version" value="1.8.1" />
-	<preference name="stay-in-webview" value="true" />
-	<preference name="android-minSdkVersion" value="10" />
+	<!--<preference name="stay-in-webview" value="true" />-->
+	<preference name="android-minSdkVersion" value="7" />
 
 	<access origin="*" />
 </widget>
