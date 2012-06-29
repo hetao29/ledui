@@ -6,7 +6,7 @@ class index_main extends STpl{
 	}
 	function pageEntry($inPath){
 		echo $this->render("head.tpl");
-		echo $this->render("index/index.tpl");
+		echo $this->render("index/index.html");
 		echo $this->render("footer.tpl");
 	}
 	function pageDb($inPath){
