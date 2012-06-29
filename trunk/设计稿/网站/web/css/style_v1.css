@@ -1,0 +1,275 @@
+body {
+	font-family: Tahoma,arial,ËÎÌו;
+	font-size: 12px;
+	color: #666666;
+	text-decoration: none;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-image:url(../images/bg_1.gif);
+	text-shadow: 0px 0px 2px #e5e5e5;
+	line-height:20px;
+}
+.he_24{
+	line-height: 24px;
+}
+a.write12:link {
+	font-size: 12px;
+	color: #eee;
+	text-decoration: none;
+	text-shadow: 0px 0px 1px #ccc;
+}
+a.write12:visited {
+	font-size: 12px;
+	color: #eee;
+	text-decoration: none;
+}
+a.write12:hover {
+	font-size: 12px;
+	color: #eee;
+	text-decoration: underline;
+}
+a.write12:active {
+	font-size: 12px;
+	color: #eee;
+	text-decoration: none;
+}
+.biaoti_16 {
+	color: #ff6801;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 24px;
+}
+.biaoti__blue_16 {
+	color: #0061fd;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 24px;
+}
+.biaoti_14 {
+	color: #ff6801;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 24px;
+}
+.biaoti_12 {
+	color: #ff6801;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 24px;
+}
+.biaoti_26 {
+	color: red;
+	font-size: 26px;
+	font-weight: bold;
+	line-height: 26px;
+}
+.huise_16 {
+	color: #5b5b5b;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 24px;
+}
+.huise_14 {
+	font-size: 14px;
+	line-height: 24px;
+}
+.txt_12 {
+	font-size: 12px;
+	font-weight: none;
+	line-height: 30px;
+}
+.txt_zw {
+	font-size: 12px;
+	font-weight: none;
+	line-height: 22px;
+}
+.red_12 {
+	font-size: 12px; 
+	color: red;
+}
+.red_12_bold {
+	font-size: 12px; 
+	color: red;
+	font-weight: bold;
+}
+.huise_12_bold {
+	font-size: 12px; 
+	font-weight: bold;
+	line-height: 24px;
+}
+.huise_12{
+	font-size: 12px; 
+	line-height: 24px;
+}
+.select_50 {
+	margin: 0px;
+	padding: 0px;
+	width: 50px;
+	border: 1px solid #CCCCCC;
+	font-size: 12px;
+	color: #555555;
+	height: 20px;
+}
+.select_40 {
+	margin: 0px;
+	padding: 0px;
+	width: 40px;
+	border: 1px solid #CCCCCC;
+	font-size: 12px;
+	color: #555555;
+	height: 20px;
+}
+.input_220 {
+	margin: 0px;
+	padding: 0px;
+	width: 220px;
+	border: 1px solid #CCCCCC;
+	font-size: 12px;
+	color: #555555;
+	height: 20px;
+}
+.input_100 {
+	margin: 0px;
+	padding: 0px;
+	width: 100px;
+	border: 1px solid #CCCCCC;
+	font-size: 12px;
+	color: #555555;
+	height: 20px;
+}
+.input_30 {
+	margin: 0px;
+	padding: 0px;
+	width: 30px;
+	border: 1px solid #CCCCCC;
+	font-size: 12px;
+	color: #555555;
+	height: 20px;
+}
+.input_sign {
+	margin: 0px;
+	padding: 0px;
+	width: 370px;
+	border: 1px solid #afafaf;
+	font-size: 14px;
+	color: #555555;
+	height: 30px;
+}
+.input_yanzhengma {
+	margin: 0px;
+	padding: 0px;
+	width: 70px;
+	border: 1px solid #afafaf;
+	font-size: 14px;
+	color: #555555;
+	height: 30px;
+}
+.huise {
+	color: #808080;
+}
+.huise_qian {
+	color: #b3b3b3;
+}
+
+a.ceng12:link {
+	font-size: 12px;
+	color: #ff6801;
+	text-decoration: none;
+}
+a.ceng12:visited {
+	font-size: 12px;
+	color: #ff6801;
+	text-decoration: none;
+}
+a.ceng12:hover {
+	font-size: 12px;
+	color: #ff6801;
+	text-decoration: underline;
+}
+a.ceng12:active {
+	font-size: 12px;
+	color: #ff6801;
+	text-decoration: none;
+}
+a.blue12:link {
+	font-size: 12px;
+	color: #018cf3;
+	text-decoration: none;
+}
+a.blue12:visited {
+	font-size: 12px;
+	color: #018cf3;
+	text-decoration: none;
+}
+a.blue12:hover {
+	font-size: 12px;
+	color: #018cf3;
+	text-decoration: underline;
+}
+a.blue12:active {
+	font-size: 12px;
+	color: #018cf3;
+	text-decoration: none;
+}
+a.huise12:link {
+	font-size: 12px;
+	color: #b3b3b3;
+	text-decoration: none;
+}
+a.huise12:visited {
+	font-size: 12px;
+	color: #b3b3b3;
+	text-decoration: none;
+}
+a.huise12:hover {
+	font-size: 12px;
+	color: #018cf3;
+	text-decoration: underline;
+}
+a.huise12:active {
+	font-size: 12px;
+	color: #666666;
+	text-decoration: none;
+}
+a:link {
+	font-size: 12px;
+	color: #666666;
+	text-decoration: none;
+}
+a:visited {
+	font-size: 12px;
+	color: #666666;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 12px;
+	color: #666666;
+	text-decoration: underline;
+}
+a:active {
+	font-size: 12px;
+	color: #666666;
+	text-decoration: none;
+}
+a.ceng14:link {
+	font-size: 14px;
+	color: #666666;
+	text-decoration: none;
+}
+a.ceng14:visited {
+	font-size: 14px;
+	color: #666666;
+	text-decoration: none;
+}
+a.ceng14:hover {
+	font-size: 14px;
+	color: #ff6801;
+	text-decoration: underline;
+}
+a.ceng14:active {
+	font-size: 14px;
+	color: #666666;
+	text-decoration: none;
+}
