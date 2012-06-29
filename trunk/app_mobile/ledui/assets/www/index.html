@@ -33,7 +33,9 @@
 		$.mobile.pushStateEnabled=false;
 
 		document.addEventListener("deviceready", function(e){
+			alert("deviceready");
 			document.addEventListener("backbutton", function(e){
+			alert("backbutton");
 				if($.mobile.activePage.is('#page-home')){
 					e.preventDefault();
 					navigator.app.exitApp();

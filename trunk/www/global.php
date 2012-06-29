@@ -4,8 +4,8 @@ define("ROOT",				dirname(__FILE__)."/../");
 define("ROOT_WWW",			ROOT."/www");
 define("ROOT_APP",			ROOT."/app");
 define("ROOT_CONFIG",		ROOT."/config");
-define("ROOT_SLIGHTPHP",	ROOT."/../");
-define("ROOT_PLIGUNS",		ROOT."/../plugins");
+define("ROOT_SLIGHTPHP",	ROOT."/slightphp/");
+define("ROOT_PLIGUNS",		ROOT."/slightphp/plugins");
 require_once(ROOT_SLIGHTPHP."/SlightPHP.php");
 //{{{
 function __autoload($class){
