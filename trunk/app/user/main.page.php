@@ -1,16 +1,16 @@
 <?php
-class user_main{
+class user_main extends STpl{
 	function __construct(){
 	}
 	function pageShow($inPath){
 		echo "X";
 	}
 	function pageEntry($inPath){
-		echo "User";
+		echo $this->render("user/sign.html");
 	}
 	///user.main.login
-	function pageLogin($inPath){
-		echo "User Login";
+	function pageSign($inPath){
+		echo $this->render("user/sign.html");
 	}
 	///user.main.logout
 	function pageLogout($inPath){
