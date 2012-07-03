@@ -1,0 +1,561 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>Page Title</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css" />
+	<link rel="stylesheet" href="css/jquery.Jcrop.css" />
+
+	<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.Jcrop.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/cordova-1.8.1.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/tr.js"></script>
+
+	<script>
+	function exitApp(){
+			if($.mobile.activePage.is('#page-home')){
+				e.preventDefault();
+				navigator.app.exitApp();
+			}
+			else {
+				navigator.app.backHistory()
+			}
+		navigator.app.exitApp();
+	}
+	function onBackbutton(){
+		return false;
+	}
+	function onDeviceReady() {
+		$.mobile.allowCrossDomainPages = true;
+		$.mobile.pushStateEnabled=false;
+
+		document.addEventListener("deviceready", function(e){
+			alert("deviceready");
+			document.addEventListener("backbutton", function(e){
+			alert("backbutton");
+				if($.mobile.activePage.is('#page-home')){
+					e.preventDefault();
+					navigator.app.exitApp();
+				}
+				else {
+					navigator.app.backHistory()
+				}
+			}, false);
+		}, false);
+		/*
+		document.addEventListener("pause", function(e){alert("pause");}, false);
+		document.addEventListener("resume", function(e){alert("resume");}, false);
+		*/
+
+		$( '#page-edit' ).live( 'pageshow',function(event, ui){
+		  $("#target").attr("src",$("#target").attr("_src"));
+		});
+		$('#target').ready(function(){
+			$('#target').imagesLoaded(function(img) { 
+
+				$('#target').Jcrop({
+					onChange: updatePreview,
+					onSelect: updatePreview,
+					aspectRatio: 140/100	//明信片size 165×102 mm 和 148×100 mm 
+				  },function(){
+					// Use the API to get the real image size
+					var bounds = this.getBounds();
+					boundx = bounds[0];
+					boundy = bounds[1];
+					console.log(bounds);
+					// Store the API in the jcrop_api variable
+					jcrop_api = this;
+					  jcrop_api.setSelect(
+							 // [0,0,300,200],
+							  [0,0,boundx,boundy],
+							  function(){ this.release(); }
+							);
+					jcrop_api.setOptions({ allowSelect: false });
+				  });
+			});
+		});
+
+    }
+	/*
+	$( document ).bind( "mobileinit", function() {
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+
+	});
+	*/
+	/*for browser patch
+	$(document).ready(function(){
+		onDeviceReady();
+	});*/
+
+	$.fn.imagesLoaded = function(callback){
+		var elems = this.filter('img'),
+		len   = elems.length,
+		blank = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+		  
+		elems.bind('load.imgloaded',function(e){
+		  if (--len <= 0 && this.src !== blank){
+
+			console.log(e);
+			elems.unbind('load.imgloaded');
+			if(e.target.naturalWidth && e.target.naturalHeight){
+				$(this).attr("naturalWidth",e.target.naturalWidth);
+				$(this).attr("naturalHeight",e.target.naturalHeight);
+			}
+			callback.call(elems,this); 
+
+			//$(document).delegate('#page-edit', 'pageshow', function () {
+				var the_height = ($(window).height() - $('#page-edit').find('[data-role="header"]').height() - $('#page-edit').find('[data-role="controlgroup"]').height());
+				//$('#page-edit').height($(window).height()).find('[data-role="content"]').height(the_height);
+				$('#page-edit').find('[data-role="content"]').height(the_height);
+			//}
+
+				$(this).attr("width",the_height-30);
+				$(this).attr("naturalHeight",e.target.naturalHeight);
+
+		  }
+		}).each(function(){
+		 // cached images don't fire load sometimes, so we reset src.
+		 if (this.complete || this.complete === undefined){
+			var src = this.src;
+			// webkit hack from http://groups.google.com/group/jquery-dev/browse_thread/thread/eee6ab7b2da50e1f
+			// data uri bypasses webkit log warning (thx doug jones)
+			this.src = blank;
+			this.src = src;
+
+		 }  
+		}); 
+
+		return this;
+	};
+	function updatePreview(c){
+		console.log(c);
+		}
+
+	</script>
+	<style>
+	.ui-icon-my-left {
+		background-image: url("images/button-rotate-cw.png");background-size:18px 18px;
+	}
+	.ui-icon-my-right {
+		background-image: url("images/button-rotate-ccw.png");background-size:18px 18px;
+	}
+	</style>
+</head> 
+
+<body onLoad="onDeviceReady()"> 
+
+<!-- Start of first page -->
+<div data-role="page" id="page-home" >
+
+	<div data-role="header"  data-position="fixed">
+		<h1><span tr="title">乐兑明信片</span></h1>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		
+			<div data-role="fieldcontain" title="登录" >
+		
+					<h1>创造一张明信片</h1>
+					<a href="#page-edit" data-role="button" data-inline="true">选择照片</a>
+					<br />
+					<a href="#page-edit" data-role="button" data-inline="true">拍摄照片</a>
+					
+			</div>
+			<!--
+			<div data-role="fieldcontain" title="登录">
+			 <label for="name-a">用户名/EMail</label>
+			 <input type="text" name="name" id="name-a" value="">
+			</div>
+			<div data-role="fieldcontain" title="登录">
+			<a href="index.html" data-role="button" data-inline="true">Cancel</a>
+			<a href="index.html" data-role="button" data-inline="true" data-theme="b">Save</a>
+			
+			</div>
+			-->
+		
+		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
+		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
+		-->
+
+		
+		<div data-role="controlgroup" align="CENTER" data-type="horizontal" data-position="fixed">
+			
+			<a href="#page-about" data-role="button">关于</a>
+			<a href="#page-inbox" data-role="button">信箱(1)</a>
+			<a href="#page-login" data-role="button" data-rel="dialog" data-transition="slidedown">登录</a>
+			<a href="#page-register" data-role="button" data-rel="dialog" data-transition="slidedown">注册</a>
+			<!--<a href="javascript:exitApp()" data-role="button">exit</a>-->
+			
+		</div>
+	</div><!-- /content -->
+	<!--
+	<div data-role="footer" data-position="fixed" >
+		<div data-role="controlgroup" data-type="horizontal" style="margin:auto;">
+			<a href="index.html" data-role="button">关于</a>
+			<a href="index.html" data-role="button">信箱(1)</a>
+			<a href="index.html" data-role="button">登录</a>
+			<a href="index.html" data-role="button">注册</a>
+		</div>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<div data-role="page" id="page-edit">
+
+	<div data-role="header"  data-position="fixed">
+		<!--<a href="index.html" data-icon="delete" >Cancel</a>-->
+		<a href="#page-home" data-icon="arrow-l" data-rel="back">返回</a>
+		<h1>乐兑明信片-调整尺寸</h1>
+		<a href="#page-address" data-icon="arrow-r" data-iconpos="right" data-transition="slide">确定</a>
+	</div>
+
+	<div data-role="content" align="center">	
+
+			<div id="imgC">
+				<img class="rotateLeft"  _src="http://ww3.sinaimg.cn/thumbnail/4cfc228cjw6dfiwak1zikj.jpg" id="target" alt="Flowers" />
+			</div>
+
+			
+		<div data-role="controlgroup" align="CENTER" data-type="horizontal" data-position="fixed">
+			<a data-role="button" data-mini="true" id="ventaOption">
+				<img src="images/button-rotate-cw.png" width="40" height="40">
+			</a>
+			<a data-role="button" data-mini="true" id="ventaOption"> <img src="images/button-rotate-ccw.png" width="40" height="40"></a>
+		<!--	<a href="index.html?1" data-role="button" data-icon="my-left"></a>
+			<a href="index.html?2" data-role="button" data-icon="my-right"></a>
+			
+			<a href="index.html?3" data-role="button">重新选图</a>
+			<a href="index.html?4" data-role="button">重新拍摄</a>
+			-->
+		</div>
+	</div><!-- /content -->
+	<!--
+	<div data-role="footer" data-position="fixed" >
+
+		
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+
+
+<div data-role="page" id="page-address"  >
+
+	<div data-role="header"  data-position="fixed">
+
+		<a href="#page-home" data-icon="arrow-l" data-rel="back">返回</a>
+		<h1>乐兑明信片-发送地址</h1>
+		<a href="#page-preview" data-icon="arrow-r" data-iconpos="right" data-transition="slide">确定</a>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<form action="form.php" method="post"> 
+
+				<input type="text" placeholder="收件人姓名" name="name" value="">
+
+				<input type="tel" placeholder="收件人手机号" name="name" value="">
+
+				<input type="text" placeholder="收件人地区" name="name" value="">
+
+				<input type="text" placeholder="收件人邮编" name="name" value="">
+
+				<textarea  type="text" placeholder="收件人详细地址" name="name" value=""></textarea>
+				<textarea  type="text" placeholder="输入留言" name="name" value=""></textarea>
+
+
+
+			<!--
+			<div	 data-role="fieldcontain">
+			 <label for="name-a">收件人姓名</label>
+			 <input type="text" name="name" value="" style="width:150px">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人手机号</label>
+			 <input type="text" name="name" value="" style="width:150px">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人地区</label>
+			 <input type="text" name="name" value="">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人邮编</label>
+			 <input type="text" name="name" value="" style="width:150px">
+			</div>
+			<div data-role="fieldcontain">
+			 <label for="name-a">收件人详细地址</label>
+			 <textarea  type="text" name="name" value=""></textarea>
+			</div>
+			-->
+		<!--<p><a href="http://youku.fm" data-transition="slide" data-rel="dialog">Youku.fm</a></p>	
+		<p><a href="http://youku.fm" data-transition="slide" target="xxx">Youku.fm</a></p>	
+		-->
+		</form>
+
+		<!--
+		<div data-role="controlgroup" align="CENTER" data-type="horizontal" data-position="fixed">
+			
+			<a href="index.html?1" data-role="button">关于</a>
+			<a href="index.html?2" data-role="button">信箱(1)</a>
+			<a href="index.html?3" data-role="button">登录</a>
+			<a href="index.html?4" data-role="button">注册</a>
+			
+		</div>
+		-->
+	</div><!-- /content -->
+	<!--
+	<div data-role="footer" data-position="fixed" >
+		<div data-role="controlgroup" data-type="horizontal" style="margin:auto;">
+			<a href="index.html" data-role="button">关于</a>
+			<a href="index.html" data-role="button">信箱(1)</a>
+			<a href="index.html" data-role="button">登录</a>
+			<a href="index.html" data-role="button">注册</a>
+		</div>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+
+
+<div data-role="page" id="page-preview"  >
+
+	<div data-role="header"  data-position="fixed">
+
+		<a href="#page-orderlist" data-icon="arrow-l" data-rel="back">返回</a>
+		<h1>乐兑明信片-预览</h1>
+		<a href="#page-send" data-icon="arrow-r" data-iconpos="right" data-transition="slide">确定</a>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<form action="form.php" method="post"> 
+		
+			<div data-role="fieldcontain" title="登录" >
+		
+					<h1>明信片预览</h1>
+					<div>给XXX的明信片</div>
+					<div>地址：</div>
+					<div>留言：</div>
+					<div>
+						<img style="width:400px; "  src="http://ww3.sinaimg.cn/thumbnail/4cfc228cjw6dfiwak1zikj.jpg" class="rotateLeft" width="333" />
+					</div>
+					
+			</div>
+
+		
+		</form>
+
+	</div><!-- /content -->
+	<!--
+	<div data-role="footer" data-position="fixed" >
+		<div data-role="controlgroup" data-type="horizontal" style="margin:auto;">
+			<a href="index.html" data-role="button">关于</a>
+			<a href="index.html" data-role="button">信箱(1)</a>
+			<a href="index.html" data-role="button">登录</a>
+			<a href="index.html" data-role="button">注册</a>
+		</div>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<div data-role="page" id="page-send"  >
+
+	<div data-role="header"  data-position="fixed">
+
+		<a href="#page-home" data-icon="arrow-l" data-rel="back">返回</a>
+		<h1>乐兑明信片-发送中。。。</h1>
+		<a href="#page-home" data-icon="arrow-r" data-iconpos="right">完成</a>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<form action="form.php" method="post"> 
+		
+			<div data-role="fieldcontain" title="登录" >
+		
+					<h1>最后支付</h1>
+					<div>你还需要最后一步，支付$32，对方就能收到你的明信片了</div>
+					<a href="http://youku.fm" rel="external" data-ajax="false" data-role="button" data-inline="true" data-transition="slide">支付$32</a>
+			</div>
+		</form>
+
+	</div><!-- /content -->
+	<!--
+	<div data-role="footer" data-position="fixed" >
+		<div data-role="controlgroup" data-type="horizontal" style="margin:auto;">
+			<a href="index.html" data-role="button">关于</a>
+			<a href="index.html" data-role="button">信箱(1)</a>
+			<a href="index.html" data-role="button">登录</a>
+			<a href="index.html" data-role="button">注册</a>
+		</div>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+
+
+
+
+<div data-role="page" id="page-inbox"  >
+
+	<div data-role="header"  data-position="fixed">
+
+		<a href="#page-orderlist" data-icon="arrow-l" data-rel="back">返回</a>
+		<h1>信箱(1)</h1>
+	</div>
+
+	<div data-role="content" align="center">	
+
+
+		<div class="content-primary">
+			<form>
+				<ul data-role="listview">
+					<li data-role="fieldcontain">
+						<div>
+						<label for="name">给XX的照片</label>
+						<label for="name">状态：发送中</label>
+						<br />
+						<img src="images/button-rotate-ccw.png" width="300" />
+						</div>
+					</li>
+					<li data-role="fieldcontain">
+						<div>
+						<label for="name">给XX的照片</label>
+						<label for="name">状态：发送中</label>
+						<br />
+						<img src="images/button-rotate-ccw.png" width="300" />
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+
+
+	</div><!-- /content -->
+	<!--
+	<div data-role="footer" data-position="fixed" >
+		<div data-role="controlgroup" data-type="horizontal" style="margin:auto;">
+			<a href="index.html" data-role="button">关于</a>
+			<a href="index.html" data-role="button">信箱(1)</a>
+			<a href="index.html" data-role="button">登录</a>
+			<a href="index.html" data-role="button">注册</a>
+		</div>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+
+
+
+<script>
+var cM = 'Invalid Credentials'; //custom message
+function x(){
+$("<div id='notification' class='ui-loader ui-overlay-shadow ui-body-e ui-corner-all'><h1>"+cM+"</h1></div>")
+				.css({ "display": "block", "opacity": 0.96, "top": $(window).scrollTop() + 100 })
+				.appendTo( $.mobile.pageContainer )
+				.delay( 800 ) 
+				.fadeOut( 2000, function(){
+							$(this).remove();
+						});
+						}
+</script>
+
+<div data-role="dialog" id="page-login"  >
+
+	<div data-role="header" data-theme="d">
+
+		<h1 role="heading">乐兑明信片-登录</h1>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<form action="form.php" method="post"> 
+			 <br />
+		
+			<div id='notification' style="color:red">error msg</div>
+			 <input type="email" placeholder="EMail" name="name" id="name-a" value="">
+			 <br />
+			 <input type="password" placeholder="密码" name="name" id="name-a" value="">
+
+		
+			<div data-role="fieldcontain" title="登录" >
+		
+					<a href="index.html?1" data-role="button" onClick="x()" data-inline="true">登录</a>
+					<a href="index.html?1" data-role="button" data-inline="true">取消</a>
+			</div>
+		
+		</form>
+
+	</div>
+</div>
+
+
+
+<div data-role="dialog" id="page-register"  >
+
+	<div data-role="header" data-theme="d">
+
+		<h1 role="heading">乐兑明信片-注册</h1>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<form action="form.php" method="post"> 
+			 <br />
+		
+			
+			 <input type="email" placeholder="Email" name="name" id="name-a" value="">
+			 <br />
+			 <input type="password" placeholder="密码" name="name" id="name-a" value="">
+			 <br />
+			 <input type="password" placeholder="密码重复" name="name" id="name-a" value="">
+
+		
+			<div data-role="fieldcontain" title="登录" >
+		
+					<a href="index.html?1" data-role="button" data-inline="true">注册</a>
+					<a href="index.html?1" data-role="button" data-inline="true">取消</a>
+			</div>
+		
+		</form>
+
+	</div>
+</div>
+
+
+
+
+<div data-role="dialog" id="page-about"  >
+
+	<div data-role="header" data-theme="d">
+
+		<h1 role="heading">关于</h1>
+	</div>
+
+	<div data-role="content" align="center">	
+
+		<div data-role="fieldcontain" title="登录" >
+			
+						<h1>乐兑明信片 v0.1</h1>
+
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>
