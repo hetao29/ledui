@@ -1,7 +1,0 @@
-
-
-数据库文档：
-https://docs.google.com/a/hetao.name/document/d/1oxhb52c0LDT4wCTX1tgODZ1McvkajaccOZBRQryVS8M/edit
-
-接口文档：
-https://docs.google.com/a/hetao.name/document/d/1KrpB5Ix1kjNbxuyR-Nwbc0ablsdpdjm4az7NK9taWL4/edit
