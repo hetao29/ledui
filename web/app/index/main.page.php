@@ -14,4 +14,3 @@ class index_main extends STpl{
 		$api->addScore("name",3);
 	}
 }
-?>
