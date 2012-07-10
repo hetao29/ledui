@@ -4,8 +4,8 @@ class api_user{
 	 * ÓÃ»§×¢²á
 	 */
 	public function pageRegister($inPath){
-		$result = new stdclass;
-		$result->x=3;
+		$result = new api_result;
+		$result->error_code=3;
 		return SJson::encode($result);
 	}
 	/**
