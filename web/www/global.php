@@ -18,3 +18,14 @@ function __autoload($class){
 }
 spl_autoload_register('__autoload');
 //}}}
+SlightPHP::setDebug(true);
+SlightPHP::setAppDir(ROOT_APP);
+SlightPHP::setDefaultZone("index");
+SlightPHP::setDefaultPage("main");
+SlightPHP::setDefaultEntry("entry");
+SlightPHP::setSplitFlag("-_.");
+
+//{{{
+SDb::setConfigFile(ROOT_CONFIG. "/db.ini");
+SRoute::setConfigFile(ROOT_CONFIG."/route.ini");
+//}}}
