@@ -21,9 +21,8 @@ $(document).ready(function(){
 				if($(_this).attr("name")=="password2"){
 					if($(_this).val()!=$(_this).parentsUntil("form").find("[name=password]").val()){
 						$(_this).siblings("span.red_12").html("两次输入密码不一样");
-					}
+					}else return;
 				}
-				$(_this).focus();
 			}
 		});
 
