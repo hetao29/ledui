@@ -4,7 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>乐兑网-乐兑明信片</title>
 <link href="/assets/css/style_v1.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/daohang.js"></script>
+<script src="/assets/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function(){
+		$(":input").change(function(){
+			if($(this).attr("validator")){
+				var _this=this;
+				$.post("/user.validator",{ type:$(this).attr("validator"),value:$(this).val() },function(r){
+					if(r.result==-1){
+					$(_this).siblings("span.red_12").html(r.msg);
+					}else{
+					$(_this).siblings("span.red_12").html("");
+						return;
+					}
+				},"json");
+				if($(_this).attr("name")=="password2"){
+					if($(_this).val()!=$(_this).parentsUntil("form").find("[name=password]").val()){
+						$(_this).siblings("span.red_12").html("两次输入密码不一样");
+					}
+				}
+				$(_this).focus();
+			}
+		});
+
+});
+</script>
 </head>
 
 <body onload="MM_preloadImages('/assets/img/botton_dh_in_02.gif')">
@@ -78,21 +102,29 @@
                           </tr>
                       </table>
                         <table width="93%" border="0" align="center" cellpadding="5" cellspacing="0">
+<form id="sign" method="post" action="/user.main.register">
                           <tr>
-                            <td width="83%"><span class="huise_14">邮箱地址</span><br />
-                                <input name="textfield2" type="text" class="input_sign" /></td>
+                            <td width="83%"><span class="huise_14">邮箱地址x</span><br />
+                                <input name="email" validator="email" type="text" class="input_sign" />
+				<span class="red_12"></span>
+				</td>
                           </tr>
                           <tr>
                             <td><span class="huise_14">密码</span><br />
-                                <input name="password2" type="password" class="input_sign" id="password2" /></td>
+                                <input name="password" validator="password" type="password" class="input_sign" id="password2" />
+				<span class="red_12"></span>
+</td>
                           </tr>
                           <tr>
                             <td><span class="huise_14">密码确认</span><br />
-                              <input name="password22" type="password" class="input_sign" id="password22" /></td>
+                              <input name="password2" validator="password" type="password" class="input_sign" id="password22" />
+				<span class="red_12"></span>
+</td>
                           </tr>
                           <tr>
-                            <td align="right"><img src="/assets/img/sum.gif" width="129" height="30" /></td>
+                            <td align="right"><input type="image" src="/assets/img/sum.gif" width="129" height="30" /></td>
                           </tr>
+</form>
                       </table></td>
                   </tr>
               </table></td>
