@@ -9,6 +9,9 @@ class index_main extends STpl{
 		echo $this->render("index/index.html");
 		echo $this->render("footer.tpl");
 	}
+	function pageNav($inPath){
+		return $this->render("nav.tpl");
+	}
 	function pageDb($inPath){
 		$api = new index_api;
 		$api->addScore("name",3);

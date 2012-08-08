@@ -18,4 +18,3 @@ class user_main extends STpl{
 	}
 
 }
-?>
