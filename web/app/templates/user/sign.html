@@ -26,11 +26,19 @@ $(document).ready(function(){
 			}
 		});
 
+		$("#sign").submit(function(){
+console.log($(this));
+//var form=$("#sign").parent();
+//console/.log(form.find("span.red_12"));
+console.log($(this).find("span.red_12"));
+console.log($(this).find("span.red_12").not(":empty"));
+return false;
+		});
 });
 </script>
 </head>
 
-<body onload="MM_preloadImages('/assets/img/botton_dh_in_02.gif')">
+<body>
 {part "/index.main.nav"}
 <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
@@ -103,7 +111,7 @@ $(document).ready(function(){
                         <table width="93%" border="0" align="center" cellpadding="5" cellspacing="0">
 <form id="sign" method="post" action="/user.main.register">
                           <tr>
-                            <td width="83%"><span class="huise_14">邮箱地址x</span><br />
+                            <td width="83%"><span class="huise_14">邮箱地址</span><br />
                                 <input name="email" validator="email" type="text" class="input_sign" />
 				<span class="red_12"></span>
 				</td>
