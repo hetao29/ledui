@@ -2,8 +2,8 @@
 class user_main extends STpl{
 	function __construct(){
 	}
-	function pageShow($inPath){
-		echo "X";
+	function pageNav($inPath){
+			return $this->render("user/nav.tpl");
 	}
 	function pageEntry($inPath){
 		if(($u=user_api::islogin())!==false){
