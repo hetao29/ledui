@@ -7,7 +7,7 @@ class user_main extends STpl{
 	}
 	function pageEntry($inPath){
 		if(($u=user_api::islogin())!==false){
-			header("location:/");
+			echo $this->render("user/myaccount_1.html");
 		}else{
 			echo $this->render("user/sign.html");
 		}
@@ -40,7 +40,7 @@ class user_main extends STpl{
 			if(!empty($u) && $u['UserPassword']==@$_POST['password']){
 				//echo "注册成功，自动登录中...";
 				$r = user_api::login($u,!empty($_POST['forever'])?true:false);
-				header("location:/");
+				header("location:/user");
 			}else{
 				echo "登录失败";
 			}
