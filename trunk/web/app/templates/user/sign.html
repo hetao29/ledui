@@ -6,6 +6,7 @@
 <link href="/assets/css/style_v1.css" rel="stylesheet" type="text/css" />
 <script src="/assets/js/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script>
+var error="INIT";
 $(document).ready(function(){
 		$(":input").change(function(){
 			if($(this).attr("validator")){
@@ -15,24 +16,23 @@ $(document).ready(function(){
 					$(_this).siblings("span.red_12").html(r.msg);
 					}else{
 					$(_this).siblings("span.red_12").html("");
-						return;
 					}
+					if($(_this).attr("name")=="password2"){
+						if($(_this).val()!=$(_this).parentsUntil("form").find("[name=password]").val()){
+							$(_this).siblings("span.red_12").html("两次输入密码不一样");
+						};
+					}
+					error = r.msg;
 				},"json");
-				if($(_this).attr("name")=="password2"){
-					if($(_this).val()!=$(_this).parentsUntil("form").find("[name=password]").val()){
-						$(_this).siblings("span.red_12").html("两次输入密码不一样");
-					}else return;
-				}
 			}
 		});
 
 		$("#sign").submit(function(){
-console.log($(this));
-//var form=$("#sign").parent();
-//console/.log(form.find("span.red_12"));
-console.log($(this).find("span.red_12"));
-console.log($(this).find("span.red_12").not(":empty"));
-return false;
+			if(	$(this).find("span.red_12").not(":empty").size()==0 && error==""
+				){ //没有错误信息//并且没有空
+return true;
+			}
+			return false;
 		});
 });
 </script>
@@ -108,8 +108,8 @@ return false;
                           <td class="biaoti__blue_16">快速注册</td>
                           </tr>
                       </table>
-                        <table width="93%" border="0" align="center" cellpadding="5" cellspacing="0">
 <form id="sign" method="post" action="/user.main.register">
+                        <table width="93%" border="0" align="center" cellpadding="5" cellspacing="0">
                           <tr>
                             <td width="83%"><span class="huise_14">邮箱地址</span><br />
                                 <input name="email" validator="email" type="text" class="input_sign" />
@@ -131,8 +131,9 @@ return false;
                           <tr>
                             <td align="right"><input type="image" src="/assets/img/sum.gif" width="129" height="30" /></td>
                           </tr>
+                      </table>
 </form>
-                      </table></td>
+</td>
                   </tr>
               </table></td>
               <td>&nbsp;</td>

@@ -11,8 +11,8 @@ class user_db{
 	function getUser($UserName){
 		return $this->_db->selectOne("t_user",array("UserName"=>$UserName));
 	}
-	function getUserByEmail($useremail,$parterid=0){
-		return $this->_db->selectOne("t_user",array("UserEmail"=>$useremail,"ParterID"=>$parterid));
+	function getUserByEmail($useremail,$PartnerID=1){
+		return $this->_db->selectOne("t_user",array("UserSID"=>$useremail,"PartnerID"=>$PartnerID));
 	}
 	function getUserByID($UserId){
 		return $this->_db->selectOne("t_user",array("UserID"=>$UserId));

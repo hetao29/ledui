@@ -11,7 +11,12 @@ class user_validator{
 
 		if(!empty($_REQUEST['type'])){
 			if($_REQUEST['type']=="email"){
-				if(SUtil::validEmail(@$_REQUEST['value'])) $r->result=1;
+				if(SUtil::validEmail(@$_REQUEST['value'])){
+					$db = new user_db;
+					$u = $db->getUserByEmail($_REQUEST['value']);
+					if(empty($u)) $r->result=1;
+					else $r->msg="此email不可用";
+				}
 				else $r->msg="请输入正确的email";
 			}elseif($_REQUEST['type']=="password"){
 				if(strlen(@$_REQUEST['value'])<5){
