@@ -6,7 +6,11 @@ class user_main extends STpl{
 		echo "X";
 	}
 	function pageEntry($inPath){
-		echo $this->render("user/sign.html");
+		if(($u=user_api::islogin())!==false){
+			header("location:/");
+		}else{
+			echo $this->render("user/sign.html");
+		}
 	}
 	///user.main.register
 	function pageRegister($inPath){
