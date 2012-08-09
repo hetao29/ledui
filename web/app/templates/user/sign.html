@@ -8,7 +8,7 @@
 <script>
 var error="INIT";
 $(document).ready(function(){
-		$(":input").change(function(){
+		$("#sign :input").change(function(){
 			if($(this).attr("validator")){
 				var _this=this;
 				$.post("/user.validator",{ type:$(this).attr("validator"),value:$(this).val() },function(r){
@@ -30,7 +30,7 @@ $(document).ready(function(){
 		$("#sign").submit(function(){
 			if(	$(this).find("span.red_12").not(":empty").size()==0 && error==""
 				){ //没有错误信息//并且没有空
-return true;
+			return true;
 			}
 			return false;
 		});
@@ -40,6 +40,18 @@ return true;
 
 <body>
 {part "/index.main.nav"}
+<table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="205" valign="top" bgcolor="#FFFFFF"><a href="/"><img src="/assets/img/logo_3.gif" width="205" height="95" /></a></td>
+    <td width="359" valign="top" background="/assets/img/head_bg.gif" bgcolor="#FFFFFF">&nbsp;</td>
+    <td width="396" align="right" valign="top" bgcolor="#FFFFFF"><img src="/assets/img/head_1.gif" width="396" height="95" /></td>
+  </tr>
+</table>
+<table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center" bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+</table>
 <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td bgcolor="#FFFFFF"><table width="900" border="0" align="center" cellpadding="10" cellspacing="0">
@@ -52,37 +64,49 @@ return true;
             </tr>
             <tr>
               <td>&nbsp;</td>
-              <td><table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <td>
+<form id="login" method="post" action="/user.main.login">
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
                 <tr>
                   <td><table width="100%" border="0" cellspacing="0" cellpadding="10">
                     <tr>
                       <td width="33%" class="biaoti_16">账户登录</td>
-                      <td width="33%" align="right"><img src="/assets/img/qq.gif" width="124" height="24" /></td>
+                      <!--<td width="33%" align="right"><img src="/assets/img/qq.gif" width="124" height="24" /></td>
                       <td width="33%" align="right"><img src="/assets/img/weibo.gif" width="126" height="24" /></td>
+-->
                     </tr>
                   </table>
                     <table width="93%" border="0" align="center" cellpadding="5" cellspacing="0">
                       <tr>
                         <td width="83%"><span class="huise_14">邮箱地址</span><br />
-                          <input name="textfield" type="text" class="input_sign" /></td>
+                          <input name="email" type="text" class="input_sign" /></td>
                       </tr>
                       <tr>
                         <td><span class="huise_14">密码</span><br />
                           <input name="password" type="password" class="input_sign" id="password" /></td>
                       </tr>
                       <tr>
+                        <td>
+                          <input name="forever" type="checkbox" checked/> <span class="huise_14">记住登录</span><br />
+</td>
+                      </tr>
+<!--
+                      <tr>
                         <td><span class="huise_14">验证码</span><br />
                           <input name="textfield3" type="text" class="input_yanzhengma" />
                             <br />
                             <span class="red_12">登录错误次数过多，请输入验证码</span></td>
                       </tr>
+-->
                       <tr>
-                        <td align="right"><img src="/assets/img/sign.gif" width="129" height="30" /></td>
+                        <td align="right"><input type="image" src="/assets/img/sign.gif" width="129" height="30" /></td>
                       </tr>
                       <tr>
                         <td align="right"><a href="#">忘记密码？</a></td>
                       </tr>
-                    </table></td>
+                    </table>
+</form>
+</td>
                 </tr>
               </table></td>
               <td>&nbsp;</td>

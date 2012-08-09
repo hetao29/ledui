@@ -10,7 +10,8 @@ class index_main extends STpl{
 		echo $this->render("footer.tpl");
 	}
 	function pageNav($inPath){
-		return $this->render("nav.tpl");
+		$user = user_api::islogin();
+		return $this->render("nav.tpl",array("user"=>$user));
 	}
 	function pageDb($inPath){
 		$api = new index_api;
