@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+html{direction:ltr;height:100%;}
+body{height:100%;background:#f1f1f2;}
+html,body,form,ul,ol,li,h1,h2,h3,h4,h5,h6,table,th,tr,td{padding:0;margin:0;}
+table{border-collapse:collapse;border-spacing:0;}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+ul,ol,dl,li{list-style:none;}
+img{border:0;vertical-align:middle;}
+a{}
+a:active{}
+a:hover{}
+
+.screen{position:relative;width:600px;min-height:100%;_height:100%;margin:0 auto;}
+.pages{}
+.page{}
+.module{clear:both;border-top:1px solid #fff;border-bottom:1px solid #bababa;}
+
+.fixed_top{position:fixed;_position:absolute;top:0;left:50%;margin-left:-300px;width:600px;border-bottom:1px solid #fff;}
+.fixed_top .shadow{position:absolute;bottom:0;width:100%;height:4px;overflow:hidden;opacity:0.2;filter:alpha(opacity=20);background:#777;}
+.fixed_bottom{position:fixed;_position:absolute;bottom:0;left:50%;margin-left:-300px;width:600px;border-top:1px solid #bababa;border-bottom:4px solid #d0d0d0;line-height:0;}
+.fixed_bottom .shadow{position:absolute;top:-4px;width:100%;height:4px;overflow:hidden;opacity:0.2;filter:alpha(opacity=20);background:#777;}
+
+.header{height:70px;margin-top:-1px;background:url(../img/header.png) no-repeat center 0;-webkit-user-select:none;-webkit-touch-callout:none;}
+
+.banner{width:600px;height:252px;margin:0 auto;background:url(../img/banner.png) no-repeat center 0;-webkit-user-select:none;-webkit-touch-callout:none;}
+
+.mpanel{width:600px;margin:0 auto;border-bottom:none;}
+
+.photos{width:100%;overflow:hidden;border-bottom:0;-webkit-user-select:none;-webkit-touch-callout:none;}
+.photos ul{width:610px;height:235px;margin:0 auto;}
+.photos li{float:left;width:200px;height:100%;}
+.photos li img{display:block;float:left;width:100%;height:100%;}
+
+.helper{width:100%;height:78px;border-top:1px solid #e8e8e8;overflow:hidden;background:#e6e6e6 url(../img/app.png) repeat-x 0 0;-webkit-user-select:none;-webkit-touch-callout:none;}
+.helper ul{width:610px;height:77px;margin:0 -1px;border-top:1px solid #bababa;}
+.helper li{float:left;width:149px;height:77px;border-top:1px solid #fff;border-right:1px solid #bababa;border-left:1px solid #fff;text-align:center;line-height:76px;font-size:180%;letter-spacing:5px;cursor:pointer;text-shadow:1px 1px 0 #eee;}
+.helper li:hover,.helper .hover{background:#eee;box-shadow:inset 2px 2px 4px #999;}
+
+.titlebar{}
+.titlebar .title{}
+.titlebar .action{}
+.titlebar .action .left{}
+.titlebar .action .right{}
+
+.input{}
+.textarea{}
+.button{}
+.button_s{}
+.button_l{}
+.select{}
+.checkbox{}
+.radio{}
+
+.loading{}
+
+.overlay{}
+.overlay .hd{}
+.overlay .title{}
+.overlay .bd{}
+.overlay .ac{}
+
+/*icon*/
+.ico_back{}
+.ico_close{}
+.ico_delete{}
+.ico_view{}
+.ico_alert{}
+.ico_post{}
+.ico_rotate_cw{}
+.ico_rotate_acw{}
+.ico_zoom_in{}
+.ico_zoom_out{}
