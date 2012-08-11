@@ -21,17 +21,26 @@ package com.ledui.app.postcard;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
+//import android.webkit.*;
 
 public class main extends DroidGap {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
+		
 		super.onCreate(savedInstanceState);
+		
+	
+		
 		super.setStringProperty("loadingDialog", "程序启动中...");
-		super.setIntegerProperty("splashscreen", R.drawable.splash);
+		 //super.setIntegerProperty("splashscreen", R.drawable.splash); 
+		// this.appView.addJavascriptInterface(this, "android"); 
+	   //     this.appView.setInitialScale(0); 
+		//super.setIntegerProperty("splashscreen", R.drawable.splash);
 		//super.loadUrl("file:///android_asset/www/index.html");
 		//super.loadUrl("file:///android_asset/www/index-jq.mobi.html");
 		super.loadUrl("http://42.121.85.21/test/index.html");
-		
+		//super.loadUrl("http://m.taobao.com/");
 		
 		//super.loadUrl("file:///android_asset/www/backbutton.html");
 	}
