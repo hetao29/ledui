@@ -28,9 +28,9 @@ public class main extends DroidGap {
 		super.onCreate(savedInstanceState);
 		super.setStringProperty("loadingDialog", "程序启动中...");
 		super.setIntegerProperty("splashscreen", R.drawable.splash);
-		super.loadUrl("file:///android_asset/www/index.html");
+		//super.loadUrl("file:///android_asset/www/index.html");
 		//super.loadUrl("file:///android_asset/www/index-jq.mobi.html");
-		//super.loadUrl("http://hetal.youku.com/testcase/app/");
+		super.loadUrl("http://42.121.85.21/test/index.html");
 		
 		
 		//super.loadUrl("file:///android_asset/www/backbutton.html");
