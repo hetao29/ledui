@@ -25,6 +25,13 @@ class user_api{
 			self::setCookie("uid",0,time()-3600*24);
 			self::setCookie("token",0,time()-3600*24);
 		}
+		static public function getUserFromSession(){
+			if(isset($_SESSION['user'])){
+				return $_SESSION['user'];
+			}else{
+				self::logout();
+			}
+		}
 		static public function setCookie($k,$v,$t){
 			header( 'p3p:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 			setcookie($k,$v,$t,"/");
