@@ -7,7 +7,18 @@ class user_main extends STpl{
 	}
 	function pageEntry($inPath){
 		if(($u=user_api::islogin())!==false){
-			echo $this->render("user/myaccount_1.html");
+			$user = user_api::getUserFromSession();
+			$data['user'] = $user;
+			echo $this->render("user/myaccount_1.html",$data);
+		}else{
+			echo $this->render("user/sign.html");
+		}
+	}
+	///user.main.resetpass
+	function pageResetpass($inPath){
+		if(($u=user_api::islogin())!==false){
+			$user = user_api::getUserFromSession();
+			echo $this->render("user/myaccount_4.html",$data);
 		}else{
 			echo $this->render("user/sign.html");
 		}
@@ -24,7 +35,7 @@ class user_main extends STpl{
 			if($UserID){
 				//echo "注册成功，自动登录中...";
 				user_api::login($user);
-				header("location:/");
+				header("location:/user");
 			}else{
 				echo "注册失败";
 			}

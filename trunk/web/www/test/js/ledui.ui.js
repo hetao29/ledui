@@ -49,6 +49,7 @@ var Page = {
 	total: 0,
 	htmlattr: '_page',
 	effect: '',
+	screen: $('.screen'),
 	init: function(n){
 		this.pages = this.seri();
 		this.total = this.pages.length;
@@ -63,10 +64,24 @@ var Page = {
 		var page_current = this.getpage(this.current); 
 		var page = this.getpage(n);
 		if(!page){ return; }
+		
+		this.screen.css('overflow', 'hidden');
+		
+		var show_direction = n > this.current ? 'right' : 'left';
+		var hide_direction = n > this.current ? 'left' :  'right';
+		var _this = this;
+		
 		if(page_current){
-			page_current.hide();
+			page_current.addClass('hidefrom'+ hide_direction);
+			window.setTimeout(function(){					
+				page_current.removeClass('hidefrom' + hide_direction).hide();
+			}, 600);
 		}
-		page.show();
+		page.addClass('showfrom'+ show_direction).show();
+		window.setTimeout(function(){
+			_this.screen.css('overflow', '');
+			page.removeClass('showfrom' + show_direction); 
+		}, 600 );
 		this.current_prev = this.current;
 		this.current = n;
 		Adapta.run();
@@ -153,14 +168,14 @@ var Adapta = {
 		
 		if(H < h1 + h2_min + h3 ){
 			pg.css('height', h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3);
-			hd.css('position', 'absolute');
+			//hd.css('position', 'absolute');
 			bd.css('height', (h_bd<=h2_min ? h2_min : h_bd));
-			ft.css('position', 'absolute');
+			//ft.css('position', 'absolute');
 		}else{
 			pg.css('height', H);
-			hd.css('position', 'fixed');
+			//hd.css('position', 'fixed');
 			bd.css('height', h2).css('marginBottom', h3);
-			ft.css('position', 'fixed');
+			//ft.css('position', 'fixed');
 		}	
 	}
 }
