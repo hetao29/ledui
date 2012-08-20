@@ -101,8 +101,8 @@ function onFail(message) {
 }
 $(document).ready(function(){
 		$("#chooseimg").click(function(){
-alert("D");
-capturePhotoEdit();
+			alert("D");
+			capturePhotoEdit();
 			});
 });
 /**
