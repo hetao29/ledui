@@ -1,4 +1,5 @@
 //{{{
+	/*
 $(document).ready(function(){
 		var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
 		($.browser.mozilla) ? 'Moz' :
@@ -10,7 +11,7 @@ $(document).ready(function(){
 
 
 			});
-
+*/
 		//}}}
 /**
  * 与本地的接口
@@ -99,10 +100,16 @@ function getPhoto(source) {
 function onFail(message) {
 	alert('Failed because: ' + message);
 }
+/*
 $(document).ready(function(){
 		$("#chooseimg").click(function(){
 			alert("D");
 			capturePhotoEdit();
+			});
+});*/
+$(document).ready(function(){
+		$("#chooseimg").click(function(){
+			alert("D");
 			});
 });
 /**
