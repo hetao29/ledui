@@ -4,30 +4,12 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta charset="utf-8" />
 <title>乐兑网名信片 ledui.com</title>
-<!--<meta content="width=600, user-scalable=0, target-densitydpi=device-dpi" name="viewport" />-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;">
+<meta content="width=600, user-scalable=0" name="viewport" />
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 <meta content="telephone=no" name="format-detection" />
 <link href="css/ledui.app.css" rel="stylesheet" type="text/css" />
 <link href="img/icon.png" rel="apple-touch-icon-precomposed" />
-
-<script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/ledui.ui.js"></script>
-
-<script>
-$(document).ready(function(){
-var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
-                   ($.browser.mozilla) ? 'Moz' :
-                   ($.browser.ms)      ? 'Ms' :
-                   ($.browser.opera)   ? 'O' : '';
-var ratio = $(window).width() / $('.screen').width();
-$('.screen').css(venderPrefix + 'Transform', 'scale(' + ratio + ')');
-$('.screen').css(venderPrefix + 'Transform-origin','0 0');
-
-
-});
-</script>
 </head>
 <body>
 
@@ -78,12 +60,10 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 -->
 <div class="page" _page="1">
 	<div class="panel_head">
-		<div class="shadow"></div>
-		<div class="module header"></div>
 		<div class="module titlebar">
 			<div class="title">编辑图片</div>
 			<div class="action">
-				<div class="l"><div class="button button_s button_s_withico" active="yes"><span class="ico ico_back"></span>返回</div></div>
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
 				<div class="r"><div class="button button_s" active="yes">重选</div></div>
 			</div>
 		</div>
@@ -125,12 +105,10 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 -->
 <div class="page" _page="2">
 	<div class="panel_head">
-		<div class="shadow"></div>
-		<div class="module header"></div>
 		<div class="module titlebar">
 			<div class="title">收件人信息</div>
 			<div class="action">
-				<div class="l"><div class="button button_s button_s_withico" active="yes"><span class="ico ico_back"></span>返回</div></div>
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
 			</div>
 		</div>
 	</div>
@@ -154,12 +132,10 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 -->
 <div class="page" _page="3">
 	<div class="panel_head">
-		<div class="shadow"></div>
-		<div class="module header"></div>
 		<div class="module titlebar">
 			<div class="title">输入留言信息</div>
 			<div class="action">
-				<div class="l"><div class="button button_s button_s_withico" active="yes"><span class="ico ico_back"></span>返回</div></div>
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
 			</div>
 		</div>
 	</div>
@@ -186,12 +162,10 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 -->
 <div class="page" _page="4">
 	<div class="panel_head">
-		<div class="shadow"></div>
-		<div class="module header"></div>
 		<div class="module titlebar">
 			<div class="title">预览</div>
 			<div class="action">
-				<div class="l"><div class="button button_s button_s_withico" active="yes"><span class="ico ico_back"></span>返回</div></div>
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
 			</div>
 		</div>
 	</div>
@@ -217,12 +191,10 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 -->
 <div class="page" _page="5">
 	<div class="panel_head">
-		<div class="shadow"></div>
-		<div class="module header"></div>
 		<div class="module titlebar">
 			<div class="title">支付邮费</div>
 			<div class="action">
-				<div class="l"><div class="button button_s button_s_withico" active="yes"><span class="ico ico_back"></span>返回</div></div>
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
 			</div>
 		</div>
 	</div>
@@ -260,12 +232,10 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 -->
 <div class="page" _page="6">
 	<div class="panel_head">
-		<div class="shadow"></div>
-		<div class="module header"></div>
 		<div class="module titlebar">
 			<div class="title">支付完成</div>
 			<div class="action">
-				<div class="l"><div class="button button_s button_s_withico" active="yes"><span class="ico ico_back"></span>返回</div></div>
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
 			</div>
 		</div>
 	</div>
@@ -304,6 +274,9 @@ $('.screen').css(venderPrefix + 'Transform-origin','0 0');
 		
 </div><!--pages end-->
 </div><!--screen end-->
+
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/ledui.ui.js"></script>
 
 
 </body>
