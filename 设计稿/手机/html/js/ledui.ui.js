@@ -1,12 +1,12 @@
-
 $(document).ready(function(){
-	Page.init(1);
-	Adapta.init();		
+	Page.init(2);
+	Adapta.init();
+	Scroll.init();		
 	Touch.init();
 	Test.init();
 })
 
-
+//测试脚本
 var Test = {
 	init: function(){
 		this.testpage();
@@ -139,6 +139,7 @@ var Page = {
 	}
 }
 
+
 //屏幕适配器
 var Adapta = {
 	init: function(){
@@ -178,9 +179,11 @@ var Adapta = {
 			//hd.css('position', 'fixed');
 			bd.css('height', h2).css('marginBottom', h3);
 			//ft.css('position', 'fixed');
-		}	
+		}
+			
 	}
 }
+
 
 //触摸事件
 var Touch = {
@@ -196,4 +199,15 @@ var Touch = {
 		.bind('focus', function(e) { $(this).addClass('focus'); })
 		.bind('blur', function(e) { $(this).removeClass('focus'); });
 	}
+}
+
+
+//滚动条
+var Scroll = {
+	init: function(){
+		var scrolls = $('[scroll]');
+		scrolls.each(function(){
+			var s = new iScroll($(this).get(0));		
+		});	
+	}	
 }
