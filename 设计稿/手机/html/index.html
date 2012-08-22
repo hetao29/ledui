@@ -110,7 +110,7 @@
 				<ul scroll="yes">
 					<li>
 						<span class="checkbox"><span class="pitch"></span></span>
-						<span class="name">龚华斌</span>
+						<span class="name">龚华彬</span>
 						<span class="phone">15869091127</span>
 						<span class="address">四川省成都市高新西区金粮路西江月</span>
 					</li>
@@ -118,31 +118,31 @@
 						<span class="checkbox"><span class="pitch"></span></span>
 						<span class="name">Mobile</span>
 						<span class="phone">13100909090</span>
+						<span class="address">北京市海淀区海淀大街8号中钢国际大厦5层</span>
+					</li>
+					<li>
+						<span class="checkbox"><span class="pitch"></span></span>
+						<span class="name">Hetal</span>
+						<span class="phone">15869091127</span>
 						<span class="address">北京市朝阳区</span>
 					</li>
 					<li>
 						<span class="checkbox"><span class="pitch"></span></span>
-						<span class="name">龚华斌</span>
-						<span class="phone">15869091127</span>
-						<span class="address">四川省成都市高新西区金粮路西江月</span>
-					</li>
-					<li>
-						<span class="checkbox"><span class="pitch"></span></span>
-						<span class="name">Mobile</span>
+						<span class="name">PinkFloyd</span>
 						<span class="phone">13100909090</span>
 						<span class="address">北京市朝阳区</span>
 					</li>
 					<li>
 						<span class="checkbox"><span class="pitch"></span></span>
-						<span class="name">龚华斌</span>
+						<span class="name">西门吹雪</span>
 						<span class="phone">15869091127</span>
-						<span class="address">四川省成都市高新西区金粮路西江月</span>
+						<span class="address">北京市海淀区善缘街</span>
 					</li>
 					<li>
 						<span class="checkbox"><span class="pitch"></span></span>
-						<span class="name">Mobile</span>
+						<span class="name">windows</span>
 						<span class="phone">13100909090</span>
-						<span class="address">北京市朝阳区</span>
+						<span class="address">USA</span>
 					</li>
 				</ul>
 			</div>
@@ -174,7 +174,7 @@
 	<div class="panel_body">
 		
 		<div class="msgcon">
-			<textarea class="textarea" placeholder="请输入留言，限200字。" focus></textarea>
+			<textarea class="textarea" placeholder="请输入留言，限200字。"></textarea>
 			<div class="counter"><span>0</span>/<span>200</span></div>
 		</div>
 		
@@ -249,11 +249,11 @@
 		
 		<div class="payinfo">
 			<div class="info">
-			每张明信片需支付 <span class="m">&yen;15</span> 或 <span class="m">$2</span><br />
-			帐户可抵用积分为: <span class="m">128</span>分<br />
-			目前可使用<select>
-			<option>50</option>
-			</select>积分抵用 <span class="m">&yen;0.5</span>	
+				每张明信片需支付 <span class="m">&yen;15</span> 或 <span class="m">$2</span><br />
+				帐户可抵用积分为: <span class="m">128</span>分<br />
+				目前可使用<select>
+				<option>50</option>
+				</select>积分抵用 <span class="m">&yen;0.5</span>	
 			</div>
 			<div class="sum">合计: <span class="m">&yen;14.5</span></div>		
 		</div>		
@@ -266,7 +266,7 @@
 			<div class="button button_pay" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
 		</div>
 		<div class="paytip">
-			如您通过美元账户支付, 请选择PayPal账户支付<br />
+			如您通过美元账户支付, 请选择PayPal支付<br />
 			本次合计 <span>$1.49</span><br />
 		</div>
 	</div>
@@ -288,7 +288,7 @@
 	</div>
 	<div class="panel_body">
 		
-		<div class="successinfo">
+		<div class="paysuccess">
 			<div class="icon"><span class="ico ico_post"></span></div>
 			<div class="dtext">您成功支付邮费</div>
 			<div class="info">
@@ -317,6 +317,33 @@
 	</div>
 </div><!--page end-->
 
+<!--
+*************************************
+* page7 我的信箱
+*************************************
+-->
+<div class="page" _page="7">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title">我的信箱</div>
+			<div class="action">
+				<div class="l"><div class="button button_s button_s_back" active="yes"><span class="arrow"></span>返回</div></div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+		
+		<div class="mymail">
+			
+			
+		</div>		
+		
+	</div>
+	<div class="panel_foot">
+			
+	</div>
+</div><!--page end-->
+
 </div><!--pages end-->
 
 <!--
@@ -337,10 +364,18 @@
 		<div class="ft"></div>
 	</div>
 </div>
-<div class="overlay" name="delete">
+<div class="overlay delmail" name="delmail">
 	<div class="overlay_box">
-		<div class="hd"><div class="title">确认删除？</div><div class="close">X</div></div>
-		<div class="bd"></div>
+		<div class="hd"><div class="title">注意</div><div class="close">X</div></div>
+		<div class="bd">
+			<div class="info">
+				确认删除已保存的明信片?
+			</div>
+			<div class="action">
+				<div class="button button_o" active="yes">确认</div>
+				<div class="button button_o" active="yes">取消</div>
+			</div>
+		</div>
 		<div class="ft"></div>
 	</div>
 </div>
