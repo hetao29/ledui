@@ -258,6 +258,7 @@ background: #eee;
 .ico_zoom_out{width:58px;height:58px;background-position:-300px -600px;}
 .ico_alipay{width:180px;height:54px;background-position:0 -150px;}
 .ico_paypal{width:180px;height:54px;background-position:-200px -150px;}
+.ico_agree{width:30px;height:30px;background-position:0 -700px;}
 
 
 /*welcome create*/
@@ -267,7 +268,7 @@ background: #eee;
 /*photo edit*/
 .photoeditor{position:absolute;top:50%;left:50%;width:600px;height:560px;margin-left:-300px;margin-top:-280px;}
 .photoeditor .view{position:relative;height:420px;}
-.photoeditor .photo{z-index:2;position:absolute;width:560px;height:350px;overflow:hidden;top:50%;left:50%;margin-top:-180px;margin-left:-285px;border:5px solid #fff;box-shadow:0 0 10px #555;}
+.photoeditor .photo{z-index:2;position:absolute;top:50%;left:50%;width:560px;height:350px;margin-top:-180px;margin-left:-285px;overflow:hidden;border:5px solid #fff;box-shadow:0 0 10px #555;}
 .photoeditor .photo img{position:absolute;top:0;left:0;}
 .photoeditor .tool{border-bottom:0;height:140px;}
 .photoeditor .tool .icos{width:420px;height:80px;padding:20px;overflow:hidden;margin:0 auto;}
@@ -293,9 +294,9 @@ background: -o-linear-gradient(top, #eee , #eee 50%, #ddd 50% , #ddd );
 
 .nextaction{background:#e8e8e8;width:100%;padding:20px 0;text-align:center;border-top:1px solid #fff;border-bottom:1px solid #bababa;}
 
-.receiveinfo{position:absolute;top:50%;left:50%;width:600px;height:540px;margin-left:-300px;margin-top:-270px;}
+.receiveinfo{position:absolute;top:50%;left:50%;width:600px;height:580px;margin-left:-300px;margin-top:-290px;}
 .receiveinfo .create{text-align:center;padding:30px 0;}
-.receiveinfo .list{z-index:1;position:relative;width:500px;height:360px;margin:0 auto;overflow:hidden;}
+.receiveinfo .list{z-index:1;position:relative;width:500px;height:400px;margin:0 auto;overflow:auto;}
 .receiveinfo .list ul{margin-bottom:40px;}
 .receiveinfo .list li{position:relative;border-bottom:2px solid #b5b5b5;padding:15px 0;padding-left:40px;cursor:pointer;}
 .receiveinfo .list .checked{background:#fff;cursor:default;}
@@ -307,6 +308,18 @@ background: -o-linear-gradient(top, #eee , #eee 50%, #ddd 50% , #ddd );
 .msgcon{position:absolute;top:50%;left:50%;width:600px;height:540px;margin-left:-300px;margin-top:-270px;}
 .msgcon .textarea{display:block;width:518px;height:400px;margin:30px auto 0 auto;margin-bottom:10px;}
 .msgcon .counter{width:520px;margin:0 auto;color:#909090;text-align:right;font-size:200%;padding-right:10px;}
+
+.preview{position:absolute;top:50%;left:50%;width:600px;height:460px;margin-left:-300px;margin-top:-230px;}
+.preview .card{position:relative;width:560px;height:350px;margin:30px auto 20px auto;background:#fff url(../img/card.png) no-repeat 0 0;box-shadow:0 0 10px #555;}
+.preview .card .postinfo{position:absolute;top:110px;left:28px;width:138px;text-align:right;}
+.preview .card .postinfo div{line-height:28px;font-size:12px;}
+.preview .card .msginfo{position:absolute;top:110px;left:230px;font-size:12px;line-height:20px;width:290px;}
+.preview .card .msginfo .t1{margin-bottom:5px;}
+.preview .card .msginfo .t2{text-indent:2em;}
+.preview .card .msginfo .t3{margin-top:5px;text-align:right;}
+.preview .agreement{position:relative;padding-left:40px;width:520px;height:30px;margin:0 auto;line-height:30px;font-size:140%;}
+.preview .agreement .ico{position:absolute;top:0;left:0;}
+.preview .agreement a{color:#d30000;}
 
 .payinfo{position:absolute;top:50%;left:50%;width:600px;height:280px;margin-left:-300px;margin-top:-90px;text-align:center;font-size:180%;line-height:140%;border:none;}
 .payinfo .m{color:#ff6c00;}
