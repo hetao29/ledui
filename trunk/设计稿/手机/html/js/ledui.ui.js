@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	Page.init(4);
+	Page.init(2);
 	Adapta.init();
 	Overlay.init();
 	Scroll.init();		
