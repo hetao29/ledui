@@ -9,6 +9,7 @@ $(document).ready(function(){
 			$('.screen').css(venderPrefix + 'Transform-origin','0 0');
 
 
+$('meta[name=viewport]').attr('content','width='+$(window).width()+', user-scalable=no');
 			});
 
 		//}}}
