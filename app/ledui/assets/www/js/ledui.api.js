@@ -1,18 +1,16 @@
 //{{{
-	/*
-$(document).ready(function(){
-		var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
-		($.browser.mozilla) ? 'Moz' :
-		($.browser.ms)      ? 'Ms' :
-		($.browser.opera)   ? 'O' : '';
-		var ratio = $(window).width() / $('.screen').width();
-		$('.screen').css(venderPrefix + 'Transform', 'scale(' + ratio + ')');
-			$('.screen').css(venderPrefix + 'Transform-origin','0 0');
+document.addEventListener("deviceready", onDeviceReady, false);
 
-
-			});
-*/
-		//}}}
+function onDeviceReady() {
+alert(1);
+	Page.init(2);
+	Adapta.init();
+	Overlay.init();
+	//Scroll.init();		
+	Touch.init();
+alert(2);
+}
+//}}}
 /**
  * 与本地的接口
  */
@@ -100,16 +98,10 @@ function getPhoto(source) {
 function onFail(message) {
 	alert('Failed because: ' + message);
 }
-/*
 $(document).ready(function(){
 		$("#chooseimg").click(function(){
 			alert("D");
 			capturePhotoEdit();
-			});
-});*/
-$(document).ready(function(){
-		$("#chooseimg").click(function(){
-			alert("D");
 			});
 });
 /**
