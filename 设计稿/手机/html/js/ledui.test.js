@@ -17,11 +17,11 @@ var Test = {
 			Page.show($(this).val())				 
 		});
 		
+		/*
 		$('<button>prev</button>')
 		.appendTo($(testpanel))
 		.click(function(){
-			Page.prev();
-			
+			Page.prev();			
 		});
 		
 		$('<button>next</button>')
@@ -29,7 +29,7 @@ var Test = {
 		.click(function(){
 			Page.next();				
 		});
-		
+		*/
 		for(var key in Overlay.layers){
 			(function(key){	
 				$('<button>'+ key +'</button>')
