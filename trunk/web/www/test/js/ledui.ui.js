@@ -2,7 +2,7 @@ $(document).ready(function(){
 	Page.init(2);
 	Adapta.init();
 	Overlay.init();
-	Scroll.init();		
+	//Scroll.init();		
 	Touch.init();
 });
 
