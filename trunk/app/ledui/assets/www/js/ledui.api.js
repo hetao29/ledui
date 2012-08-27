@@ -1,15 +1,15 @@
 //{{{
-document.addEventListener("deviceready", onDeviceReady, false);
-
+	
 function onDeviceReady() {
-alert(1);
-	Page.init(2);
-	Adapta.init();
-	Overlay.init();
-	//Scroll.init();		
-	Touch.init();
 alert(2);
+alert(3);
 }
+function init(){
+	alert("DD2");
+	document.addEventListener("deviceready", onDeviceReady, false);
+alert("YY2");
+}
+
 //}}}
 /**
  * 与本地的接口

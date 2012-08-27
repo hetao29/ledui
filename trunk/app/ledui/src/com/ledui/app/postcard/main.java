@@ -27,21 +27,22 @@ public class main extends DroidGap {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		
+
+		 super.setIntegerProperty("splashscreen", R.drawable.splash); 
 		super.onCreate(savedInstanceState);
-		
+		//appView.getSettings().setUseWideViewPort(true);
 	
-		
-		super.setStringProperty("loadingDialog", "程序启动中...");
-		 //super.setIntegerProperty("splashscreen", R.drawable.splash); 
+		//this.appView.setBackgroundColor(0);
+		//this.appView.setBackgroundResource(R.drawable.splash);
+		//super.setStringProperty("loadingDialog", "程序启动中...");
 		// this.appView.addJavascriptInterface(this, "android"); 
 	   //     this.appView.setInitialScale(0); 
 		//super.setIntegerProperty("splashscreen", R.drawable.splash);
-		//super.loadUrl("file:///android_asset/www/index.html");
+		super.loadUrl("file:///android_asset/www/index.html");
 		//super.loadUrl("file:///android_asset/www/index-jq.mobi.html");
-		super.loadUrl("http://42.121.85.21/test/index.html");
+		//super.loadUrl("http://42.121.85.21/test/index.html",3000);
 		//super.loadUrl("http://m.taobao.com/");
-		
+		 
 		//super.loadUrl("file:///android_asset/www/backbutton.html");
 	}
 }
