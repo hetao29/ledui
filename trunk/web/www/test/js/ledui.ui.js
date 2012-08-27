@@ -89,6 +89,7 @@ var Adapta = {
 	ratio: 1,
 	init: function(){
 		this.scale(); 
+		this.layout();
 		this.bind();
 	},
 	bind: function(){
@@ -106,7 +107,8 @@ var Adapta = {
 							($.browser.opera)   ? 'O' : '';		
 		$('.screen')
 		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
-		.css(venderPrefix + 'Transform-origin','0 0');
+		.css(venderPrefix + 'Transform-origin','0 0')
+		.css('height', $(window).height()/this.ratio)
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -116,7 +118,7 @@ var Adapta = {
 			,ft = pg.find('.panel_foot');
 		//children static
 		bd.children().each(function(){ h_bd += $(this).height(); })
-		var H = $(window).height()
+		var H = $('.screen').height()
 			,h1 = hd.height()
 			,h3 = ft.height()
 			,h2_min = parseInt(bd.attr('_minheight'), 10) || h_bd
@@ -124,7 +126,7 @@ var Adapta = {
 			
 		bd.css({'top': h1, 'height': h2});
 		if(H < h1 + h2_min + h3 ){
-			pg.css('height', h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3);
+			pg.css('height', (h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3));
 			//hd.css('position', 'absolute');ft.css('position', 'absolute');
 			bd.css('height', (h_bd<=h2_min ? h2_min : h_bd));
 		}else{
