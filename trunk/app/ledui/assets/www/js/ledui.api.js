@@ -1,33 +1,34 @@
 //{{{
 //$(document).ready(function(){
-	document.addEventListener("deviceready", onDeviceReady2, false);
-	document.addEventListener("backbutton", yourCallbackFunction, false);
+	document.addEventListener("deviceready", onDeviceReady, false);
+	//document.addEventListener("pause", yourCallbackFunction, false);
+	//document.addEventListener("menubutton", yourCallbackFunction, false);
 //});
 function yourCallbackFunction(){
-	alert("back");	
 	
+	//自定义导航
+	
+	//如果，是第0页，按后退，就提示程序退出
         navigator.notification.confirm(
-            'You are the winner!',  // message
+            '你确定要退出吗？',  // message
             onConfirm,         // callback
-            'Game Over',            // title
-            'Done'                  // buttonName
+            '退出',            // title
+            '取消,确定'                  // buttonName
         );
 		
 }
 function onConfirm(buttonIndex) {
-    alert('You selected button ' + buttonIndex);
+    if(buttonIndex == 2){
+		//退出
+		navigator.app.exitApp();
+	}
 }
 $(document).ready(function(){
-alert(1);
-Control.init();
-alert(2);
+	Control.init();
 });
 
-function onDeviceReady2() {
-alert(2);
-Control.init();
-alert(3);
-
+function onDeviceReady() {
+	document.addEventListener("backbutton", yourCallbackFunction, false);
 }
 
 //}}}
@@ -59,17 +60,22 @@ var Control = {
 			Overlay.show("chkphoto");
 		});
 		*/
-		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#choosePic").bind("touchend",function(e){
+												 Overlay.show("chkphoto");
+												 });
 		/*$("#choosePicFromCamera").click(function(){
 												
 		});*/
 		$("#choosePicFromCamera").bind("touchend",function(e){
+														   
 			navigator.camera.getPicture(onPhotoURISuccess, onFail, 
 									{ 
 										quality: 100, 
 										allowEdit: true,
 										destinationType: navigator.camera.DestinationType.FILE_URI 
 									});
+			
+			Overlay.hide("chkphoto");
 														   
 		});
 		$("#choosePicFromAlbum").bind("touchend",function(e){
@@ -79,6 +85,7 @@ var Control = {
 										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
 										destinationType: navigator.camera.DestinationType.FILE_URI 
 									});
+			Overlay.hide("chkphoto");
 														   
 		});
 	},
