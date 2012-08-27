@@ -1,6 +1,7 @@
 //{{{
 $(document).ready(function(){
 	document.addEventListener("deviceready", onDeviceReady2, false);
+	Control.init();
 });
 
 function onDeviceReady2() {
@@ -9,6 +10,38 @@ alert(3);
 }
 
 //}}}
+//接口
+var API = {
+	host: "http://api.ledui.com",
+	//登录
+	login: function(n){
+		var n = arguments[0] ? arguments[0] : 0;
+		this.pages = this.seri();
+		this.total = this.pages.length;
+		if(!this.total){ return; }
+		this.show(n);
+	},
+	//登出
+	logout: function(n){
+		var n = arguments[0] ? arguments[0] : 0;
+		this.pages = this.seri();
+		this.total = this.pages.length;
+		if(!this.total){ return; }
+		this.show(n);
+	}
+}
+//界面操作
+var Control = {
+	init: function(n){
+		$("#choosePic").click(function(){
+			alert("choosePic");							   
+		});
+		
+	},
+	choosePic: function(n){
+	}
+	
+}
 /**
  * 与本地的接口
  */
