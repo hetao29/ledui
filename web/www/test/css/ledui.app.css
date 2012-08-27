@@ -147,8 +147,20 @@ background: -moz-linear-gradient(top, #f97100 , #f97100 50%, #e66900 50% , #cc5b
 background: -ms-linear-gradient(top, #f97100 , #f97100 50%, #e66900 50% , #cc5b00 );
 background: -o-linear-gradient(top, #f97100 , #f97100 50%, #e66900 50% , #cc5b00 );
 }
-.button_s_back{border-radius:8px 10px 10px 8px;left:15px;}
-.button_s_back .arrow{display:block;display:none;position:absolute;top:0;left:-13px;width:17px;height:54px;background:url(../img/app.png) no-repeat 0 -500px;}
+.button_s_back{border-radius:1px 10px 10px 1px;margin-left:25px;}
+.button_s_back .arrow{display:block;position:absolute;top:0;left:-32px;width:35px;height:55px;overflow:hidden;}
+.button_s_back .arrow em{display:block;position:absolute;left:12px;top:6px;
+width:40px;height:40px;
+border:1px solid #994702;
+box-shadow:1px 1px 1px #ffba1e, inset 1px 1px 1px #cc5c00;
+border:1px solid #994702;
+-webkit-transform:rotate(-45deg);
+background: #ff7300;
+background: -webkit-linear-gradient(-135deg, #f97100, #f97100 50%, #e66900 50% , #cc5b00 );
+background: -moz-linear-gradient(-135deg, #f97100, #f97100 50%, #e66900 50% , #cc5b00 );
+background: -ms-linear-gradient(-135deg, #f97100, #f97100 50%, #e66900 50% , #cc5b00 );
+background: -o-linear-gradient(-135deg, #f97100, #f97100 50%, #e66900 50% , #cc5b00 );
+}
 .button_s:active,
 .button_s.active{
 box-shadow:1px 1px 1px #ffba1e, inset 1px 1px 1px #cc5c00;	
@@ -158,8 +170,14 @@ background: -moz-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #9443
 background: -ms-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #944301 );
 background: -o-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #944301 );
 }
-.button_s:active .arrow,
-.button_s.active .arrow{background-position:-50px -500px;}
+.button_s_back:active .arrow em,
+.button_s_back.active .arrow em{
+background: #ff7300;
+background: -webkit-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );
+background: -moz-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );
+background: -ms-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );
+background: -o-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );	
+}
 .button_pay{display:inline-block;*display:inline;*zoom:1;width:400px;height:76px;border:5px solid #d3d3d3;overflow:hidden;
 box-shadow:inset 1px 1px 1px #eee;
 border-radius:43px;
