@@ -90,8 +90,22 @@ var Adapta = {
 	bind: function(){
 		var _this = this;
 		$(window).resize(function(){  _this.run(); })	
-	},	
-	run: function(){		
+	},
+	run: function(){
+		this.layout();
+		this.scale();
+	},
+	scale: function(){
+		var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
+							($.browser.mozilla) ? 'Moz' :
+							($.browser.ms)      ? 'Ms' :
+							($.browser.opera)   ? 'O' : '';
+		var ratio = $(window).width() / $('.screen').width();
+		$('.screen')
+		.css(venderPrefix + 'Transform', 'scale(' + ratio + ')')
+		.css(venderPrefix + 'Transform-origin','0 0');
+	},
+	layout: function(){		
 		var  pg = Page.getcurrentpage()	
 			,h_bd = 0
 			,hd = pg.find('.panel_head')

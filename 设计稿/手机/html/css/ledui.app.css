@@ -11,7 +11,7 @@ a{}
 a:active{}
 a:hover{}
 
-.screen{position:relative;width:600px;height:100%;margin:0 auto;background:#f1f1f2;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
+.screen{position:relative;width:600px;height:100%;background:#f1f1f2;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
 .pages{background:#f1f1f2;}
 .page{z-index:0;position:absolute;left:0;top:0;width:100%;display:none;background:#f1f1f2;
 -webkit-backface-visibility: hidden;
@@ -42,13 +42,15 @@ animation-timing-function: fadein;
 animation-fill-mode: both;
 transform: translateX(0);
 opacity:1;
+display:-webkit-box;
+-webkit-box-orient: horizontal;
 }
 .module{clear:both;border-top:1px solid #fff;border-bottom:1px solid #bababa;}
 
-.panel_head{z-index:2;position:absolute;top:0;left:0;width:600px;background:#f1f1f2;}
+.panel_head{z-index:2;position:absolute;top:0;left:0;width:100%;background:#f1f1f2;}
 .panel_head .shadow{position:absolute;bottom:0;width:100%;height:4px;overflow:hidden;opacity:0.2;filter:alpha(opacity=20);background:#777;}
-.panel_body{z-index:0;position:relative;width:600px;overflow:hidden;margin:0 auto;}
-.panel_foot{z-index:1;position:absolute;bottom:0;left:0;width:600px;border-top:1px solid #bababa;border-bottom:4px solid #ccc;background:#f1f1f2;line-height:0;}
+.panel_body{z-index:0;position:relative;width:100%;overflow:hidden;margin:0 auto;}
+.panel_foot{z-index:1;position:absolute;bottom:0;left:0;width:100%;border-top:1px solid #bababa;border-bottom:4px solid #ccc;background:#f1f1f2;line-height:0;}
 .panel_foot .shadow{position:absolute;top:-4px;width:100%;height:4px;overflow:hidden;opacity:0.2;filter:alpha(opacity=20);background:#777;}
 
 .header{height:70px;background:url(../img/header.png) no-repeat center 0;}
@@ -60,7 +62,7 @@ opacity:1;
 .photos li{float:left;width:200px;height:100%;}
 .photos li img{display:block;float:left;width:100%;height:100%;}
 
-.helper{width:100%;height:80px;overflow:hidden;margin-bottom:-4px;border-bottom:4px solid #555;
+.helper{width:600px;height:80px;overflow:hidden;margin-bottom:-4px;border-bottom:4px solid #555;
 background: -webkit-linear-gradient(top, #999, #666);
 background: -moz-linear-gradient(top, #999, #666);
 background: -ms-linear-gradient(top, #999, #666);
