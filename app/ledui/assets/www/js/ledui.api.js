@@ -9,6 +9,8 @@ function yourCallbackFunction(){
 	//自定义导航
 	
 	//如果，是第0页，按后退，就提示程序退出
+	Overlay.show("quit");
+	return;
         navigator.notification.confirm(
             '你确定要退出吗？',  // message
             onConfirm,         // callback
@@ -60,9 +62,9 @@ var Control = {
 			Overlay.show("chkphoto");
 		});
 		*/
-		$("#choosePic").bind("touchend",function(e){
-												 Overlay.show("chkphoto");
-												 });
+		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
+		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
 		/*$("#choosePicFromCamera").click(function(){
 												
 		});*/
