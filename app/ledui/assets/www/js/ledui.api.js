@@ -98,7 +98,7 @@ var Control = {
 
 //
 function onPhotoURISuccess(imageURI) {
-	//
+
 	var largeImage = document.getElementById('photoContent');
 
 	// Unhide image elements
@@ -114,5 +114,5 @@ function onPhotoURISuccess(imageURI) {
 
 // 
 function onFail(message) {
-	alert('Failed because: ' + message);
+	//alert('Failed because: ' + message);
 }
