@@ -42,7 +42,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.run();
+		Adapta.layout();
 		return this;
 	},
 	next: function(){
@@ -86,23 +86,26 @@ var Page = {
 
 //屏幕适配器
 var Adapta = {
-	init: function(){ this.bind(); },
+	ratio: 1,
+	init: function(){
+		this.scale(); 
+		this.bind();
+	},
 	bind: function(){
 		var _this = this;
-		$(window).resize(function(){  _this.run(); })	
-	},
-	run: function(){
-		this.layout();
-		this.scale();
+		$(window).resize(function(){ 
+			_this.scale();
+			_this.layout(); 
+		});	
 	},
 	scale: function(){
+		this.ratio = $(window).width() / $('.screen').width();
 		var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
-							($.browser.opera)   ? 'O' : '';
-		var ratio = $(window).width() / $('.screen').width();
+							($.browser.opera)   ? 'O' : '';		
 		$('.screen')
-		.css(venderPrefix + 'Transform', 'scale(' + ratio + ')')
+		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
 		.css(venderPrefix + 'Transform-origin','0 0');
 	},
 	layout: function(){		
