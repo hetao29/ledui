@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns		= "http://www.w3.org/ns/widgets"
+	xmlns:gap	= "http://phonegap.com/ns/1.0"
+	id		= "com.ledui.app.postcard"
+	version 	= "1.0.0">
+
+	<name>乐兑明信片</name>
+
+	<description>
+		乐兑明信片，好用的明信片
+	</description>
+
+	<author href="http://www.ledui.com/"
+		email="hetao@ledui.com">
+		Hetal
+	</author>
+
+	<icon src="icon.png" gap:role="default" />
+	<gap:splash src="splash.png" />
+	<feature name="http://api.phonegap.com/1.0/battery"/>
+	<feature name="http://api.phonegap.com/1.0/camera"/>
+	<feature name="http://api.phonegap.com/1.0/contacts"/>
+	<feature name="http://api.phonegap.com/1.0/file"/>
+	<feature name="http://api.phonegap.com/1.0/geolocation"/>
+	<feature name="http://api.phonegap.com/1.0/media"/>
+	<feature name="http://api.phonegap.com/1.0/network"/>
+	<feature name="http://api.phonegap.com/1.0/notification"/>
+	<feature name="http://api.phonegap.com/1.0/device"/>
+
+	<!--<preference name="orientation" value="default" />-->
+	<preference name="phonegap-version" value="1.8.1" />
+	<!--<preference name="stay-in-webview" value="true" />-->
+	<preference name="android-minSdkVersion" value="7" />
+
+	<access origin="*" />
+</widget>
