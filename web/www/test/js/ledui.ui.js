@@ -93,7 +93,6 @@ var Adapta = {
 	},
 	bind: function(){
 		var _this = this;
-<<<<<<< .mine
 		$(window).resize(function(){ 
 			_this.scale();
 			_this.layout(); 
@@ -110,25 +109,6 @@ var Adapta = {
 		.css(venderPrefix + 'Transform-origin','0 0');
 	},
 	layout: function(){		
-=======
-		$(window).resize(function(){  _this.run(); })	
-	},
-	run: function(){
-		this.layout();
-		this.scale();
-	},
-	scale: function(){
-		var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
-							($.browser.mozilla) ? 'Moz' :
-							($.browser.ms)      ? 'Ms' :
-							($.browser.opera)   ? 'O' : '';
-		var ratio = $(window).width() / $('.screen').width();
-		$('.screen')
-		.css(venderPrefix + 'Transform', 'scale(' + ratio + ')')
-		.css(venderPrefix + 'Transform-origin','0 0');
-	},
-	layout: function(){		
->>>>>>> .r93
 		var  pg = Page.getcurrentpage()	
 			,h_bd = 0
 			,hd = pg.find('.panel_head')
