@@ -30,6 +30,13 @@ var Test = {
 			Page.next();				
 		});
 		*/
+		
+		$('<button>reload</button>')
+		.appendTo($(testpanel))
+		.click(function(){
+			window.location.reload();				
+		});
+		
 		for(var key in Overlay.layers){
 			(function(key){	
 				$('<button>'+ key +'</button>')
