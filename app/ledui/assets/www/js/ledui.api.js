@@ -1,13 +1,11 @@
 //{{{
-	
-function onDeviceReady() {
+$(document).ready(function(){
+	document.addEventListener("deviceready", onDeviceReady2, false);
+});
+
+function onDeviceReady2() {
 alert(2);
 alert(3);
-}
-function init(){
-	alert("DD2");
-	document.addEventListener("deviceready", onDeviceReady, false);
-alert("YY2");
 }
 
 //}}}
