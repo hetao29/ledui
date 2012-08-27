@@ -257,7 +257,7 @@ opacity:1;
 .overlay .action{text-align:center;}
 .overlay .action .button{margin:0 10px;}
 
-.overlay_mask{display:absolute;z-index:100;position:fixed;width:600px;height:100%;background:#fff;opacity:0;}
+.overlay_mask{display:none;z-index:100;position:absolute;width:600px;height:100%;background:#fff;opacity:0;}
 
 /*icon*/
 .ico{display:inline-block;*display:inline;*zoom:1;cursor:pointer;background:url(../img/app.png) no-repeat 0 0;}
