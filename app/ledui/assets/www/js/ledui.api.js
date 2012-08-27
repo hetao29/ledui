@@ -1,12 +1,33 @@
 //{{{
-$(document).ready(function(){
+//$(document).ready(function(){
 	document.addEventListener("deviceready", onDeviceReady2, false);
-	Control.init();
+	document.addEventListener("backbutton", yourCallbackFunction, false);
+//});
+function yourCallbackFunction(){
+	alert("back");	
+	
+        navigator.notification.confirm(
+            'You are the winner!',  // message
+            onConfirm,         // callback
+            'Game Over',            // title
+            'Done'                  // buttonName
+        );
+		
+}
+function onConfirm(buttonIndex) {
+    alert('You selected button ' + buttonIndex);
+}
+$(document).ready(function(){
+alert(1);
+Control.init();
+alert(2);
 });
 
 function onDeviceReady2() {
 alert(2);
+Control.init();
 alert(3);
+
 }
 
 //}}}
@@ -33,61 +54,43 @@ var API = {
 //界面操作
 var Control = {
 	init: function(n){
+		/*
 		$("#choosePic").click(function(){
-			alert("choosePic");							   
+			Overlay.show("chkphoto");
 		});
-		
+		*/
+		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		/*$("#choosePicFromCamera").click(function(){
+												
+		});*/
+		$("#choosePicFromCamera").bind("touchend",function(e){
+			navigator.camera.getPicture(onPhotoURISuccess, onFail, 
+									{ 
+										quality: 100, 
+										allowEdit: true,
+										destinationType: navigator.camera.DestinationType.FILE_URI 
+									});
+														   
+		});
+		$("#choosePicFromAlbum").bind("touchend",function(e){
+			navigator.camera.getPicture(onPhotoURISuccess, onFail, 
+									{ 
+										quality: 100, 
+										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
+										destinationType: navigator.camera.DestinationType.FILE_URI 
+									});
+														   
+		});
 	},
 	choosePic: function(n){
 	}
 	
 }
-/**
- * 与本地的接口
- */
-var pictureSource;   // picture source
-var destinationType; // sets the format of returned value 
 
-// Wait for Cordova to connect with the device
-//
-document.addEventListener("deviceready",onDeviceReady,false);
-
-// Cordova is ready to be used!
-//
-function onDeviceReady() {
-	pictureSource=navigator.camera.PictureSourceType;
-	destinationType=navigator.camera.DestinationType;
-}
-
-// Called when a photo is successfully retrieved
-//
-function onPhotoDataSuccess(imageData) {
-	// Uncomment to view the base64 encoded image data
-	// console.log(imageData);
-
-	// Get image handle
-	//
-	var smallImage = document.getElementById('mainimage');
-
-	// Unhide image elements
-	//
-	smallImage.style.display = 'block';
-
-	// Show the captured photo
-	// The inline CSS rules are used to resize the image
-	//
-	smallImage.src = "data:image/jpeg;base64," + imageData;
-}
-
-// Called when a photo is successfully retrieved
 //
 function onPhotoURISuccess(imageURI) {
-	// Uncomment to view the image file URI 
-	// console.log(imageURI);
-
-	// Get image handle
 	//
-	var largeImage = document.getElementById('largeImage');
+	var largeImage = document.getElementById('photoContent');
 
 	// Unhide image elements
 	//
@@ -97,44 +100,10 @@ function onPhotoURISuccess(imageURI) {
 	// The inline CSS rules are used to resize the image
 	//
 	largeImage.src = imageURI;
+	Page.init(1);
 }
 
-// A button will call this function
-//
-function capturePhoto() {
-	// Take picture using device camera and retrieve image as base64-encoded string
-	navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
-			destinationType: destinationType.DATA_URL });
-}
-
-// A button will call this function
-//
-function capturePhotoEdit() {
-	// Take picture using device camera, allow edit, and retrieve image as base64-encoded string  
-	navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
-			destinationType: destinationType.DATA_URL });
-}
-
-// A button will call this function
-//
-function getPhoto(source) {
-	// Retrieve image file location from specified source
-	navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, 
-			destinationType: destinationType.FILE_URI,
-			sourceType: source });
-}
-
-// Called if something bad happens.
 // 
 function onFail(message) {
 	alert('Failed because: ' + message);
 }
-$(document).ready(function(){
-		$("#chooseimg").click(function(){
-			alert("D");
-			capturePhotoEdit();
-			});
-});
-/**
- * 与server的接口
- */

@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-	Page.init(2);
+	Page.init(0);
 	Adapta.init();
 	Overlay.init();
 	//Scroll.init();		
