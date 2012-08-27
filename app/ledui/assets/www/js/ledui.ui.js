@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	Page.init(2);
 	Adapta.init();
