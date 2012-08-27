@@ -108,7 +108,12 @@ var Adapta = {
 		$('.screen')
 		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
 		.css(venderPrefix + 'Transform-origin','0 0')
-		.css('height', $(window).height()/this.ratio)
+		.css('height', $(window).height()/this.ratio);
+		/*var _this = this;
+		$('.overlay').each(function(){
+			$(this).css(venderPrefix + 'Transform', 'scale(' + 1/_this.ratio + ')')	
+		});*/
+		
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -165,7 +170,7 @@ var Overlay = {
 		if(this.curname){ this.hide(this.curname); }
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.stop().animate({opacity: 0.5}, 500).show();
+		this.mask.css('height', Page.getcurrentpage().height()).stop().animate({opacity: 0.5}, 500).show();
 		setTimeout(function(){ o.removeClass('showfromtop'); }, 500);			
 	},
 	hide: function(name){
