@@ -42,7 +42,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.layout();
+		Adapta.run();
 		return this;
 	},
 	next: function(){
@@ -88,19 +88,22 @@ var Page = {
 var Adapta = {
 	ratio: 1,
 	init: function(){
-		this.scale(); 
-		this.layout();
+		this.run();
 		this.bind();
 	},
 	bind: function(){
 		var _this = this;
-		$(window).resize(function(){ 
-			_this.scale();
-			_this.layout(); 
-		});	
+		$(window).resize(function(){ _this.run(); });	
+	},
+	run: function(){
+		this.scale(); 
+		this.layout();
 	},
 	scale: function(){
-		this.ratio = $(window).width() / $('.screen').width();
+		var win_w = $(window).outerWidth(true)  
+			,win_h = $(window).height()
+			,scr_w = $('.screen').width()
+		this.ratio = win_w/scr_w;
 		var venderPrefix = ($.browser.webkit)  ? 'Webkit' : 
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
@@ -108,12 +111,11 @@ var Adapta = {
 		$('.screen')
 		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
 		.css(venderPrefix + 'Transform-origin','0 0')
-		.css('height', $(window).height()/this.ratio);
-		/*var _this = this;
-		$('.overlay').each(function(){
-			$(this).css(venderPrefix + 'Transform', 'scale(' + 1/_this.ratio + ')')	
-		});*/
-		
+		.css('height', win_h/this.ratio);
+		$('.overlays')
+		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')	
+		.css(venderPrefix + 'Transform-origin','0 0')
+		.css('height', win_h/this.ratio);
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -139,8 +141,6 @@ var Adapta = {
 		$('.screen').css('height', h_pg);
 		pg.css('height', h_pg);
 		bd.css('height', h_bd);
-		
-		
 	}
 }
 
@@ -170,9 +170,10 @@ var Overlay = {
 		var _this = this;
 		if(!o){ return; }
 		if(this.curname){ this.hide(this.curname); }
+		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.css('height', Page.getcurrentpage().height()).stop().animate({opacity: 0.5}, 500).show();
+		this.mask.css('height', $('.screen').height()).stop().animate({opacity: 0.5}, 500).show();
 		setTimeout(function(){ o.removeClass('showfromtop'); }, 500);			
 	},
 	hide: function(name){
@@ -182,7 +183,7 @@ var Overlay = {
 		o.addClass('hidefromtop');
 		this.curname = '';	
 		this.mask.stop().animate({opacity: 0}, 500, '', function(){ _this.mask.hide(); });
-		setTimeout(function(){ o.removeClass('hidefromtop').hide(); }, 500);
+		setTimeout(function(){ o.removeClass('hidefromtop').hide(); $('.overlays').hide(); }, 500);
 	}	
 }
 
