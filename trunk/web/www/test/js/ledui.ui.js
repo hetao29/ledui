@@ -130,15 +130,17 @@ var Adapta = {
 			,h2 = H - h1 - h3
 			
 		bd.css({'top': h1, 'height': h2});
-		if(H < h1 + h2_min + h3 ){
-			pg.css('height', (h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3));
-			//hd.css('position', 'absolute');ft.css('position', 'absolute');
-			bd.css('height', (h_bd<=h2_min ? h2_min : h_bd));
-		}else{
-			pg.css('height', H);
-			//hd.css('position', 'fixed');ft.css('position', 'fixed');
-			bd.css('height', h2).css('marginBottom', h3);
-		}
+		
+		var is_enough = H >= h1 + h2_min + h3;
+		
+		var h_pg = is_enough ? H : (h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3)
+			,h_bd = is_enough ? h2 :(h_bd<=h2_min ? h2_min : h_bd);
+			
+		$('.screen').css('height', h_pg);
+		pg.css('height', h_pg);
+		bd.css('height', h_bd);
+		
+		
 	}
 }
 
