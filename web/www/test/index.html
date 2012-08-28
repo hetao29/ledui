@@ -13,363 +13,352 @@
 </head>
 <body>
 <div class="screen">
-  <div class="pages">
+<div class="pages"> 
+		<!--
+		*************************************
+		* page0 欢迎界面
+		*************************************
+		-->
+		<div class="page" _page="0">
+			<div class="panel_body">
+				<div class="banner">
+					<div class="createcard">
+						<div class="button button_l" id="choosePic" active="yes"><span class="label">创建一张明信片</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="helper">
+					<ul>
+						<li active="yes">关于</li>
+						<li active="yes">信箱</li>
+						<li active="yes">登录</li>
+						<li active="yes">注册</li>
+					</ul>
+				</div>
+			</div>
+		</div> 
+		<!--
+		*************************************
+		* page1 编辑图片
+		*************************************
+		-->
+		<div class="page" _page="1">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">编辑图片</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+						<div class="r">
+							<div class="button button_s" active="yes">重选</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="photoeditor">
+					<div class="view">
+						<div class="selection"></div>
+						<div class="photo"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
+						<div class="mask">
+							<div class="l"></div>
+							<div class="r"></div>
+							<div class="t"></div>
+							<div class="b"></div>
+						</div>
+					</div>
+					<div class="tool">
+						<div class="icos">
+							<ul>
+								<li active="yes"><span class="ico ico_rotate_acw"><em>逆时针旋转</em></span></li>
+								<li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw"><em>顺时针旋转</em></span></li>
+								<li active="yes"><span class="ico ico_zoom_out"><em>缩小</em></span></li>
+								<li active="yes"><span class="ico ico_zoom_in"><em>放大</em></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="nextaction">
+					<div class="button button_l" active="yes">下一步</div>
+				</div>
+			</div>
+		</div> 
+		<!--
+		*************************************
+		* page2 收件人信息
+		*************************************
+		-->
+		<div class="page" _page="2">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">收件人信息</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="receiveinfo">
+					<div class="create">
+						<div class="button button_m" active="yes">输入新地址</div>
+					</div>
+					<div class="list">
+						<ul scroll="yes">
+							<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">龚华彬</span> <span class="phone">15869091127</span> <span class="address">四川省成都市高新西区金粮路西江月</span> </li>
+							<li class="checked"> <span class="checkbox"><span class="pitch"></span></span> <span class="name">Mobile</span> <span class="phone">13100909090</span> <span class="address">北京市海淀区海淀大街8号中钢国际大厦5层</span> </li>
+							<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">Hetal</span> <span class="phone">15869091127</span> <span class="address">北京市朝阳区</span> </li>
+							<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">PinkFloyd</span> <span class="phone">13100909090</span> <span class="address">北京市朝阳区</span> </li>
+							<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">西门吹雪</span> <span class="phone">15869091127</span> <span class="address">北京市海淀区善缘街</span> </li>
+							<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">windows</span> <span class="phone">13100909090</span> <span class="address">USA</span> </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="nextaction">
+					<div class="button button_l" active="yes">下一步</div>
+				</div>
+			</div>
+		</div> 
+		<!--
+		*************************************
+		* page3 输入留言信息
+		*************************************
+		-->
+		<div class="page" _page="3">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">输入留言信息</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="msgcon">
+					<textarea class="textarea" placeholder="请输入留言，限200字。"></textarea>
+					<div class="counter"><span>0</span>/<span>200</span></div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="nextaction">
+					<div class="button button_l" active="yes">下一步</div>
+				</div>
+			</div>
+		</div> 
+		<!--
+		*************************************
+		* page4 预览
+		*************************************
+		-->
+		<div class="page" _page="4">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">预览</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="preview">
+					<div class="card">
+						<div class="postinfo">
+							<div>龚华彬 收</div>
+							<div>四川省成都市金牛区<br>
+								金粮路西江月2-1-305</div>
+							<div>610000</div>
+							<div>中国</div>
+						</div>
+						<div class="msginfo">
+							<div class="t1">亲爱的龚华彬, 您好</div>
+							<div class="t2">不用信封就可以直接投寄的载有信息的卡片；一种必须贴有胶粘邮票的卡片 ，在一面上有一种装饰（如一幅画）的这类卡片 ； 具有政府印制的邮具有政府印制的邮具有政府印制的邮票标记或官方的回信费已付标记的卡片...。</div>
+							<div class="t3">Hetal</div>
+						</div>
+					</div>
+					<div class="agreement"> <span class="ico ico_agree"></span>我已接受 <a href="#">条款</a> </div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="nextaction">
+					<div class="button button_l" active="yes">发送</div>
+				</div>
+			</div>
+		</div>
+		<!--
+		*************************************
+		* page5 支付邮费
+		*************************************
+		-->
+		<div class="page" _page="5">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">支付邮费</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="payinfo">
+					<div class="info"> 每张明信片需支付 <span class="m">&yen;15</span> 或 <span class="m">$2</span><br />
+						帐户可抵用积分为: <span class="m">128</span>分<br />
+						目前可使用
+						<select>
+							<option>50</option>
+						</select>
+						积分抵用 <span class="m">&yen;0.5</span> </div>
+					<div class="sum">合计: <span class="m">&yen;14.5</span></div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="payaction">
+					<div class="dtext">前往支付</div>
+					<div class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
+					<div class="button button_pay" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
+				</div>
+				<div class="paytip"> 如您通过美元账户支付, 请选择PayPal支付<br />
+					本次合计 <span>$1.49</span><br />
+				</div>
+			</div>
+		</div>
+		<!--
+		*************************************
+		* page6 支付完成
+		*************************************
+		-->
+		<div class="page" _page="6">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">支付完成</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="paysuccess">
+					<div class="icon"><span class="ico ico_post"></span></div>
+					<div class="dtext">您成功支付邮费</div>
+					<div class="info"> 非常感谢您对乐兑的支持<br>
+						您将获得: <span class="m">10</span>分<br>
+						明信片将会在3个工作日内寄出<br>
+						并且会通过乐兑客户端通知您<br>
+					</div>
+				</div>
+			</div>
+			<div class="panel_foot">
+				<div class="cteatenext">
+					<div class="info">当然, 您还可以继续</div>
+					<div class="action">
+						<div class="button button_l" active="yes">创建一张明信片</div>
+					</div>
+				</div>
+				<div class="photos">
+					<ul>
+						<li><img src="img/photo/1.png" alt="photo1" /></li>
+						<li><img src="img/photo/2.png" alt="photo2" /></li>
+						<li><img src="img/photo/3.png" alt="photo3" /></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--
+		*************************************
+		* page7 我的信箱
+		*************************************
+		-->
+		<div class="page" _page="7">
+			<div class="panel_head">
+				<div class="titlebar">
+					<div class="title">我的信箱</div>
+					<div class="action">
+						<div class="l">
+							<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel_body">
+				<div class="mymail"> </div>
+			</div>
+			<div class="panel_foot"> </div>
+		</div>
+	</div><!--pages end--> 
 	<!--
-	*************************************
-	* page0 欢迎界面
-	*************************************
-	-->
-    <div class="page" _page="0">
-      <div class="panel_body">
-        <div class="banner">
-          <div class="createcard">
-            <div class="button button_l" id="choosePic" active="yes"><span class="label">创建一张明信片</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="helper">
-          <ul>
-            <li active="yes">关于</li>
-            <li active="yes">信箱</li>
-            <li active="yes">登录</li>
-            <li active="yes">注册</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-	<!--
-	*************************************
-	* page1 编辑图片
-	*************************************
-	-->
-    <div class="page" _page="1">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">编辑图片</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-            <div class="r">
-              <div class="button button_s" active="yes">重选</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="photoeditor">
-          <div class="view">
-            <div class="selection"></div>
-            <div class="photo"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
-            <div class="mask">
-              <div class="l"></div>
-              <div class="r"></div>
-              <div class="t"></div>
-              <div class="b"></div>
-            </div>
-          </div>
-          <div class="tool">
-            <div class="icos">
-              <ul>
-                <li active="yes"><span class="ico ico_rotate_acw"><em>逆时针旋转</em></span></li>
-                <li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw"><em>顺时针旋转</em></span></li>
-                <li active="yes"><span class="ico ico_zoom_out"><em>缩小</em></span></li>
-                <li active="yes"><span class="ico ico_zoom_in"><em>放大</em></span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="nextaction">
-          <div class="button button_l" active="yes">下一步</div>
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-    <!--
-	*************************************
-	* page2 收件人信息
-	*************************************
-	-->
-    <div class="page" _page="2">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">收件人信息</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="receiveinfo">
-          <div class="create">
-            <div class="button button_m" active="yes">输入新地址</div>
-          </div>
-          <div class="list">
-            <ul scroll="yes">
-              <li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">龚华彬</span> <span class="phone">15869091127</span> <span class="address">四川省成都市高新西区金粮路西江月</span> </li>
-              <li class="checked"> <span class="checkbox"><span class="pitch"></span></span> <span class="name">Mobile</span> <span class="phone">13100909090</span> <span class="address">北京市海淀区海淀大街8号中钢国际大厦5层</span> </li>
-              <li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">Hetal</span> <span class="phone">15869091127</span> <span class="address">北京市朝阳区</span> </li>
-              <li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">PinkFloyd</span> <span class="phone">13100909090</span> <span class="address">北京市朝阳区</span> </li>
-              <li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">西门吹雪</span> <span class="phone">15869091127</span> <span class="address">北京市海淀区善缘街</span> </li>
-              <li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">windows</span> <span class="phone">13100909090</span> <span class="address">USA</span> </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="nextaction">
-          <div class="button button_l" active="yes">下一步</div>
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-    <!--
-	*************************************
-	* page3 输入留言信息
-	*************************************
-	-->
-    <div class="page" _page="3">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">输入留言信息</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="msgcon">
-          <textarea class="textarea" placeholder="请输入留言，限200字。"></textarea>
-          <div class="counter"><span>0</span>/<span>200</span></div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="nextaction">
-          <div class="button button_l" active="yes">下一步</div>
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-    <!--
-	*************************************
-	* page4 预览
-	*************************************
-	-->
-    <div class="page" _page="4">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">预览</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="preview">
-          <div class="card">
-            <div class="postinfo">
-              <div>龚华彬 收</div>
-              <div>四川省成都市金牛区<br>
-                金粮路西江月2-1-305</div>
-              <div>610000</div>
-              <div>中国</div>
-            </div>
-            <div class="msginfo">
-              <div class="t1">亲爱的龚华彬, 您好</div>
-              <div class="t2">不用信封就可以直接投寄的载有信息的卡片；一种必须贴有胶粘邮票的卡片 ，在一面上有一种装饰（如一幅画）的这类卡片 ； 具有政府印制的邮具有政府印制的邮具有政府印制的邮票标记或官方的回信费已付标记的卡片...。</div>
-              <div class="t3">Hetal</div>
-            </div>
-          </div>
-          <div class="agreement"> <span class="ico ico_agree"></span>我已接受 <a href="#">条款</a> </div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="nextaction">
-          <div class="button button_l" active="yes">发送</div>
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-    <!--
-	*************************************
-	* page5 支付邮费
-	*************************************
-	-->
-    <div class="page" _page="5">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">支付邮费</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="payinfo">
-          <div class="info"> 每张明信片需支付 <span class="m">&yen;15</span> 或 <span class="m">$2</span><br />
-            帐户可抵用积分为: <span class="m">128</span>分<br />
-            目前可使用
-            <select>
-              <option>50</option>
-            </select>
-            积分抵用 <span class="m">&yen;0.5</span> </div>
-          <div class="sum">合计: <span class="m">&yen;14.5</span></div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="payaction">
-          <div class="dtext">前往支付</div>
-          <div class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
-          <div class="button button_pay" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
-        </div>
-        <div class="paytip"> 如您通过美元账户支付, 请选择PayPal支付<br />
-          本次合计 <span>$1.49</span><br />
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-    <!--
-	*************************************
-	* page6 支付完成
-	*************************************
-	-->
-    <div class="page" _page="6">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">支付完成</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="paysuccess">
-          <div class="icon"><span class="ico ico_post"></span></div>
-          <div class="dtext">您成功支付邮费</div>
-          <div class="info"> 非常感谢您对乐兑的支持<br>
-            您将获得: <span class="m">10</span>分<br>
-            明信片将会在3个工作日内寄出<br>
-            并且会通过乐兑客户端通知您<br>
-          </div>
-        </div>
-      </div>
-      <div class="panel_foot">
-        <div class="cteatenext">
-          <div class="info">当然, 您还可以继续</div>
-          <div class="action">
-            <div class="button button_l" active="yes">创建一张明信片</div>
-          </div>
-        </div>
-        <div class="photos">
-          <ul>
-            <li><img src="img/photo/1.png" alt="photo1" /></li>
-            <li><img src="img/photo/2.png" alt="photo2" /></li>
-            <li><img src="img/photo/3.png" alt="photo3" /></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!--page end-->
-    <!--
-	*************************************
-	* page7 我的信箱
-	*************************************
-	-->
-    <div class="page" _page="7">
-      <div class="panel_head">
-        <div class="titlebar">
-          <div class="title">我的信箱</div>
-          <div class="action">
-            <div class="l">
-              <div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel_body">
-        <div class="mymail"> </div>
-      </div>
-      <div class="panel_foot"> </div>
-    </div>
-    <!--page end-->
-  </div>
-  <!--pages end-->
-  <!--
 	*************************************
 	* overlay
 	*************************************
 	-->
-  <div class="overlay chkphoto" name="chkphoto">
-    <div class="overlay_box">
-      <div class="hd">
-        <div class="title">选择相片</div>
-        <div class="close">X</div>
-      </div>
-      <div class="bd">
-        <ul class="list">
-          <li id="choosePicFromAlbum">相册</li>
-          <li id="choosePicFromCamera">拍摄</li>
-          <li style="border:none;">人人网</li>
-        </ul>
-      </div>
-      <div class="ft"></div>
-    </div>
-  </div>
-  <div class="overlay delmail" name="delmail">
-    <div class="overlay_box">
-      <div class="hd">
-        <div class="title">注意</div>
-        <div class="close">X</div>
-      </div>
-      <div class="bd">
-        <div class="info"> 确认删除已保存的明信片? </div>
-        <div class="action">
-          <div class="button button_o" active="yes">确认</div>
-          <div class="button button_o" active="yes">取消</div>
-        </div>
-      </div>
-      <div class="ft"></div>
-    </div>
-  </div>
-  
-  <div class="overlay delmail" name="quit">
-    <div class="overlay_box">
-      <div class="hd">
-        <div class="title">注意</div>
-        <div class="close">X</div>
-      </div>
-      <div class="bd">
-        <div class="info"> 你退定要退出吗? </div>
-        <div class="action">
-          <div class="button button_o" id="quitOK" active="yes">确认</div>
-          <div class="button button_o" id="quitCancel" active="yes">取消</div>
-        </div>
-      </div>
-      <div class="ft"></div>
-    </div>
-  </div>
-  <div class="overlay_mask"></div>
-</div>
-<!--screen end-->
-<script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/iscroll-min.js"></script>
-<script src="js/ledui.ui.js"></script>
-<script src="js/ledui.test.js"></script>
-<script src="js/cordova-2.0.0.js"></script>
+	<div class="overlay chkphoto" name="chkphoto">
+		<div class="overlay_box">
+			<div class="hd">
+				<div class="title">选择相片</div>
+				<div class="close">X</div>
+			</div>
+			<div class="bd">
+				<ul class="list">
+					<li id="choosePicFromAlbum">相册</li>
+					<li id="choosePicFromCamera">拍摄</li>
+					<li style="border:none;">人人网</li>
+				</ul>
+			</div>
+			<div class="ft"></div>
+		</div>
+	</div>
+	<div class="overlay delmail" name="delmail">
+		<div class="overlay_box">
+			<div class="hd">
+				<div class="title">注意</div>
+				<div class="close">X</div>
+			</div>
+			<div class="bd">
+				<div class="info"> 确认删除已保存的明信片? </div>
+				<div class="action">
+					<div class="button button_o" active="yes">确认</div>
+					<div class="button button_o" active="yes">取消</div>
+				</div>
+			</div>
+			<div class="ft"></div>
+		</div>
+	</div>
+	<div class="overlay delmail" name="quit">
+		<div class="overlay_box">
+			<div class="hd">
+				<div class="title">注意</div>
+				<div class="close">X</div>
+			</div>
+			<div class="bd">
+				<div class="info"> 你退定要退出吗? </div>
+				<div class="action">
+					<div class="button button_o" id="quitOK" active="yes">确认</div>
+					<div class="button button_o" id="quitCancel" active="yes">取消</div>
+				</div>
+			</div>
+			<div class="ft"></div>
+		</div>
+	</div>
+	<div class="overlay_mask"></div>
+</div><!--screen end--> 
+<script src="js/jquery-1.7.2.min.js"></script> 
+<script src="js/iscroll-min.js"></script> 
+<script src="js/ledui.ui.js"></script> 
+<script src="js/ledui.test.js"></script> 
+<script src="js/cordova-2.0.0.js"></script> 
 <script src="js/ledui.api.js"></script>
 </body>
 </html>
