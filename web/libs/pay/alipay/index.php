@@ -1,6 +1,6 @@
 <?php
 /* *
- * 功能：支付宝纯网关接口调试入口页面
+ * 功能：支付宝担保交易接口调试入口页面
  * 版本：3.2
  * 日期：2011-03-17
  * 说明：
@@ -13,7 +13,7 @@
 <html>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<TITLE>支付宝纯网关接口</TITLE>
+<TITLE>支付宝担保交易接口</TITLE>
 <script language=JavaScript>
 function CheckForm()
 {
@@ -49,17 +49,15 @@ function CheckForm()
     }
     if(getStrLength(document.alipayment.subject.value) > 256){
         alert("标题过长！请在128个汉字以内");
-        document.alipayment.aliorder.focus();
+        document.alipayment.subject.focus();
         return false;
     }
 
 	document.aplipayment.alibody.value = document.aplipayment.alibody.value.replace(/\n/g,'');
 }  
 
-
-
 </script>
-</head>
+
 <style>
 *{
 	margin:0;
@@ -167,104 +165,7 @@ ul,ol{
     line-height: 130%;
     padding-left: 3px;
 }
-<!-- -->
-.icon-info{
-    background-color: #D2EEF7;
-    border-style: solid solid solid none;
-    border-width: 1px 1px 1px medium;
-    font-weight: normal;
-    height: 30px;
-    line-height: 15px;
-    padding: 0 3px;
-    top: -1px;
-    font: 12px/1.5 tahoma,arial,宋体;
-}
-.icon{
-    background-image: url(images/bankicon.png);
-    display:inline-block;
-    height: 30px;
-    width:120px;
-    background-repeat: no-repeat;
-}
-.ICBC{    
-    background-position: 0 -40px;
-}
-.CMB {
-    background-position: 0 -80px;
-}
-.CCB{
-    background-position: 0 -320px;
-}
-.BOC{
-    background-position: 0 -520px;
-}
-.ABC{
-    background-position: 0 -480px;
-}
-.COMM{
-    background-position: 0 -600px;
-}
-.PSBC {
-    background-position: 0 -400px;
-}
-.CEB {
-    background-position: 0 -440px;
-}
-.SPDB {
-    background-position: 0 -360px;
-}
-.GDB {
-    background-position: 0 -280px;
-}
-.CITIC {
-    background-position: 0 -200px;
-}
-.CIB {
-    background-position: 0 -3365px;
-}
-.SDB {
-    background-position: 0 -240px;
-}
-.CMBC {
-    background-position: 0 -120px;
-}
-.HZCB {
-    background-position: 0 -760px;
-}
-.SHBANK {
-    background-position: 0 -840px;
-}
-.BJRCB {
-    background-position: 0 -2640px;
-}
-.SPABANK {
-    background-position: 0 -1880px;
-}
-.FDB {
-    background-position: 0 -1320px;
-}
-.NBBANK {
-    background-position: 0 -1240px;
-}
-.BJBANK {
-    background-position: 0 -3240px;
-}
-.WZCB {
-    background-position: 0 -1720px;
-}
-.ICBCBTB{
-    background-image: url(images/ENV_ICBC_OUT.gif);
-}
-.CCBBTB{
-    background-image: url(images/ENV_CCB_OUT.gif);
-}
-.ABCBTB{
-    background-image: url(images/ENV_ABC_OUT.gif);
-}
-.SPDBBTB{
-    background-image: url(images/ENV_SPDB_OUT.gif);
-}
-<!-- -->
+
 .cashier-nav {
     font-size: 14px;
     margin: 15px 0 10px;
@@ -294,6 +195,7 @@ ul,ol{
     color:#8D8D8D;
 }
 </style>
+</head>
 <body text=#000000 bgColor=#ffffff leftMargin=0 topMargin=4>
 	<div id="main">
 		<div id="head">
@@ -303,8 +205,8 @@ ul,ol{
                 <a target="_blank" href="https://b.alipay.com/home.htm"><span>商家服务</span></a>|
                 <a target="_blank" href="http://help.alipay.com/support/index_sh.htm"><span>帮助中心</span></a>
             </dl>
-            <span class="title">支付宝纯网关付款快速通道</span>
-			<!--<div id="title" class="title">支付宝纯网关付款快速通道</div>-->
+            <span class="title">支付宝纯担保交易付款快速通道</span>
+			<!--<div id="title" class="title">支付宝纯担保交易付款快速通道</div>-->
 		</div>
         <div class="cashier-nav">
             <ol>
@@ -333,41 +235,6 @@ ul,ol{
                         <span class="null-star">*</span>
                         <textarea style="margin-left:3px;" name=alibody rows=2 cols=40 wrap="physical"></textarea><br/>
                         <span>（如联系方法，商品要求、数量等。100汉字内）</span>
-                    </dd>
-                    <dt>支付方式：</dt>
-                    <dd>
-                        <span class="null-star">*</span>
-                        <div>
-                            <input type="radio" name="pay_bank" value="directPay" checked><img src="images/alipay.gif" border="0" style="height:35px;width:120px" />
-                        </div>
-                        <ul class="bank-list">
-                            <li><input type="radio" name="pay_bank" value="ICBCB2C"/><span class="icon ICBC"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CMB"/><span class="icon CMB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CCB"/><span class="icon CCB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="BOCB2C"><span class="icon BOC"></span></li>
-                            <li><input type="radio" name="pay_bank" value="ABC"/><span class="icon ABC"></span></li>
-                            <li><input type="radio" name="pay_bank" value="COMM"/><span class="icon COMM"></span></li>
-                            <li><input type="radio" name="pay_bank" value="PSBC-DEBIT"/><span class="icon PSBC"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CEBBANK"/><span class="icon CEB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="SPDB"/><span class="icon SPDB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="GDB"><span class="icon GDB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CITIC"/><span class="icon CITIC"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CIB"/><span class="icon CIB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="SDB"><span class="icon SDB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CMBC"/><span class="icon CMBC"></span></li>
-                            <li><input type="radio" name="pay_bank" value="BJBANK"/><span class="icon BJBANK"></span></li>
-                            <li><input type="radio" name="pay_bank" value="HZCBB2C"/><span class="icon HZCB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="SHBANK"/><span class="icon SHBANK"></span></li>
-                            <li><input type="radio" name="pay_bank" value="BJRCB"/><span class="icon BJRCB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="SPABANK"/><span class="icon SPABANK"></span></li>
-                            <li><input type="radio" name="pay_bank" value="FDB"/><span class="icon FDB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="WZCBB2C-DEBIT"><span class="icon WZCB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="NBBANK "><span class="icon NBBANK"></span></li> 
-                            <li><input type="radio" name="pay_bank" value="ICBCBTB"/><span class="icon ICBCBTB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="CCBBTB"/><span class="icon CCBBTB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="SPDBB2B"/><span class="icon SPDBBTB"></span></li>
-                            <li><input type="radio" name="pay_bank" value="ABCBTB"/><span class="icon ABCBTB"></span></li>
-                        </ul>
                     </dd>
                     <dt></dt>
                     <dd>
