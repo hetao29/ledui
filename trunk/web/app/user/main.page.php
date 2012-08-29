@@ -18,7 +18,7 @@ class user_main extends STpl{
 	function pageResetpass($inPath){
 		if(($u=user_api::islogin())!==false){
 			$user = user_api::getUserFromSession();
-			echo $this->render("user/myaccount_4.html",$data);
+			echo $this->render("user/myaccount_4.html");
 		}else{
 			echo $this->render("user/sign.html");
 		}

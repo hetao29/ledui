@@ -28,9 +28,7 @@ class user_db{
 		return $this->_db->insert("t_user_token",$Token,true);
 	}
 	function addUser($User){
+		if(isset($User['UserID']))unset($User['UserID']);
 		return $this->_db->insert("t_user",$User);
-	}
-	function updateUser($User){
-		return $this->_db->insert("t_user",$User,true);
 	}
 }
