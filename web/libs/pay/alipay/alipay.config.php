@@ -30,10 +30,10 @@ $aliapy_config['seller_email'] = 'hetao@hetao.name';
 
 //页面跳转同步通知页面路径，要用 http://格式的完整路径，不允许加?id=123这类自定义参数
 //return_url的域名不能写成http://localhost/create_direct_pay_by_user_php_utf8/return_url.php ，否则会导致return_url执行无效
-$aliapy_config['return_url']   = 'http://www.ledui.com/api/create_direct_pay_by_user_php_utf8/return_url.php';
+$aliapy_config['return_url']   = 'http://www.ledui.com/order.main.alipayReturn';
 
 //服务器异步通知页面路径，要用 http://格式的完整路径，不允许加?id=123这类自定义参数
-$aliapy_config['notify_url']   = 'http://www.xxx.com/create_direct_pay_by_user_php_utf8/notify_url.php';
+$aliapy_config['notify_url']   = 'http://www.ledui.com/order.main.alipayNotify';
 
 //↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
