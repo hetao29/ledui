@@ -15,14 +15,16 @@
 	$seller_email	= "hetao@hetao.name";			//签约支付宝账号或卖家支付宝帐户
 
 	$subject		= "乐兑明信片";			//产品名称
-	$out_trade_no	= "1";			//请与贵网站订单系统中的唯一订单号匹配
-	$total_fee		= "5";			//订单总金额
+
+
+	$out_trade_no	= time();			//请与贵网站订单系统中的唯一订单号匹配
+	$total_fee		= "0.01";			//订单总金额
 	$out_user		= "xx";			//商户系统中用户唯一标识、例如UID、NickName
 
 	//以下是三个返回URL
 	$notify_url		= "http://www.ledui.com/order.main.alipayNotify";			//服务端获取通知地址，用户交易完成异步返回地址
 	$call_back_url	= "http://www.ledui.com/order.main.alipayReturn";			//用户交易完成同步返回地址
-	$merchant_url	= "";			//用户付款中途退出返回地址
+	$merchant_url	= "http://www.ledui.com/order.main.alipayCancel";			//用户付款中途退出返回地址
 
 
 
