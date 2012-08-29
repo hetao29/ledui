@@ -21,7 +21,7 @@ class image_fileid{
 		$this->_rand = rand(1,1000);
 	}
 
-	public function gen($width,$height,$type){
+	public function gen($width,$height,$type=image_fileid::TYPE_POSTCARD){
 		$this->init();
 		$this->_width = $width;
 		$this->_height = $height;
