@@ -26,11 +26,11 @@ class AlipayService {
     	$this->__construct($aliapy_config);
     }
 	/**
-     * 构造纯网关接口
+     * 构造担保交易接口
      * @param $para_temp 请求参数数组
      * @return 表单提交HTML信息
      */
-	function create_direct_pay_by_user($para_temp) {
+	function create_partner_trade_by_buyer($para_temp) {
 		//设置按钮名称
 		$button_name = "确认";
 		//生成表单提交HTML文本信息

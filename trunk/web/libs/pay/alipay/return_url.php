@@ -12,8 +12,7 @@
  * 可放入HTML等美化页面的代码、商户业务逻辑程序代码
  * 该页面可以使用PHP开发工具调试，也可以使用写文本函数logResult，该函数已被默认关闭，见alipay_notify_class.php中的函数verifyReturn
  
- * TRADE_FINISHED(表示交易已经成功结束，并不能再对该交易做后续操作);
- * TRADE_SUCCESS(表示交易已经成功结束，可以对该交易做后续操作，如：分润、退款等);
+ * WAIT_SELLER_SEND_GOODS(表示买家已在支付宝交易管理中产生了交易记录且付款成功，但卖家没有发货);
  */
  
 
@@ -36,10 +35,10 @@ if($verify_result) {//验证成功
     //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表
     $out_trade_no	= $_GET['out_trade_no'];	//获取订单号
     $trade_no		= $_GET['trade_no'];		//获取支付宝交易号
-    $total_fee		= $_GET['total_fee'];		//获取总价格
+    $total_fee		= $_GET['price'];			//获取总价格
 
-    if($_GET['trade_status'] == 'TRADE_FINISHED' || $_GET['trade_status'] == 'TRADE_SUCCESS') {
-		//判断该笔订单是否在商户网站中已经做过处理
+    if($_GET['trade_status'] == 'WAIT_SELLER_SEND_GOODS') {
+		//判断该笔订单是否在商户网站中已经做过处理（可参考“集成教程”中“3.4返回数据处理”）
 			//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 			//如果有做过处理，不执行商户的业务程序
     }
@@ -60,7 +59,7 @@ else {
     echo "验证失败";
 }
 ?>
-        <title>支付宝纯网关接口</title>
+        <title>支付宝担保交易</title>
 	</head>
     <body>
     </body>

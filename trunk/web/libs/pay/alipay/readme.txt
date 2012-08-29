@@ -3,7 +3,7 @@
   ╭────┤           支付宝代码示例结构说明             ├────╮
   │        ╰───────────────────────╯        │
 　│                                                                  │
-　│     接口名称：支付宝纯网关接口（create_direct_pay_by_user）      │
+　│     接口名称：支付宝担保交易接口（create_partner_trade_by_buyer）│
 　│　   代码版本：3.2                                                │
   │     开发语言：PHP                                                │
   │     版    权：支付宝（中国）网络技术有限公司                     │
@@ -16,7 +16,7 @@
  代码文件结构
 ───────
 
-create_direct_pay_by_user_php_utf8
+create_partner_trade_by_buyer_php_utf8
   │
   ├lib┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈类文件夹
   │  │
@@ -176,8 +176,8 @@ function sendPostInfo($para_temp, $gateway, $aliapy_config)
 
 alipay_service.class.php
 
-function create_direct_pay_by_user($para_temp)
-功能：构造纯网关接口
+function create_partner_trade_by_buyer($para_temp)
+功能：构造担保交易接口
 输入：Array $para_temp 请求参数数组
 输出：String 提交表单HTML文本
 
