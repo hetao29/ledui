@@ -2,7 +2,7 @@ $(document).ready(function(){
 	Page.init(2);
 	Adapta.init();
 	Overlay.init();
-	//Scroll.init();		
+	Scroll.init();		
 	Touch.init();
 });
 
@@ -31,7 +31,7 @@ var Page = {
 		if(page_current){
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
-				page_current.removeClass('hidefrom' + hide_direction).hide();
+				page_current.hide().removeClass('hidefrom' + hide_direction);
 			}, 600);
 		}
 		page.addClass('showfrom'+ show_direction).show();
@@ -141,14 +141,13 @@ var Adapta = {
 		$('.screen').css('height', h_pg);
 		pg.css('height', h_pg);
 		bd.css('height', h_bd);
+		ft.css('top', h1 + h_bd);
 	}
 }
 
 //遮罩层
 var Overlay = {
-	curname: '',
-	layers: {},
-	mask: null,
+	curname: '', layers: {}, mask: null, lock:false,
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
@@ -168,13 +167,14 @@ var Overlay = {
 		if(name == this.curname){ return; }
 		var o = this.layers[name];
 		var _this = this;
-		if(!o){ return; }
+		if(!o || this.lock){ return; }
+		this.lock = true;
 		if(this.curname){ this.hide(this.curname); }
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
 		this.mask.css('height', $('.screen').height()).stop().animate({opacity: 0.5}, 500).show();
-		setTimeout(function(){ o.removeClass('showfromtop'); }, 500);			
+		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 500);			
 	},
 	hide: function(name){
 		var o = this.layers[name ? name : this.curname]
@@ -183,7 +183,7 @@ var Overlay = {
 		o.addClass('hidefromtop');
 		this.curname = '';	
 		this.mask.stop().animate({opacity: 0}, 500, '', function(){ _this.mask.hide(); });
-		setTimeout(function(){ o.removeClass('hidefromtop').hide(); $('.overlays').hide(); }, 500);
+		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 500);
 	}	
 }
 
