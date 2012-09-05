@@ -1,6 +1,5 @@
 $(document).ready(function(){
 	Adapta.init();
-	Adapta.scale();
 	Page.init(2);	
 	Overlay.init();
 	Scroll.init();		
@@ -43,8 +42,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		//Adapta.layout();
-		Adapta.run();
+		Adapta.layout();
 		return this;
 	},
 	next: function(){
@@ -90,6 +88,7 @@ var Page = {
 var Adapta = {
 	ratio: 1,
 	init: function(){
+		this.scale();
 		this.bind();
 	},
 	bind: function(){
@@ -109,8 +108,8 @@ var Adapta = {
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
 							($.browser.opera)   ? 'O' : '';		
-		$('.screen').css('height', win_h/this.ratio).css("zoom",this.ratio);
-		$('.overlays').css('height', win_h/this.ratio).css("zoom",this.ratio);
+		$('.screen').css('height', win_h/this.ratio).css('zoom', this.ratio);
+		$('.overlays').css('height', win_h/this.ratio).css('zoom', this.ratio);
 		//return;
 		//$('.screen')
 		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
@@ -128,7 +127,7 @@ var Adapta = {
 			,ft = pg.find('.panel_foot');
 		//children static
 		bd.children().each(function(){ h_bd += $(this).height(); })
-		var H = $('.screen').height()
+		var H = $(window).height()/this.ratio
 			,h1 = hd.height()
 			,h3 = ft.height()
 			,h2_min = parseInt(bd.attr('_minheight'), 10) || h_bd
