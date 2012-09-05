@@ -1,6 +1,5 @@
 $(document).ready(function(){
 	Adapta.init();
-	Adapta.scale();
 	Page.init(2);	
 	Overlay.init();
 	Scroll.init();		
@@ -43,7 +42,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.layout();
+		Adapta.run();
 		return this;
 	},
 	next: function(){
@@ -96,7 +95,6 @@ var Adapta = {
 		$(window).resize(function(){ _this.layout(); });	
 	},
 	run: function(){
-		this.scale(); 
 		this.layout();
 	},
 	scale: function(){
