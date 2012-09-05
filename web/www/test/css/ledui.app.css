@@ -235,7 +235,7 @@ background: -o-linear-gradient(top, #ff8e1a, #ff7300);
 .loading{}
 
 .overlays{display:none;position:fixed;top:0;left:0;width:600px;height:100%;}
-.overlay{display:none;z-index:101;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:15px;padding:5px;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+.overlay{display:none;z-index:1000;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:15px;padding:5px;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
 background:#989898;
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
