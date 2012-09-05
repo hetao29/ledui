@@ -6,7 +6,7 @@ var Test = {
 	testpage: function(){
 		
 		var testpanel = $('<div style="position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
-		
+		testpanel.css('zoom', Adapta.ratio);
 		$('<button>reload</button>')
 		.appendTo($(testpanel))
 		.click(function(){
