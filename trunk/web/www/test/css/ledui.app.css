@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-html{direction:ltr;height:100%;background:#f1f1f2;overflow-x:hidden;overflow-y:auto;}
+html{direction:ltr;height:100%;background:#f1f1f2;overflow-x:hidden;}
 body{background:#f1f1f2;width:100%;height:100%;}
 html,body,form,ul,ol,li,h1,h2,h3,h4,h5,h6,table,th,tr,td,textarea, input[type="text"]{padding:0;margin:0;font-family:Arial, Helvetica, sans-serif;}
 table{border-collapse:collapse;border-spacing:0;}
@@ -11,7 +11,7 @@ a{}
 a:active{}
 a:hover{}
 
-.screen{position:relative;width:600px;height:100%;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
+.screen{width:600px;height:100%;-o-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
 .pages{width:100%;height:100%;}
 .page{position:absolute;top:0;left:0;width:100%;height:100%;display:none;background:#f1f1f2;
 -webkit-backface-visibility: hidden;
@@ -325,9 +325,9 @@ background: -o-linear-gradient(top, #eee , #eee 50%, #ddd 50% , #ddd );
 
 .nextaction{background:#e8e8e8;width:100%;padding:20px 0;text-align:center;border-top:1px solid #fff;border-bottom:1px solid #bababa;}
 
-.receiveinfo{position:absolute;top:50%;left:50%;width:600px;height:680px;margin-left:-300px;margin-top:-340px;}
+.receiveinfo{position:absolute;top:50%;left:50%;width:600px;height:620px;margin-left:-300px;margin-top:-310px;}
 .receiveinfo .create{text-align:center;padding:30px 0;}
-.receiveinfo .list{position:relative;width:500px;height:500px;margin:0 auto;overflow:auto;}
+.receiveinfo .list{position:relative;width:500px;height:440px;margin:0 auto;overflow:auto;}
 .receiveinfo .list ul{margin-bottom:40px;}
 .receiveinfo .list li{position:relative;border-bottom:2px solid #b5b5b5;padding:15px 15px 15px 0;padding-left:60px;cursor:pointer;}
 .receiveinfo .list .checked{background:#fff;cursor:default;}
@@ -382,7 +382,7 @@ background: -ms-linear-gradient(top, #eee, #ccc);
 background: -o-linear-gradient(top, #eee, #ccc);
 }
 
-.delmail{margin-top:-120px;}
+.confirm{margin-top:-120px;}
 
 /*animate*/
 @-webkit-keyframes showfromright { 
