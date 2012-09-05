@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
+	Adapta.scale();
 	Page.init(2);	
 	Overlay.init();
 	Scroll.init();		
@@ -42,6 +43,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
+		//Adapta.layout();
 		Adapta.run();
 		return this;
 	},
@@ -92,9 +94,10 @@ var Adapta = {
 	},
 	bind: function(){
 		var _this = this;
-		$(window).resize(function(){ _this.layout(); });	
+		$(window).resize(function(){ _this.run(); });	
 	},
 	run: function(){
+		this.scale(); 
 		this.layout();
 	},
 	scale: function(){
@@ -106,14 +109,16 @@ var Adapta = {
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
 							($.browser.opera)   ? 'O' : '';		
-		$('.screen')
-		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
-		.css(venderPrefix + 'Transform-origin','0 0')
-		.css('height', win_h/this.ratio);
-		$('.overlays')
-		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')	
-		.css(venderPrefix + 'Transform-origin','0 0')
-		.css('height', win_h/this.ratio);
+		$('.screen').css('height', win_h/this.ratio).css("zoom",this.ratio);
+		$('.overlays').css('height', win_h/this.ratio).css("zoom",this.ratio);
+		//return;
+		//$('.screen')
+		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
+		//.css(venderPrefix + 'Transform-origin','0 0')
+		//$('.overlays')
+		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')	
+		//.css(venderPrefix + 'Transform-origin','0 0')
+		//.css('height', win_h/this.ratio);
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
