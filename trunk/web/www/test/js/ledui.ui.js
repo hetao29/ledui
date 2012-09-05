@@ -27,7 +27,7 @@ var Page = {
 			,_this = this;
 		
 		this.lock = true;
-		this.screen.css('overflow', 'hidden');
+		//this.screen.css('overflow', 'hidden');
 		if(page_current){
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
@@ -37,7 +37,7 @@ var Page = {
 		page.addClass('showfrom'+ show_direction).show();
 		window.setTimeout(function(){
 			_this.lock = false;
-			_this.screen.css('overflow', '');
+			//_this.screen.css('overflow', '');
 			page.removeClass('showfrom' + show_direction); 
 		}, 600);
 		this.current_prev = this.current;
