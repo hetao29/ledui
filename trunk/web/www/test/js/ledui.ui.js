@@ -1,6 +1,7 @@
 $(document).ready(function(){
-	Page.init(2);
 	Adapta.init();
+	Adapta.scale();
+	Page.init(2);	
 	Overlay.init();
 	Scroll.init();		
 	Touch.init();
@@ -42,7 +43,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.run();
+		Adapta.layout();
 		return this;
 	},
 	next: function(){
@@ -88,12 +89,11 @@ var Page = {
 var Adapta = {
 	ratio: 1,
 	init: function(){
-		this.run();
 		this.bind();
 	},
 	bind: function(){
 		var _this = this;
-		$(window).resize(function(){ _this.run(); });	
+		$(window).resize(function(){ _this.layout(); });	
 	},
 	run: function(){
 		this.scale(); 
