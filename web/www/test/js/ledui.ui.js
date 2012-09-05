@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(2);	
+	Page.init(0);	
 	Overlay.init();
-	Scroll.init();		
+	//Scroll.init();		
 	Touch.init();
 });
 
