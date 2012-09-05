@@ -5,7 +5,7 @@ var Test = {
 	},
 	testpage: function(){
 		
-		var testpanel = $('<div style="position:fixed;top:0;right:0;text-align:right;z-index:1000;zoom:2;"></div>').appendTo($(document.body));
+		var testpanel = $('<div style="position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
 		
 		$('<button>reload</button>')
 		.appendTo($(testpanel))
