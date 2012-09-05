@@ -20,7 +20,7 @@ var Page = {
 		var n = parseInt(n, 10);
 		if(this.lock){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
-		var page_current = this.getpage(this.current) ,page = this.getpage(n);
+		var page_current = this.getpage(this.current), page = this.getpage(n);
 		if(!page){ return; }
 		var show_direction = n > this.current ? 'right' : 'left'
 			,hide_direction = n > this.current ? 'left' :  'right'
