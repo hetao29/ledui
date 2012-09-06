@@ -192,8 +192,8 @@ var Touch = {
 	init: function(){ this.bind(); },
 	bind: function(){
 		$('[active]')
-		.bind('touchstart', function(e) { $(this).addClass('active'); /*e.preventDefault();*/ })
-		.bind('touchend', function(e) { $(this).removeClass('active'); /*e.preventDefault();*/ });		
+		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
+		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
 		$('[focus]')
 		.bind('focus', function(e) { $(this).addClass('focus'); })
 		.bind('blur', function(e) { $(this).removeClass('focus'); });
