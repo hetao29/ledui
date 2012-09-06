@@ -24,7 +24,7 @@ var API = {
 //界面操作
 var Control = {
 	init: function(n){
-		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#choosePic").bind("click",function(e){Overlay.show("chkphoto");});
 		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
 		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
 		
