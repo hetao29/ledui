@@ -21,35 +21,32 @@ var API = {
 	}
 }
 
-//界面操作
-var Control = {
-	init: function(n){
-		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
-		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
-		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
-		
-		$("#choosePicFromCamera").bind("touchend",function(e){
-														   
-			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-									{ 
-										quality: 100, 
-										allowEdit: true,
-										destinationType: navigator.camera.DestinationType.FILE_URI 
-									});
-			
-			Overlay.hide("chkphoto");
-														   
-		});
-		$("#choosePicFromAlbum").bind("touchend",function(e){
-			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-									{ 
-										quality: 100, 
-										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
-										destinationType: navigator.camera.DestinationType.FILE_URI 
-									});
-			Overlay.hide("chkphoto");
-														   
-		});
+var PhotoEditor = {
+	isfirstrun: true,
+	ratio_target: 1.6,
+	ratio_img: 1, //源图片的宽高比例
+	init: function(img){
+		if(!img){ return; }
+		this.info = { img: img, width: 0, height: 0, zoom: 1, rotate: 0, x: 0, y: 0 };
+		this.box = $('#photo');
+		//根据UI设置目标截取比例
+		this.ratio_target = this.box.width()/this.box.height();
+		this.box.html('');
+		this.isfirstrun = false; 
+		//img loaded bind event
+		var _this = this;
+		this.img = $('<img src='+ img +' />')
+		.appendTo(this.box)
+		.bind('load', function(){
+			size = _this.getimgsize();
+			_this.setinfo('img', img);
+			_this.setinfo('width', size.width);
+			_this.setinfo('height', size.height);
+			_this.ratio_img = size.width/size.height;
+			if(_this.isfirstrun){ _this.bind(); }
+		});		
+	},
+	bind: function(){
 		//旋转与缩放
 		$("#ico_rotate_acw").bind("touchend",function(e){
 			PostCardInfo.deg = PostCardInfo.deg - 90;
@@ -68,11 +65,7 @@ var Control = {
 			PostCardInfo.scale = PostCardInfo.scale *1.5;
 			$("#photoContent").css("-webkit-transform","scale("+PostCardInfo.scale+")");							  
 		});
-		$("#toPage2").bind("touchend",function(e){
-			Page.show(2);					  
-		});
-		
-		$("#photoContent").swipe( {
+		$("#photo").swipe( {
 		 swipeStatus:function(event, phase, direction, distance, duration, fingers,p,events) {
 			
 			 if(phase =="start"){
@@ -143,8 +136,79 @@ var Control = {
 		$( "#photoCanvas" ).bind("mouseup",function(e){
            
         });
+				
+	},
+	getimgsize: function(){
+		var width = 0;
+		var height = 0;
+		return {
+			'width': this.img.width(), 
+			'height': this.img.height()	
+		}	
+	},
+	checkoverflow: function(){
 		
+	},
+	adapta: function(){
 		
+	},
+	rotate: function(direction){
+		
+	},
+	zoom: function(){
+		
+	},
+	move: function(){
+		
+	},
+	setinfo: function(key, value){
+		if(key in this.info){
+			this.info[key] = value;	
+		}
+		return this.info;
+	},
+	getInfo: function(){
+		return this.info;
+	}
+}
+
+
+PhotoEditor.init('http://pic17.nipic.com/20111028/1812930_221435053000_2.jpg');
+
+
+//界面操作
+var Control = {
+	init: function(n){
+		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
+		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
+		
+		$("#choosePicFromCamera").bind("touchend",function(e){
+														   
+			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
+									{ 
+										quality: 100, 
+										allowEdit: true,
+										destinationType: navigator.camera.DestinationType.FILE_URI 
+									});
+			
+			Overlay.hide("chkphoto");
+														   
+		});
+		$("#choosePicFromAlbum").bind("touchend",function(e){
+			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
+									{ 
+										quality: 100, 
+										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
+										destinationType: navigator.camera.DestinationType.FILE_URI 
+									});
+			Overlay.hide("chkphoto");
+														   
+		});
+		
+		$("#toPage2").bind("touchend",function(e){
+			Page.show(2);					  
+		});
 	},
 	choosePic: function(n){
 	}
