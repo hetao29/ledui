@@ -1,12 +1,14 @@
 
 var LOCALE = {
 	zh:{
+	//	create:"创建一张明信片"
 	},
 	en:{
-		  title: "ledui postcard",
-		  id: "example",
-		  success_message: "The external file has been included in the page",
-		  failure_message: "There was a problem including the file"   ,     
+		create:"create postcard",
+	  title: "ledui postcard",
+	  id: "example",
+	  success_message: "The external file has been included in the page",
+	  failure_message: "There was a problem including the file"   ,     
 	},
 }
 
@@ -17,7 +19,7 @@ $(document).ready(function(){
 	language = language.split("-")[0];
 	$("span[tr]").each(function(i,e){
 		var k = $(e).attr("tr");
-		var v = (eval("LOCALE."+language).title);
+		var v = (eval("LOCALE."+language+"."+k));
 		if(v){
 			$(e).html(v);
 		}
