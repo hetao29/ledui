@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	Page.init(2);
 	Adapta.init();
+	Page.init(0);	
 	Overlay.init();
 	//Scroll.init();		
 	Touch.init();
@@ -20,29 +20,29 @@ var Page = {
 		var n = parseInt(n, 10);
 		if(this.lock){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
-		var page_current = this.getpage(this.current) ,page = this.getpage(n);
+		var page_current = this.getpage(this.current), page = this.getpage(n);
 		if(!page){ return; }
 		var show_direction = n > this.current ? 'right' : 'left'
 			,hide_direction = n > this.current ? 'left' :  'right'
 			,_this = this;
 		
 		this.lock = true;
-		this.screen.css('overflow', 'hidden');
+		//this.screen.css('overflow', 'hidden');
 		if(page_current){
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
-				page_current.removeClass('hidefrom' + hide_direction).hide();
+				page_current.hide().removeClass('hidefrom' + hide_direction);
 			}, 600);
 		}
 		page.addClass('showfrom'+ show_direction).show();
 		window.setTimeout(function(){
 			_this.lock = false;
-			_this.screen.css('overflow', '');
+			//_this.screen.css('overflow', '');
 			page.removeClass('showfrom' + show_direction); 
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.run();
+		Adapta.layout();
 		return this;
 	},
 	next: function(){
@@ -88,7 +88,7 @@ var Page = {
 var Adapta = {
 	ratio: 1,
 	init: function(){
-		this.run();
+		this.scale();
 		this.bind();
 	},
 	bind: function(){
@@ -108,14 +108,16 @@ var Adapta = {
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
 							($.browser.opera)   ? 'O' : '';		
-		$('.screen')
-		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
-		.css(venderPrefix + 'Transform-origin','0 0')
-		.css('height', win_h/this.ratio);
-		$('.overlays')
-		.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')	
-		.css(venderPrefix + 'Transform-origin','0 0')
-		.css('height', win_h/this.ratio);
+		$('.screen').css('height', win_h/this.ratio).css('zoom', this.ratio);
+		$('.overlays').css('height', win_h/this.ratio).css('zoom', this.ratio);
+		//return;
+		//$('.screen')
+		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
+		//.css(venderPrefix + 'Transform-origin','0 0')
+		//$('.overlays')
+		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')	
+		//.css(venderPrefix + 'Transform-origin','0 0')
+		//.css('height', win_h/this.ratio);
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -125,7 +127,7 @@ var Adapta = {
 			,ft = pg.find('.panel_foot');
 		//children static
 		bd.children().each(function(){ h_bd += $(this).height(); })
-		var H = $('.screen').height()
+		var H = $(window).height()/this.ratio
 			,h1 = hd.height()
 			,h3 = ft.height()
 			,h2_min = parseInt(bd.attr('_minheight'), 10) || h_bd
@@ -141,14 +143,13 @@ var Adapta = {
 		$('.screen').css('height', h_pg);
 		pg.css('height', h_pg);
 		bd.css('height', h_bd);
+		ft.css('top', h1 + h_bd);
 	}
 }
 
 //遮罩层
 var Overlay = {
-	curname: '',
-	layers: {},
-	mask: null,
+	curname: '', layers: {}, mask: null, lock:false,
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
@@ -168,13 +169,14 @@ var Overlay = {
 		if(name == this.curname){ return; }
 		var o = this.layers[name];
 		var _this = this;
-		if(!o){ return; }
+		if(!o || this.lock){ return; }
+		this.lock = true;
 		if(this.curname){ this.hide(this.curname); }
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
 		this.mask.css('height', $('.screen').height()).stop().animate({opacity: 0.5}, 500).show();
-		setTimeout(function(){ o.removeClass('showfromtop'); }, 500);			
+		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 500);			
 	},
 	hide: function(name){
 		var o = this.layers[name ? name : this.curname]
@@ -183,7 +185,7 @@ var Overlay = {
 		o.addClass('hidefromtop');
 		this.curname = '';	
 		this.mask.stop().animate({opacity: 0}, 500, '', function(){ _this.mask.hide(); });
-		setTimeout(function(){ o.removeClass('hidefromtop').hide(); $('.overlays').hide(); }, 500);
+		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 500);
 	}	
 }
 

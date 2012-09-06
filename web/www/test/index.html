@@ -61,7 +61,7 @@
 		<div class="photoeditor">
 			<div class="view">
 				<div class="selection"></div>
-				<div class="photo"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
+				<div class="photo" id="photoCanvas"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
 				<div class="mask">
 					<div class="l"></div>
 					<div class="r"></div>
@@ -72,10 +72,10 @@
 			<div class="tool">
 				<div class="icos">
 					<ul>
-						<li active="yes"><span class="ico ico_rotate_acw"><em>逆时针旋转</em></span></li>
-						<li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw"><em>顺时针旋转</em></span></li>
-						<li active="yes"><span class="ico ico_zoom_out"><em>缩小</em></span></li>
-						<li active="yes"><span class="ico ico_zoom_in"><em>放大</em></span></li>
+						<li active="yes"><span class="ico ico_rotate_acw" id="ico_rotate_acw"><em>逆时针旋转</em></span></li>
+						<li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw" id="ico_rotate_cw"><em>顺时针旋转</em></span></li>
+						<li active="yes"><span class="ico ico_zoom_out" id="ico_zoom_out"><em>缩小</em></span></li>
+						<li active="yes"><span class="ico ico_zoom_in" id="ico_zoom_in"><em>放大</em></span></li>
 					</ul>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes">下一步</div>
+			<div class="button button_l" id="toPage2" active="yes">下一步</div>
 		</div>
 	</div>
 </div> 

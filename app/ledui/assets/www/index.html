@@ -4,7 +4,7 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta charset="utf-8" />
 <title>乐兑网名信片 ledui.com</title>
-<meta content="width=600, user-scalable=0" name="viewport" />
+<meta content="user-scalable=0" name="viewport" />
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 <meta content="telephone=no" name="format-detection" />
@@ -61,7 +61,7 @@
 		<div class="photoeditor">
 			<div class="view">
 				<div class="selection"></div>
-				<div class="photo"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
+				<div class="photo" id="photoCanvas"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
 				<div class="mask">
 					<div class="l"></div>
 					<div class="r"></div>
@@ -72,10 +72,10 @@
 			<div class="tool">
 				<div class="icos">
 					<ul>
-						<li active="yes"><span class="ico ico_rotate_acw"><em>逆时针旋转</em></span></li>
-						<li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw"><em>顺时针旋转</em></span></li>
-						<li active="yes"><span class="ico ico_zoom_out"><em>缩小</em></span></li>
-						<li active="yes"><span class="ico ico_zoom_in"><em>放大</em></span></li>
+						<li active="yes"><span class="ico ico_rotate_acw" id="ico_rotate_acw"><em>逆时针旋转</em></span></li>
+						<li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw" id="ico_rotate_cw"><em>顺时针旋转</em></span></li>
+						<li active="yes"><span class="ico ico_zoom_out" id="ico_zoom_out"><em>缩小</em></span></li>
+						<li active="yes"><span class="ico ico_zoom_in" id="ico_zoom_in"><em>放大</em></span></li>
 					</ul>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes">下一步</div>
+			<div class="button button_l" id="toPage2" active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -307,56 +307,56 @@
 *************************************
 -->
 <div class="overlays">
-<div class="overlay chkphoto" name="chkphoto">
-<div class="overlay_box">
-	<div class="hd">
-		<div class="title">选择相片</div>
-		<div class="close">X</div>
-	</div>
-	<div class="bd">
-		<ul class="list">
-			<li id="choosePicFromAlbum">相册</li>
-			<li id="choosePicFromCamera">拍摄</li>
-			<li style="border:none;">人人网</li>
-		</ul>
-	</div>
-	<div class="ft"></div>
-</div>
-</div>
-<div class="overlay delmail" name="delmail">
-<div class="overlay_box">
-	<div class="hd">
-		<div class="title">注意</div>
-		<div class="close">X</div>
-	</div>
-	<div class="bd">
-		<div class="info"> 确认删除已保存的明信片? </div>
-		<div class="action">
-			<div class="button button_o" active="yes">确认</div>
-			<div class="button button_o" active="yes">取消</div>
-		</div>
-	</div>
-	<div class="ft"></div>
-</div>
-</div>
-<div class="overlay delmail" name="quit">
-<div class="overlay_box">
-	<div class="hd">
-		<div class="title">注意</div>
-		<div class="close">X</div>
-	</div>
-	<div class="bd">
-		<div class="info"> 你退定要退出吗? </div>
-		<div class="action">
-			<div class="button button_o" id="quitOK" active="yes">确认</div>
-			<div class="button button_o" id="quitCancel" active="yes">取消</div>
-		</div>
-	</div>
-	<div class="ft"></div>
-</div>
-</div>
 <div class="overlay_mask"></div>
+<div class="overlay chkphoto" name="chkphoto">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title">选择相片</div>
+			<div class="close">X</div>
+		</div>
+		<div class="bd">
+			<ul class="list">
+				<li id="choosePicFromAlbum" active="yes"><span class="g"><span class="ico ico_album"></span></span><label>相册</label></li>
+				<li id="choosePicFromCamera" active="yes"><span class="g"><span class="ico ico_camera"></span></span><label>拍摄</label></li>
+				<li style="border:none;" active="yes"><span class="g"><span class="ico ico_renren"></span></span><label>人人网</label></li>
+			</ul>
+		</div>
+		<div class="ft"></div>
+	</div>
 </div>
+<div class="overlay confirm" name="delmail">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title">注意</div>
+			<div class="close">X</div>
+		</div>
+		<div class="bd">
+			<div class="info"> 确认删除已保存的明信片? </div>
+			<div class="action">
+				<div class="button button_o" active="yes">确认</div>
+				<div class="button button_o" active="yes">取消</div>
+			</div>
+		</div>
+		<div class="ft"></div>
+	</div>
+</div>
+<div class="overlay confirm" name="quit">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title">注意</div>
+			<div class="close">X</div>
+		</div>
+		<div class="bd">
+			<div class="info">你确定要退出吗?</div>
+			<div class="action">
+				<div class="button button_o" id="quitOK" active="yes">确认</div>
+				<div class="button button_o" id="quitCancel" active="yes">取消</div>
+			</div>
+		</div>
+		<div class="ft"></div>
+	</div>
+</div>
+</div><!--overlays end-->
 
 <script src="js/jquery-1.7.2.min.js"></script> 
 <script src="js/iscroll-min.js"></script> 
