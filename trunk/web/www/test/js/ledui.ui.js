@@ -152,7 +152,7 @@ var Overlay = {
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
 			,_this = this;
-		var eventname  = this.istouch ? 'touchend' : 'click';
+		var eventname  = this.istouch ? 'tapone' : 'click';
 		overlays.each(function(){
 			var o = $(this)
 				,name = o.attr('name')
