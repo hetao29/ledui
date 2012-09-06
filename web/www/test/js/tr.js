@@ -5,6 +5,11 @@ var LOCALE = {
 	},
 	en:{
 		create:"create postcard",
+		about:"About",
+		postcard:"postcard",
+		login:"login",
+		signup:"sign up",
+		back:"back",
 	  title: "ledui postcard",
 	  id: "example",
 	  success_message: "The external file has been included in the page",
@@ -14,10 +19,10 @@ var LOCALE = {
 
 
 $(document).ready(function(){
-	var language = window.navigator.userLanguage || window.navigator.language;
-
-	language = language.split("-")[0];
-	$("span[tr]").each(function(i,e){
+	var language = window.navigator.userLanguage || window.navigator.language;language = language.split("-")[0];
+	//for test
+	language="en";
+	$("[tr]").each(function(i,e){
 		var k = $(e).attr("tr");
 		var v = (eval("LOCALE."+language+"."+k));
 		if(v){
