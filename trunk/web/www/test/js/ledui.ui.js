@@ -6,6 +6,10 @@ $(document).ready(function(){
 	Touch.init();
 });
 
+//UI系统
+var UI = {
+	istouch: ('createTouch' in document)	
+} 
 //页面显示控制
 var Page = {
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
@@ -147,21 +151,21 @@ var Adapta = {
 
 //遮罩层
 var Overlay = {
-	curname: '', layers: {}, mask: null, lock:false, istouch: ('createTouch' in document),
+	curname: '', layers: {}, mask: null, lock:false,
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
 			,_this = this;
-		var eventname  = this.istouch ? 'tapone' : 'click';
+		var clickevent  = UI.istouch ? 'tapone' : 'click';
 		overlays.each(function(){
 			var o = $(this)
 				,name = o.attr('name')
 				,handle = o.find('.close');
 			if(name){ _this.layers[name] = o; }	
-			o.bind(eventname, function(){ return false; });
-			handle.bind(eventname, function(){ _this.hide(); return false;	});
+			o.bind(clickevent, function(){ return false; });
+			handle.bind(clickevent, function(){ _this.hide(); return false;	});
 		});
-		overlay_mask.bind(eventname, function(){ _this.hide(); return false; });
+		overlay_mask.bind(clickevent, function(){ _this.hide(); return false; });
 		if(overlay_mask.length){ this.mask = overlay_mask; }
 	},
 	show: function(name){
@@ -221,6 +225,7 @@ var PhotoEditor = {
 		this.info = { img: img, width: 0, height: 0, zoom: 1, rotate: 0, x: 0, y: 0 };
 		this.box = $('#photo');
 		this.box.html('');
+		this.panel = $('#photoselection');
 		this.isfirstrun = false; 
 		//img loaded bind event
 		var _this = this;
@@ -239,20 +244,27 @@ var PhotoEditor = {
 		var _this = this;
 		//旋转
 		//顺时针
-		$("#ico_rotate_cw").bind("touchend", function(){
+		var clickevent  = UI.istouch ? 'tapone' : 'click';
+		$('#ico_rotate_cw').bind(clickevent, function(){
 			_this.rotate('cw', 90);										   
 		});
 		//逆时针
-		$("#ico_rotate_acw").bind("touchend", function(){
+		$('#ico_rotate_acw').bind(clickevent, function(){
 			_this.rotate('acw', 90);										   
 		});
 		//缩放
-		$("#ico_zoom_in").bind("touchend",function(){	
+		$('#ico_zoom_in').bind(clickevent, function(){	
 			_this.zoom();
 		});
-		$("#ico_zoom_out").bind("touchend",function(){	
+		$('#ico_zoom_out').bind(clickevent, function(){	
 			_this.zoom();
 		});
+		
+		this.panel.bind('swipetwo', function(e, info){
+			alert(info);								 
+			return false;
+		})
+		
 		/*
 		$("#ico_rotate_acw").bind("touchend",function(e){
 			PostCardInfo.deg = PostCardInfo.deg - 90;
