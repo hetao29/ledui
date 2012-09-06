@@ -106,14 +106,14 @@ var Adapta = {
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
 							($.browser.opera)   ? 'O' : '';		
-		$('.screen').css({
+		$(document.body).css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
 		});
-		$('.overlays').css({
+		/*$('.overlays').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
-		});
+		});*/
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
