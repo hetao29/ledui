@@ -1,39 +1,5 @@
-//{{{
-//$(document).ready(function(){
-	document.addEventListener("deviceready", onDeviceReady, false);
-	//document.addEventListener("pause", yourCallbackFunction, false);
-	//document.addEventListener("menubutton", yourCallbackFunction, false);
-//});
-function yourCallbackFunction(){
-	
-	//自定义导航
-	
-	//如果，是第0页，按后退，就提示程序退出
-	Overlay.show("quit");
-	return;
-        navigator.notification.confirm(
-            '你确定要退出吗？',  // message
-            onConfirm,         // callback
-            '退出',            // title
-            '取消,确定'                  // buttonName
-        );
-		
-}
-function onConfirm(buttonIndex) {
-    if(buttonIndex == 2){
-		//退出
-		navigator.app.exitApp();
-	}
-}
-$(document).ready(function(){
-	Control.init();
-});
 
-function onDeviceReady() {
-	document.addEventListener("backbutton", yourCallbackFunction, false);
-}
 
-//}}}
 //接口
 var API = {
 	host: "http://api.ledui.com",
@@ -54,23 +20,17 @@ var API = {
 		this.show(n);
 	}
 }
+
 //界面操作
 var Control = {
 	init: function(n){
-		/*
-		$("#choosePic").click(function(){
-			Overlay.show("chkphoto");
-		});
-		*/
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
 		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
 		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
-		/*$("#choosePicFromCamera").click(function(){
-												
-		});*/
+		
 		$("#choosePicFromCamera").bind("touchend",function(e){
 														   
-			navigator.camera.getPicture(onPhotoURISuccess, onFail, 
+			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 									{ 
 										quality: 100, 
 										allowEdit: true,
@@ -81,7 +41,7 @@ var Control = {
 														   
 		});
 		$("#choosePicFromAlbum").bind("touchend",function(e){
-			navigator.camera.getPicture(onPhotoURISuccess, onFail, 
+			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 									{ 
 										quality: 100, 
 										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
@@ -90,29 +50,175 @@ var Control = {
 			Overlay.hide("chkphoto");
 														   
 		});
+		//旋转与缩放
+		$("#ico_rotate_acw").bind("touchend",function(e){
+			PostCardInfo.deg = PostCardInfo.deg - 90;
+			$("#photoContent").css("-webkit-transform","rotate("+PostCardInfo.deg+"deg)");									   
+			});
+		$("#ico_rotate_cw").bind("touchend",function(e){
+			PostCardInfo.deg = PostCardInfo.deg + 90;
+			$("#photoContent").css("-webkit-transform","rotate("+PostCardInfo.deg+"deg)");								  
+		});
+		$("#ico_zoom_in").bind("touchend",function(e){			
+			PostCardInfo.scale = PostCardInfo.scale /1.5;
+			if(PostCardInfo.scale<1)PostCardInfo.scale=1;
+			$("#photoContent").css("-webkit-transform","scale("+PostCardInfo.scale+")");						  
+		});
+		$("#ico_zoom_out").bind("touchend",function(e){
+			PostCardInfo.scale = PostCardInfo.scale *1.5;
+			$("#photoContent").css("-webkit-transform","scale("+PostCardInfo.scale+")");							  
+		});
+		$("#toPage2").bind("touchend",function(e){
+			Page.show(2);					  
+		});
+		
+		
+		//手指事件
+		$( "#photoCanvas" ).bind("mousedown",function(e){
+         
+        });
+		$( "#photoCanvas" ).bind("mouseup",function(e){
+           
+        });
+		
+		
 	},
 	choosePic: function(n){
 	}
 	
 }
-
-//
-function onPhotoURISuccess(imageURI) {
-
-	var largeImage = document.getElementById('photoContent');
-
-	// Unhide image elements
-	//
-	largeImage.style.display = 'block';
-
-	// Show the captured photo
-	// The inline CSS rules are used to resize the image
-	//
-	largeImage.src = imageURI;
-	Page.init(1);
+//Interface方法
+var PostCardInfo = {
+	//图片的旋转角度
+	deg:0,
+	//图片的缩放比例
+	scale:1,
+	//图片的裁剪区域
+	top:0,
+	left:0,
+	width:0,
+	height:0
 }
 
-// 
-function onFail(message) {
-	//alert('Failed because: ' + message);
+//Interface方法
+//Interface.onBackbutton();
+var Interface = {
+	/**
+	 * 返回按钮事件
+	 */
+	onBackbutton:function (){
+		if(Overlay.curname!=""){
+			Overlay.hide(Overlay.curname);
+			return;
+		}
+		if(Page.current>0){
+			Page.show(Page.current-1);
+			return;
+		}
+		//如果，是第0页，按后退，就提示程序退出
+		Overlay.show("quit");
+		/*
+			navigator.notification.confirm(
+				'你确定要退出吗？',  // message
+				Interface.onQuitConfirm,         // callback
+				'退出',            // title
+				'取消,确定'                  // buttonName
+			);
+			*/
+	},
+	/**
+	 * 当设备准备好时
+	 */
+	onDeviceReady:function () {
+		document.addEventListener("backbutton", Interface.onBackbutton, false);
+	},
+	/*
+	onQuitConfirm:function (buttonIndex) {
+		if(buttonIndex == 2){
+			//退出
+			navigator.app.exitApp();
+		}
+	},
+	*/
+
+	onPhotoURISuccess:function(imageURI){
+		
+		var largeImage = document.getElementById('photoContent');
+	
+		// Unhide image elements
+		//
+		largeImage.style.display = 'block';
+	
+		// Show the captured photo
+		// The inline CSS rules are used to resize the image
+		//
+		largeImage.src = imageURI;
+		Page.init(1);
+	},
+	
+	onFail:function (message) {
+		//alert('Failed because: ' + message);
+	}
+	
 }
+/*
+document.onmousemove = mouseMove;
+document.onmouseup   = mouseUp;
+var dragObject  = null;
+var mouseOffset = null;
+function getMouseOffset(target, ev){
+	ev = ev || window.event;
+	var docPos    = getPosition(target);
+	var mousePos  = mouseCoords(ev);
+	return {x:mousePos.x - docPos.x, y:mousePos.y - docPos.y};
+}
+function getPosition(e){
+	var left = 0;
+	var top  = 0;
+	while (e.offsetParent){
+		left += e.offsetLeft;
+		top  += e.offsetTop;
+		e     = e.offsetParent;
+	}
+	left += e.offsetLeft;
+	top  += e.offsetTop;
+	return {x:left, y:top};
+}
+function mouseMove(ev){
+	ev           = ev || window.event;
+	var mousePos = mouseCoords(ev);
+	if(dragObject){
+		dragObject.style.position = 'absolute';
+		dragObject.style.top      = mousePos.y - mouseOffset.y;
+		dragObject.style.left     = mousePos.x - mouseOffset.x;
+		return false;
+	}
+}
+function mouseCoords(ev){
+ if(ev.pageX || ev.pageY){
+  return {x:ev.pageX, y:ev.pageY};
+ }
+ return {
+  x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+  y:ev.clientY + document.body.scrollTop  - document.body.clientTop
+ };
+}
+function mouseUp(){
+	dragObject = null;
+}
+function makeDraggable(item){
+	if(!item) return;
+	item.onmousedown = function(ev){
+		dragObject  = this;
+		mouseOffset = getMouseOffset(this, ev);
+		return false;
+	}
+}
+makeDraggable($("photoContent"));
+*/
+//{{{
+$(document).ready(function(){
+	Control.init();
+});
+document.addEventListener("deviceready", Interface.onDeviceReady, false);
+//}}}
