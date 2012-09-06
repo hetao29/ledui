@@ -100,7 +100,7 @@ var Adapta = {
 		this.layout();
 	},
 	scale: function(){
-		var win_w = $(window).outerWidth(true)  
+		var win_w = $(window).width()  
 			,win_h = $(window).height()
 			,scr_w = $('.screen').width()
 		this.ratio = win_w/scr_w;
