@@ -160,7 +160,7 @@ var Overlay = {
 			o.click(function(){ return false; });
 			handle.click(function(){ _this.hide();	 });
 		});
-		overlay_mask.click(function(){ _this.hide(); });
+		overlay_mask.click(function(){ _this.hide(); return false; });
 		if(overlay_mask.length){ this.mask = overlay_mask; }
 	},
 	show: function(name){
