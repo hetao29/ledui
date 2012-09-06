@@ -40,7 +40,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.layout();
+		Adapta.run();
 		return this;
 	},
 	next: function(){
@@ -98,7 +98,7 @@ var Adapta = {
 		this.layout();
 	},
 	scale: function(){
-		var win_w = $(window).width()  
+		var win_w = $(window).outerWidth(true)  
 			,win_h = $(window).height()
 			,scr_w = $('.screen').width()
 		this.ratio = win_w/scr_w;
@@ -106,14 +106,14 @@ var Adapta = {
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
 							($.browser.opera)   ? 'O' : '';		
-		$(document.body).css({
+		$('.screen').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
 		});
-		/*$('.overlays').css({
+		$('.overlays').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
-		});*/
+		});
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -205,4 +205,3 @@ var Scroll = {
 		scrolls.each(function(){ var s = new iScroll($(this).get(0)); });	
 	}	
 }
-
