@@ -158,7 +158,7 @@ var Overlay = {
 				,handle = o.find('.close');
 			if(name){ _this.layers[name] = o; }	
 			o.click(function(){ return false; });
-			handle.click(function(){ _this.hide();	 });
+			handle.click(function(){ _this.hide(); return false;	});
 		});
 		overlay_mask.click(function(){ _this.hide(); return false; });
 		if(overlay_mask.length){ this.mask = overlay_mask; }
@@ -192,8 +192,8 @@ var Touch = {
 	init: function(){ this.bind(); },
 	bind: function(){
 		$('[active]')
-		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
-		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
+		.bind('touchstart', function(e) { $(this).addClass('active'); /*e.preventDefault();*/ })
+		.bind('touchend', function(e) { $(this).removeClass('active'); /*e.preventDefault();*/ });		
 		$('[focus]')
 		.bind('focus', function(e) { $(this).addClass('focus'); })
 		.bind('blur', function(e) { $(this).removeClass('focus'); });
