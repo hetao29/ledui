@@ -130,7 +130,8 @@ var Interface = {
 		// Show the captured photo
 		// The inline CSS rules are used to resize the image
 		//
-		largeImage.src = imageURI;
+		//largeImage.src = imageURI;
+		PhotoEditor.init(imageURI);
 		Page.init(1);
 	},
 	
