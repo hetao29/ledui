@@ -42,7 +42,7 @@ var Page = {
 		}, 600);
 		this.current_prev = this.current;
 		this.current = n;
-		Adapta.run();
+		Adapta.layout();
 		return this;
 	},
 	next: function(){
