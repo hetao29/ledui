@@ -27,7 +27,6 @@ var Page = {
 			,_this = this;
 		
 		this.lock = true;
-		//this.screen.css('overflow', 'hidden');
 		if(page_current){
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
@@ -37,7 +36,6 @@ var Page = {
 		page.addClass('showfrom'+ show_direction).show();
 		window.setTimeout(function(){
 			_this.lock = false;
-			//_this.screen.css('overflow', '');
 			page.removeClass('showfrom' + show_direction); 
 		}, 600);
 		this.current_prev = this.current;
@@ -110,14 +108,6 @@ var Adapta = {
 							($.browser.opera)   ? 'O' : '';		
 		$('.screen').css('height', win_h/this.ratio).css('zoom', this.ratio);
 		$('.overlays').css('height', win_h/this.ratio).css('zoom', this.ratio);
-		//return;
-		//$('.screen')
-		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')
-		//.css(venderPrefix + 'Transform-origin','0 0')
-		//$('.overlays')
-		//.css(venderPrefix + 'Transform', 'scale(' + this.ratio + ')')	
-		//.css(venderPrefix + 'Transform-origin','0 0')
-		//.css('height', win_h/this.ratio);
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
