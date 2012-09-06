@@ -308,9 +308,21 @@ opacity:1;
 
 /*photo edit*/
 .photoeditor{position:absolute;top:50%;left:50%;width:600px;height:560px;margin-left:-300px;margin-top:-280px;}
-.photoeditor .view{position:relative;height:420px;}
-.photoeditor .photo{z-index:2;position:absolute;top:50%;left:50%;width:560px;height:350px;margin-top:-180px;margin-left:-285px;overflow:hidden;border:5px solid #fff;box-shadow:0 0 10px #555;}
-.photoeditor .photo img{position:absolute;top:0;left:0;}
+.photoeditor .view{position:relative;height:420px;overflow:hidden;}
+.photoeditor .photo{z-index:1;position:absolute;width:1920px;height:1200px;top:50%;left:50%;margin-left:-960px;margin-top:-600px;
+-webkit-transform: scale(0.29167);
+-moz-transform: scale(0.29167);
+-o-transform: scale(0.29167);
+-ms-transform: scale(0.29167);
+}
+.photoeditor .photo img{position:absolute;top:0;left:0;display:block;}
+.photoeditor .selection{z-index:3;position:absolute;top:50%;left:50%;width:560px;height:350px;margin-top:-180px;margin-left:-285px;overflow:hidden;border:5px solid #fff;box-shadow:0 0 10px #555;}
+.photoeditor .mask{z-index:2;position:absolute;width:100%;height:100%;}
+.photoeditor .mask .t{position:absolute;top:0;left:0;width:100%;height:30px;background:#f1f1f2;opacity:0.5;}
+.photoeditor .mask .b{position:absolute;bottom:0;left:0;width:100%;height:30px;background:#f1f1f2;opacity:0.5;}
+.photoeditor .mask .l{position:absolute;top:30px;left:0;width:15px;height:360px;background:#f1f1f2;opacity:0.5;}
+.photoeditor .mask .r{position:absolute;top:30px;right:0;width:15px;height:360px;background:#f1f1f2;opacity:0.5;}
+
 .photoeditor .tool{border-bottom:0;height:140px;}
 .photoeditor .tool .icos{width:420px;height:80px;padding:20px;overflow:hidden;margin:0 auto;}
 .photoeditor .tool .icos ul{width:450px;}
