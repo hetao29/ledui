@@ -20,8 +20,6 @@ var LOCALE = {
 
 $(document).ready(function(){
 	var language = window.navigator.userLanguage || window.navigator.language;language = language.split("-")[0];
-	//for test
-	language="en";
 	$("[tr]").each(function(i,e){
 		var k = $(e).attr("tr");
 		var v = (eval("LOCALE."+language+"."+k));
