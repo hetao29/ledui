@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(0);	
+	Page.init(1);	
 	Overlay.init();
 	//Scroll.init();		
 	Touch.init();
