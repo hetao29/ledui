@@ -147,20 +147,21 @@ var Adapta = {
 
 //遮罩层
 var Overlay = {
-	curname: '', layers: {}, mask: null, lock:false,
+	curname: '', layers: {}, mask: null, lock:false, istouch: ('createTouch' in document),
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
 			,_this = this;
+		var eventname  = this.istouch ? 'touchend' : 'click';
 		overlays.each(function(){
 			var o = $(this)
 				,name = o.attr('name')
 				,handle = o.find('.close');
 			if(name){ _this.layers[name] = o; }	
-			o.click(function(){ return false; });
-			handle.click(function(){ _this.hide(); return false;	});
+			o.bind(eventname, function(){ return false; });
+			handle.bind(eventname, function(){ _this.hide(); return false;	});
 		});
-		overlay_mask.click(function(){ _this.hide(); return false; });
+		overlay_mask.bind(eventname, function(){ _this.hide(); return false; });
 		if(overlay_mask.length){ this.mask = overlay_mask; }
 	},
 	show: function(name){
