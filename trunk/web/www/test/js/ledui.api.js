@@ -24,7 +24,7 @@ var API = {
 
 
 
-PhotoEditor.init('http://pic17.nipic.com/20111028/1812930_221435053000_2.jpg');
+PhotoEditor.init('http://www.baidu.com/img/baidu_sylogo1.gif');
 
 
 //界面操作
