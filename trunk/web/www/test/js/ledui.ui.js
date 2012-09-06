@@ -106,8 +106,14 @@ var Adapta = {
 							($.browser.mozilla) ? 'Moz' :
 							($.browser.ms)      ? 'Ms' :
 							($.browser.opera)   ? 'O' : '';		
-		$('.screen').css('height', win_h/this.ratio).css('zoom', this.ratio);
-		$('.overlays').css('height', win_h/this.ratio).css('zoom', this.ratio);
+		$('.screen').css({
+			'height': win_h/this.ratio,
+			'zoom': this.ratio
+		});
+		$('.overlays').css({
+			'height': win_h/this.ratio,
+			'zoom': this.ratio
+		});
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -118,7 +124,7 @@ var Adapta = {
 		//children static
 		bd.children().each(function(){ h_bd += $(this).height(); })
 		var H = $(window).height()/this.ratio
-			,h1 = hd.height()
+			,h1 = h_hd = hd.height()
 			,h3 = ft.height()
 			,h2_min = parseInt(bd.attr('_minheight'), 10) || h_bd
 			,h2 = H - h1 - h3
@@ -133,7 +139,7 @@ var Adapta = {
 		$('.screen').css('height', h_pg);
 		pg.css('height', h_pg);
 		bd.css('height', h_bd);
-		ft.css('top', h1 + h_bd);
+		ft.css('top', h_hd + h_bd);
 	}
 }
 
