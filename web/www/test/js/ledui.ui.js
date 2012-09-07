@@ -222,9 +222,11 @@ var PhotoEditor = {
 		if(!img){ return; }
 		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
+		this.loading = $('#photoloading');
+		this.loading.show();
 		this.box.html('');
 		this.panel = $('#photoselection');
-		this.paneltest = $('<div style="z-index:4;position:absolute;top:0;left:0;width:100px;height:100px;background:#000;color:#f00;"></div>')
+		this.paneltest = $('<div style="z-index:4;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
 		.appendTo(this.box.parent());
 		
 		//img loaded bind event
@@ -237,7 +239,11 @@ var PhotoEditor = {
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
 			_this.center();
+			_this.loading.hide('normal');
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
+		})
+		.bind('error', function(){
+			_this.loading.hide('normal');					
 		});		
 	},
 	bind: function(){
@@ -368,12 +374,10 @@ var PhotoEditor = {
 			'x': parseFloat(this.img.css('left')),
 			'y': parseFloat(this.img.css('top')),
 			'r': parseFloat(this.img.attr('deg'))
-		});
-		this.console(this.info.r + ',' + this.info.y + ',' + this.info.x);
-			
+		});		
 		return this;
 	},
-	getInfo: function(){
+	getinfo: function(){
 		return this.info;
 	}
 }
