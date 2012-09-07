@@ -21,12 +21,6 @@ var API = {
 	}
 }
 
-
-
-
-PhotoEditor.init('http://42.121.85.21/test/test.jpg');
-
-
 //界面操作
 var Control = {
 	init: function(n){
