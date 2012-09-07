@@ -73,7 +73,16 @@ var Test = {
 			var op = $('<option value="'+ src +'">photo'+ i +'</option>');
 			sel.append(op);
 		}
-		PhotoEditor.init(ps[0]);			
+		PhotoEditor.init(ps[0]);
+		var btn = $('<button>getinfo</button>').appendTo($(testpanel))
+		btn.click(function(){
+			var info = PhotoEditor.getinfo();
+			var str = '';
+			for(var key in info){
+				str +=  key + ':' + info[key] + '<br>'	
+			}
+			PhotoEditor.console(str);				   
+		})
 	}
 }
 
