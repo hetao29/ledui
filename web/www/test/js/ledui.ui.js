@@ -226,7 +226,9 @@ var PhotoEditor = {
 		this.box = $('#photo');
 		this.box.html('');
 		this.panel = $('#photoselection');
-		this.isfirstrun = false; 
+		this.test = $('<div style="z-index:4;position:absolute;top:0;left:0;width:600px;background:#000;color:#f00;"></div>')
+		.appendTo(this.box.parent());
+		
 		//img loaded bind event
 		var _this = this;
 		this.img = $('<img src='+ img +' />')
@@ -236,8 +238,9 @@ var PhotoEditor = {
 			_this.setinfo('img', img);
 			_this.setinfo('width', size.width);
 			_this.setinfo('height', size.height);
+			alert(size.width);
 			_this.ratio_img = size.width/size.height;
-			if(_this.isfirstrun){ _this.bind(); }
+			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 		});		
 	},
 	bind: function(){
@@ -255,15 +258,29 @@ var PhotoEditor = {
 		//缩放
 		$('#ico_zoom_in').bind(clickevent, function(){	
 			_this.zoom();
-		});
+		});		
 		$('#ico_zoom_out').bind(clickevent, function(){	
 			_this.zoom();
 		});
+		this.panel.bind('touchstart', function(e){ e.preventDefault(); });
+		this.panel.bind('touchmove', function(e){ e.preventDefault(); });
+		this.panel.bind('touchend', function(e){ e.preventDefault(); });
 		
-		this.panel.bind('swipetwo', function(e, info){
-			alert(info);								 
-			return false;
-		})
+		this.panel.bind('swipeone', function(e, info){
+			test.html('');
+		});
+		this.panel.bind('pinch', function(e, info){
+			test.html('');								 
+		});
+		this.panel.bind('rotatecw', function(e, info){
+			test.html('');
+		});
+		this.panel.bind('rotateccw', function(e, info){
+			test.html('');
+		});
+		this.panel.bind('shake', function(e, info){
+			test.html('');
+		});
 		
 		/*
 		$("#ico_rotate_acw").bind("touchend",function(e){
@@ -357,6 +374,9 @@ var PhotoEditor = {
 	getimgsize: function(){
 		var width = 0;
 		var height = 0;
+		/*for(var key in this.img.get(0)){
+			this.test.html(this.test.html() + key + ':' + this.img.get(0)[key] + '|-|' )
+		}*/
 		return {
 			'width': this.img.width(), 
 			'height': this.img.height()	
