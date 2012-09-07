@@ -315,7 +315,7 @@ opacity:1;
 -o-transform: scale(0.29167);
 -ms-transform: scale(0.29167);
 }
-.photoeditor .photo img{position:absolute;top:0;left:0;display:block;resize:none;}
+.photoeditor .photo img{position:absolute;top:0;left:0;min-width:1920px;max-width:1000000px;}
 .photoeditor .selection{z-index:3;position:absolute;top:50%;left:50%;width:560px;height:350px;margin-top:-180px;margin-left:-285px;overflow:hidden;border:5px solid #fff;box-shadow:0 0 10px #555;}
 .photoeditor .mask{z-index:2;position:absolute;width:100%;height:100%;}
 .photoeditor .mask .t{position:absolute;top:0;left:0;width:100%;height:30px;background:#f1f1f2;opacity:0.5;}

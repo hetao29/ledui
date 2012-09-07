@@ -196,6 +196,7 @@ var Overlay = {
 var Touch = {
 	init: function(){ this.bind(); },
 	bind: function(){
+		$(document).bind('touchmove', function(e){ e.preventDefault(); return false; });
 		$('[active]')
 		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
 		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
@@ -216,17 +217,18 @@ var Scroll = {
 //照片编辑器
 var PhotoEditor = {
 	isfirstrun: true,
-	target_width: 1920,
-	target_height: 1200,
+	zoom_ui: (1920/560)/($(window).outerWidth(true)/600),  
+	w_target: 1920,
+	h_target: 1200,
 	ratio_target: 1.6,
 	ratio_img: 1, //源图片的宽高比例
 	init: function(img){
 		if(!img){ return; }
-		this.info = { img: img, width: 0, height: 0, zoom: 1, rotate: 0, x: 0, y: 0 };
+		this.info = { img: img, width: 0, height: 0, rotate: 0, x: 0, y: 0 };
 		this.box = $('#photo');
 		this.box.html('');
 		this.panel = $('#photoselection');
-		this.test = $('<div style="z-index:4;position:absolute;top:0;left:0;width:600px;background:#000;color:#f00;"></div>')
+		this.paneltest = $('<div style="z-index:4;position:absolute;top:0;left:0;width:100px;height:100px;background:#000;color:#f00;"></div>')
 		.appendTo(this.box.parent());
 		
 		//img loaded bind event
@@ -238,8 +240,10 @@ var PhotoEditor = {
 			_this.setinfo('img', img);
 			_this.setinfo('width', size.width);
 			_this.setinfo('height', size.height);
-			alert(size.width);
+			$(this).css('width', size.width);
+			$(this).css('height', size.height);
 			_this.ratio_img = size.width/size.height;
+			_this.center();
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 		});		
 	},
@@ -262,121 +266,33 @@ var PhotoEditor = {
 		$('#ico_zoom_out').bind(clickevent, function(){	
 			_this.zoom();
 		});
-		this.panel.bind('touchstart', function(e){ e.preventDefault(); });
-		this.panel.bind('touchmove', function(e){ e.preventDefault(); });
-		this.panel.bind('touchend', function(e){ e.preventDefault(); });
 		
-		this.panel.bind('swipeone', function(e, info){
-			test.html('');
+		this.panel.bind('swipemove', function(e, info){
+			var offset = {
+				x: info.delta[0].lastX, 
+				y: info.delta[0].lastY	
+			}
+			_this.console('(x:' + offset.x + ',y:' + offset.y + ')');
+			_this.move(offset);
 		});
 		this.panel.bind('pinch', function(e, info){
-			test.html('');								 
+			
 		});
 		this.panel.bind('rotatecw', function(e, info){
-			test.html('');
+			
 		});
 		this.panel.bind('rotateccw', function(e, info){
-			test.html('');
+			
 		});
 		this.panel.bind('shake', function(e, info){
-			test.html('');
-		});
-		
-		/*
-		$("#ico_rotate_acw").bind("touchend",function(e){
-			PostCardInfo.deg = PostCardInfo.deg - 90;
-			$("#photoContent").css("-webkit-transform","rotate("+PostCardInfo.deg+"deg)");									   
-			});
-		$("#ico_rotate_cw").bind("touchend",function(e){
-			PostCardInfo.deg = PostCardInfo.deg + 90;
-			$("#photoContent").css("-webkit-transform","rotate("+PostCardInfo.deg+"deg)");								  
-		});
-		$("#ico_zoom_in").bind("touchend",function(e){			
-			PostCardInfo.scale = PostCardInfo.scale /1.5;
-			if(PostCardInfo.scale<1)PostCardInfo.scale=1;
-			$("#photoContent").css("-webkit-transform","scale("+PostCardInfo.scale+")");						  
-		});
-		$("#ico_zoom_out").bind("touchend",function(e){
-			PostCardInfo.scale = PostCardInfo.scale *1.5;
-			$("#photoContent").css("-webkit-transform","scale("+PostCardInfo.scale+")");							  
-		});
-		$("#photo").swipe( {
-		 swipeStatus:function(event, phase, direction, distance, duration, fingers,p,events) {
 			
-			 if(phase =="start"){
-				PostCardInfo.top = parseInt($(this).css("top"));
-				PostCardInfo.left = parseInt($(this).css("left"));
-				 
-			 }
-			if( phase!="move"){
-				
-				return;
-			}
-			if(fingers==2){
-				//放大，缩小
-				var changeX = events.start[0].pageX - events.start[0].pageX;
-				var changeY = events[1].pageX - events[0].pageX;
-				 console.log(event);
-				 
-			}else if(fingers<=1){
-				//移动
-				//Here we can check the:
-				//phase : 'start', 'move', 'end', 'cancel'
-				//direction : 'left', 'right', 'up', 'down'
-				//distance : Distance finger is from initial touch point in px
-				//duration : Length of swipe in MS 
-				//fingerCount : the number of fingers used
-				
-				var top = PostCardInfo.top + (p.endY - p.startY);
-				$(this).css("top",top+"px");
-				var left = PostCardInfo.left + (p.endX - p.startX);
-				$(this).css("left",left+"px");
-			}
-			var str = "<h4>Swipe Phase : " + phase + "<br/>";
-			str += "Direction from inital touch: " + direction + "<br/>";
-			str += "Distance from inital touch: " + distance + "<br/>";
-			str += "Duration of swipe: " + duration + "<br/>";
-			str += "Fingers used: " + fingers + "<br/></h4>";
-							
-			if (phase!="cancel" && phase!="end")
-			{
-				if (duration<5000)
-					str +="Under maxTimeThreshold.<h3>Swipe handler will be triggered if you release at this point.</h3>"
-				else
-					str +="Over maxTimeThreshold. <h3>Swipe handler will be canceled if you release at this point.</h3>"
-			
-				if (distance<200)
-					str +="Not yet reached threshold.  <h3>Swipe will be canceled if you release at this point.</h3>"
-				else
-					str +="Threshold reached <h3>Swipe handler will be triggered if you release at this point.</h3>"
-			}
-			
-			if (phase=="cancel")
-				str +="<br/>Handler not triggered. <br/> One or both of the thresholds was not met "
-			if (phase=="end")
-				str +="<br/>Handler was triggered."
-			console.log(str);
-		  },
-			threshold:100,
-			maxTimeThreshold:5000,
-			fingers:'all'
-		});
-		
-		//手指事件
-		$( "#photoCanvas" ).bind("mousedown",function(e){
-         
-        });
-		$( "#photoCanvas" ).bind("mouseup",function(e){
-           
-        });
-		*/		
+		});	
+	},
+	console: function(msg){
+		this.paneltest.html(msg);
 	},
 	getimgsize: function(){
-		var width = 0;
-		var height = 0;
-		/*for(var key in this.img.get(0)){
-			this.test.html(this.test.html() + key + ':' + this.img.get(0)[key] + '|-|' )
-		}*/
+		var width = 0, height = 0;
 		return {
 			'width': this.img.width(), 
 			'height': this.img.height()	
@@ -385,16 +301,34 @@ var PhotoEditor = {
 	checkoverflow: function(){
 		
 	},
-	adapta: function(){
+	savepos: function(){
+		this.info.x = parseFloat(this.img.css('left')); 
+		this.info.y = parseFloat(this.img.css('top'));
+		return this;
+	},
+	savesize: function(){
 		
+	},
+	move: function(offset){
+		this.img.css({
+			'left': this.info.x + offset.x*this.zoom_ui,
+			'top': this.info.y + offset.y*this.zoom_ui
+		});
+		this.savepos()
+		return this;
+	},
+	center: function(){
+		var x = (this.w_target - this.info.width)/2;
+		var y = (this.h_target - this.info.height)/2;
+		this.info.x = x;
+		this.info.y = y;
+		this.img.css({'left':x, 'top': y});
+		return this;
 	},
 	rotate: function(direction, deg){
 		
 	},
 	zoom: function(zoom){
-		
-	},
-	move: function(direction, px){
 		
 	},
 	setinfo: function(key, value){
@@ -407,3 +341,6 @@ var PhotoEditor = {
 		return this.info;
 	}
 }
+
+
+PhotoEditor.init('http://42.121.85.21/test/testimg/test.jpg');
