@@ -226,9 +226,6 @@ var PhotoEditor = {
 		this.loading.show();
 		this.box.html('');
 		this.panel = $('#photoselection');
-		this.paneltest = $('<div style="z-index:4;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
-		.appendTo(this.box.parent());
-		
 		//img loaded bind event
 		var _this = this;
 		this.img = $('<img deg="0" src='+ img +' />')
@@ -287,7 +284,15 @@ var PhotoEditor = {
 		});
 	},
 	console: function(msg){
-		this.paneltest.html(msg);
+		if(!this.paneltest){
+			this.paneltest = 
+			$('<div style="z-index:4;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
+			.appendTo(this.box.parent())
+			.bind('click', function(){
+				$(this).hide();						
+			})
+		}
+		this.paneltest.html(msg).show();
 	},
 	getimgsize: function(){
 		var width = 0, height = 0;
