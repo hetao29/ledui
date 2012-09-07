@@ -58,7 +58,22 @@ var Test = {
 				});	
 			})(key);
 		}
-				
+		
+		$('<br>').appendTo($(testpanel));
+		
+		var ps = ['http://42.121.85.21/test/testimg/test.jpg', 'http://42.121.85.21/test/testimg/test2.jpg', 'http://42.121.85.21/test/testimg/test3.jpg'];
+		var sel = $('<select></select>')
+		.appendTo($(testpanel))
+		.bind('change', function(){
+			console.log($(this).val())
+			PhotoEditor.init($(this).val());	 
+		});	
+		for(var i=0; i<ps.length; i++){
+			var src = ps[i];
+			var op = $('<option value="'+ src +'">photo'+ i +'</option>');
+			sel.append(op);
+		}
+		PhotoEditor.init(ps[0]);			
 	}
 }
 

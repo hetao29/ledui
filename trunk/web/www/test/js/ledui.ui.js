@@ -196,7 +196,6 @@ var Overlay = {
 var Touch = {
 	init: function(){ this.bind(); },
 	bind: function(){
-		$(document).bind('touchmove', function(e){ e.preventDefault(); return false; });
 		$('[active]')
 		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
 		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
@@ -217,14 +216,15 @@ var Scroll = {
 //照片编辑器
 var PhotoEditor = {
 	isfirstrun: true,
-	zoom_ui: (1920/560)/($(window).outerWidth(true)/600),  
+	zoom_ui: (1920/560)/($(window).outerWidth(true)/($('.screen').width())),  
+	zoom_limit: {'max': 3, 'min': 0.3 },
 	w_target: 1920,
 	h_target: 1200,
 	ratio_target: 1.6,
 	ratio_img: 1, //源图片的宽高比例
 	init: function(img){
 		if(!img){ return; }
-		this.info = { img: img, width: 0, height: 0, rotate: 0, x: 0, y: 0 };
+		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
 		this.box.html('');
 		this.panel = $('#photoselection');
@@ -237,11 +237,8 @@ var PhotoEditor = {
 		.appendTo(this.box)
 		.bind('load', function(){
 			size = _this.getimgsize();
-			_this.setinfo('img', img);
-			_this.setinfo('width', size.width);
-			_this.setinfo('height', size.height);
-			$(this).css('width', size.width);
-			$(this).css('height', size.height);
+			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
+			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
 			_this.center();
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
@@ -260,24 +257,34 @@ var PhotoEditor = {
 			_this.rotate('acw', 90);										   
 		});
 		//缩放
-		$('#ico_zoom_in').bind(clickevent, function(){	
-			_this.zoom();
-		});		
-		$('#ico_zoom_out').bind(clickevent, function(){	
-			_this.zoom();
+		//放大
+		$('#ico_zoom_in').bind(clickevent, function(){	 _this.zoom(1.1).saveinfo(); });	
+		//缩小
+		$('#ico_zoom_out').bind(clickevent, function(){ _this.zoom(0.9).saveinfo(); });
+		
+		var action = '';
+		var gestures = false; //多指协同
+		
+		this.panel
+		.bind('gesturestart', function(e){ gestures = true; })
+		.bind('gestureend', function(e){ gestures = false; })
+		.bind('touchstart', function(e){ e.preventDefault();})
+		.bind('touchmove', function(e){ e.preventDefault(); })
+		.bind('touchend', function(e){
+			_this.saveinfo();
+			action = '';
+			e.preventDefault();
+		})			
+		.bind('swipemove', function(e, info){
+			if(gestures){ return; }
+			var offset = { x: info.delta[0].lastX, y: info.delta[0].lastY }
+			_this.move(offset);
+		})
+		.bind('pinch', function(e, info){						  
+			var scale = info.scale;
+			if(typeof(scale) == 'number'){ _this.zoom(scale); }
 		});
 		
-		this.panel.bind('swipemove', function(e, info){
-			var offset = {
-				x: info.delta[0].lastX, 
-				y: info.delta[0].lastY	
-			}
-			_this.console('(x:' + offset.x + ',y:' + offset.y + ')');
-			_this.move(offset);
-		});
-		this.panel.bind('pinch', function(e, info){
-			
-		});
 		this.panel.bind('rotatecw', function(e, info){
 			
 		});
@@ -293,54 +300,59 @@ var PhotoEditor = {
 	},
 	getimgsize: function(){
 		var width = 0, height = 0;
-		return {
-			'width': this.img.width(), 
-			'height': this.img.height()	
-		}	
+		return { 'width': this.img.width(), 'height': this.img.height() }	
 	},
 	checkoverflow: function(){
 		
 	},
-	savepos: function(){
-		this.info.x = parseFloat(this.img.css('left')); 
-		this.info.y = parseFloat(this.img.css('top'));
-		return this;
-	},
-	savesize: function(){
-		
-	},
 	move: function(offset){
-		this.img.css({
-			'left': this.info.x + offset.x*this.zoom_ui,
-			'top': this.info.y + offset.y*this.zoom_ui
-		});
-		this.savepos()
+		var x = this.info.x + offset.x*this.zoom_ui;
+		var y = this.info.y + offset.y*this.zoom_ui;
+		this.img.css({'left': x, 'top': y });
+		this.info.x = x;
+		this.info.y = y;
 		return this;
 	},
 	center: function(){
-		var x = (this.w_target - this.info.width)/2;
-		var y = (this.h_target - this.info.height)/2;
+		var x = (this.w_target - this.info.w)/2;
+		var y = (this.h_target - this.info.h)/2;
+		this.img.css({'left':x, 'top': y });
 		this.info.x = x;
 		this.info.y = y;
-		this.img.css({'left':x, 'top': y});
 		return this;
 	},
 	rotate: function(direction, deg){
 		
 	},
-	zoom: function(zoom){
-		
+	zoom: function(scale){
+		var scale = scale;
+		var w = this.info.w * scale;
+		if(w > this.w_target*this.zoom_limit.max ){ w = this.w_target*this.zoom_limit.max; }
+		if(w < this.w_target*this.zoom_limit.min){ w = this.w_target*this.zoom_limit.min; }		
+		var h = w / this.ratio_img;
+		var x = this.info.x - (w - this.info.w)/2
+		var y = this.info.y - (h - this.info.h)/2;
+		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y });
+		return this;
 	},
-	setinfo: function(key, value){
-		if(key in this.info){
-			this.info[key] = value;	
+	setinfo: function(info){
+		for(var key in info){
+			if(key in this.info){ 
+				this.info[key] = info[key];	
+			}
 		}
-		return this.info;
+		return this;
+	},
+	saveinfo: function(){
+		this.setinfo({
+			'w': parseFloat(this.img.css('width')),
+			'h': parseFloat(this.img.css('height')),
+			'x': parseFloat(this.img.css('left')),
+			'y': parseFloat(this.img.css('top')),
+		});
+		return this;
 	},
 	getInfo: function(){
 		return this.info;
 	}
 }
-
-
-PhotoEditor.init('http://42.121.85.21/test/testimg/test.jpg');
