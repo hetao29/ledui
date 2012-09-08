@@ -224,7 +224,7 @@ var PhotoEditor = {
 		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
 		this.loading = $('#photoloading');
-		this.loading.css('opacity', 0).show().stop().animate({'opacity':0.5}, 200);	
+		this.loading.show();	
 		this.box.html('');
 		this.panel = $('#photoselection');
 		//img loaded bind event
@@ -237,11 +237,11 @@ var PhotoEditor = {
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
 			_this.center();
-			_this.loading.stop().animate({'opacity':0}, 400, '', function(){ _this.loading.hide(); });
+			_this.loading.hide();
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 		})
 		.bind('error', function(){
-			this.loading.stop().animate({'opacity':0}, 400, '', function(){ _this.loading.hide(); });				
+			this.loading.hide();				
 		});		
 	},
 	bind: function(){
