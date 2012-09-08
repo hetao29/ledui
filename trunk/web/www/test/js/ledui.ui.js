@@ -29,21 +29,22 @@ var Page = {
 		var show_direction = n > this.current ? 'right' : 'left'
 			,hide_direction = n > this.current ? 'left' :  'right'
 			,_this = this;
-		
-		this.lock = true;
-		this.screen.css('overflow', 'hidden');
 		if(page_current){
+			this.lock = true;
+			this.screen.css('overflow', 'hidden');
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
 				page_current.hide().removeClass('hidefrom' + hide_direction);
 			}, 600);
-		}
-		page.addClass('showfrom'+ show_direction).show();
-		window.setTimeout(function(){
-			_this.lock = false;
-			_this.screen.css('overflow', '');
-			page.removeClass('showfrom' + show_direction); 
-		}, 600);
+			page.addClass('showfrom'+ show_direction).show();
+			window.setTimeout(function(){
+				_this.lock = false;
+				_this.screen.css('overflow', '');
+				page.removeClass('showfrom' + show_direction); 
+			}, 600);
+		}else{			
+			page.show();	
+		}		
 		this.current_prev = this.current;
 		this.current = n;
 		Adapta.layout();
@@ -223,7 +224,7 @@ var PhotoEditor = {
 		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
 		this.loading = $('#photoloading');
-		this.loading.show();
+		this.loading.css('opacity', 0).show().stop().animate({'opacity':0.5}, 200);	
 		this.box.html('');
 		this.panel = $('#photoselection');
 		//img loaded bind event
@@ -236,50 +237,49 @@ var PhotoEditor = {
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
 			_this.center();
-			_this.loading.hide('normal');
+			_this.loading.stop().animate({'opacity':0}, 400, '', function(){ _this.loading.hide(); });
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 		})
 		.bind('error', function(){
-			_this.loading.hide('normal');					
+			this.loading.stop().animate({'opacity':0}, 400, '', function(){ _this.loading.hide(); });				
 		});		
 	},
 	bind: function(){
 		var _this = this;
-		//旋转
-		//顺时针
 		var clickevent  = UI.istouch ? 'touchstart' : 'click';
+		var gestures = false; //多指协同
+		var action = '';
+		
+		//顺时针
 		$('#ico_rotate_cw').bind(clickevent, function(){ _this.rotate(90, true).saveinfo(); });
 		//逆时针
 		$('#ico_rotate_acw').bind(clickevent, function(){ _this.rotate(-90, true).saveinfo(); });
-		//缩放
 		//放大
 		$('#ico_zoom_in').bind(clickevent, function(){	 _this.zoom(1.2).saveinfo(); });	
 		//缩小
 		$('#ico_zoom_out').bind(clickevent, function(){ _this.zoom(0.8).saveinfo(); });
 		
-		var action = '';
-		var gestures = false; //多指协同
-		
 		this.panel
-		.bind('gesturestart', function(e){ gestures = true; })
-		.bind('gestureend', function(e){ gestures = false; })
-		.bind('touchstart', function(e){ e.preventDefault();})
+		.bind('gesturestart', function(e){ e.preventDefault(); gestures = true; })
+		.bind('gestureend', function(e){ e.preventDefault(); gestures = false; })
+		.bind('touchstart', function(e){ e.preventDefault(); action = ''; })
 		.bind('touchmove', function(e){ e.preventDefault(); })
-		.bind('touchend', function(e){
-			_this.saveinfo();
-			action = '';
-			e.preventDefault();
-		})			
-		.bind('swipemove', function(e, info){
-			if(gestures){ return; }
-			var offset = { x: info.delta[0].lastX, y: info.delta[0].lastY }
-			_this.move(offset);
+		.bind('touchend', function(e){ e.preventDefault(); _this.saveinfo(); })			
+		//移动
+		.bind('swipemove', function(e, info){			
+			if(gestures){ return; } action = 'move';
+			_this.move({ x: info.delta[0].lastX, y: info.delta[0].lastY });
 		})
-		.bind('pinch', function(e, info){						  
-			var scale = info.scale;
-			if(typeof(scale) == 'number'){ _this.zoom(scale); }
+		//缩放
+		.bind('pinch', function(e, info){
+			/*if(action == 'rotate'){ return; }*/ 
+			if(!gestures){ return; } action = 'pinch';					
+			if(typeof(info.scale) == 'number'){ _this.zoom(info.scale); }
 		})
+		//旋转
 		.bind('rotate', function(e, info){
+			/*if(action == 'pinch'){ return; }*/ 
+			if(!gestures){ return; } action = 'rotate';					 
 			if(typeof(info.rotation) == 'number'){ _this.rotate(info.rotation); }					  
 		});
 	},
@@ -299,8 +299,8 @@ var PhotoEditor = {
 		return { 'width': this.img.width(), 'height': this.img.height() }	
 	},
 	check: function(x, y, w, h){
-		if(x>=this.w_target -400 || x+w-400<=0 ||
-		   y>=this.h_target -200 || y+h-200<=0){ return false; }
+		if(x>=this.w_target-400 || x+w-400<=0 ||
+		   y>=this.h_target-200 || y+h-200<=0){ return false; }
 		return true;
 	},	
 	center: function(){
@@ -313,9 +313,9 @@ var PhotoEditor = {
 	},
 	rotate: function(deg, frombuttom){
 		var prefix = ($.browser.webkit)  ? '-webkit-' : 
-					($.browser.mozilla) ? '-moz-' :
-					($.browser.ms)      ? '-o-' :
-					($.browser.opera)   ? '-ms-' : '';
+					 ($.browser.mozilla) ? '-moz-' :
+					 ($.browser.ms)      ? '-o-' :
+					 ($.browser.opera)   ? '-ms-' : '';
 		
 		var deg = deg;
 		if(arguments[1]){ //按钮点击向下去整， 附加整角度
