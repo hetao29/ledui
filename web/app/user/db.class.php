@@ -23,8 +23,10 @@ class user_db{
 	function getUserToken($UserID,$Token){
 		return $this->_db->selectOne("t_user_token",array("UserToken"=>$Token,"UserID"=>$UserID));
 	}
+	function updateUserToken($UserID,$Token){
+		return $this->_db->update("t_user_token",array("UserToken"=>$Token,"UserID"=>$UserID),array("UserTokenExpiredTime"=>time()+3600*24*10));
+	}
 	function addUserToken($Token){
-		$Token['UserTokenExpiredTime']=time()+3600*24*365;//一年过期
 		return $this->_db->insert("t_user_token",$Token,true);
 	}
 	function addUser($User){
