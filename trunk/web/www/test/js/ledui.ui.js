@@ -329,11 +329,30 @@ var PhotoEditor = {
 		//手机屏幕的密度分为低密度(240*320)/中密度(320*480)和高密度(480*800).通过 
 		//window.devicePixelRatio属性可以获得当前手机屏幕的密度类型. 
 		//如果该属性值为1.5表示高密度;1为中密度;075表示低密度. 
-		var w = 320;
-		if (window.devicePixelRatio == 1.5) {  w =  480; } 
-		else if (window.devicePixelRatio == 1) { w = 320; } 
-		else if (window.devicePixelRatio == 0.75) { w = 240; }
-		this.zoom_ui = (1920/560)*(($('.screen').width()/w));
+		var ios = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+		var getw = function(){
+			var w = 0;
+			if($(window).width() < $(window).height()){
+				if(ios){
+					w = window.screen.width;
+				}else{
+					w = window.screen.width/window.devicePixelRatio;
+				}
+			}else{
+				if(ios){
+					w = window.screen.height;
+				}else{
+					w = window.screen.height/window.devicePixelRatio;
+				}	
+			}
+			return w;
+		
+		}
+		var _this = this;
+		$(window).bind('resize', function(){
+			_this.zoom_ui = (1920/560)*(($('.screen').width()/getw()));
+		});
+		this.zoom_ui = (1920/560)*(($('.screen').width()/getw()));
 		return this.zoom_ui;
 	},
 	_parsenumber: function(n){
