@@ -249,7 +249,7 @@ var PhotoEditor = {
 	},
 	bind: function(){
 		var _this = this;
-		var clickevent  = UI.istouch ? 'touchstart' : 'click';
+		var clickevent  = UI.istouch ? 'tap' : 'click';
 		var gestures = false; //多指协同
 		var action = '';
 		
@@ -261,12 +261,27 @@ var PhotoEditor = {
 		$('#ico_zoom_in').bind(clickevent, function(){	 _this.zoom(1.2).saveinfo(); });	
 		//缩小
 		$('#ico_zoom_out').bind(clickevent, function(){ _this.zoom(0.8).saveinfo(); });
-		this.panel
-		.bind('gesturestart', function(e){ e.preventDefault(); gestures = true; })
-		.bind('gestureend', function(e){ e.preventDefault(); gestures = false; })
+		this.panel.hammer({
+            prevent_default: true,
+			rotation_treshold: 0,
+            scale_treshold: 0,
+            drag_min_distance: 0
+        })
 		.bind('touchstart', function(e){ e.preventDefault();  })
 		.bind('touchend', function(e){ e.preventDefault(); _this.saveinfo(); action = ''; })			
-		.bind('touchmove', function(e){ e.preventDefault(); })
+		.bind('touchmove', function(e){ e.preventDefault(); })	
+		.bind('transformstart', function(e){ gestures = true; })
+		.bind('transformend', function(e){ gestures = false; })
+		.bind('transform', function(e){
+			if(!gestures){ return; } action = 'transform';
+			if(typeof(e.scale) == 'number'){ _this.zoom(e.scale); }
+			if(typeof(e.rotation) == 'number'){ _this.rotate(e.rotation); }
+		})
+		.bind('swipemove', function(e, info){ e.preventDefault(); 
+			if(gestures){ return; } action = 'move';
+			_this.move({ x: info.delta[0].lastX, y: info.delta[0].lastY });	
+		});	
+		/*
 		//移动
 		.bind('swipemove', function(e, info){			
 			if(gestures){ return; } action = 'move';
@@ -281,7 +296,7 @@ var PhotoEditor = {
 		.bind('rotate', function(e, info){
 			if(!gestures){ return; } action = 'rotate';					 
 			if(typeof(info.rotation) == 'number'){ _this.rotate(info.rotation); }					  
-		});
+		});*/
 	},
 	console: function(msg){
 		if(!this.paneltest){
