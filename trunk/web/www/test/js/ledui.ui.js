@@ -219,26 +219,29 @@ var PhotoEditor = {
 	h_target: 1200,
 	ratio_target: 1.6,
 	ratio_img: 1, //源图片的宽高比例
+	isready: false,
 	init: function(img){
 		if(!img){ return; }
+		this.isready = false;
 		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
-		this.loading = $('#photoloading');
-		this.loading.show();	
-		this.box.html('');
 		this.panel = $('#photoselection');
+		this.loading = $('#photoloading');
+		this.box.html('');
+		this.loading.show();
 		//img loaded bind event
 		var _this = this;
 		this.img = $('<img deg="0" src='+ img +' />')
 		.appendTo(this.box)
 		.bind('load', function(){
-			size = _this.getimgsize();
+			var size = _this.getimgsize();
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
 			_this.center();
 			_this.loading.hide();
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
+			_this.isready = true;
 		})
 		.bind('error', function(){
 			this.loading.hide();				
@@ -258,13 +261,12 @@ var PhotoEditor = {
 		$('#ico_zoom_in').bind(clickevent, function(){	 _this.zoom(1.2).saveinfo(); });	
 		//缩小
 		$('#ico_zoom_out').bind(clickevent, function(){ _this.zoom(0.8).saveinfo(); });
-		
 		this.panel
 		.bind('gesturestart', function(e){ e.preventDefault(); gestures = true; })
 		.bind('gestureend', function(e){ e.preventDefault(); gestures = false; })
-		.bind('touchstart', function(e){ e.preventDefault(); action = ''; })
+		.bind('touchstart', function(e){ e.preventDefault();  })
+		.bind('touchend', function(e){ e.preventDefault(); _this.saveinfo(); action = ''; })			
 		.bind('touchmove', function(e){ e.preventDefault(); })
-		.bind('touchend', function(e){ e.preventDefault(); _this.saveinfo(); })			
 		//移动
 		.bind('swipemove', function(e, info){			
 			if(gestures){ return; } action = 'move';
@@ -272,13 +274,11 @@ var PhotoEditor = {
 		})
 		//缩放
 		.bind('pinch', function(e, info){
-			/*if(action == 'rotate'){ return; }*/ 
 			if(!gestures){ return; } action = 'pinch';					
 			if(typeof(info.scale) == 'number'){ _this.zoom(info.scale); }
 		})
 		//旋转
 		.bind('rotate', function(e, info){
-			/*if(action == 'pinch'){ return; }*/ 
 			if(!gestures){ return; } action = 'rotate';					 
 			if(typeof(info.rotation) == 'number'){ _this.rotate(info.rotation); }					  
 		});
