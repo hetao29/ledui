@@ -213,7 +213,7 @@ var Scroll = {
 //照片编辑器
 var PhotoEditor = {
 	isfirstrun: true,
-	zoom_ui: (1920/560)/($(window).outerWidth(true)/($('.screen').width())),  
+	zoom_ui: 1,  
 	zoom_limit: {'max': 3, 'min': 0.3 },
 	w_target: 1920,
 	h_target: 1200,
@@ -222,10 +222,11 @@ var PhotoEditor = {
 	isready: false,
 	init: function(img){
 		if(!img){ return; }
+		this.zoom_ui = this._getzoom();
 		this.isready = false;
 		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
-		this.panel = $('#photoselection');
+		this.panel = $('#photopanel');
 		this.loading = $('#photoloading');
 		this.box.html('');
 		this.loading.show();
@@ -252,6 +253,10 @@ var PhotoEditor = {
 		var clickevent  = UI.istouch ? 'tapone' : 'click';
 		var gestures = false; //多指协同
 		var action = '';
+		var scale = 0;
+		var rotation = 0;
+		var MIN_D = 1;
+		var MIN_B = 0.01;//缩放&&旋转精度控制
 		
 		//顺时针
 		$('#ico_rotate_cw').bind(clickevent, function(){ _this.rotate(90, true).saveinfo(); });
@@ -268,18 +273,40 @@ var PhotoEditor = {
             drag_min_distance: 0
         })
 		.bind('touchstart', function(e){ e.preventDefault();  })
-		.bind('touchend', function(e){ e.preventDefault(); _this.saveinfo(); action = ''; })			
+		.bind('touchend', function(e){ e.preventDefault(); gestures = false; action = ''; _this.saveinfo(); })			
 		.bind('touchmove', function(e){ e.preventDefault(); })	
 		.bind('transformstart', function(e){ gestures = true; })
-		.bind('transformend', function(e){ gestures = false; })
+		.bind('transformend', function(e){ gestures = false; scale=0; rotation=0; })
 		.bind('transform', function(e){
-			if(!gestures){ return; } action = 'transform';
-			if(typeof(e.scale) == 'number'){ _this.zoom(e.scale); }
-			if(typeof(e.rotation) == 'number'){ _this.rotate(e.rotation); }
+			if(!gestures){ return; } action = 'transform';						
+			if(e.scale && typeof(e.scale) == 'number'){ 
+				if(Math.abs(e.scale - scale)>=MIN_B){
+					if(!scale){ scale =  Math.round(e.scale*100)/100; }
+					else{
+						var offset = Math.round((e.scale - scale)/MIN_B) * MIN_B;
+						scale += offset;
+						scale = Math.round(scale*100)/100;
+					}
+					_this.zoom(scale);
+				}
+			}
+			if(e.rotation && typeof(e.rotation) == 'number'){ 
+				if(Math.abs(e.rotation - rotation)>=MIN_B){
+					if(!rotation){ rotation = Math.round(e.rotation*100)/100; }
+					else{
+						var offset = Math.round((e.rotation - rotation)/MIN_B) * MIN_B;
+						rotation += offset; 
+						rotation = Math.round(rotation*100)/100;
+					}
+					_this.rotate(rotation); 
+				}
+			}
 		})
 		.bind('swipemove', function(e, info){ e.preventDefault(); 
 			if(gestures){ return; } action = 'move';
-			_this.move({ x: info.delta[0].lastX, y: info.delta[0].lastY });	
+			var dx = Math.round(info.delta[0].lastX);
+			var dy = Math.round(info.delta[0].lastY);
+			_this.move({ x: dx, y: dy });
 		});	
 		/*
 		//移动
@@ -297,6 +324,21 @@ var PhotoEditor = {
 			if(!gestures){ return; } action = 'rotate';					 
 			if(typeof(info.rotation) == 'number'){ _this.rotate(info.rotation); }					  
 		});*/
+	},
+	_getzoom: function(){
+		//手机屏幕的密度分为低密度(240*320)/中密度(320*480)和高密度(480*800).通过 
+		//window.devicePixelRatio属性可以获得当前手机屏幕的密度类型. 
+		//如果该属性值为1.5表示高密度;1为中密度;075表示低密度. 
+		var w = 320;
+		if (window.devicePixelRatio == 1.5) {  w =  480; } 
+		else if (window.devicePixelRatio == 1) { w = 320; } 
+		else if (window.devicePixelRatio == 0.75) { w = 240; }
+		this.zoom_ui = (1920/560)*(($('.screen').width()/w));
+		return this.zoom_ui;
+	},
+	_parsenumber: function(n){
+		 var re = /([0-9]+\.[0-9]{2})[0-9]*/;
+   		 return parseFloat(n.toString().replace(re,'$1'));
 	},
 	console: function(msg){
 		if(!this.paneltest){
@@ -352,14 +394,16 @@ var PhotoEditor = {
 		return this;
 	},	
 	move: function(offset){
-		var x = this.info.x + offset.x*this.zoom_ui;
-		var y = this.info.y + offset.y*this.zoom_ui;
+		var dx = offset.x*this.zoom_ui;
+		var dy = offset.y*this.zoom_ui;
+		var x = Math.round(this.info.x + dx);
+		var y = Math.round(this.info.y + dy);
 		var w = this.info.w; 
 		var h = this.info.h;		
 		if(this.check(x, y, w, h)){
 			//吸附边缘
-			if(Math.abs(x)<10){ x = 0; }//else if(Math.abs(this.w_target-x) < 10){ x = this.w_target -w; }
-			if(Math.abs(y)<10){ y = 0; }//else if(Math.abs(this.h_target-h) < 10){ y = this.h_target -h; }
+			//if(Math.abs(x)<10){ x = 0; }//else if(Math.abs(this.w_target-x) < 10){ x = this.w_target -w; }
+			//if(Math.abs(y)<10){ y = 0; }//else if(Math.abs(this.h_target-h) < 10){ y = this.h_target -h; }
 			this.img.css({'left': x, 'top': y });
 			this.info.x = x;
 			this.info.y = y;
