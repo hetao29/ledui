@@ -2,22 +2,50 @@
 
 //接口
 var API = {
-	host: "http://api.ledui.com",
+	host: "http://www.ledui.com/api.php/api/",
 	//登录
-	login: function(n){
-		var n = arguments[0] ? arguments[0] : 0;
-		this.pages = this.seri();
-		this.total = this.pages.length;
-		if(!this.total){ return; }
-		this.show(n);
+	login: function(param,ok,error){
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/user/login",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.error_code==0){
+			   		if(ok)ok(msg);
+					return true;
+			   }else{
+				   if(error)error(msg);
+			   }
+		   },
+		   error:function(msg){
+		   		if(error)error(msg);
+				return false;
+		   },
+		});
+	},
+	register: function(param,ok,error){
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/user/register",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.error_code==0){
+			   		if(ok)ok(msg);
+					return true;
+			   }else{
+				   if(error)error(msg);
+			   }
+		   },
+		   error:function(msg){
+		   		if(error)error(msg);
+				return false;
+		   },
+		});
 	},
 	//登出
 	logout: function(n){
-		var n = arguments[0] ? arguments[0] : 0;
-		this.pages = this.seri();
-		this.total = this.pages.length;
-		if(!this.total){ return; }
-		this.show(n);
 	}
 }
 
