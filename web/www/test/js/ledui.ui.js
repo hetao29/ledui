@@ -249,7 +249,7 @@ var PhotoEditor = {
 	},
 	bind: function(){
 		var _this = this;
-		var clickevent  = UI.istouch ? 'tap' : 'click';
+		var clickevent  = UI.istouch ? 'tapone' : 'click';
 		var gestures = false; //多指协同
 		var action = '';
 		
