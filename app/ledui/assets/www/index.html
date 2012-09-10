@@ -9,7 +9,7 @@
 <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 <meta content="telephone=no" name="format-detection" />
 <link href="css/ledui.app.css" rel="stylesheet" type="text/css" />
-<link href="img/icon.png" rel="apple-touch-icon-precomposed" />
+<link href="icon.png" rel="apple-touch-icon-precomposed" />
 </head>
 <body>
 <div class="screen">
@@ -23,17 +23,17 @@
 	<div class="panel_body">
 		<div class="banner">
 			<div class="createcard">
-				<div class="button button_l" id="choosePic" active="yes"><span class="label">创建一张明信片</span></div>
+				<div class="button button_l" id="choosePic" active="yes"><span tr="create" class="label">创建一张明信片</span></div>
 			</div>
 		</div>
 	</div>
 	<div class="panel_foot">
 		<div class="helper">
 			<ul>
-				<li active="yes">关于</li>
-				<li active="yes">信箱</li>
-				<li active="yes">登录</li>
-				<li active="yes">注册</li>
+				<li active="yes" tr="about">关于</li>
+				<li active="yes" tr="postcard">信箱</li>
+				<li active="yes" tr="login">登录</li>
+				<li active="yes" tr="signup">注册</li>
 			</ul>
 		</div>
 	</div>
@@ -49,7 +49,7 @@
 			<div class="title">编辑图片</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 				<div class="r">
 					<div class="button button_s" active="yes">重选</div>
@@ -60,14 +60,10 @@
 	<div class="panel_body">
 		<div class="photoeditor">
 			<div class="view">
-				<div class="selection"></div>
-				<div class="photo" id="photoCanvas"><img id="photoContent" src="http://img.wallba.com/data/Image/2012zwj/8yue/8-2/tybz/lundunwan/15/2012821015415.jpg" width="1024" height="768"></div>
-				<div class="mask">
-					<div class="l"></div>
-					<div class="r"></div>
-					<div class="t"></div>
-					<div class="b"></div>
-				</div>
+				<div class="selection" id="photoselection"></div>
+				<div class="photo" id="photo"></div>
+				<div class="mask"><div class="l"></div><div class="r"></div><div class="t"></div><div class="b"></div></div>
+				<div class="loading" id="photoloading"><div class="ico"></div><div class="lay"></div></div>
 			</div>
 			<div class="tool">
 				<div class="icos">
@@ -98,7 +94,7 @@
 			<div class="title">收件人信息</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -137,7 +133,7 @@
 			<div class="title">输入留言信息</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -165,7 +161,7 @@
 			<div class="title">预览</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -206,7 +202,7 @@
 			<div class="title">支付邮费</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -245,7 +241,7 @@
 			<div class="title">支付完成</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -288,7 +284,7 @@
 			<div class="title">我的信箱</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span>返回</div>
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -312,7 +308,7 @@
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">选择相片</div>
-			<div class="close">X</div>
+			<div class="close" active="yes"><div class="handle">X</div></div>
 		</div>
 		<div class="bd">
 			<ul class="list">
@@ -328,7 +324,7 @@
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">注意</div>
-			<div class="close">X</div>
+			<div class="close" active="yes"><div class="handle">X</div></div>
 		</div>
 		<div class="bd">
 			<div class="info"> 确认删除已保存的明信片? </div>
@@ -344,7 +340,7 @@
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">注意</div>
-			<div class="close">X</div>
+			<div class="close" active="yes"><div class="handle">X</div></div>
 		</div>
 		<div class="bd">
 			<div class="info">你确定要退出吗?</div>
@@ -358,11 +354,14 @@
 </div>
 </div><!--overlays end-->
 
-<script src="js/jquery-1.7.2.min.js"></script> 
+<script src="js/cordova-2.0.0.js"></script> 
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jgestures.min.js"></script>  
+<script src="js/hammer.js"></script> 
 <script src="js/iscroll-min.js"></script> 
 <script src="js/ledui.ui.js"></script> 
-<script src="js/ledui.test.js"></script> 
-<script src="js/cordova-2.0.0.js"></script> 
+<script src="js/ledui.test.js"></script>
 <script src="js/ledui.api.js"></script>
+<script src="js/tr.js"></script>
 </body>
 </html>
