@@ -49,35 +49,86 @@ var API = {
 	},
 	//登出
 	logout: function(n){
-	}
-}
-function uploadPhoto(imageURI) {
-	/*
+	},
+	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
+	createPostCard:function(){
+		
+	},
+	upload:function(PostCardID,imageURI){
+		
 		var reader = new FileReader();
 		reader.onload = function(e) {
+				
+		　　alert(this.result.length);
+			//TODO，实现分片算法，同时更新本地状态，增加重试代码
+			var param = new Object();
+			param.value1 = this.result;
+			param.PostCardID = PostCardID;
+			
+			$.ajax({
+			   type: "POST",
+			   url: "http://www.ledui.com/test.php",
+			   data: param,
+			   dataType: "JSON",
+			   success: function(msg){
+				   alert("OK"+msg);
+				   if(msg && msg.error_code==0){
+						if(ok)ok(msg);
+						return true;
+				   }else{
+					   if(error)error(msg);
+				   }
+			   },
+			   error:function(msg){
+				   alert("ERROR"+msg);
+					if(error)error(msg);
+					return false;
+			   },
+			});
+		}
+		reader.readAsDataURL(imageURI);
+	}
+}
+//分片端点续传已经实现
+/*
+function uploadPhoto(imageURI) {
+	
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			
 	　　alert(this.result.length);
-	　}
-	　reader.readAsDataURL(/file:\/\/.*?(\/.*)/.exec(imageURI)[1]);
-*/
 	
-	
-	var options = new FileUploadOptions();
-	options.fileKey="file";
-	options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-	options.mimeType="image/jpeg";
-options.chunkedMode=true;
-
-	var params = new Object();
-	params.value1 = "test";
-	params.value2 = "param";
-
-	options.params = params;
-
-	var ft = new FileTransfer();
-	ft.upload(imageURI, encodeURI("http://www.ledui.com/test.php"), win, fail, options);
+		var param = new Object();
+		param.value1 = this.result;
+		param.value2 = "param";
+		
+		$.ajax({
+		   type: "POST",
+		   url: "http://www.ledui.com/test.php",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   alert("OK"+msg);
+			   if(msg && msg.error_code==0){
+			   		if(ok)ok(msg);
+					return true;
+			   }else{
+				   if(error)error(msg);
+			   }
+		   },
+		   error:function(msg){
+			   alert("ERROR"+msg);
+		   		if(error)error(msg);
+				return false;
+		   }
+		});
+		}
+	reader.readAsDataURL(imageURI);
 }
 
 function win(r) {
+	alert("OK");
+	alert(r);
 	console.log("Code = " + r.responseCode);
 	console.log("Response = " + r.response);
 	console.log("Sent = " + r.bytesSent);
@@ -88,21 +139,92 @@ function fail(error) {
 	console.log("upload error source " + error.source);
 	console.log("upload error target " + error.target);
 }
+*/
 
-//记录本地文件信息
-/**
- * @table postcard
- * @field TmpID //临时ID，随机生成
- * @field FileName //filename，文件名
- * @field FileSize //
- * @field Address
- * @field TmpID
- **/
- 
-var DB={
-	
-	
+//记录本地状态信息
+var LocalData={
+	Total:0,
+	Key:"LocalData_V1",
+	Items:[],
+	getAll:function(){
+		var value = JSON.parse(window.localStorage.getItem(this.Key));
+		if(value && value.Items){
+			this.Total = value.Items.length;
+			return this.Items = value.Items;
+		}
+	},
+	updateAll:function(){
+		this.Total = this.Items.length;
+		return window.localStorage.setItem(this.Key,JSON.stringify(this));
+	},
+	//增加本地一个状态
+	add:function(LocalPostCardItem){
+		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+		this.getAll();
+		this.Total = this.Items.push(LocalPostCardItem);
+		this.updateAll();
+	},
+	//删除本地状态，当取消，或者成功时
+	del:function(TmpID){
+		this.getAll();
+		for(var i in this.Items){
+			if(this.Items[i].TmpID==TmpID){
+				this.Items.splice(i,1);
+			}
+		}
+		this.updateAll();
+	},
+	//更新本地的一个状态
+	update:function(TmpID,LocalPostCardItem){
+		this.getAll();
+		for(var i in this.Items){
+			if(this.Items[i].TmpID==TmpID){
+				this.Items.splice(i,1,LocalPostCardItem);
+			}
+		}
+		this.updateAll();
+	},
+	clear:function(){
+		this.Items=[];
+		this.updateAll();
+	}
 }
+/*
+LocalData.add({fjeow:'xx'});
+alert(LocalData.getAll().length);
+*/
+//本地的明信片状态
+var LocalDataPostCard={
+	FileTmpID:"",
+	//明信片ID
+	PostCard:"",
+	Address:"",
+	Comments:"",
+	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
+	Status:1,
+	width:"",
+	height:"",
+	left:"",
+	top:"",
+	rotate:""
+}
+//待上传的文件类，这样能实现同一图片，做多张明信片时的秒传
+var LocalDataFile={
+	//文件没有上传前，生成的临时ID，根据文件Path与文件Size
+	FileTmpID:"",
+	//文件路径
+	FilePath:"",
+	//文件大小
+	FileSize:"",
+	//文件已经上传大小
+	DataSended:0,
+	//文件上传总大小
+	DataTotal:0,
+	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
+	Status:1,
+}
+
+
 
 
 //Interface方法
@@ -133,7 +255,7 @@ var Interface = {
 	onPhotoURISuccess:function(imageURI){
 		PhotoEditor.init(imageURI);
 		Page.init(1);
-		uploadPhoto(imageURI);
+		API.upload(122,imageURI);
 	},
 	
 	onFail:function (message) {
