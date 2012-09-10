@@ -275,6 +275,7 @@ var PhotoEditor = {
 		.bind('touchstart', function(e){ e.preventDefault();  })
 		.bind('touchend', function(e){ e.preventDefault(); gestures = false; action = ''; _this.saveinfo(); })			
 		.bind('touchmove', function(e){ e.preventDefault(); })	
+		.bind('doubletap', function(){ _this.reset(); })
 		.bind('transformstart', function(e){ gestures = true; })
 		.bind('transformend', function(e){ gestures = false; scale=0; rotation=0; })
 		.bind('transform', function(e){
@@ -362,7 +363,7 @@ var PhotoEditor = {
 	console: function(msg){
 		if(!this.paneltest){
 			this.paneltest = 
-			$('<div style="z-index:4;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
+			$('<div style="z-index:6;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
 			.appendTo(this.box.parent())
 			.bind('click', function(){
 				$(this).hide();						
@@ -380,20 +381,22 @@ var PhotoEditor = {
 		return true;
 	},	
 	center: function(){
+		var w = this.info.w;
+		var h = this.info.h;
 		var x = (this.w_target - this.info.w)/2;
-		var y = (this.h_target - this.info.h)/2;
-		this.img.css({'left':x, 'top': y });
+		var y = (this.h_target - this.info.h)/2;		
+		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y }, 300);		
 		this.info.x = x;
 		this.info.y = y;
 		return this;
 	},
+	reset: function(){
+		this.info.w = this.w_target;
+		this.info.h = this.info.w / this.ratio_img;
+		this.center().setrotate(0);
+		return this;
+	},
 	rotate: function(deg, frombuttom){
-		var prefix = ($.browser.webkit)  ? '-webkit-' : 
-					 ($.browser.mozilla) ? '-moz-' :
-					 ($.browser.ms)      ? '-o-' :
-					 ($.browser.opera)   ? '-ms-' : '';
-		
-		var deg = deg;
 		if(arguments[1]){ //按钮点击向下去整， 附加整角度
 			if(deg<0){
 				deg = Math.ceil(this.info.r/90)*90 + deg;	
@@ -408,10 +411,18 @@ var PhotoEditor = {
 		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
+		this.setrotate(deg);
+		return this;
+	},
+	setrotate: function(deg){
+		var prefix = ($.browser.webkit)  ? '-webkit-' : 
+				 ($.browser.mozilla) ? '-moz-' :
+				 ($.browser.ms)      ? '-o-' :
+				 ($.browser.opera)   ? '-ms-' : '';
 		this.img.css(prefix + 'transform', 'rotate('+ deg +'deg)');
 		this.img.attr('deg', deg);
 		return this;
-	},	
+	},
 	move: function(offset){
 		var dx = offset.x*this.zoom_ui;
 		var dy = offset.y*this.zoom_ui;
