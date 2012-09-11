@@ -428,7 +428,7 @@ background: -o-linear-gradient(top, #eee, #ddd);
 .regform .item{position:relative;margin-bottom:20px;}
 .regform input{width:480px;padding:25px 20px;height:40px;font-size:36px;}
 
-.chkphoto{margin-top:-220px;}
+.chkphoto{margin-top:-210px;}
 .chkphoto .list li{position:relative;border-bottom:4px solid #b5b5b5;padding:0 0 0 120px;height:100px;cursor:pointer;}
 .chkphoto .g{display:block;position:absolute;top:25px;left:10px;width:100px;text-align:center;}
 .chkphoto label{font-size:40px;line-height:100px;}
