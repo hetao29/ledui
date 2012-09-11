@@ -276,10 +276,75 @@
 </div>
 <!--
 *************************************
-* page7 我的信箱
+* page7 添加收件人信息
 *************************************
 -->
-<div class="page" _page="7" name="我的信箱">
+<div class="page" _page="7" name="添加收件人信息">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title">收件人信息</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+		<div class="rcvform">
+			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
+			<div class="item"><input type="text" placeholder="收件人手机号码" /></div>
+			<div class="item"><label>收件地址</label>
+							<div><select><option>选择省份</option></select></div>
+							<div><select><option>选择城市</option></select></div>							
+							<div><select><option>选择区域</option></select></div>
+			</div>
+			<div class="item"><input type="text" placeholder="街道地址" /></div>
+			<div class="item"><input type="text" placeholder="邮政编码" /></div>
+		</div>
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" active="yes">添加收件人</div>
+		</div>
+	</div>
+</div>
+<!--
+*************************************
+* page8 关于
+*************************************
+-->
+<div class="page" _page="8" name="关于">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title">关于乐兑</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+		
+	</div>
+	<div class="panel_foot">		
+		<div class="helper">
+			<ul>
+				<li active="yes" tr="about" class="current">关于</li>
+				<li active="yes" tr="postcard">信箱</li>
+				<li active="yes" tr="login">登录</li>
+				<li active="yes" tr="signup">注册</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!--
+*************************************
+* page9 信箱
+*************************************
+-->
+<div class="page" _page="9" name="我的信箱">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">我的信箱</div>
@@ -291,10 +356,97 @@
 		</div>
 	</div>
 	<div class="panel_body">
-		<div class="mymail"> </div>
+		
 	</div>
-	<div class="panel_foot"> </div>
+	<div class="panel_foot">		
+		<div class="helper">
+			<ul>
+				<li active="yes" tr="about">关于</li>
+				<li active="yes" tr="postcard"  class="current">信箱</li>
+				<li active="yes" tr="login">登录</li>
+				<li active="yes" tr="signup">注册</li>
+			</ul>
+		</div>
+	</div>
 </div>
+
+<!--
+*************************************
+* page10 登录
+*************************************
+-->
+<div class="page" _page="10" name="登录">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title">登录</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+		<div class="logform">
+			<div class="errorbox">请填写邮箱地址</div>
+			<div class="item"><input type="text" placeholder="邮箱地址" /></div>
+			<div class="item"><input type="password" placeholder="密码" /></div>
+		</div>
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" active="yes">登录</div>
+		</div>		
+		<div class="helper">
+			<ul>
+				<li active="yes" tr="about">关于</li>
+				<li active="yes" tr="postcard">信箱</li>
+				<li active="yes" tr="login" class="current">登录</li>
+				<li active="yes" tr="signup">注册</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!--
+*************************************
+* page11 登录
+*************************************
+-->
+<div class="page" _page="11" name="注册">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title">注册</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+		<div class="regform">
+			<div class="errorbox">请填写邮箱地址</div>
+			<div class="item"><input type="text" placeholder="邮箱地址" /></div>
+			<div class="item"><input type="password" placeholder="密码" /></div>
+			<div class="item"><input type="password" placeholder="重复密码" /></div>
+		</div>
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" active="yes">注册</div>
+		</div>		
+		<div class="helper">
+			<ul>
+				<li active="yes" tr="about">关于</li>
+				<li active="yes" tr="postcard">信箱</li>
+				<li active="yes" tr="login">登录</li>
+				<li active="yes" tr="signup" class="current">注册</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
 </div><!--pages end--> 
 </div><!--screen end--> 
 
