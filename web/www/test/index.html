@@ -29,11 +29,16 @@
 	</div>
 	<div class="panel_foot">
 		<div class="helper">
-			<ul>
+			<ul class="isnotlogin">
 				<li active="yes" class="CAbout" tr="about">关于</li>
 				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
 				<li active="yes" class="CLogin" tr="login" >登录</li>
 				<li active="yes" class="CRegister" tr="signup">注册</li>
+			</ul>
+			<ul class="islogin hide">
+				<li active="yes" class="CAbout" tr="about">关于</li>
+				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
+				<li active="yes" class="CLogout" tr="signup">登出</li>
 			</ul>
 		</div>
 	</div>
@@ -331,11 +336,16 @@
 	</div>
 	<div class="panel_foot">		
 		<div class="helper">
-			<ul>								
+			<ul class="isnotlogin">								
 				<li active="yes" class="CAbout current" tr="about">关于</li>
 				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
 				<li active="yes" class="CLogin" tr="login" >登录</li>
 				<li active="yes" class="CRegister" tr="signup">注册</li>
+			</ul>
+			<ul class="islogin hide">
+				<li active="yes" class="CAbout" tr="about">关于</li>
+				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
+				<li active="yes" class="CLogout" tr="signup">登出</li>
 			</ul>
 		</div>
 	</div>
@@ -361,11 +371,16 @@
 	</div>
 	<div class="panel_foot">		
 		<div class="helper">
-			<ul>				
+			<ul class="isnotlogin">				
 				<li active="yes" class="CAbout" tr="about">关于</li>
 				<li active="yes" class="CPostCard current" tr="postcard">信箱</li>
 				<li active="yes" class="CLogin" tr="login" >登录</li>
 				<li active="yes" class="CRegister" tr="signup">注册</li>
+			</ul>
+			<ul class="islogin hide">
+				<li active="yes" class="CAbout" tr="about">关于</li>
+				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
+				<li active="yes" class="CLogout" tr="signup">登出</li>
 			</ul>
 		</div>
 	</div>
@@ -376,7 +391,7 @@
 * page10 登录
 *************************************
 -->
-<div class="page" _page="10" name="登录">
+<div class="page" _page="10" id="login" name="登录">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">登录</div>
@@ -390,21 +405,26 @@
 	<div class="panel_body">
 		<div class="logform">
 			<div class="errorbox">请填写邮箱地址</div>
-			<div class="item"><input type="text" placeholder="邮箱地址" /></div>
-			<div class="item"><input type="password" placeholder="密码" /></div>
+			<div class="item"><input type="text" id="sid" placeholder="邮箱地址" /></div>
+			<div class="item"><input type="password" id="pwd" placeholder="密码" /></div>
 		</div>
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes">登录</div>
+			<div class="button button_l" active="yes" id="IDLogin">登录</div>
 		</div>		
 		<div class="helper">
-			<ul>				
+			<ul class="isnotlogin">				
 				<li active="yes" class="CAbout" tr="about">关于</li>
 				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
 				<li active="yes" class="CLogin current" tr="login">登录</li>
 				<li active="yes" class="CRegister" tr="signup">注册</li>
 				
+			</ul>
+			<ul class="islogin hide">
+				<li active="yes" class="CAbout" tr="about">关于</li>
+				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
+				<li active="yes" class="CLogout" tr="signup">登出</li>
 			</ul>
 		</div>
 	</div>
@@ -439,11 +459,16 @@
 			<div class="button button_l" active="yes">注册</div>
 		</div>		
 		<div class="helper">
-			<ul>
+			<ul class="isnotlogin">
 				<li active="yes" class="CAbout" tr="about">关于</li>
 				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
 				<li active="yes" class="CLogin" tr="login" >登录</li>
 				<li active="yes" class="CRegister current" tr="signup">注册</li>
+			</ul>
+			<ul class="islogin hide">
+				<li active="yes" class="CAbout" tr="about">关于</li>
+				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
+				<li active="yes" class="CLogout" tr="signup">登出</li>
 			</ul>
 		</div>
 	</div>

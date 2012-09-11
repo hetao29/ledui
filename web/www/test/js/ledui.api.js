@@ -8,15 +8,17 @@ var API = {
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
 	 */
 	login: function(param,ok,error){
+		LocalData.updateToken("");
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/login",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
-			   if(msg && msg.error_code==0){
-			   		if(ok)ok(msg);
-					return true;
+			   if(msg && msg.result && msg.error_code==0){
+			   	LocalData.updateToken(msg.result.UserAccessToken);
+				if(ok)ok(msg);
+				return true;
 			   }else{
 				   if(error)error(msg);
 			   }
@@ -48,7 +50,28 @@ var API = {
 		});
 	},
 	//登出
-	logout: function(n){
+	logout: function(param,ok,error){
+		LocalData.updateToken("");
+		if(ok)ok();return;
+		//$.ajax({
+		//   type: "POST",
+		//   url: API.host+"/user/logout",
+		//   data: param,
+		//   dataType: "JSON",
+		//   success: function(msg){
+		//	   if(msg && msg.result && msg.error_code==0){
+		//	   	LocalData.updateToken(msg.result.UserAccessToken);
+		//		if(ok)ok(msg);
+		//		return true;
+		//	   }else{
+		//		   if(error)error(msg);
+		//	   }
+		//   },
+		//   error:function(msg){
+		//   		if(error)error(msg);
+		//		return false;
+		//   },
+		//});
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
 	createPostCard:function(){
@@ -144,25 +167,38 @@ function fail(error) {
 //记录本地状态信息
 var LocalData={
 	Total:0,
-	Key:"LocalData_V1",
+	Key:"LocalData",
+	Version:"V1",
+	Token:"",
 	Items:[],
 	getAll:function(){
-		var value = JSON.parse(window.localStorage.getItem(this.Key));
-		if(value && value.Items){
+		var value = JSON.parse(window.localStorage.getItem(this.Key+this.Version));
+		if(value){
 			this.Total = value.Items.length;
-			return this.Items = value.Items;
+			this.Token = value.Token;
+			this.Items = value.Items;
+			return this;
 		}
 	},
-	updateAll:function(){
+	updateToken:function(token){
+		this.getAll();
+		this.Token = token;
+		this._updateAll();
+    	},
+	getToken:function(){
+		this.getAll();
+		return this.Token;
+	},
+	_updateAll:function(){
 		this.Total = this.Items.length;
-		return window.localStorage.setItem(this.Key,JSON.stringify(this));
+		return window.localStorage.setItem(this.Key+this.Version,JSON.stringify(this));
 	},
 	//增加本地一个状态
 	add:function(LocalPostCardItem){
 		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 		this.getAll();
 		this.Total = this.Items.push(LocalPostCardItem);
-		this.updateAll();
+		this._updateAll();
 	},
 	//删除本地状态，当取消，或者成功时
 	del:function(TmpID){
@@ -172,7 +208,7 @@ var LocalData={
 				this.Items.splice(i,1);
 			}
 		}
-		this.updateAll();
+		this._updateAll();
 	},
 	//更新本地的一个状态
 	update:function(TmpID,LocalPostCardItem){
@@ -182,11 +218,11 @@ var LocalData={
 				this.Items.splice(i,1,LocalPostCardItem);
 			}
 		}
-		this.updateAll();
+		this._updateAll();
 	},
 	clear:function(){
 		this.Items=[];
-		this.updateAll();
+		this._updateAll();
 	}
 }
 /*
@@ -319,8 +355,30 @@ var Control = {
 		$(".CPostCard").bind("tapone",function(e){Page.show(9);});
 		
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
+		$(".CLogout").bind("tapone",function(e){
+				API.logout({},function ok(result){
+					$(".isnotlogin").show();
+					$(".islogin").hide();
+					},function error(result){
+				});
+			});
 		
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+
+		$("#login #IDLogin").bind("tapone",function(e){
+				var sid=$("#login #sid").val();
+				var pwd=$("#login #pwd").val();
+				API.login({email:sid,passwd:pwd},function ok(result){
+					//登录成功,更新登录状态,跳到登录前的一页
+					$("#login .errorbox").hide();
+					$(".isnotlogin").hide();
+					$(".islogin").show();
+					Interface.onBackbutton();
+					},function error(result){
+					//登录失败，提示错误信息
+					$("#login .errorbox").show();
+					});
+				});
 		
 		
 		
