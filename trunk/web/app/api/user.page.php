@@ -1,7 +1,7 @@
 <?php
 class api_user{
 	/**
-	 * �û�ע��
+	 * 用户注册
 	 */
 	public function pageRegister($inPath){
 		$db = new user_db;
@@ -25,8 +25,13 @@ class api_user{
 		}
 		return SJson::encode($result);
 	}
+	public function pageIsLogin($inPath){
+		$token = $_POST['token'];
+		$uid = $_POST['uid'];
+		return user_api::isLoginMobile($uid,$token);
+	}
 	/**
-	 * �û���¼
+	 * 用户登录
 	 */
 	public function pageLogin($inPath){
 		$result = new api_result;
@@ -34,32 +39,48 @@ class api_user{
 		$db = new user_db;
 		$email = $_POST['email'];
 		$passwd = $_POST['passwd'];
-		$user = $db->getUserByEmail($email);
-		if(empty($user)){
-			$result->error_code = -10001;
-		}else if($passwd == $user["UserPassword"]){
-			$r = user_api::loginMobile($user);
-			$result->error_code = 0;
-			$data->UserID = $user['UserID'];
-			$data->UserSID= $user['UserSID'];
-			$data->UserAlias= $user['UserAlias'];
-			$data->UserEmailVerified= $user['UserEmailVerified'];
-			$data->UserComment= $user['UserComment'];
-			$data->UserAccessToken= $r;
-			$result->result = $data;
+		if(empty($email) || !SUtil::validEmail($email)){
+			$result->error_msg="邮箱地址错误";//应该支持多语言
+			$result->error_code=-10001;
+			return SJson::encode($result);
+		}elseif(empty($passwd)){
+			$result->error_msg="密码不能为空";//应该支持多语言
+			$result->error_code=-10003;
+			return SJson::encode($result);
 		}else{
-			$result->error_code = -10004;
+			$user = $db->getUserByEmail($email);
+			if(empty($user)){
+				$result->error_code = -10002;
+				$result->error_msg="邮箱没有注册";//应该支持多语言
+				return SJson::encode($result);
+			}else if($passwd == $user["UserPassword"]){
+				$r = user_api::loginMobile($user);
+				$result->error_code = 0;
+				$data->UserID = $user['UserID'];
+				$data->UserSID= $user['UserSID'];
+				$data->UserAlias= $user['UserAlias'];
+				$data->UserEmailVerified= $user['UserEmailVerified'];
+				$data->UserComment= $user['UserComment'];
+				$data->UserAccessToken= $r;
+				$result->result = $data;
+			}else{
+				$result->error_code = -10004;
+				$result->error_msg="密码错误";//应该支持多语言
+			}
 		}
 		return SJson::encode($result);
 	}
 	/**
-	 * �û���Ϣ��ȡ
+	 * 用户信息获取
 	 */
 	public function pageGetInfo($inPath){
 		$result = new api_result;
 		$db = new user_db;
-		if(isset($_SESSION['user'])){
-			$result->result =  $_SESSION['user'];
+		$userID = $_GET['UserID'];
+		$token = $_GET['Token'];
+		
+		if(user_api::isLoginMobile($userID,$token) == true){
+			$result->result =  user_api::getUserByID($userID);
 			$result->error_code = 0;
 		}else{
 			$result->error_code = -1;

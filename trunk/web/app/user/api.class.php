@@ -40,7 +40,7 @@ class user_api{
 		if(isset($_SESSION['user']))return $_SESSION['user'];else return false;
 	}
 	static public function logoutMobile($UserID,$Token){
-		$db = new ser_db;
+		$db = new user_db;
 		$db->delUserToken($UserID,$Token);
 	}
 	static public function logout(){
@@ -56,6 +56,10 @@ class user_api{
 		}else{
 			self::logout();
 		}
+	}
+	static public function getUserByID( $userID ){
+		$db = new user_db;
+		return $db->getUserByID( $userID );
 	}
 	static public function setCookie($k,$v,$t){
 		header( 'p3p:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');

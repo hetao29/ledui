@@ -30,7 +30,15 @@ class user_db{
 		return $this->_db->insert("t_user_token",$Token,true);
 	}
 	function addUser($User){
-		if(isset($User['UserID']))unset($User['UserID']);
+		if(isset($User['UserID']))
+			unset($User['UserID']);
 		return $this->_db->insert("t_user",$User);
 	}
+	function addUserProfile($UserP){
+		return $this->_db->insert("t_user_profile",$UserP);
+	}
+	function updateUserProfile($UserID,$UserP){
+		return $this->_db->update("t_user_profile",array("UserID"=>$UserID),$userP);
+	}
+
 }
