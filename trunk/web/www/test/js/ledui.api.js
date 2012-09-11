@@ -238,6 +238,12 @@ var Interface = {
 			Overlay.hide(Overlay.curname);
 			return;
 		}
+		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
+		if(p){
+		Page.show(p);
+		return;
+		}
+		/*
 		if(Page.pages_order.length>=1){
 		Page.pages_order.pop();
 			var p = Page.pages_order[Page.pages_order.length-1];
@@ -245,7 +251,7 @@ var Interface = {
 				Page.show(p);
 				return;
 			
-		}
+		}*/
 		//如果，是第0页，按后退，就提示程序退出
 		Overlay.show("quit");
 	},
