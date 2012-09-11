@@ -1,8 +1,7 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(0);	
+	Page.init(2);	
 	Overlay.init();
-	//Scroll.init();		
 	Touch.init();
 });
 
@@ -45,14 +44,10 @@ var Page = {
 			}, 600);
 		}else{			
 			page.show();	
-		}		
+		}
+		this.scroller(page);
 		this.current_prev = this.current;
 		this.current = n;
-		/*
-					if(this.current==0)this.pages_order=[0];
-			else if(this.current != this.pages_order[this.pages_order.length-1])this.pages_order.push(this.current);
-*/
-
 		Adapta.layout();
 		return this;
 	},
@@ -72,6 +67,16 @@ var Page = {
 		if(this.current_prev<=0 && this.current_prev == this.current){ return; }
 		this.show(this.current_prev);
 		return this;
+	},
+	scroller: function(page){
+		var scrolls = page.find('[scroll]');
+		scrolls.each(function(){ 
+			if(!$(this).attr('scrollstep')){
+			//var s = new TouchScroll($(this).get(0), {elastic: true});
+			//$(this).attr('scrollstep', 'true');
+			//console.log(s);
+			}
+		});	
 	},
 	//存储顺序与html顺序无关，并纠正错误标记，相同前者优先，未标 记为0
 	seri: function(){
@@ -206,14 +211,6 @@ var Touch = {
 		.bind('focus', function(e) { $(this).addClass('focus'); })
 		.bind('blur', function(e) { $(this).removeClass('focus'); });
 	}
-}
-
-//滚动条
-var Scroll = {
-	init: function(){
-		var scrolls = $('[scroll]');
-		scrolls.each(function(){ var s = new iScroll($(this).get(0)); });	
-	}	
 }
 
 //照片编辑器
