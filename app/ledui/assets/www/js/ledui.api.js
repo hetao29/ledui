@@ -238,10 +238,20 @@ var Interface = {
 			Overlay.hide(Overlay.curname);
 			return;
 		}
-		if(Page.current>0){
-			Page.show(Page.current-1);
-			return;
+		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
+		if(p){
+		Page.show(p);
+		return;
 		}
+		/*
+		if(Page.pages_order.length>=1){
+		Page.pages_order.pop();
+			var p = Page.pages_order[Page.pages_order.length-1];
+			
+				Page.show(p);
+				return;
+			
+		}*/
 		//如果，是第0页，按后退，就提示程序退出
 		Overlay.show("quit");
 	},
@@ -267,6 +277,14 @@ var Interface = {
 var Control = {
 	init: function(n){
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		//重选按钮
+		$("#choosePic2").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#choosePic2").bind("click",function(e){Overlay.show("chkphoto");});
+		//结束时，再重新创建时的按钮
+		$("#choosePic3").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#choosePic3").bind("click",function(e){Overlay.show("chkphoto");});
+		//for test
+		$("#choosePic").bind("click",function(e){Page.show(1);});
 		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
 		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
 		
@@ -293,9 +311,30 @@ var Control = {
 														   
 		});
 		
-		$("#toPage2").bind("touchend",function(e){
-			Page.show(2);					  
+		$(".next").bind("touchend",function(e){
+			Page.show($(this).attr("_to"));					  
 		});
+		$(".next").bind("click",function(e){
+			Page.show($(this).attr("_to"));					  
+		});
+		$(".CAbout").bind("touchend",function(e){Page.show(8);});
+		$(".CAbout").bind("click",function(e){Page.show(8);});
+		
+		$(".CLogin").bind("touchend",function(e){Page.show(10);});
+		$(".CLogin").bind("click",function(e){Page.show(10);});
+		
+		$(".CPostCard").bind("touchend",function(e){Page.show(9);});
+		$(".CPostCard").bind("click",function(e){Page.show(9);});
+		
+		$(".CRegister").bind("touchend",function(e){Page.show(11);});
+		$(".CRegister").bind("click",function(e){Page.show(11);});
+		
+		$(".button_s_back").bind("click",function(e){Interface.onBackbutton();});
+		$(".button_s_back").bind("touchend",function(e){Interface.onBackbutton();});
+		
+		
+		
+		
 	},
 	choosePic: function(n){
 	}

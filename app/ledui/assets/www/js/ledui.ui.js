@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(1);	
+	Page.init(0);	
 	Overlay.init();
 	//Scroll.init();		
 	Touch.init();
@@ -13,6 +13,7 @@ var UI = {
 //页面显示控制
 var Page = {
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
+	//pages_order:[0],
 	init: function(n){
 		var n = arguments[0] ? arguments[0] : 0;
 		this.pages = this.seri();
@@ -47,6 +48,11 @@ var Page = {
 		}		
 		this.current_prev = this.current;
 		this.current = n;
+		/*
+					if(this.current==0)this.pages_order=[0];
+			else if(this.current != this.pages_order[this.pages_order.length-1])this.pages_order.push(this.current);
+*/
+
 		Adapta.layout();
 		return this;
 	},
@@ -213,7 +219,7 @@ var Scroll = {
 //照片编辑器
 var PhotoEditor = {
 	isfirstrun: true,
-	zoom_ui: (1920/560)/($(window).outerWidth(true)/($('.screen').width())),  
+	zoom_ui: 1,  
 	zoom_limit: {'max': 3, 'min': 0.3 },
 	w_target: 1920,
 	h_target: 1200,
@@ -222,10 +228,11 @@ var PhotoEditor = {
 	isready: false,
 	init: function(img){
 		if(!img){ return; }
+		this.zoom_ui = this._getzoom();
 		this.isready = false;
 		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
 		this.box = $('#photo');
-		this.panel = $('#photoselection');
+		this.panel = $('#photopanel');
 		this.loading = $('#photoloading');
 		this.box.html('');
 		this.loading.show();
@@ -252,6 +259,10 @@ var PhotoEditor = {
 		var clickevent  = UI.istouch ? 'tapone' : 'click';
 		var gestures = false; //多指协同
 		var action = '';
+		var scale = 0;
+		var rotation = 0;
+		var MIN_D = 1;
+		var MIN_B = 0.01;//缩放&&旋转精度控制
 		
 		//顺时针
 		$('#ico_rotate_cw').bind(clickevent, function(){ _this.rotate(90, true).saveinfo(); });
@@ -268,18 +279,41 @@ var PhotoEditor = {
             drag_min_distance: 0
         })
 		.bind('touchstart', function(e){ e.preventDefault();  })
-		.bind('touchend', function(e){ e.preventDefault(); _this.saveinfo(); action = ''; })			
+		.bind('touchend', function(e){ e.preventDefault(); gestures = false; action = ''; _this.saveinfo(); })			
 		.bind('touchmove', function(e){ e.preventDefault(); })	
+		.bind('doubletap', function(){ _this.reset(); })
 		.bind('transformstart', function(e){ gestures = true; })
-		.bind('transformend', function(e){ gestures = false; })
+		.bind('transformend', function(e){ gestures = false; scale=0; rotation=0; })
 		.bind('transform', function(e){
-			if(!gestures){ return; } action = 'transform';
-			if(typeof(e.scale) == 'number'){ _this.zoom(e.scale); }
-			if(typeof(e.rotation) == 'number'){ _this.rotate(e.rotation); }
+			if(!gestures){ return; } action = 'transform';						
+			if(e.scale && typeof(e.scale) == 'number'){ 
+				if(Math.abs(e.scale - scale)>=MIN_B){
+					if(!scale){ scale =  Math.round(e.scale*100)/100; }
+					else{
+						var offset = Math.round((e.scale - scale)/MIN_B) * MIN_B;
+						scale += offset;
+						scale = Math.round(scale*100)/100;
+					}
+					_this.zoom(scale);
+				}
+			}
+			if(e.rotation && typeof(e.rotation) == 'number'){ 
+				if(Math.abs(e.rotation - rotation)>=MIN_B){
+					if(!rotation){ rotation = Math.round(e.rotation*100)/100; }
+					else{
+						var offset = Math.round((e.rotation - rotation)/MIN_B) * MIN_B;
+						rotation += offset; 
+						rotation = Math.round(rotation*100)/100;
+					}
+					_this.rotate(rotation); 
+				}
+			}
 		})
 		.bind('swipemove', function(e, info){ e.preventDefault(); 
 			if(gestures){ return; } action = 'move';
-			_this.move({ x: info.delta[0].lastX, y: info.delta[0].lastY });	
+			var dx = Math.round(info.delta[0].lastX);
+			var dy = Math.round(info.delta[0].lastY);
+			_this.move({ x: dx, y: dy });
 		});	
 		/*
 		//移动
@@ -298,10 +332,44 @@ var PhotoEditor = {
 			if(typeof(info.rotation) == 'number'){ _this.rotate(info.rotation); }					  
 		});*/
 	},
+	_getzoom: function(){
+		//手机屏幕的密度分为低密度(240*320)/中密度(320*480)和高密度(480*800).通过 
+		//window.devicePixelRatio属性可以获得当前手机屏幕的密度类型. 
+		//如果该属性值为1.5表示高密度;1为中密度;075表示低密度. 
+		var ios = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+		var getw = function(){
+			var w = 0;
+			if($(window).width() < $(window).height()){
+				if(ios){
+					w = window.screen.width;
+				}else{
+					w = window.screen.width/window.devicePixelRatio;
+				}
+			}else{
+				if(ios){
+					w = window.screen.height;
+				}else{
+					w = window.screen.height/window.devicePixelRatio;
+				}	
+			}
+			return w;
+		
+		}
+		var _this = this;
+		$(window).bind('resize', function(){
+			_this.zoom_ui = (1920/560)*(($('.screen').width()/getw()));
+		});
+		this.zoom_ui = (1920/560)*(($('.screen').width()/getw()));
+		return this.zoom_ui;
+	},
+	_parsenumber: function(n){
+		 var re = /([0-9]+\.[0-9]{2})[0-9]*/;
+   		 return parseFloat(n.toString().replace(re,'$1'));
+	},
 	console: function(msg){
 		if(!this.paneltest){
 			this.paneltest = 
-			$('<div style="z-index:4;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
+			$('<div style="z-index:6;position:absolute;top:0;left:0;background:#000;color:#f00;"></div>')
 			.appendTo(this.box.parent())
 			.bind('click', function(){
 				$(this).hide();						
@@ -319,20 +387,22 @@ var PhotoEditor = {
 		return true;
 	},	
 	center: function(){
+		var w = this.info.w;
+		var h = this.info.h;
 		var x = (this.w_target - this.info.w)/2;
-		var y = (this.h_target - this.info.h)/2;
-		this.img.css({'left':x, 'top': y });
+		var y = (this.h_target - this.info.h)/2;		
+		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y }, 300);		
 		this.info.x = x;
 		this.info.y = y;
 		return this;
 	},
+	reset: function(){
+		this.info.w = this.w_target;
+		this.info.h = this.info.w / this.ratio_img;
+		this.center().setrotate(0);
+		return this;
+	},
 	rotate: function(deg, frombuttom){
-		var prefix = ($.browser.webkit)  ? '-webkit-' : 
-					 ($.browser.mozilla) ? '-moz-' :
-					 ($.browser.ms)      ? '-o-' :
-					 ($.browser.opera)   ? '-ms-' : '';
-		
-		var deg = deg;
 		if(arguments[1]){ //按钮点击向下去整， 附加整角度
 			if(deg<0){
 				deg = Math.ceil(this.info.r/90)*90 + deg;	
@@ -347,19 +417,29 @@ var PhotoEditor = {
 		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
+		this.setrotate(deg);
+		return this;
+	},
+	setrotate: function(deg){
+		var prefix = ($.browser.webkit)  ? '-webkit-' : 
+				 ($.browser.mozilla) ? '-moz-' :
+				 ($.browser.ms)      ? '-o-' :
+				 ($.browser.opera)   ? '-ms-' : '';
 		this.img.css(prefix + 'transform', 'rotate('+ deg +'deg)');
 		this.img.attr('deg', deg);
 		return this;
-	},	
+	},
 	move: function(offset){
-		var x = this.info.x + offset.x*this.zoom_ui;
-		var y = this.info.y + offset.y*this.zoom_ui;
+		var dx = offset.x*this.zoom_ui;
+		var dy = offset.y*this.zoom_ui;
+		var x = Math.round(this.info.x + dx);
+		var y = Math.round(this.info.y + dy);
 		var w = this.info.w; 
 		var h = this.info.h;		
 		if(this.check(x, y, w, h)){
 			//吸附边缘
-			if(Math.abs(x)<10){ x = 0; }//else if(Math.abs(this.w_target-x) < 10){ x = this.w_target -w; }
-			if(Math.abs(y)<10){ y = 0; }//else if(Math.abs(this.h_target-h) < 10){ y = this.h_target -h; }
+			//if(Math.abs(x)<10){ x = 0; }//else if(Math.abs(this.w_target-x) < 10){ x = this.w_target -w; }
+			//if(Math.abs(y)<10){ y = 0; }//else if(Math.abs(this.h_target-h) < 10){ y = this.h_target -h; }
 			this.img.css({'left': x, 'top': y });
 			this.info.x = x;
 			this.info.y = y;

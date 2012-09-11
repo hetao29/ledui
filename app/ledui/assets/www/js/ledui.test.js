@@ -18,7 +18,7 @@ var Test = {
 		var total = Page.gettotal();
 		var current = Page.getcurrent();
 		var ops = '';
-		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i +'</option>'; }
+		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + Page.getpage(i).attr('name') +'</option>'; }
 		var sel = $('<select>'+ ops +'</select>')
 		.appendTo(testpanel)
 		.change(function(){
