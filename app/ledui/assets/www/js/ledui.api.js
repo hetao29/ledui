@@ -277,18 +277,16 @@ var Interface = {
 var Control = {
 	init: function(n){
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
-		//重选按钮
-		$("#choosePic2").bind("touchend",function(e){Overlay.show("chkphoto");});
-		$("#choosePic2").bind("click",function(e){Overlay.show("chkphoto");});
-		//结束时，再重新创建时的按钮
-		$("#choosePic3").bind("touchend",function(e){Overlay.show("chkphoto");});
-		$("#choosePic3").bind("click",function(e){Overlay.show("chkphoto");});
 		//for test
 		$("#choosePic").bind("click",function(e){Page.show(1);});
-		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
-		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
+		//重选按钮
+		$("#choosePic2").bind("tapone",function(e){Overlay.show("chkphoto");});
+		//结束时，再重新创建时的按钮
+		$("#choosePic3").bind("tapone",function(e){Overlay.show("chkphoto");});
+		$("#quitOK").bind("tapone",function(e){navigator.app.exitApp();});
+		$("#quitCancel").bind("tapone",function(e){Overlay.hide("quit");});
 		
-		$("#choosePicFromCamera").bind("touchend",function(e){
+		$("#choosePicFromCamera").bind("tapone",function(e){
 														   
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 									{ 
@@ -300,7 +298,7 @@ var Control = {
 			Overlay.hide("chkphoto");
 														   
 		});
-		$("#choosePicFromAlbum").bind("touchend",function(e){
+		$("#choosePicFromAlbum").bind("tapone",function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 									{ 
 										quality: 100, 
@@ -311,26 +309,18 @@ var Control = {
 														   
 		});
 		
-		$(".next").bind("touchend",function(e){
+		$(".next").bind("tapone",function(e){
 			Page.show($(this).attr("_to"));					  
 		});
-		$(".next").bind("click",function(e){
-			Page.show($(this).attr("_to"));					  
-		});
-		$(".CAbout").bind("touchend",function(e){Page.show(8);});
-		$(".CAbout").bind("click",function(e){Page.show(8);});
+		$(".CAbout").bind("tapone",function(e){Page.show(8);});
 		
-		$(".CLogin").bind("touchend",function(e){Page.show(10);});
-		$(".CLogin").bind("click",function(e){Page.show(10);});
+		$(".CLogin").bind("tapone",function(e){Page.show(10);});
 		
-		$(".CPostCard").bind("touchend",function(e){Page.show(9);});
-		$(".CPostCard").bind("click",function(e){Page.show(9);});
+		$(".CPostCard").bind("tapone",function(e){Page.show(9);});
 		
-		$(".CRegister").bind("touchend",function(e){Page.show(11);});
-		$(".CRegister").bind("click",function(e){Page.show(11);});
+		$(".CRegister").bind("tapone",function(e){Page.show(11);});
 		
-		$(".button_s_back").bind("click",function(e){Interface.onBackbutton();});
-		$(".button_s_back").bind("touchend",function(e){Interface.onBackbutton();});
+		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 		
 		
 		
