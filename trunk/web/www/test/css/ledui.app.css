@@ -397,7 +397,7 @@ background: -o-linear-gradient(top, #eee , #eee 50%, #ddd 50% , #ddd );
 .cteatenext{text-align:center;padding:20px 0 40px 0;background:#e8e8e8;border-top:1px solid #fff;border-bottom:1px solid #bababa;}
 .cteatenext .info{font-size:30px;line-height:30px;margin-bottom:10px;}
 
-.chkphoto{margin-top:-240px;}
+.chkphoto{margin-top:-220px;}
 .chkphoto .list li{position:relative;border-bottom:4px solid #b5b5b5;padding:0 0 0 120px;height:100px;cursor:pointer;}
 .chkphoto .g{display:block;position:absolute;top:25px;left:10px;width:100px;text-align:center;}
 .chkphoto label{font-size:40px;line-height:100px;}
