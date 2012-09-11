@@ -7,8 +7,34 @@ var API = {
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
 	 */
+	islogin:function(callback){
+		var token = LocalData.getToken();
+		var uid = LocalData.getUID();
+		if(token && token !=""){
+			var param={token:token,uid:uid};
+			$.ajax({
+				type: "POST",
+				url: API.host+"/user/islogin",
+				data: param,
+				dataType: "JSON",
+				success: function(msg){
+					if(msg){
+						if(callback)callback(true);
+					}else{
+						if(callback)callback(false);
+					}
+				},
+				error:function(msg){
+					if(callback)callback(false);
+					return false;
+				},
+			});
+			return;
+		}
+		if(callback)callback(false);
+	},
 	login: function(param,ok,error){
-		LocalData.updateToken("");
+		LocalData.updateToken("","");
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/login",
@@ -16,7 +42,7 @@ var API = {
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   	LocalData.updateToken(msg.result.UserAccessToken);
+			   	LocalData.updateToken(msg.result.UserID,msg.result.UserAccessToken);
 				if(ok)ok(msg);
 				return true;
 			   }else{
@@ -51,7 +77,7 @@ var API = {
 	},
 	//登出
 	logout: function(param,ok,error){
-		LocalData.updateToken("");
+		LocalData.updateToken("","");
 		if(ok)ok();return;
 		//$.ajax({
 		//   type: "POST",
@@ -170,24 +196,31 @@ var LocalData={
 	Key:"LocalData",
 	Version:"V1",
 	Token:"",
+	uid:"",
 	Items:[],
 	getAll:function(){
 		var value = JSON.parse(window.localStorage.getItem(this.Key+this.Version));
 		if(value){
 			this.Total = value.Items.length;
 			this.Token = value.Token;
+			this.uid = value.uid;
 			this.Items = value.Items;
 			return this;
 		}
 	},
-	updateToken:function(token){
+	updateToken:function(uid,token){
 		this.getAll();
 		this.Token = token;
+		this.uid = uid;
 		this._updateAll();
     	},
 	getToken:function(){
 		this.getAll();
 		return this.Token;
+	},
+	getUID:function(){
+		this.getAll();
+		return this.uid;
 	},
 	_updateAll:function(){
 		this.Total = this.Items.length;
@@ -312,6 +345,18 @@ var Interface = {
 //界面操作
 var Control = {
 	init: function(n){
+		/*初始化*/
+		//1.数据初始化
+		      //a.登录状态
+		      API.islogin(function(r){
+				      if(r){
+					$("#login .errorbox").hide();
+					$(".isnotlogin").hide();
+					$(".islogin").show();
+				      }
+				      });
+		      //b.明信片状态查询
+		//2.界面接口
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
 		//for test
 		$("#choosePic").bind("click",function(e){Page.show(1);});
@@ -366,8 +411,8 @@ var Control = {
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 
 		$("#login #IDLogin").bind("tapone",function(e){
-				var sid=$("#login #sid").val();
-				var pwd=$("#login #pwd").val();
+				var sid=$("#login .sid").val();
+				var pwd=$("#login .pwd").val();
 				API.login({email:sid,passwd:pwd},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
 					$("#login .errorbox").hide();
@@ -376,7 +421,8 @@ var Control = {
 					Interface.onBackbutton();
 					},function error(result){
 					//登录失败，提示错误信息
-					$("#login .errorbox").show();
+					if(result.error_msg) $("#login .errorbox").html(result.error_msg).show();
+					else $("#login .errorbox").show();
 					});
 				});
 		
