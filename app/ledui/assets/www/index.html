@@ -103,7 +103,7 @@
 	<div class="panel_body">
 		<div class="receiveinfo">
 			<div class="create">
-				<div class="button button_m next" _to="7" active="yes">输入新地址</div>
+				<div class="button button_m next" _to="3" active="yes">输入新地址</div>
 			</div>
 			<div class="list">
 				<ul scroll="yes">
@@ -119,16 +119,52 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="3"  active="yes">下一步</div>
+			<div class="button button_l next" _to="4"  active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
+
 <!--
 *************************************
-* page3 输入留言信息
+* page3 添加收件人信息
 *************************************
 -->
-<div class="page" _page="3" name="输入留言信息">
+<div class="page" _page="3" name="添加收件人信息">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title">输入新地址</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+		<div class="rcvform">
+			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
+			<div class="item"><input type="text" placeholder="收件人手机号码" /></div>
+			<div class="item"><label>收件地址</label>
+							<div><select><option>选择省份</option></select></div>
+							<div><select><option>选择城市</option></select></div>							
+							<div><select><option>选择区域</option></select></div>
+			</div>
+			<div class="item"><input type="text" placeholder="街道地址" /></div>
+			<div class="item"><input type="text" placeholder="邮政编码" /></div>
+		</div>
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l next" _to="2" active="yes">添加</div>
+		</div>
+	</div>
+</div>
+<!--
+*************************************
+* page4 输入留言信息
+*************************************
+-->
+<div class="page" _page="4" name="输入留言信息">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">输入留言信息</div>
@@ -147,22 +183,22 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="4"  active="yes">下一步</div>
+			<div class="button button_l next" _to="5"  active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
 <!--
 *************************************
-* page4 预览
+* page5 预览
 *************************************
 -->
-<div class="page" _page="4" name="预览">
+<div class="page" _page="5" name="预览">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">预览</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" _back="3" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -188,22 +224,22 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="5"  active="yes">发送</div>
+			<div class="button button_l next" _to="6"  active="yes">发送</div>
 		</div>
 	</div>
 </div>
 <!--
 *************************************
-* page5 支付邮费
+* page6 支付邮费
 *************************************
 -->
-<div class="page" _page="5" name="支付邮费">
+<div class="page" _page="6" name="支付邮费">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">支付邮费</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" _back="4" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+					<div class="button button_s button_s_back" _back="5" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -233,10 +269,10 @@
 </div>
 <!--
 *************************************
-* page6 支付完成
+* page7 支付完成
 *************************************
 -->
-<div class="page" _page="6" name="支付完成">
+<div class="page" _page="7" name="支付完成">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">支付完成</div>
@@ -271,41 +307,6 @@
 				<li><img src="img/photo/2.png" alt="photo2" /></li>
 				<li><img src="img/photo/3.png" alt="photo3" /></li>
 			</ul>
-		</div>
-	</div>
-</div>
-<!--
-*************************************
-* page7 添加收件人信息
-*************************************
--->
-<div class="page" _page="7" name="添加收件人信息">
-	<div class="panel_head">
-		<div class="titlebar">
-			<div class="title">收件人信息</div>
-			<div class="action">
-				<div class="l">
-					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="panel_body">
-		<div class="rcvform">
-			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
-			<div class="item"><input type="text" placeholder="收件人手机号码" /></div>
-			<div class="item"><label>收件地址</label>
-							<div><select><option>选择省份</option></select></div>
-							<div><select><option>选择城市</option></select></div>							
-							<div><select><option>选择区域</option></select></div>
-			</div>
-			<div class="item"><input type="text" placeholder="街道地址" /></div>
-			<div class="item"><input type="text" placeholder="邮政编码" /></div>
-		</div>
-	</div>
-	<div class="panel_foot">
-		<div class="nextaction">
-			<div class="button button_l" active="yes">添加收件人</div>
 		</div>
 	</div>
 </div>
@@ -514,7 +515,7 @@
 <script src="js/hammer.js"></script> 
 <script src="js/iscroll-min.js"></script> 
 <script src="js/ledui.ui.js"></script> 
-<!--<script src="js/ledui.test.js"></script>-->
+<!--script src="js/ledui.test.js"></script>-->
 <script src="js/ledui.api.js"></script>
 <script src="js/tr.js"></script>
 </body>

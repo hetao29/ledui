@@ -41,7 +41,7 @@ public class main extends DroidGap {
 		
 		//this.appView.getSettings().setSupportZoom( true ); //Modify this
 		//this.appView.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
-		super.setIntegerProperty("splashscreen", R.drawable.splash); 
+		//super.setIntegerProperty("splashscreen", R.drawable.splash); 
 		
 		super.onCreate(savedInstanceState);
 		
@@ -50,9 +50,9 @@ public class main extends DroidGap {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN | 
                 WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         */
-		//super.loadUrl("file:///android_asset/www/index.html");
+		super.loadUrl("file:///android_asset/www/index.html");
 		//super.loadUrl("file:///android_asset/www/auto.html");
-		super.loadUrl("http://42.121.85.21/test/index.html");
+		//super.loadUrl("http://42.121.85.21/test/index.html");
 
 		
 		//appView.getSettings().setUseWideViewPort(true); 
