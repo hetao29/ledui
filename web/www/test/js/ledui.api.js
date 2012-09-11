@@ -238,9 +238,13 @@ var Interface = {
 			Overlay.hide(Overlay.curname);
 			return;
 		}
-		if(Page.current>0){
-			Page.show(Page.current-1);
-			return;
+		if(Page.pages_order.length>=1){
+		Page.pages_order.pop();
+			var p = Page.pages_order[Page.pages_order.length-1];
+			
+				Page.show(p);
+				return;
+			
 		}
 		//如果，是第0页，按后退，就提示程序退出
 		Overlay.show("quit");
@@ -296,6 +300,24 @@ var Control = {
 		$("#toPage2").bind("touchend",function(e){
 			Page.show(2);					  
 		});
+		$(".CAbout").bind("touchend",function(e){Page.show(8);});
+		$(".CAbout").bind("click",function(e){Page.show(8);});
+		
+		$(".CLogin").bind("touchend",function(e){Page.show(10);});
+		$(".CLogin").bind("click",function(e){Page.show(10);});
+		
+		$(".CPostCard").bind("touchend",function(e){Page.show(9);});
+		$(".CPostCard").bind("click",function(e){Page.show(9);});
+		
+		$(".CRegister").bind("touchend",function(e){Page.show(11);});
+		$(".CRegister").bind("click",function(e){Page.show(11);});
+		
+		$(".button_s_back").bind("click",function(e){Interface.onBackbutton();});
+		$(".button_s_back").bind("touchend",function(e){Interface.onBackbutton();});
+		
+		
+		
+		
 	},
 	choosePic: function(n){
 	}

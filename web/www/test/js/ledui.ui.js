@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(10);	
+	Page.init(0);	
 	Overlay.init();
 	//Scroll.init();		
 	Touch.init();
@@ -13,6 +13,7 @@ var UI = {
 //页面显示控制
 var Page = {
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
+	pages_order:[0],
 	init: function(n){
 		var n = arguments[0] ? arguments[0] : 0;
 		this.pages = this.seri();
@@ -47,6 +48,11 @@ var Page = {
 		}		
 		this.current_prev = this.current;
 		this.current = n;
+		
+					if(this.current==0)this.pages_order=[0];
+			else if(this.current != this.pages_order[this.pages_order.length-1])this.pages_order.push(this.current);
+
+
 		Adapta.layout();
 		return this;
 	},
