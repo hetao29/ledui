@@ -52,7 +52,7 @@
 					<div class="button button_s button_s_back" active="yes" _back="0"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 				<div class="r">
-					<div class="button button_s" active="yes">重选</div>
+					<div class="button button_s" active="yes" id="choosePic2">重选</div>
 				</div>
 			</div>
 		</div>
@@ -80,7 +80,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" id="toPage2" active="yes">下一步</div>
+			<div class="button button_l next" _to="2" active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -119,7 +119,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes">下一步</div>
+			<div class="button button_l next" _to="3"  active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -147,7 +147,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes">下一步</div>
+			<div class="button button_l next" _to="4"  active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -188,7 +188,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes">发送</div>
+			<div class="button button_l next" _to="5"  active="yes">发送</div>
 		</div>
 	</div>
 </div>
@@ -242,7 +242,7 @@
 			<div class="title">支付完成</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" _back="5" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -262,7 +262,7 @@
 		<div class="cteatenext">
 			<div class="info">当然, 您还可以继续</div>
 			<div class="action">
-				<div class="button button_l" active="yes">创建一张明信片</div>
+				<div class="button button_l" id="choosePic3" active="yes">创建一张明信片</div>
 			</div>
 		</div>
 		<div class="photos">
@@ -467,8 +467,8 @@
 		<div class="bd">
 			<ul class="list">
 				<li id="choosePicFromAlbum" active="yes"><span class="g"><span class="ico ico_album"></span></span><label>相册</label></li>
-				<li id="choosePicFromCamera" active="yes"><span class="g"><span class="ico ico_camera"></span></span><label>拍摄</label></li>
-				<li style="border:none;" active="yes"><span class="g"><span class="ico ico_renren"></span></span><label>人人网</label></li>
+				<li id="choosePicFromCamera" style="border:none;" active="yes"><span class="g"><span class="ico ico_camera"></span></span><label>拍摄</label></li>
+				<!--<li style="border:none;" active="yes"><span class="g"><span class="ico ico_renren"></span></span><label>人人网</label></li>-->
 			</ul>
 		</div>
 		<div class="ft"></div>
@@ -514,7 +514,7 @@
 <script src="js/hammer.js"></script> 
 <script src="js/iscroll-min.js"></script> 
 <script src="js/ledui.ui.js"></script> 
-<script src="js/ledui.test.js"></script>
+<!--<script src="js/ledui.test.js"></script>-->
 <script src="js/ledui.api.js"></script>
 <script src="js/tr.js"></script>
 </body>

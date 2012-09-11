@@ -277,6 +277,14 @@ var Interface = {
 var Control = {
 	init: function(n){
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
+		//重选按钮
+		$("#choosePic2").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#choosePic2").bind("click",function(e){Overlay.show("chkphoto");});
+		//结束时，再重新创建时的按钮
+		$("#choosePic3").bind("touchend",function(e){Overlay.show("chkphoto");});
+		$("#choosePic3").bind("click",function(e){Overlay.show("chkphoto");});
+		//for test
+		$("#choosePic").bind("click",function(e){Page.show(1);});
 		$("#quitOK").bind("touchend",function(e){navigator.app.exitApp();});
 		$("#quitCancel").bind("touchend",function(e){Overlay.hide("quit");});
 		
@@ -303,8 +311,11 @@ var Control = {
 														   
 		});
 		
-		$("#toPage2").bind("touchend",function(e){
-			Page.show(2);					  
+		$(".next").bind("touchend",function(e){
+			Page.show($(this).attr("_to"));					  
+		});
+		$(".next").bind("click",function(e){
+			Page.show($(this).attr("_to"));					  
 		});
 		$(".CAbout").bind("touchend",function(e){Page.show(8);});
 		$(".CAbout").bind("click",function(e){Page.show(8);});
