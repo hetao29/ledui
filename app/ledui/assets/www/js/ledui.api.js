@@ -131,15 +131,45 @@ var API = {
 		
 	},
 	upload:function(PostCardID,imageURI){
+		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		
+		 var options = new FileUploadOptions();
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
+			options.chunkedMode=true;
+
+            var params = new Object();
+            params.value1 = "test";
+            params.value2 = "param";
+
+            options.params = params;
+
+            var ft = new FileTransfer();
+            ft.upload(imageURI, "http://www.ledui.com/test.php", function ok(r){
+					alert(r.response);
+																			 
+				}, function fail(){
+				}, options);
+			
+			return;/*
 		var reader = new FileReader();
 		reader.onload = function(e) {
 				
-		　　alert(this.result.length);
-			//TODO，实现分片算法，同时更新本地状态，增加重试代码
+		//　　alert(this.result.length);
 			var param = new Object();
-			param.value1 = this.result;
+			var start =0;
+			var length=1024*10; //10K一片
+			var slices = Math.ceil(this.result.length/length);
+			var i = 0;
+			for(i; i<slices ; i++){
+				start=length*i;	
+			}
+			param.value1 = this.result.substr(start,length);
 			param.PostCardID = PostCardID;
+			this.uploadPart(param,function ok(){
+											  },function error(){
+											  });
 			
 			$.ajax({
 			   type: "POST",
@@ -163,6 +193,7 @@ var API = {
 			});
 		}
 		reader.readAsDataURL(imageURI);
+		*/
 	}
 }
 
@@ -238,12 +269,13 @@ alert(LocalData.getAll().length);
 */
 //本地的明信片状态
 var LocalDataPostCard={
+	PostCardTmpID:"",
 	FileTmpID:"",
 	//明信片ID
-	PostCard:"",
+	PostCardID:"",//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
 	Address:"",
 	Comments:"",
-	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
+	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
 	Status:1,
 	width:"",
 	height:"",
@@ -255,6 +287,7 @@ var LocalDataPostCard={
 var LocalDataFile={
 	//文件没有上传前，生成的临时ID，根据文件Path与文件Size
 	FileTmpID:"",
+	ImageFileID:"",//服务端生成ImageFileID
 	//文件路径
 	FilePath:"",
 	//文件大小
@@ -284,7 +317,7 @@ var Interface = {
 		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
 		if(p){
 			Page.show(p);
-		return;
+			return;
 		}
 		//如果，是第0页，按后退，就提示程序退出
 		Overlay.show("quit");
@@ -305,10 +338,9 @@ var Interface = {
 	},
 
 	onPhotoURISuccess:function(imageURI){
-		
 		Page.init(1);
 		setTimeout(function(){PhotoEditor.init(imageURI);},300);
-	//	setTimeout(function(){API.upload(122,imageURI);},2000);
+		setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	
 	onFail:function (message) {
@@ -323,12 +355,12 @@ var Control = {
 		//1.数据初始化
 		//a.登录状态
 		API.islogin(function(r){
-		  	      if(r){
+		  	if(r){
 		  		$("#login .errorbox").fadeOut();
 		  		$(".isnotlogin").hide();
 		  		$(".islogin").show();
 		  	      }
-		  	      });
+		});
 		//b.明信片状态查询
 		//2.界面接口
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
