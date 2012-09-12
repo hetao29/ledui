@@ -10,21 +10,21 @@ class api_user{
 		$passwd = $_POST['passwd'];
 		$passwd2 = $_POST['passwd2'];
 		if(empty($email) || !SUtil::validEmail($email)){
-			$result->error_msg="邮箱地址错误";//应该支持多语言
+			$result->error_msg=SLanguage::tr("error_10001","error");
 			$result->error_code=-10001;
 			return SJson::encode($result);
 		}elseif(empty($passwd) || empty($passwd2)){
-			$result->error_msg="密码不能为空";//应该支持多语言
+			$result->error_msg=SLanguage::tr("error_10004","error");
 			$result->error_code=-10004;
 			return SJson::encode($result);
 		}elseif($passwd != $passwd2){
-			$result->error_msg="密码不一致";//应该支持多语言
+			$result->error_msg=SLanguage::tr("error_10005","error");
 			$result->error_code=-10005;
 			return SJson::encode($result);
 		}else{
 			$user = $db->getUserByEmail($email);
 			if(!empty($user)){
-				$result->error_msg="邮箱地址已经注册";//应该支持多语言
+				$result->error_msg=SLanguage::tr("error_10002","error");
 				$result->error_code=-10002;
 				return SJson::encode($result);
 			}else{
@@ -59,18 +59,18 @@ class api_user{
 		$email = $_POST['email'];
 		$passwd = $_POST['passwd'];
 		if(empty($email) || !SUtil::validEmail($email)){
-			$result->error_msg="邮箱地址错误";//应该支持多语言
+			$result->error_msg=SLanguage::tr("error_10001","error");
 			$result->error_code=-10001;
 			return SJson::encode($result);
 		}elseif(empty($passwd)){
-			$result->error_msg="密码不能为空";//应该支持多语言
+			$result->error_msg=SLanguage::tr("error_10004","error");
 			$result->error_code=-10004;
 			return SJson::encode($result);
 		}else{
 			$user = $db->getUserByEmail($email);
 			if(empty($user)){
 				$result->error_code = -10003;
-				$result->error_msg="邮箱没有注册";//应该支持多语言
+				$result->error_msg=SLanguage::tr("error_10003","error");
 				return SJson::encode($result);
 			}else if($passwd == $user["UserPassword"]){
 				$r = user_api::loginMobile($user);
@@ -84,7 +84,7 @@ class api_user{
 				$result->result = $data;
 			}else{
 				$result->error_code = -10004;
-				$result->error_msg="密码错误";//应该支持多语言
+				$result->error_msg=SLanguage::tr("error_10004","error");
 			}
 		}
 		return SJson::encode($result);
