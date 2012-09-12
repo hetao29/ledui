@@ -52,7 +52,7 @@ $(document).ready(function(){
 	
 	if((eval("LOCALE."+language))){
 	}else{
-		language = language.split("-")[0];
+		language = language.split("_")[0];
 		if(!(eval("LOCALE."+language)))return;
 	}
 	

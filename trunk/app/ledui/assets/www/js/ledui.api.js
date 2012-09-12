@@ -1,4 +1,49 @@
 
+    function onSuccess(contacts) {
+		
+        // display the address information for all contacts
+        for (var i=0; i<contacts.length; i++) {
+			
+			if(!contacts[i].displayName || !contacts[i].addresses || contacts[i].addresses.length<=0)continue;
+
+			var email="";
+			var phoneNumber="";
+			if(contacts[i].emails){
+				for(var j=0;j<contacts[i].emails.length;j++){
+					email = contacts[i].emails[j]['value'];
+					if(contacts[i].emails[j].pref){
+						break;
+					}
+				}
+			}
+			if(contacts[i].phoneNumbers){
+				for(var j=0;j<contacts[i].phoneNumbers.length;j++){
+					phoneNumber = contacts[i].phoneNumbers[j]['value'];
+					if(contacts[i].phoneNumbers[j].pref){
+						break;
+					}
+				}
+			}
+			
+            for (var j=0; j<contacts[i].addresses.length; j++) {
+				/*
+                alert(
+					  contacts[i].displayName +":"+email+":"+phoneNumber+":"+
+                        "Street Address: "  + contacts[i].addresses[j].streetAddress + "\n" + 
+                        "Locality: "  + contacts[i].addresses[j].locality + "\n" + 
+                        "Region: "  + contacts[i].addresses[j].region + "\n" + 
+                        "Postal Code: "  + contacts[i].addresses[j].postalCode + "\n" + 
+                        "Country: "  + contacts[i].addresses[j].country);
+				*/
+            }
+        }
+    };
+
+    // onError: Failed to get the contacts
+    //
+    function onError(contactError) {
+        alert('onError!');
+    }
 
 //接口
 var API = {
@@ -7,16 +52,44 @@ var API = {
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
 	 */
+	islogin:function(callback){
+		var token = LocalData.getToken();
+		var uid = LocalData.getUID();
+		if(token && token !=""){
+			var param={token:token,uid:uid};
+			$.ajax({
+				type: "POST",
+				url: API.host+"/user/islogin",
+				data: param,
+				dataType: "JSON",
+				success: function(msg){
+					if(msg){
+						if(callback)callback(true);
+					}else{
+						if(callback)callback(false);
+					}
+				},
+				error:function(msg){
+					if(callback)callback(false);
+					return false;
+				},
+			});
+			return;
+		}
+		if(callback)callback(false);
+	},
 	login: function(param,ok,error){
+		LocalData.setToken("","");
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/login",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
-			   if(msg && msg.error_code==0){
-			   		if(ok)ok(msg);
-					return true;
+			   if(msg && msg.result && msg.error_code==0){
+			   	LocalData.setToken(msg.result.UserID,msg.result.UserAccessToken);
+				if(ok)ok(msg);
+				return true;
 			   }else{
 				   if(error)error(msg);
 			   }
@@ -34,9 +107,10 @@ var API = {
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
-			   if(msg && msg.error_code==0){
-			   		if(ok)ok(msg);
-					return true;
+			   if(msg && msg.result && msg.error_code==0){
+			   	LocalData.setToken(msg.result.UserID,msg.result.UserAccessToken);
+				if(ok)ok(msg);
+				return true;
 			   }else{
 				   if(error)error(msg);
 			   }
@@ -48,7 +122,9 @@ var API = {
 		});
 	},
 	//登出
-	logout: function(n){
+	logout: function(param,ok,error){
+		LocalData.setToken("","");
+		if(ok)ok();return;
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
 	createPostCard:function(){
@@ -89,104 +165,71 @@ var API = {
 		reader.readAsDataURL(imageURI);
 	}
 }
-//分片端点续传已经实现
-/*
-function uploadPhoto(imageURI) {
-	
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			
-	　　alert(this.result.length);
-	
-		var param = new Object();
-		param.value1 = this.result;
-		param.value2 = "param";
-		
-		$.ajax({
-		   type: "POST",
-		   url: "http://www.ledui.com/test.php",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   alert("OK"+msg);
-			   if(msg && msg.error_code==0){
-			   		if(ok)ok(msg);
-					return true;
-			   }else{
-				   if(error)error(msg);
-			   }
-		   },
-		   error:function(msg){
-			   alert("ERROR"+msg);
-		   		if(error)error(msg);
-				return false;
-		   }
-		});
-		}
-	reader.readAsDataURL(imageURI);
-}
-
-function win(r) {
-	alert("OK");
-	alert(r);
-	console.log("Code = " + r.responseCode);
-	console.log("Response = " + r.response);
-	console.log("Sent = " + r.bytesSent);
-}
-
-function fail(error) {
-	alert("An error has occurred: Code = " + error.code);
-	console.log("upload error source " + error.source);
-	console.log("upload error target " + error.target);
-}
-*/
 
 //记录本地状态信息
-var LocalData={
-	Total:0,
-	Key:"LocalData_V1",
-	Items:[],
-	getAll:function(){
-		var value = JSON.parse(window.localStorage.getItem(this.Key));
-		if(value && value.Items){
-			this.Total = value.Items.length;
-			return this.Items = value.Items;
-		}
+var LocalDB={
+	Version:"_V1",
+	set:function(k,v){
+		this.del(k);
+		return window.localStorage.setItem(k+this.Version,JSON.stringify(v));
+    	},
+	del:function(k){
+		return window.localStorage.removeItem(k+this.Version);
 	},
-	updateAll:function(){
-		this.Total = this.Items.length;
-		return window.localStorage.setItem(this.Key,JSON.stringify(this));
+	get:function(k){
+		return JSON.parse(window.localStorage.getItem(k+this.Version));
+	}
+}
+var LocalData={
+	postcards:"postcards",
+	token:"token",
+	uid:"uid",
+	email:"email",
+	pwd:"pwd",
+	setToken:function(uid,token){
+		LocalDB.set(this.uid,uid);
+		LocalDB.set(this.token,token);
+    	},
+	getToken:function(){
+		return LocalDB.get(this.token);
+	},
+	getUID:function(){
+		return LocalDB.get(this.uid);
 	},
 	//增加本地一个状态
-	add:function(LocalPostCardItem){
+	addPostCard:function(LocalPostCardItem){
 		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
-		this.getAll();
-		this.Total = this.Items.push(LocalPostCardItem);
-		this.updateAll();
+		var postcards = LocalDB.get(this.postcards);
+		postcards.push(LocalPostCardItem);
+		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
-	del:function(TmpID){
-		this.getAll();
-		for(var i in this.Items){
-			if(this.Items[i].TmpID==TmpID){
-				this.Items.splice(i,1);
+	delPostCard:function(TmpID){
+		var postcards = LocalDB.get(this.postcards);
+		for(var i in postcards){
+			if(postcards[i].TmpID==TmpID){
+				postcards.splice(i,1);
 			}
 		}
-		this.updateAll();
+		LocalDB.set(this.postcards,postcards);
 	},
 	//更新本地的一个状态
-	update:function(TmpID,LocalPostCardItem){
-		this.getAll();
-		for(var i in this.Items){
-			if(this.Items[i].TmpID==TmpID){
-				this.Items.splice(i,1,LocalPostCardItem);
+	updatePostCard:function(TmpID,LocalPostCardItem){
+		var postcards = LocalDB.get(this.postcards);
+		for(var i in postcards){
+			if(postcards[i].TmpID==TmpID){
+				postcards.splice(i,1,LocalPostCardItem);
 			}
 		}
-		this.updateAll();
+		LocalDB.set(this.postcards,postcards);
 	},
 	clear:function(){
-		this.Items=[];
-		this.updateAll();
+		for(var i in window.localStorage){
+			if(i.indexOf(LocalDB.Version)==-1)window.localStorage.removeItem(i);;
+		}
+	},
+	clearAll:function(){
+		for(var i in window.localStorage){window.localStorage.removeItem(i);}
 	}
 }
 /*
@@ -240,18 +283,9 @@ var Interface = {
 		}
 		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
 		if(p){
-		Page.show(p);
+			Page.show(p);
 		return;
 		}
-		/*
-		if(Page.pages_order.length>=1){
-		Page.pages_order.pop();
-			var p = Page.pages_order[Page.pages_order.length-1];
-			
-				Page.show(p);
-				return;
-			
-		}*/
 		//如果，是第0页，按后退，就提示程序退出
 		Overlay.show("quit");
 	},
@@ -260,12 +294,21 @@ var Interface = {
 	 */
 	onDeviceReady:function () {
 		document.addEventListener("backbutton", Interface.onBackbutton, false);
+		//test
+		/*
+ 		var options = new ContactFindOptions();
+        options.filter=""; 
+		options.multiple=true;
+        var fields  = ["displayName","addresses","phoneNumbers","emails"];
+        navigator.contacts.find(fields , onSuccess, onError, options);
+		*/
 	},
 
 	onPhotoURISuccess:function(imageURI){
-		PhotoEditor.init(imageURI);
+		
 		Page.init(1);
-		API.upload(122,imageURI);
+		setTimeout(function(){PhotoEditor.init(imageURI);},500);
+		setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	
 	onFail:function (message) {
@@ -276,6 +319,18 @@ var Interface = {
 //界面操作
 var Control = {
 	init: function(n){
+		/*初始化*/
+		//1.数据初始化
+		//a.登录状态
+		API.islogin(function(r){
+		  	      if(r){
+		  		$("#login .errorbox").fadeOut();
+		  		$(".isnotlogin").hide();
+		  		$(".islogin").show();
+		  	      }
+		  	      });
+		//b.明信片状态查询
+		//2.界面接口
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
 		//for test
 		$("#choosePic").bind("click",function(e){Page.show(1);});
@@ -287,26 +342,21 @@ var Control = {
 		$("#quitCancel").bind("tapone",function(e){Overlay.hide("quit");});
 		
 		$("#choosePicFromCamera").bind("tapone",function(e){
-														   
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-									{ 
-										quality: 100, 
-										allowEdit: true,
-										destinationType: navigator.camera.DestinationType.FILE_URI 
-									});
-			
+				{quality: 100, 
+				 allowEdit: true,
+				 destinationType: navigator.camera.DestinationType.FILE_URI 
+				}
+			);
 			Overlay.hide("chkphoto");
-														   
 		});
 		$("#choosePicFromAlbum").bind("tapone",function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-									{ 
-										quality: 100, 
-										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
-										destinationType: navigator.camera.DestinationType.FILE_URI 
-									});
+				{quality: 100, 
+				 sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
+				 destinationType: navigator.camera.DestinationType.FILE_URI 
+				});
 			Overlay.hide("chkphoto");
-														   
 		});
 		
 		$(".next").bind("tapone",function(e){
@@ -319,12 +369,55 @@ var Control = {
 		$(".CPostCard").bind("tapone",function(e){Page.show(9);});
 		
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
+		$(".CLogout").bind("tapone",function(e){
+				API.logout({},function ok(result){
+					$(".islogin").hide();
+					$(".isnotlogin").show();
+					},function error(result){
+				});
+			});
 		
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
-		
-		
-		
-		
+
+		$("#login #IDLogin").bind("tapone",function(e){
+				var sid=$("#login .sid").val();
+				var pwd=$("#login .pwd").val();
+				API.login({email:sid,passwd:pwd},function ok(result){
+					//登录成功,更新登录状态,跳到登录前的一页
+					$("#login .errorbox").fadeOut();
+					$(".isnotlogin").hide();
+					$(".islogin").show();
+					Interface.onBackbutton();
+					},function error(result){
+						//登录失败，提示错误信息
+						if(result.error_msg) $("#login .errorbox").html(result.error_msg);
+						$("#login .errorbox").slideDown("fast",function(){
+								setTimeout(function(){
+									$("#login .errorbox").slideUp();
+								},5000);
+						});
+				});
+		});
+		$("#register #IDRegister").bind("tapone",function(e){
+				var sid=$("#register .sid").val();
+				var pwd=$("#register .pwd").val();
+				var pwd2=$("#register .pwd2").val();
+				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
+					//注册成功，自动登录,更新登录状态,跳到登录前的一页
+					$("#register .errorbox").fadeOut();
+					$(".isnotlogin").hide();
+					$(".islogin").show();
+					Interface.onBackbutton();
+					},function error(result){
+					//登录失败，提示错误信息
+						if(result.error_msg) $("#register .errorbox").html(result.error_msg);
+						$("#register .errorbox").slideDown("fast",function(){
+								setTimeout(function(){
+									$("#register .errorbox").slideUp();
+								},5000);
+						});
+				});
+		});
 	},
 	choosePic: function(n){
 	}
@@ -332,7 +425,9 @@ var Control = {
 }
 //{{{
 $(document).ready(function(){
+	LocalData.clear();
 	Control.init();
 });
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
 //}}}
+  //
