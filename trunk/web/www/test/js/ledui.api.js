@@ -340,11 +340,15 @@ var Control = {
 					$(".islogin").show();
 					Interface.onBackbutton();
 					},function error(result){
-					//登录失败，提示错误信息
-					if(result.error_msg) $("#login .errorbox").html(result.error_msg).fadeIn();
-					else $("#login .errorbox").fadeIn();
-					});
+						//登录失败，提示错误信息
+						if(result.error_msg) $("#login .errorbox").html(result.error_msg);
+						$("#login .errorbox").fadeIn("fast",function(){
+								setTimeout(function(){
+									$("#login .errorbox").fadeOut();
+								},5000);
+						});
 				});
+		});
 		$("#register #IDRegister").bind("tapone",function(e){
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
@@ -357,10 +361,14 @@ var Control = {
 					Interface.onBackbutton();
 					},function error(result){
 					//登录失败，提示错误信息
-					if(result.error_msg) $("#register .errorbox").html(result.error_msg).fadeIn();
-					else $("#register .errorbox").fadeIn();
-					});
+						if(result.error_msg) $("#register .errorbox").html(result.error_msg);
+						$("#register .errorbox").fadeIn("fast",function(){
+								setTimeout(function(){
+									$("#register .errorbox").fadeOut();
+								},5000);
+						});
 				});
+		});
 		
 		
 		
