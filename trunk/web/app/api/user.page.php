@@ -9,19 +9,38 @@ class api_user{
 		$email = $_POST['email'];
 		$passwd = $_POST['passwd'];
 		$passwd2 = $_POST['passwd2'];
-		$user = $db->getUserByEmail($email);
-		if($passwd != $passwd2){
-			$result->error_code = -10004;
-		}else if(!ereg("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9\-\.])+", $email)){
-			$result->error_code = -10001;
-		}else if(isset($user['UserID'])){
-			$result->error_code = -10002;
+		if(empty($email) || !SUtil::validEmail($email)){
+			$result->error_msg="邮箱地址错误";//应该支持多语言
+			$result->error_code=-10001;
+			return SJson::encode($result);
+		}elseif(empty($passwd) || empty($passwd2)){
+			$result->error_msg="密码不能为空";//应该支持多语言
+			$result->error_code=-10004;
+			return SJson::encode($result);
+		}elseif($passwd != $passwd2){
+			$result->error_msg="密码不一致";//应该支持多语言
+			$result->error_code=-10005;
+			return SJson::encode($result);
 		}else{
-			$user['UserSID'] = $email;
-			$user['UserPassword'] = $passwd;
-			$db->addUser($user);
-			user_api::loginMobile($user);
-			$result->error_code = 0;
+			$user = $db->getUserByEmail($email);
+			if(!empty($user)){
+				$result->error_msg="邮箱地址已经注册";//应该支持多语言
+				$result->error_code=-10002;
+				return SJson::encode($result);
+			}else{
+				$user['UserSID'] = $email;
+				$user['UserPassword'] = $passwd;
+				$db->addUser($user);
+				user_api::loginMobile($user);
+				$result->error_code = 0;
+				$data->UserID = $user['UserID'];
+				$data->UserSID= $user['UserSID'];
+				$data->UserAlias= $user['UserAlias'];
+				$data->UserEmailVerified= $user['UserEmailVerified'];
+				$data->UserComment= $user['UserComment'];
+				$data->UserAccessToken= $r;
+				$result->result = $data;
+			}
 		}
 		return SJson::encode($result);
 	}
@@ -45,12 +64,12 @@ class api_user{
 			return SJson::encode($result);
 		}elseif(empty($passwd)){
 			$result->error_msg="密码不能为空";//应该支持多语言
-			$result->error_code=-10003;
+			$result->error_code=-10004;
 			return SJson::encode($result);
 		}else{
 			$user = $db->getUserByEmail($email);
 			if(empty($user)){
-				$result->error_code = -10002;
+				$result->error_code = -10003;
 				$result->error_msg="邮箱没有注册";//应该支持多语言
 				return SJson::encode($result);
 			}else if($passwd == $user["UserPassword"]){

@@ -14,8 +14,8 @@ class user_db{
 	function getUserByEmail($useremail,$PartnerID=1){
 		return $this->_db->selectOne("t_user",array("UserSID"=>$useremail,"PartnerID"=>$PartnerID));
 	}
-	function getUserByID($UserId){
-		return $this->_db->selectOne("t_user",array("UserID"=>$UserId));
+	function getUserByID($UserID){
+		return $this->_db->selectOne("t_user",array("UserID"=>$UserID));
 	}
 	function delUserToken($UserID,$Token){
 		return $this->_db->delete("t_user_token",array("UserToken"=>$Token,"UserID"=>$UserID));
@@ -39,6 +39,17 @@ class user_db{
 	}
 	function updateUserProfile($UserID,$UserP){
 		return $this->_db->update("t_user_profile",array("UserID"=>$UserID),$userP);
+	}
+	function getUserProfileByID($UserID){
+		return $this->_db->selectOne("t_user_profile",array("UserID"=>$UserID));
+	}
+	function delUserProfileByID($UserID){
+		return $this->_db->delete("t_user_profile",array("UserID"=>$UserID));
+	}
+	function addAddress($Add){
+		if(isset($Add['AddressID']))
+			unset($Add['AddressID']);
+		return $this->_db->insert("t_user_address",$Add);
 	}
 
 }
