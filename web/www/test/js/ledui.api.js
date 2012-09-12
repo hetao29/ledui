@@ -34,7 +34,7 @@ var API = {
 		if(callback)callback(false);
 	},
 	login: function(param,ok,error){
-		LocalData.updateToken("","");
+		LocalData.setToken("","");
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/login",
@@ -42,7 +42,7 @@ var API = {
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   	LocalData.updateToken(msg.result.UserID,msg.result.UserAccessToken);
+			   	LocalData.setToken(msg.result.UserID,msg.result.UserAccessToken);
 				if(ok)ok(msg);
 				return true;
 			   }else{
@@ -63,7 +63,7 @@ var API = {
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   	LocalData.updateToken(msg.result.UserID,msg.result.UserAccessToken);
+			   	LocalData.setToken(msg.result.UserID,msg.result.UserAccessToken);
 				if(ok)ok(msg);
 				return true;
 			   }else{
@@ -78,27 +78,8 @@ var API = {
 	},
 	//登出
 	logout: function(param,ok,error){
-		LocalData.updateToken("","");
+		LocalData.setToken("","");
 		if(ok)ok();return;
-		//$.ajax({
-		//   type: "POST",
-		//   url: API.host+"/user/logout",
-		//   data: param,
-		//   dataType: "JSON",
-		//   success: function(msg){
-		//	   if(msg && msg.result && msg.error_code==0){
-		//	   	LocalData.updateToken(msg.result.UserAccessToken);
-		//		if(ok)ok(msg);
-		//		return true;
-		//	   }else{
-		//		   if(error)error(msg);
-		//	   }
-		//   },
-		//   error:function(msg){
-		//   		if(error)error(msg);
-		//		return false;
-		//   },
-		//});
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
 	createPostCard:function(){
@@ -139,124 +120,69 @@ var API = {
 		reader.readAsDataURL(imageURI);
 	}
 }
-//分片端点续传已经实现
-/*
-function uploadPhoto(imageURI) {
-	
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			
-	　　alert(this.result.length);
-	
-		var param = new Object();
-		param.value1 = this.result;
-		param.value2 = "param";
-		
-		$.ajax({
-		   type: "POST",
-		   url: "http://www.ledui.com/test.php",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   alert("OK"+msg);
-			   if(msg && msg.error_code==0){
-			   		if(ok)ok(msg);
-					return true;
-			   }else{
-				   if(error)error(msg);
-			   }
-		   },
-		   error:function(msg){
-			   alert("ERROR"+msg);
-		   		if(error)error(msg);
-				return false;
-		   }
-		});
-		}
-	reader.readAsDataURL(imageURI);
-}
-
-function win(r) {
-	alert("OK");
-	alert(r);
-	console.log("Code = " + r.responseCode);
-	console.log("Response = " + r.response);
-	console.log("Sent = " + r.bytesSent);
-}
-
-function fail(error) {
-	alert("An error has occurred: Code = " + error.code);
-	console.log("upload error source " + error.source);
-	console.log("upload error target " + error.target);
-}
-*/
 
 //记录本地状态信息
-var LocalData={
-	Total:0,
-	Key:"LocalData",
-	Version:"V1",
-	Token:"",
-	uid:"",
-	Items:[],
-	getAll:function(){
-		var value = JSON.parse(window.localStorage.getItem(this.Key+this.Version));
-		if(value){
-			this.Total = value.Items.length;
-			this.Token = value.Token;
-			this.uid = value.uid;
-			this.Items = value.Items;
-			return this;
-		}
+var LocalDB={
+	Version:"_V1",
+	set:function(k,v){
+		this.del(k);
+		return window.localStorage.setItem(k+this.Version,JSON.stringify(v));
+    	},
+	del:function(k){
+		return window.localStorage.removeItem(k+this.Version);
 	},
-	updateToken:function(uid,token){
-		this.getAll();
-		this.Token = token;
-		this.uid = uid;
-		this._updateAll();
+	get:function(k){
+		return JSON.parse(window.localStorage.getItem(k+this.Version));
+	}
+}
+var LocalData={
+	postcards:"postcards",
+	token:"token",
+	uid:"uid",
+	email:"email",
+	pwd:"pwd",
+	setToken:function(uid,token){
+		LocalDB.set(this.uid,uid);
+		LocalDB.set(this.token,token);
     	},
 	getToken:function(){
-		this.getAll();
-		return this.Token;
+		return LocalDB.get(this.token);
 	},
 	getUID:function(){
-		this.getAll();
-		return this.uid;
-	},
-	_updateAll:function(){
-		this.Total = this.Items.length;
-		return window.localStorage.setItem(this.Key+this.Version,JSON.stringify(this));
+		return LocalDB.get(this.uid);
 	},
 	//增加本地一个状态
-	add:function(LocalPostCardItem){
+	addPostCard:function(LocalPostCardItem){
 		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
-		this.getAll();
-		this.Total = this.Items.push(LocalPostCardItem);
-		this._updateAll();
+		var postcards = LocalDB.get(this.postcards);
+		postcards.push(LocalPostCardItem);
+		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
-	del:function(TmpID){
-		this.getAll();
-		for(var i in this.Items){
-			if(this.Items[i].TmpID==TmpID){
-				this.Items.splice(i,1);
+	delPostCard:function(TmpID){
+		var postcards = LocalDB.get(this.postcards);
+		for(var i in postcards){
+			if(postcards[i].TmpID==TmpID){
+				postcards.splice(i,1);
 			}
 		}
-		this._updateAll();
+		LocalDB.set(this.postcards,postcards);
 	},
 	//更新本地的一个状态
-	update:function(TmpID,LocalPostCardItem){
-		this.getAll();
-		for(var i in this.Items){
-			if(this.Items[i].TmpID==TmpID){
-				this.Items.splice(i,1,LocalPostCardItem);
+	updatePostCard:function(TmpID,LocalPostCardItem){
+		var postcards = LocalDB.get(this.postcards);
+		for(var i in postcards){
+			if(postcards[i].TmpID==TmpID){
+				postcards.splice(i,1,LocalPostCardItem);
 			}
 		}
-		this._updateAll();
+		LocalDB.set(this.postcards,postcards);
 	},
 	clear:function(){
-		this.Items=[];
-		this._updateAll();
+		for(var i in window.localStorage){if(i.indexOf(LocalDB.Version)==-1)LocalDB.del(i);}
+	},
+	clearAll:function(){
+		for(var i in window.localStorage){window.localStorage.removeItem(i);}
 	}
 }
 /*
