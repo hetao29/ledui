@@ -267,15 +267,15 @@ var Control = {
 	init: function(n){
 		/*初始化*/
 		//1.数据初始化
-		      //a.登录状态
-		      API.islogin(function(r){
-				      if(r){
-					$("#login .errorbox").fadeOut();
-					$(".isnotlogin").hide();
-					$(".islogin").show();
-				      }
-				      });
-		      //b.明信片状态查询
+		//a.登录状态
+		API.islogin(function(r){
+		  	      if(r){
+		  		$("#login .errorbox").fadeOut();
+		  		$(".isnotlogin").hide();
+		  		$(".islogin").show();
+		  	      }
+		  	      });
+		//b.明信片状态查询
 		//2.界面接口
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
 		//for test
@@ -288,26 +288,21 @@ var Control = {
 		$("#quitCancel").bind("tapone",function(e){Overlay.hide("quit");});
 		
 		$("#choosePicFromCamera").bind("tapone",function(e){
-														   
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-									{ 
-										quality: 100, 
-										allowEdit: true,
-										destinationType: navigator.camera.DestinationType.FILE_URI 
-									});
-			
+				{quality: 100, 
+				 allowEdit: true,
+				 destinationType: navigator.camera.DestinationType.FILE_URI 
+				}
+			);
 			Overlay.hide("chkphoto");
-														   
 		});
 		$("#choosePicFromAlbum").bind("tapone",function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-									{ 
-										quality: 100, 
-										sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
-										destinationType: navigator.camera.DestinationType.FILE_URI 
-									});
+				{quality: 100, 
+				 sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
+				 destinationType: navigator.camera.DestinationType.FILE_URI 
+				});
 			Overlay.hide("chkphoto");
-														   
 		});
 		
 		$(".next").bind("tapone",function(e){
@@ -369,10 +364,6 @@ var Control = {
 						});
 				});
 		});
-		
-		
-		
-		
 	},
 	choosePic: function(n){
 	}
