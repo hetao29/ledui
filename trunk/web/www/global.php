@@ -25,9 +25,14 @@ SlightPHP::setDefaultPage("main");
 SlightPHP::setDefaultEntry("entry");
 SlightPHP::setSplitFlag("-_.");
 
-//{{{
+//{{{db config
 SDb::setConfigFile(ROOT_CONFIG. "/db.ini");
 SRoute::setConfigFile(ROOT_CONFIG."/route.ini");
 //}}}
+//{{{language
 SLanguage::setLanguageDir(SlightPHP::$appDir."/../locale");
 SLanguage::$defaultLocale="zh-CN";
+if(!empty($_COOKIE['language'])){
+    SLanguage::setLocale($_COOKIE['language']);
+}
+//}}}
