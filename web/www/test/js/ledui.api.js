@@ -342,9 +342,9 @@ var Control = {
 					},function error(result){
 						//登录失败，提示错误信息
 						if(result.error_msg) $("#login .errorbox").html(result.error_msg);
-						$("#login .errorbox").fadeIn("fast",function(){
+						$("#login .errorbox").slideDown("fast",function(){
 								setTimeout(function(){
-									$("#login .errorbox").fadeOut();
+									$("#login .errorbox").slideUp();
 								},5000);
 						});
 				});
@@ -362,9 +362,9 @@ var Control = {
 					},function error(result){
 					//登录失败，提示错误信息
 						if(result.error_msg) $("#register .errorbox").html(result.error_msg);
-						$("#register .errorbox").fadeIn("fast",function(){
+						$("#register .errorbox").slideDown("fast",function(){
 								setTimeout(function(){
-									$("#register .errorbox").fadeOut();
+									$("#register .errorbox").slideUp();
 								},5000);
 						});
 				});
