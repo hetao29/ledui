@@ -1,6 +1,6 @@
 
     function onSuccess(contacts) {
-        alert('onSuccess!');
+		
         // display the address information for all contacts
         for (var i=0; i<contacts.length; i++) {
 			
@@ -26,6 +26,7 @@
 			}
 			
             for (var j=0; j<contacts[i].addresses.length; j++) {
+				/*
                 alert(
 					  contacts[i].displayName +":"+email+":"+phoneNumber+":"+
                         "Street Address: "  + contacts[i].addresses[j].streetAddress + "\n" + 
@@ -33,6 +34,7 @@
                         "Region: "  + contacts[i].addresses[j].region + "\n" + 
                         "Postal Code: "  + contacts[i].addresses[j].postalCode + "\n" + 
                         "Country: "  + contacts[i].addresses[j].country);
+				*/
             }
         }
     };
@@ -293,18 +295,20 @@ var Interface = {
 	onDeviceReady:function () {
 		document.addEventListener("backbutton", Interface.onBackbutton, false);
 		//test
-  var options = new ContactFindOptions();
+		/*
+ 		var options = new ContactFindOptions();
         options.filter=""; 
 		options.multiple=true;
         var fields  = ["displayName","addresses","phoneNumbers","emails"];
         navigator.contacts.find(fields , onSuccess, onError, options);
-
+		*/
 	},
 
 	onPhotoURISuccess:function(imageURI){
-		PhotoEditor.init(imageURI);
+		
 		Page.init(1);
-		API.upload(122,imageURI);
+		setTimeout(function(){PhotoEditor.init(imageURI);},500);
+		setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	
 	onFail:function (message) {
