@@ -62,9 +62,10 @@ var API = {
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
-			   if(msg && msg.error_code==0){
-			   		if(ok)ok(msg);
-					return true;
+			   if(msg && msg.result && msg.error_code==0){
+			   	LocalData.updateToken(msg.result.UserID,msg.result.UserAccessToken);
+				if(ok)ok(msg);
+				return true;
 			   }else{
 				   if(error)error(msg);
 			   }
@@ -423,6 +424,22 @@ var Control = {
 					//登录失败，提示错误信息
 					if(result.error_msg) $("#login .errorbox").html(result.error_msg).show();
 					else $("#login .errorbox").show();
+					});
+				});
+		$("#register #IDRegister").bind("tapone",function(e){
+				var sid=$("#register.sid").val();
+				var pwd=$("#register.pwd").val();
+				var pwd2=$("#register.pwd2").val();
+				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
+					//注册成功，自动登录,更新登录状态,跳到登录前的一页
+					$("#register .errorbox").hide();
+					$(".isnotlogin").hide();
+					$(".islogin").show();
+					Interface.onBackbutton();
+					},function error(result){
+					//登录失败，提示错误信息
+					if(result.error_msg) $("#register .errorbox").html(result.error_msg).show();
+					else $("#register .errorbox").show();
 					});
 				});
 		
