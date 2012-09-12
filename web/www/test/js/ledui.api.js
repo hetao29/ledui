@@ -249,6 +249,12 @@ var Interface = {
 	 */
 	onDeviceReady:function () {
 		document.addEventListener("backbutton", Interface.onBackbutton, false);
+		//test
+  var options = new ContactFindOptions();
+        options.filter=""; 
+        var filter = ["displayName","addresses","phoneNumbers"];
+        navigator.contacts.find(filter, onSuccess, onError, options);
+
 	},
 
 	onPhotoURISuccess:function(imageURI){
@@ -376,3 +382,25 @@ $(document).ready(function(){
 });
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
 //}}}
+  //
+    function onSuccess(contacts) {
+        // display the address information for all contacts
+        for (var i=0; i<contacts.length; i++) {
+            for (var j=0; j<contacts[i].addresses.length; j++) {
+                alert("Pref: " + contacts[i].addresses[j].pref + "\n" +
+                        "Type: " + contacts[i].addresses[j].type + "\n" +
+                        "Formatted: " + contacts[i].addresses[j].formatted + "\n" + 
+                        "Street Address: "  + contacts[i].addresses[j].streetAddress + "\n" + 
+                        "Locality: "  + contacts[i].addresses[j].locality + "\n" + 
+                        "Region: "  + contacts[i].addresses[j].region + "\n" + 
+                        "Postal Code: "  + contacts[i].addresses[j].postalCode + "\n" + 
+                        "Country: "  + contacts[i].addresses[j].country);
+            }
+        }
+    };
+
+    // onError: Failed to get the contacts
+    //
+    function onError(contactError) {
+        alert('onError!');
+    }
