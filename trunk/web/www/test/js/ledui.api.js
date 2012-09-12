@@ -259,7 +259,7 @@ var LocalDataFile={
 	FilePath:"",
 	//文件大小
 	FileSize:"",
-	//文件已经上传大小
+	//文件已经上传大
 	DataSended:0,
 	//文件上传总大小
 	DataTotal:0,
@@ -307,8 +307,8 @@ var Interface = {
 	onPhotoURISuccess:function(imageURI){
 		
 		Page.init(1);
-		setTimeout(function(){PhotoEditor.init(imageURI);},500);
-		setTimeout(function(){API.upload(122,imageURI);},2000);
+		setTimeout(function(){PhotoEditor.init(imageURI);},300);
+	//	setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	
 	onFail:function (message) {
