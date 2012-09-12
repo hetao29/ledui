@@ -29,3 +29,5 @@ SlightPHP::setSplitFlag("-_.");
 SDb::setConfigFile(ROOT_CONFIG. "/db.ini");
 SRoute::setConfigFile(ROOT_CONFIG."/route.ini");
 //}}}
+SLanguage::setLanguageDir(SlightPHP::$appDir."/../locale");
+SLanguage::$defaultLocale="zh-CN";
