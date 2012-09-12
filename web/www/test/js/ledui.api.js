@@ -1,4 +1,47 @@
 
+    function onSuccess(contacts) {
+        alert('onSuccess!');
+        // display the address information for all contacts
+        for (var i=0; i<contacts.length; i++) {
+			
+			if(!contacts[i].displayName || !contacts[i].addresses || contacts[i].addresses.length<=0)continue;
+
+			var email="";
+			var phoneNumber="";
+			if(contacts[i].emails){
+				for(var j=0;j<contacts[i].emails.length;j++){
+					email = contacts[i].emails[j]['value'];
+					if(contacts[i].emails[j].pref){
+						break;
+					}
+				}
+			}
+			if(contacts[i].phoneNumbers){
+				for(var j=0;j<contacts[i].phoneNumbers.length;j++){
+					phoneNumber = contacts[i].phoneNumbers[j]['value'];
+					if(contacts[i].phoneNumbers[j].pref){
+						break;
+					}
+				}
+			}
+			
+            for (var j=0; j<contacts[i].addresses.length; j++) {
+                alert(
+					  contacts[i].displayName +":"+email+":"+phoneNumber+":"+
+                        "Street Address: "  + contacts[i].addresses[j].streetAddress + "\n" + 
+                        "Locality: "  + contacts[i].addresses[j].locality + "\n" + 
+                        "Region: "  + contacts[i].addresses[j].region + "\n" + 
+                        "Postal Code: "  + contacts[i].addresses[j].postalCode + "\n" + 
+                        "Country: "  + contacts[i].addresses[j].country);
+            }
+        }
+    };
+
+    // onError: Failed to get the contacts
+    //
+    function onError(contactError) {
+        alert('onError!');
+    }
 
 //接口
 var API = {
@@ -252,8 +295,9 @@ var Interface = {
 		//test
   var options = new ContactFindOptions();
         options.filter=""; 
-        var filter = ["displayName","addresses","phoneNumbers"];
-        navigator.contacts.find(filter, onSuccess, onError, options);
+		options.multiple=true;
+        var fields  = ["displayName","addresses","phoneNumbers","emails"];
+        navigator.contacts.find(fields , onSuccess, onError, options);
 
 	},
 
@@ -383,24 +427,3 @@ $(document).ready(function(){
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
 //}}}
   //
-    function onSuccess(contacts) {
-        // display the address information for all contacts
-        for (var i=0; i<contacts.length; i++) {
-            for (var j=0; j<contacts[i].addresses.length; j++) {
-                alert("Pref: " + contacts[i].addresses[j].pref + "\n" +
-                        "Type: " + contacts[i].addresses[j].type + "\n" +
-                        "Formatted: " + contacts[i].addresses[j].formatted + "\n" + 
-                        "Street Address: "  + contacts[i].addresses[j].streetAddress + "\n" + 
-                        "Locality: "  + contacts[i].addresses[j].locality + "\n" + 
-                        "Region: "  + contacts[i].addresses[j].region + "\n" + 
-                        "Postal Code: "  + contacts[i].addresses[j].postalCode + "\n" + 
-                        "Country: "  + contacts[i].addresses[j].country);
-            }
-        }
-    };
-
-    // onError: Failed to get the contacts
-    //
-    function onError(contactError) {
-        alert('onError!');
-    }
