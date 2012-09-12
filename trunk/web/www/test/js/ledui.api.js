@@ -371,8 +371,8 @@ var Control = {
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
 		$(".CLogout").bind("tapone",function(e){
 				API.logout({},function ok(result){
-					$(".isnotlogin").show();
 					$(".islogin").hide();
+					$(".isnotlogin").show();
 					},function error(result){
 				});
 			});
