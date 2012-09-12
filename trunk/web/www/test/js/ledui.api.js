@@ -427,9 +427,9 @@ var Control = {
 					});
 				});
 		$("#register #IDRegister").bind("tapone",function(e){
-				var sid=$("#register.sid").val();
-				var pwd=$("#register.pwd").val();
-				var pwd2=$("#register.pwd2").val();
+				var sid=$("#register .sid").val();
+				var pwd=$("#register .pwd").val();
+				var pwd2=$("#register .pwd2").val();
 				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
 					//注册成功，自动登录,更新登录状态,跳到登录前的一页
 					$("#register .errorbox").hide();
