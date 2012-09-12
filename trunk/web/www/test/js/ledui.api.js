@@ -179,7 +179,9 @@ var LocalData={
 		LocalDB.set(this.postcards,postcards);
 	},
 	clear:function(){
-		for(var i in window.localStorage){if(i.indexOf(LocalDB.Version)==-1)LocalDB.del(i);}
+		for(var i in window.localStorage){
+			if(i.indexOf(LocalDB.Version)==-1)window.localStorage.removeItem(i);;
+		}
 	},
 	clearAll:function(){
 		for(var i in window.localStorage){window.localStorage.removeItem(i);}
@@ -236,18 +238,9 @@ var Interface = {
 		}
 		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
 		if(p){
-		Page.show(p);
+			Page.show(p);
 		return;
 		}
-		/*
-		if(Page.pages_order.length>=1){
-		Page.pages_order.pop();
-			var p = Page.pages_order[Page.pages_order.length-1];
-			
-				Page.show(p);
-				return;
-			
-		}*/
 		//如果，是第0页，按后退，就提示程序退出
 		Overlay.show("quit");
 	},
@@ -379,6 +372,7 @@ var Control = {
 }
 //{{{
 $(document).ready(function(){
+	LocalData.clear();
 	Control.init();
 });
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
