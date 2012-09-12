@@ -351,7 +351,7 @@ var Control = {
 		      //a.登录状态
 		      API.islogin(function(r){
 				      if(r){
-					$("#login .errorbox").hide();
+					$("#login .errorbox").fadeOut();
 					$(".isnotlogin").hide();
 					$(".islogin").show();
 				      }
@@ -416,14 +416,14 @@ var Control = {
 				var pwd=$("#login .pwd").val();
 				API.login({email:sid,passwd:pwd},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
-					$("#login .errorbox").hide();
+					$("#login .errorbox").fadeOut();
 					$(".isnotlogin").hide();
 					$(".islogin").show();
 					Interface.onBackbutton();
 					},function error(result){
 					//登录失败，提示错误信息
-					if(result.error_msg) $("#login .errorbox").html(result.error_msg).show();
-					else $("#login .errorbox").show();
+					if(result.error_msg) $("#login .errorbox").html(result.error_msg).fadeIn();
+					else $("#login .errorbox").fadeIn();
 					});
 				});
 		$("#register #IDRegister").bind("tapone",function(e){
@@ -432,14 +432,14 @@ var Control = {
 				var pwd2=$("#register .pwd2").val();
 				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
 					//注册成功，自动登录,更新登录状态,跳到登录前的一页
-					$("#register .errorbox").hide();
+					$("#register .errorbox").fadeOut();
 					$(".isnotlogin").hide();
 					$(".islogin").show();
 					Interface.onBackbutton();
 					},function error(result){
 					//登录失败，提示错误信息
-					if(result.error_msg) $("#register .errorbox").html(result.error_msg).show();
-					else $("#register .errorbox").show();
+					if(result.error_msg) $("#register .errorbox").html(result.error_msg).fadeIn();
+					else $("#register .errorbox").fadeIn();
 					});
 				});
 		
