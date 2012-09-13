@@ -1,7 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
 	Page.init(2);	
-	Overlay.init();
 	Touch.init();
 });
 
@@ -45,6 +44,19 @@ var Page = {
 		}else{			
 			page.show();	
 		}
+		var appnav = $('.appnav'); 
+		if(page.attr('_hasnav')){ appnav.show(); 
+			$.each(appnav.find('li'), function(){
+				var li = $(this);
+				if(parseInt(li.attr('mark'), 10) ==  n){
+					li.addClass('current');	
+				}else{
+					li.removeClass('current');
+				}
+			});
+		}
+		else{ appnav.hide(); }
+		
 		this.scroller(page);
 		this.current_prev = this.current;
 		this.current = n;
@@ -72,8 +84,15 @@ var Page = {
 		var scrolls = page.find('[scroll]');
 		scrolls.each(function(){ 
 			if(!$(this).attr('scrollstep')){
-			//var s = new TouchScroll($(this).get(0), {elastic: true});
-			//$(this).attr('scrollstep', 'true');
+			var s = new iScroll($(this).get(0), {
+				hScroll: false,
+				vScroll: true,
+				hScrollbar: false,
+				vScrollbar: true,
+				zoom: false
+				
+			});
+			$(this).attr('scrollstep', 'true');
 			//console.log(s);
 			}
 		});	
@@ -120,14 +139,16 @@ var Adapta = {
 			,win_h = $(window).height()
 			,scr_w = $('.screen').width()
 		this.ratio = win_w/scr_w;			
-		$('.screen').css({
+		
+		$(document.body).css({'zoom': this.ratio});
+		/*$('.screen').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
 		});
 		$('.overlays').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
-		});
+		});*/
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
@@ -159,7 +180,7 @@ var Adapta = {
 
 //遮罩层
 var Overlay = {
-	curname: '', layers: {}, mask: null, lock:false,
+	isinit: false, curname: '', layers: {}, mask: null, lock:false,
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
@@ -167,7 +188,7 @@ var Overlay = {
 		var clickevent  = UI.istouch ? 'tapone' : 'click';
 		overlays.each(function(){
 			var o = $(this)
-				,name = o.attr('name')
+				,name = o.attr('_name')
 				,handle = o.find('.close');
 			if(name){ _this.layers[name] = o; }	
 			o.bind(clickevent, function(){ return false; });
@@ -175,8 +196,10 @@ var Overlay = {
 		});
 		overlay_mask.bind(clickevent, function(){ _this.hide(); return false; });
 		if(overlay_mask.length){ this.mask = overlay_mask; }
+		this.isinit = true;
 	},
 	show: function(name){
+		if(!this.isinit){ this.init(); }
 		if(name == this.curname){ return; }
 		var o = this.layers[name];
 		var _this = this;
@@ -198,6 +221,28 @@ var Overlay = {
 		this.mask.stop().animate({opacity: 0}, 500, '', function(){ _this.mask.hide(); });
 		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 500);
 	}	
+}
+
+var Loading = {
+	isinit: false,
+	init: function(){
+		this.loading = $('.apploading');
+		this.text = this.loading.find('.text');
+		console.log(this.text);
+		this.isinit = true;
+	},
+	show: function(text){
+		if(!this.isinit){ this.init(); }
+		this.loading.show();
+		if(!text){ text = '正在加载...' }
+		this.text.html(text);
+		return this;	
+	},
+	hide: function(){
+		if(!this.isinit){ this.init(); }
+		this.loading.hide();
+		return this;
+	}
 }
 
 //触摸事件
