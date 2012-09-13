@@ -17,4 +17,8 @@ class index_main extends STpl{
 		$api = new index_api;
 		$api->addScore("name",3);
 	}
+	function pageTest($inPath){
+		print_r(api_geo::get("39.9695355","116.394568"));
+
+	}
 }
