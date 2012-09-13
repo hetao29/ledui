@@ -410,16 +410,17 @@ var Control = {
 			Overlay.hide("chkphoto");
 		});
 		
-		$(".next").bind("tapone",function(e){
+		$("[_to]").bind("tapone",function(e){
 			Page.show($(this).attr("_to"));					  
 		});
+		
+		
+		
 		$(".CAbout").bind("tapone",function(e){Page.show(8);});
-		
-		$(".CLogin").bind("tapone",function(e){Page.show(10);});
-		
 		$(".CPostCard").bind("tapone",function(e){Page.show(9);});
-		
+		$(".CLogin").bind("tapone",function(e){Page.show(10);});		
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
+		
 		$(".CLogout").bind("tapone",function(e){
 				API.logout({},function ok(result){
 					$(".islogin").hide();
