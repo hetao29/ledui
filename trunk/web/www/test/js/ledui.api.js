@@ -384,7 +384,7 @@ var Control = {
 		//2.界面接口
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
 		//for test
-		$("#choosePic").bind("click",function(e){Page.show(1);});
+		//$("#choosePic").bind("click",function(e){Page.show(1);});
 		//重选按钮
 		$("#choosePic2").bind("tapone",function(e){Overlay.show("chkphoto");});
 		//结束时，再重新创建时的按钮
