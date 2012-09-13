@@ -284,6 +284,7 @@ CutyCapt::saveSnapshot() {
       printer.setDoubleSidedPrinting(true);
       // TODO: change quality here?
       mainFrame->print(&printer);
+      qDebug()<<"Printer:"<<mOutput<<" status is :"<<printer.printerState();
       break;
     }
     case RenderTreeFormat:
