@@ -119,14 +119,14 @@ var Adapta = {
 		if(!UI.istouch){
 			$(window).bind('resize', function(){ _this.layout(); });	
 		}else{
-			$(window).bind('resize', function(){ _this.scale(); _this.layout(); });		
+			$(window).bind('orientationchange', function(){ _this.scale(); _this.layout(); });		
 		}
 	},
 	scale: function(){
 		var win_w = $(window).width()
 			,scr_w = $('.screen').width()
 		this.ratio = win_w/scr_w;
-		$('.app').css('zoom', this.ratio);		
+		$('body').css('zoom', this.ratio);
 		/*$('.screen').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
