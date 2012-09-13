@@ -381,12 +381,7 @@ background: -o-linear-gradient(top, #eee , #eee 50%, #ddd 50% , #ddd );
 .rcvlist .null{padding:200px 0;color:#999;text-align:center;font-size:30px;}
 .rcvlist .list{position:relative;margin:0 auto;}
 .rcvlist .list ul{}
-.rcvlist .list li{position:relative;border-bottom:2px solid #b5b5b5;padding:15px 15px 15px 0;padding-left:60px;cursor:pointer;padding-right:30px;background:#fff;
-background: -webkit-linear-gradient(top, #fff, #ccc);
-background: -moz-linear-gradient(top, #fff, #ccc);
-background: -ms-linear-gradient(top, #fff, #ccc);
-background: -o-linear-gradient(top, #fff, #ccc);
-}
+.rcvlist .list li{position:relative;border-bottom:2px solid #b5b5b5;padding:15px 15px 15px 0;padding-left:60px;cursor:pointer;padding-right:30px;background:#fff;}
 .rcvlist .list .checked{background:#fff;cursor:default;
 background: -webkit-linear-gradient(top, #666, #999);
 background: -moz-linear-gradient(top, #999, #666);
@@ -406,8 +401,8 @@ background: -o-linear-gradient(top, #999, #666);
 .preview{position:absolute;top:50%;left:50%;width:600px;height:460px;margin-left:-300px;margin-top:-230px;}
 .preview .card{position:relative;width:560px;height:350px;margin:30px auto 20px auto;background:#fff url(../img/card.png) no-repeat 0 0;box-shadow:0 0 10px #555;}
 .preview .card .postinfo{position:absolute;top:110px;left:28px;width:138px;text-align:right;}
-.preview .card .postinfo div{line-height:28px;font-size:14px;}
-.preview .card .msginfo{position:absolute;top:115px;left:230px;font-size:14px;line-height:20px;width:290px;}
+.preview .card .postinfo div{line-height:28px;font-size:12px;}
+.preview .card .msginfo{position:absolute;top:115px;left:230px;font-size:12px;line-height:20px;width:290px;}
 .preview .card .msginfo .t1{margin-bottom:5px;}
 .preview .card .msginfo .t2{text-indent:2em;line-height:22px;text-justify:inter-ideograph;text-align:justify;}
 .preview .card .msginfo .t3{margin-top:5px;text-align:right;padding-right:10px;}
