@@ -19,7 +19,7 @@
 * page0 首页
 *************************************
 -->
-<div class="page" _page="0" name="首页">
+<div class="page" _page="0" _name="首页" _hasnav="true">
 	<div class="panel_body">
 		<div class="banner">
 			<div class="createcard">
@@ -28,20 +28,7 @@
 		</div>
 	</div>
 	<div class="panel_foot">
-		<div class="helper">
-			<ul class="isnotlogin">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
-				<li active="yes" class="CLogin" tr="login" >登录</li>
-				<li active="yes" class="CRegister" tr="signup">注册</li>
-			</ul>
-			<ul class="islogin hide">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
-				<li active="yes" class="CAccount" tr="signup">账户</li>
-				<li active="yes" class="CLogout" tr="signup">登出</li>
-			</ul>
-		</div>
+		<div class="navplacehold"></div>
 	</div>
 </div> 
 <!--
@@ -49,7 +36,7 @@
 * page1 编辑图片
 *************************************
 -->
-<div class="page" _page="1" name="编辑图片">
+<div class="page" _page="1" _name="编辑图片">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">编辑图片</div>
@@ -86,7 +73,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="2" active="yes">下一步</div>
+			<div class="button button_l" _to="2" active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -95,7 +82,7 @@
 * page2 收件人信息
 *************************************
 -->
-<div class="page" _page="2" name="收件人信息">
+<div class="page" _page="2" _name="收件人信息">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">收件人信息</div>
@@ -107,25 +94,25 @@
 		</div>
 	</div>
 	<div class="panel_body">
-		<div class="receiveinfo">
+		<div class="rcvlist">
 			<div class="create">
-				<div class="button button_m next" _to="3" active="yes">输入新地址</div>
+				<div class="button button_m" _to="3" active="yes">增加新地址</div>				
 			</div>
 			<div class="list" scroll="yes">
 				<ul>
-					<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">龚华彬</span> <span class="phone">15869091127</span> <span class="address">四川省成都市高新西区金粮路西江月</span> </li>
-					<li class="checked"> <span class="checkbox"><span class="pitch"></span></span> <span class="name">Mobile</span> <span class="phone">13100909090</span> <span class="address">北京市海淀区海淀大街8号中钢国际大厦5层</span> </li>
-					<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">Hetal</span> <span class="phone">15869091127</span> <span class="address">北京市朝阳区</span> </li>
-					<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">PinkFloyd</span> <span class="phone">13100909090</span> <span class="address">北京市朝阳区</span> </li>
-					<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">西门吹雪</span> <span class="phone">15869091127</span> <span class="address">北京市海淀区善缘街</span> </li>
-					<li> <span class="checkbox"><span class="pitch"></span></span> <span class="name">windows</span> <span class="phone">13100909090</span> <span class="address">USA</span> </li>
+					<li><span class="checkbox"><span class="pitch"></span></span> <span class="name">龚华彬</span> <span class="phone">15869091127</span> <span class="address">四川省成都市高新西区金粮路西江月</span> </li>
+					<li class="checked"><span class="checkbox"><span class="pitch"></span></span> <span class="name">Mobile</span> <span class="phone">13100909090</span> <span class="address">北京市海淀区海淀大街8号中钢国际大厦5层</span> </li>
+					<li class="checked"><span class="checkbox"><span class="pitch"></span></span> <span class="name">Hetal</span> <span class="phone">15869091127</span> <span class="address">北京市朝阳区</span> </li>
+					<li><span class="checkbox"><span class="pitch"></span></span> <span class="name">PinkFloyd</span> <span class="phone">13100909090</span> <span class="address">北京市朝阳区</span> </li>
+					<li><span class="checkbox"><span class="pitch"></span></span> <span class="name">西门吹雪</span> <span class="phone">15869091127</span> <span class="address">北京市海淀区善缘街</span> </li>
+					<li><span class="checkbox"><span class="pitch"></span></span> <span class="name">windows</span> <span class="phone">13100909090</span> <span class="address">USA</span> </li>
 				</ul>
 			</div>
 		</div>
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="4"  active="yes">下一步</div>
+			<div class="button button_l" _to="4"  active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -135,7 +122,7 @@
 * page3 添加收件人信息
 *************************************
 -->
-<div class="page" _page="3" name="添加收件人信息">
+<div class="page" _page="3" _name="添加收件人信息">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">输入新地址</div>
@@ -146,8 +133,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel_body">
+	<div class="panel_body">		
 		<div class="rcvform">
+			<div class="chk"><div class="button button_m" active="yes">从通讯录选择</div></div>
 			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
 			<div class="item"><input type="text" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
@@ -161,7 +149,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="2" active="yes">添加</div>
+			<div class="button button_l" _to="2" active="yes">添加</div>
 		</div>
 	</div>
 </div>
@@ -170,7 +158,7 @@
 * page4 输入留言信息
 *************************************
 -->
-<div class="page" _page="4" name="输入留言信息">
+<div class="page" _page="4" _name="输入留言信息">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">输入留言信息</div>
@@ -189,7 +177,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="5"  active="yes">下一步</div>
+			<div class="button button_l" _to="5"  active="yes">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -198,7 +186,7 @@
 * page5 预览
 *************************************
 -->
-<div class="page" _page="5" name="预览">
+<div class="page" _page="5" _name="预览">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">预览</div>
@@ -230,7 +218,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l next" _to="6"  active="yes">发送</div>
+			<div class="button button_l" _to="6"  active="yes">发送</div>
 		</div>
 	</div>
 </div>
@@ -239,7 +227,7 @@
 * page6 支付邮费
 *************************************
 -->
-<div class="page" _page="6" name="支付邮费">
+<div class="page" _page="6" _name="支付邮费">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">支付邮费</div>
@@ -278,7 +266,7 @@
 * page7 支付完成
 *************************************
 -->
-<div class="page" _page="7" name="支付完成">
+<div class="page" _page="7" _name="支付完成">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">支付完成</div>
@@ -321,7 +309,7 @@
 * page8 关于
 *************************************
 -->
-<div class="page" _page="8" name="关于">
+<div class="page" _page="8" _name="关于" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">关于乐兑</div>
@@ -336,20 +324,7 @@
 		
 	</div>
 	<div class="panel_foot">		
-		<div class="helper">
-			<ul class="isnotlogin">								
-				<li active="yes" class="CAbout current" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
-				<li active="yes" class="CLogin" tr="login" >登录</li>
-				<li active="yes" class="CRegister" tr="signup">注册</li>
-			</ul>
-			<ul class="islogin hide">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
-				<li active="yes" class="CAccount" tr="signup">账户</li>
-				<li active="yes" class="CLogout" tr="signup">登出</li>
-			</ul>
-		</div>
+		<div class="navplacehold"></div>
 	</div>
 </div>
 <!--
@@ -357,7 +332,7 @@
 * page9 信箱
 *************************************
 -->
-<div class="page" _page="9" name="我的信箱">
+<div class="page" _page="9" _name="我的信箱" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">我的信箱</div>
@@ -372,20 +347,7 @@
 		
 	</div>
 	<div class="panel_foot">		
-		<div class="helper">
-			<ul class="isnotlogin">				
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard current" tr="postcard">信箱</li>
-				<li active="yes" class="CLogin" tr="login" >登录</li>
-				<li active="yes" class="CRegister" tr="signup">注册</li>
-			</ul>
-			<ul class="islogin hide">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
-				<li active="yes" class="CAccount" tr="signup">账户</li>
-				<li active="yes" class="CLogout" tr="signup">登出</li>
-			</ul>
-		</div>
+		<div class="navplacehold"></div>
 	</div>
 </div>
 
@@ -394,7 +356,7 @@
 * page10 登录
 *************************************
 -->
-<div class="page" _page="10" id="login" name="登录">
+<div class="page" _page="10" _name="登录" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">登录</div>
@@ -406,7 +368,7 @@
 		</div>
 	</div>
 	<div class="panel_body">
-		<div class="logform">
+		<div class="logform" id="login" >
 			<div class="errorbox hide">登录失败~~~</div>
 			<div class="item"><input type="email" class="sid" placeholder="邮箱地址" /></div>
 			<div class="item"><input type="password" class="pwd" placeholder="密码" /></div>
@@ -416,21 +378,7 @@
 		<div class="nextaction">
 			<div class="button button_l" active="yes" id="IDLogin">登录</div>
 		</div>		
-		<div class="helper">
-			<ul class="isnotlogin">				
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
-				<li active="yes" class="CLogin current" tr="login">登录</li>
-				<li active="yes" class="CRegister" tr="signup">注册</li>
-				
-			</ul>
-			<ul class="islogin hide">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
-				<li active="yes" class="CAccount" tr="signup">账户</li>
-				<li active="yes" class="CLogout" tr="signup">登出</li>
-			</ul>
-		</div>
+		<div class="navplacehold"></div>
 	</div>
 </div>
 
@@ -439,7 +387,7 @@
 * page11 登录
 *************************************
 -->
-<div class="page" id="register" _page="11" name="注册">
+<div class="page" _page="11" _name="注册" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar">
 			<div class="title">注册</div>
@@ -451,7 +399,7 @@
 		</div>
 	</div>
 	<div class="panel_body">
-		<div class="regform">
+		<div class="regform" id="register">
 			<div class="errorbox hide">注册失败~~~</div>
 			<div class="item"><input type="email" class="sid" placeholder="邮箱地址" /></div>
 			<div class="item"><input type="password" class="pwd" placeholder="密码" /></div>
@@ -462,20 +410,7 @@
 		<div class="nextaction">
 			<div class="button button_l" id="IDRegister" active="yes">注册</div>
 		</div>		
-		<div class="helper">
-			<ul class="isnotlogin">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱</li>
-				<li active="yes" class="CLogin" tr="login" >登录</li>
-				<li active="yes" class="CRegister current" tr="signup">注册</li>
-			</ul>
-			<ul class="islogin hide">
-				<li active="yes" class="CAbout" tr="about">关于</li>
-				<li active="yes" class="CPostCard" tr="postcard">信箱(0)</li>
-				<li active="yes" class="CAccount" tr="signup">账户</li>
-				<li active="yes" class="CLogout" tr="signup">登出</li>
-			</ul>
-		</div>
+		<div class="navplacehold"></div>
 	</div>
 </div>
 
@@ -489,7 +424,7 @@
 -->
 <div class="overlays">
 <div class="overlay_mask"></div>
-<div class="overlay chkphoto" name="chkphoto">
+<div class="overlay chkphoto" _name="chkphoto">
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">选择相片</div>
@@ -505,7 +440,7 @@
 		<div class="ft"></div>
 	</div>
 </div>
-<div class="overlay confirm" name="delmail">
+<div class="overlay confirm" _name="delmail">
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">注意</div>
@@ -521,7 +456,7 @@
 		<div class="ft"></div>
 	</div>
 </div>
-<div class="overlay confirm" name="quit">
+<div class="overlay confirm" _name="quit">
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">注意</div>
@@ -539,10 +474,30 @@
 </div>
 </div><!--overlays end-->
 
+<div class="apploading">
+	<div class="box">
+		<div class="icon"><div class="loadingicon"><div class="c1"></div><div class="c2"></div></div></div>
+		<div class="text"></div>
+		<div class="back"></div>
+	</div>
+	<div class="mask"></div>
+</div>
+
+<div class="appnav">
+<ul>
+	<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+	<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
+	<li active="yes" class="CLogin" tr="login"  mark="10">登录</li>
+	<li active="yes" class="CRegister" tr="signup" mark="11">注册</li>
+</ul>
+</div>
+
+
 <script src="js/cordova-2.0.0.js"></script> 
 <script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/jgestures.min.js"></script>  
 <script src="js/hammer.js"></script> 
+<script src="js/iscroll-min.js"></script> 
 <script src="js/ledui.ui.js"></script> 
 <script src="js/ledui.test.js"></script>
 <script src="js/ledui.api.js"></script>
