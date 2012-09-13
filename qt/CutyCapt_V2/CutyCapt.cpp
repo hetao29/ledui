@@ -276,6 +276,7 @@ CutyCapt::saveSnapshot() {
       printer.setPaperSize(QSize(165,102),QPrinter::Millimeter);
       mOutput.replace(".prt","");
       printer.setPrinterName (mOutput);
+      printer.setOutputFormat(QPrinter::NativeFormat);
       qDebug()<<"Printer:"<<mOutput<<" is valid:"<<printer.isValid();
       QList<QPrinterInfo> allPrinters = QPrinterInfo::availablePrinters();
       for (int i = 0; i < allPrinters.size(); ++i) {
