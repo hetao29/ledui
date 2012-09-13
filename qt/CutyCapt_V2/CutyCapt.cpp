@@ -277,6 +277,11 @@ CutyCapt::saveSnapshot() {
       mOutput.replace(".prt","");
       printer.setPrinterName (mOutput);
       printer.setOutputFormat(QPrinter::NativeFormat);
+      printer.setResolution(96);
+      QList<int> dpi = printer.supportedResolutions();
+      for (int i = 0; i < dpi.size(); ++i) {
+	      qDebug() << "Printer supportedResolutions:"<<dpi.at(i);
+      }
       qDebug()<<"Printer:"<<mOutput<<" is valid:"<<printer.isValid();
       QList<QPrinterInfo> allPrinters = QPrinterInfo::availablePrinters();
       for (int i = 0; i < allPrinters.size(); ++i) {
