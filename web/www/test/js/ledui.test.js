@@ -25,7 +25,7 @@ var Test = {
 			Page.show($(this).val())				 
 		});
 		
-		
+		/*
 		$('<button>prev</button>')
 		.appendTo($(testpanel))
 		.click(function(){
@@ -46,7 +46,7 @@ var Test = {
 			Page.back();
 			sel.val(Page.getcurrent());
 		});
-		
+		*/
 		$('<br>').appendTo($(testpanel));
 		/*
 		for(var key in Overlay.layers){
