@@ -18,7 +18,7 @@ var Test = {
 		var total = Page.gettotal();
 		var current = Page.getcurrent();
 		var ops = '';
-		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + Page.getpage(i).attr('name') +'</option>'; }
+		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + Page.getpage(i).attr('_name') +'</option>'; }
 		var sel = $('<select>'+ ops +'</select>')
 		.appendTo(testpanel)
 		.change(function(){
@@ -48,7 +48,7 @@ var Test = {
 		});
 		
 		$('<br>').appendTo($(testpanel));
-		
+		/*
 		for(var key in Overlay.layers){
 			(function(key){	
 				$('<button>'+ key +'</button>')
@@ -60,7 +60,7 @@ var Test = {
 		}
 		
 		$('<br>').appendTo($(testpanel));
-		
+		*/
 		var ps = ['http://42.121.85.21/test/testimg/test.jpg', 'http://42.121.85.21/test/testimg/test2.jpg', 'http://42.121.85.21/test/testimg/test3.jpg'];
 		var sel = $('<select></select>')
 		.appendTo($(testpanel))
@@ -73,7 +73,7 @@ var Test = {
 			var op = $('<option value="'+ src +'">photo'+ i +'</option>');
 			sel.append(op);
 		}
-		PhotoEditor.init(ps[0]);
+		//PhotoEditor.init(ps[0]);
 		var btn = $('<button>getinfo</button>').appendTo($(testpanel))
 		btn.click(function(){
 			var info = PhotoEditor.getinfo();
