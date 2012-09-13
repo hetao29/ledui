@@ -25,8 +25,6 @@ var Page = {
 		if(n<0 || n>=this.total || n == this.current){ return; }
 		var page_current = this.getpage(this.current), page = this.getpage(n);
 		if(!page){ return; }
-		this.current_prev = this.current;
-		this.current = n;
 		
 		var show_direction = n > this.current ? 'right' : 'left'
 			,hide_direction = n > this.current ? 'left' :  'right'
@@ -47,6 +45,9 @@ var Page = {
 		}else{			
 			page.show();	
 		}
+		
+		this.current_prev = this.current;
+		this.current = n;
 		
 		Adapta.layout();
 		
@@ -177,7 +178,7 @@ var Adapta = {
 			vScroll: true,
 			hScrollbar: false,
 			vScrollbar: true,
-			zoom: false					
+			zoom: false
 		};		
 		box.children().each(function(){ h += $(this).height(); })
 		box.css('height', h);
