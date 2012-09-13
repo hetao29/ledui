@@ -51,5 +51,11 @@ class user_db{
 			unset($Add['AddressID']);
 		return $this->_db->insert("t_user_address",$Add);
 	}
+	function updateAddress($AddID,$Add){
+		return $this->_db->update("t_user_address",array("AddressID"=>$AddID),$Add);
+	}
+	function delAddress($AddID){
+		return $this->_db->delete("t_user_address",array("AddressID"=>$AddID));
+	}
 
 }
