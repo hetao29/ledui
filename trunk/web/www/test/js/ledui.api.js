@@ -90,7 +90,7 @@ var API = {
 				error:function(msg){
 					if(callback)callback(false);
 					return false;
-				},
+				}
 			});
 			return;
 		}
@@ -115,7 +115,7 @@ var API = {
 		   error:function(msg){
 		   		if(error)error(msg);
 				return false;
-		   },
+		   }
 		});
 	},
 	register: function(param,ok,error){
@@ -136,7 +136,7 @@ var API = {
 		   error:function(msg){
 		   		if(error)error(msg);
 				return false;
-		   },
+		   }
 		});
 	},
 	//登出
@@ -315,7 +315,7 @@ var LocalDataFile={
 	//文件上传总大小
 	DataTotal:0,
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
-	Status:1,
+	Status:1
 }
 
 
