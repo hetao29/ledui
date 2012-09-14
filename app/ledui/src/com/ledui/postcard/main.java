@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.ledui.app.postcard;
+package com.ledui.postcard;
 /*
 import android.app.Activity;
 import android.webkit.WebChromeClient;
@@ -68,7 +68,7 @@ public class main extends DroidGap {
 		appView.getSettings().setSupportZoom( false );
 		//appView.getSettings().setUseWideViewPort(true); 
 		appView.getSettings().setBuiltInZoomControls(false);
-		appView.getSettings().setDisplayZoomControls(false);
+		//xxxxxxxxxxxx appView.getSettings().setDisplayZoomControls(false);
 		//appView.onCreateInputConnection(new EditorInfo(){
 			/*
 			@Override
