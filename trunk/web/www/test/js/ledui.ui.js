@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(2);	
+	Page.init();	
 	Touch.init();
 });
 
@@ -11,7 +11,6 @@ var UI = {
 //页面显示控制
 var Page = {	
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
-	//pages_order:[0],
 	init: function(n){
 		var n = arguments[0] ? arguments[0] : 0;
 		this.pages = this.seri();
@@ -52,7 +51,8 @@ var Page = {
 		Adapta.layout();
 		
 		var appnav = $('.appnav'); 
-		if(page.attr('_hasnav')){ appnav.show(); 
+		if(page.attr('_hasnav')){ 
+			appnav.show(); 
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){
@@ -119,18 +119,20 @@ var Adapta = {
 		if(!UI.istouch){
 			$(window).bind('resize', function(){ _this.layout(); });	
 		}else{
-			$(window).bind('orientationchange', function(){ _this.scale(); _this.layout(); });		
+			/*$(window).bind('orientationchange', function(){ _this.scale(); _this.layout(); });*/		
 		}
 	},
 	scale: function(){
 		var win_w = $(window).width()
+			,win_h = $(window).height()
 			,scr_w = $('.screen').width()
+		
 		this.ratio = win_w/scr_w;
 		$('body').css('zoom', this.ratio);
-		/*$('.screen').css({
+		$('.screen').css({
 			'height': win_h/this.ratio,
-			'zoom': this.ratio
 		});
+		/*
 		$('.overlays').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
