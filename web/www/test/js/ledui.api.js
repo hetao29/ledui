@@ -62,10 +62,34 @@
     function onError(contactError) {
         alert('onError!');
     }
+//{{{
+var AjaxSetup={
+	stat:0, //0,1 start, 2 complete
+	msg:""
+}
+$.ajaxSetup({
+  global: false,
+  type: "POST",
+  timeout:8000,
+  beforeSend:function(e){
+	//600毫米如果还没有反应，就显示进度条
+	AjaxSetup.stat=1;
+	setTimeout(function(){
+		if(AjaxSetup.stat==1){
+			Loading.show(AjaxSetup.msg);
+			AjaxSetup.stat=0;
+		}
+	},600);
+  },complete:function(e){
+	AjaxSetup.stat=2;
+	Loading.hide();
+  }
+});
+//}}}
 
 //接口
 var API = {
-	host: "http://www.ledui.com/api.php/api/",
+	host: "http://www.xledui.com/api.php/api/",
 	//登录
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
