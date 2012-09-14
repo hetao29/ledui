@@ -9,7 +9,7 @@ var UI = {
 	istouch: ('createTouch' in document)	
 } 
 //页面显示控制
-var Page = {
+var Page = {	
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
 	//pages_order:[0],
 	init: function(n){
@@ -25,6 +25,7 @@ var Page = {
 		if(n<0 || n>=this.total || n == this.current){ return; }
 		var page_current = this.getpage(this.current), page = this.getpage(n);
 		if(!page){ return; }
+		
 		var show_direction = n > this.current ? 'right' : 'left'
 			,hide_direction = n > this.current ? 'left' :  'right'
 			,_this = this;
@@ -44,6 +45,12 @@ var Page = {
 		}else{			
 			page.show();	
 		}
+		
+		this.current_prev = this.current;
+		this.current = n;
+		
+		Adapta.layout();
+		
 		var appnav = $('.appnav'); 
 		if(page.attr('_hasnav')){ appnav.show(); 
 			$.each(appnav.find('li'), function(){
@@ -57,10 +64,6 @@ var Page = {
 		}
 		else{ appnav.hide(); }
 		
-		this.scroller(page);
-		this.current_prev = this.current;
-		this.current = n;
-		Adapta.layout();
 		return this;
 	},
 	next: function(){
@@ -79,24 +82,7 @@ var Page = {
 		if(this.current_prev<=0 && this.current_prev == this.current){ return; }
 		this.show(this.current_prev);
 		return this;
-	},
-	scroller: function(page){
-		var scrolls = page.find('[scroll]');
-		scrolls.each(function(){ 
-			if(!$(this).attr('scrollstep')){
-			var s = new iScroll($(this).get(0), {
-				hScroll: false,
-				vScroll: true,
-				hScrollbar: false,
-				vScrollbar: true,
-				zoom: false
-				
-			});
-			$(this).attr('scrollstep', 'true');
-			//console.log(s);
-			}
-		});	
-	},
+	},	
 	//存储顺序与html顺序无关，并纠正错误标记，相同前者优先，未标 记为0
 	seri: function(){
 		var pages = [], ps = $('.page'), tmp = {}, _this = this;
@@ -122,25 +108,25 @@ var Page = {
 //屏幕适配器
 var Adapta = {
 	ratio: 1,
+	scrollers: {},
+	sindex: -1,
 	init: function(){
-		this.scale();
+		if(UI.istouch){ this.scale(); }
 		this.bind();
 	},
 	bind: function(){
 		var _this = this;
-		$(window).resize(function(){ _this.run(); });	
-	},
-	run: function(){
-		this.scale(); 
-		this.layout();
+		if(!UI.istouch){
+			$(window).bind('resize', function(){ _this.layout(); });	
+		}else{
+			$(window).bind('orientationchange', function(){ _this.scale(); _this.layout(); });		
+		}
 	},
 	scale: function(){
-		var win_w = $(window).outerWidth(true)  
-			,win_h = $(window).height()
+		var win_w = $(window).width()
 			,scr_w = $('.screen').width()
-		this.ratio = win_w/scr_w;			
-		
-		$(document.body).css({'zoom': this.ratio});
+		this.ratio = win_w/scr_w;
+		$('body').css('zoom', this.ratio);
 		/*$('.screen').css({
 			'height': win_h/this.ratio,
 			'zoom': this.ratio
@@ -152,12 +138,10 @@ var Adapta = {
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
-			,h_bd = 0
 			,hd = pg.find('.panel_head')
 			,bd = pg.find('.panel_body')
 			,ft = pg.find('.panel_foot');
-		//children static
-		bd.children().each(function(){ h_bd += $(this).height(); })
+		/*
 		var H = $(window).height()/this.ratio
 			,h1 = h_hd = hd.height()
 			,h3 = ft.height()
@@ -165,9 +149,7 @@ var Adapta = {
 			,h2 = H - h1 - h3
 			
 		bd.css({'top': h1, 'height': h2});
-		
 		var is_enough = H >= h1 + h2_min + h3;
-		
 		var h_pg = is_enough ? H : (h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3)
 			,h_bd = is_enough ? h2 :(h_bd<=h2_min ? h2_min : h_bd);
 			
@@ -175,7 +157,51 @@ var Adapta = {
 		pg.css('height', h_pg);
 		bd.css('height', h_bd);
 		ft.css('top', h_hd + h_bd);
+		*/
+		var H = $(window).height()/this.ratio
+			,h1 = hd.outerHeight(true)
+			,h3 = ft.outerHeight(true)
+			,h2 = H - h1 - h3
+		$('.screen').css('height', H);
+		pg.css('height', H);
+		bd.css('top', h1).css('height', h2);
+		
+		this.scroller(pg);
+	},
+	
+	scroller: function(page){		
+		var bd = page.find('.panel_body');
+		var box = bd.find('.panel_body_box');
+		var h = 0;
+		var config = {
+			hScroll: false,
+			vScroll: true,
+			hScrollbar: false,
+			vScrollbar: true,
+			zoom: false
+		};		
+		box.children().each(function(){ h += $(this).height(); })
+		box.css('height', h);
+		if(bd.height() < h){
+			if(!bd.attr('scrollinstall')){
+				this.sindex ++;
+				this.scrollers[this.sindex]= new iScroll(bd.get(0), config);
+				bd
+				.attr('scrollinstall', 'true')
+				.attr('scrollindex', this.sindex);
+			}
+		}else{
+			if(bd.attr('scrollinstall')){
+				var sindex = bd.attr('scrollindex');
+				bd
+				.removeAttr('scrollinstall')
+				.removeAttr('scrollindex');
+				this.scrollers[sindex].destroy();
+				delete(this.scrollers[sindex]);
+			}
+		}
 	}
+	
 }
 
 //遮罩层
@@ -249,6 +275,9 @@ var Loading = {
 var Touch = {
 	init: function(){ this.bind(); },
 	bind: function(){
+		$('body')
+		.bind('scroll', function(e){  e.preventDefault(); })		
+		.bind('touchmove', function(e){  e.preventDefault(); });
 		$('[active]')
 		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
 		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
@@ -288,7 +317,9 @@ var PhotoEditor = {
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
 			_this.center();
+			setTimeout(function(){
 			_this.loading.hide();
+			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
 		})
