@@ -17,8 +17,8 @@
        specific language governing permissions and limitations
        under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustNothing"
-      package="com.ledui.app.postcard" android:versionName="1.1" android:versionCode="5" android:imeOptions="flagNoExtractUi">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.ledui.postcard" android:versionName="1.1" android:versionCode="5" android:imeOptions="flagNoExtractUi">
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -52,12 +52,11 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name="main" android:label="@string/app_name" 
                   android:configChanges="orientation|keyboardHidden"
-				  android:windowSoftInputMode="adjustNothing"
 				  android:imeOptions="flagNoExtractUi"
+				  android:screenOrientation="portrait"
 				  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" 
-				  android:windowSoftInputMode="adjustNothing"
 				  android:imeOptions="flagNoExtractUi"
 				  />
                 <category android:name="android.intent.category.LAUNCHER" />
