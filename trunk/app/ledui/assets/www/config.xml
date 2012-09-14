@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <widget xmlns		= "http://www.w3.org/ns/widgets"
 	xmlns:gap	= "http://phonegap.com/ns/1.0"
-	id		= "com.ledui.app.postcard"
+	id		= "com.ledui.postcard"
 	version 	= "1.0.0">
 
 	<name>乐兑明信片</name>
