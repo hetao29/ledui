@@ -161,47 +161,45 @@ background: -o-linear-gradient(top, #eee , #eee 50%, #ddd 50% , #ddd );
 
 .button_s{
 position:relative;isplay:inline-block;*display:inline;*zoom:1;padding:0 15px;height:54px;color:#fff;text-align:center;font-size:28px;line-height:54px;
-box-shadow:1px 1px 0 #ffba1e, inset 1px 1px 0 #cc5c00;
 border:1px solid #994702;
 border-radius:10px;	
 background: #ff7300;
-background: -webkit-linear-gradient(top, #f97100 , #f97100 50%, #cc5b00 50% , #cc5b00 );
-background: -moz-linear-gradient(top, #f97100 , #f97100 50%, #cc5b00 50% , #cc5b00 );
-background: -ms-linear-gradient(top, #f97100 , #f97100 50%, #cc5b00 50% , #cc5b00 );
-background: -o-linear-gradient(top, #f97100 , #f97100 50%, #cc5b00 50% , #cc5b00 );
+background: -webkit-linear-gradient(top, #f97100, #cc5b00);
+background: -moz-linear-gradient(top, #f97100, #cc5b00);
+background: -ms-linear-gradient(top, #f97100, #cc5b00);
+background: -o-linear-gradient(top, #f97100, #cc5b00);
 }
-.button_s_back{border-radius:1px 10px 10px 1px;margin-left:30px;padding-left:5px;}
+.button_s_back{border-radius:1px 10px 10px 1px;border-left:none;margin-left:30px;padding-left:5px;}
 .button_s_back .arrow{display:block;position:absolute;top:0;left:-35px;width:36px;height:55px;overflow:hidden;}
-.button_s_back .arrow em{display:block;position:absolute;left:15px;top:4px;
+.button_s_back .arrow em{display:block;position:absolute;left:16px;top:2px;
 width:45px;height:45px;border-radius:8px;
 border:1px solid #994702;
-box-shadow:1px 1px 1px #ffba1e, inset 1px 1px 1px #cc5c00;
 border:1px solid #994702;
 -webkit-transform:rotate(-45deg);
 -moz-transform:rotate(-45deg);
 -o-transform:rotate(-45deg);
 -ms-transform:rotate(-45deg);
 background: #ff7300;
-background: -webkit-linear-gradient(-135deg, #f97100, #f97100 50%, #cc5b00 50% , #cc5b00 );
-background: -moz-linear-gradient(-135deg, #f97100, #f97100 50%, #cc5b00 50% , #cc5b00 );
-background: -ms-linear-gradient(-135deg, #f97100, #f97100 50%, #cc5b00 50% , #cc5b00 );
-background: -o-linear-gradient(-135deg, #f97100, #f97100 50%, #cc5b00 50% , #cc5b00 );
+background: -webkit-linear-gradient(-135deg, #f97100, #cc5b00);
+background: -moz-linear-gradient(-135deg, #f97100, #cc5b00);
+background: -ms-linear-gradient(-135deg, #f97100, #cc5b00);
+background: -o-linear-gradient(-135deg, #f97100, #cc5b00);
 }
 .button_s:active,
 .button_s.active{
 background: #ff7300;
-background: -webkit-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #944301 );
-background: -moz-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #944301 );
-background: -ms-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #944301 );
-background: -o-linear-gradient(top, #e66900 , #cc5b00 50%, #9f4903 50% , #944301 );
+background: -webkit-linear-gradient(top, #e66900, #944301);
+background: -moz-linear-gradient(top, #e66900, #944301);
+background: -ms-linear-gradient(top, #e66900, #944301);
+background: -o-linear-gradient(top, #e66900, #944301);
 }
 .button_s_back:active .arrow em,
 .button_s_back.active .arrow em{
 background: #ff7300;
-background: -webkit-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );
-background: -moz-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );
-background: -ms-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );
-background: -o-linear-gradient(-135deg, #e66900, #cc5b00 50%, #9f4903 50% , #944301 );	
+background: -webkit-linear-gradient(-135deg, #e66900, #944301);
+background: -moz-linear-gradient(-135deg, #e66900, #944301);
+background: -ms-linear-gradient(-135deg, #e66900, #944301);
+background: -o-linear-gradient(-135deg, #e66900, #944301);	
 }
 .button_pay{display:inline-block;*display:inline;*zoom:1;width:400px;height:76px;border:5px solid #d3d3d3;overflow:hidden;
 box-shadow:inset 1px 1px 1px #eee;
