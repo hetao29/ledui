@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.ledui.app.postcard;
+package com.ledui.postcard;
 
 public final class R {
     public static final class attr {
