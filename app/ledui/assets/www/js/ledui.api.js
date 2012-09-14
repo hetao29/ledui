@@ -90,7 +90,7 @@ var API = {
 				error:function(msg){
 					if(callback)callback(false);
 					return false;
-				},
+				}
 			});
 			return;
 		}
@@ -115,7 +115,7 @@ var API = {
 		   error:function(msg){
 		   		if(error)error(msg);
 				return false;
-		   },
+		   }
 		});
 	},
 	register: function(param,ok,error){
@@ -136,7 +136,7 @@ var API = {
 		   error:function(msg){
 		   		if(error)error(msg);
 				return false;
-		   },
+		   }
 		});
 	},
 	//登出
@@ -315,7 +315,7 @@ var LocalDataFile={
 	//文件上传总大小
 	DataTotal:0,
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
-	Status:1,
+	Status:1
 }
 
 
@@ -376,15 +376,15 @@ var Control = {
 		API.islogin(function(r){
 		  	if(r){
 		  		$("#login .errorbox").fadeOut();
-		  		$(".isnotlogin").hide();
-		  		$(".islogin").show();
+		  		$("#isnotlogin").hide();
+		  		$("#islogin").show();
 		  	      }
 		});
 		//b.明信片状态查询
 		//2.界面接口
 		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
 		//for test
-		$("#choosePic").bind("click",function(e){Page.show(1);});
+		//$("#choosePic").bind("click",function(e){Page.show(1);});
 		//重选按钮
 		$("#choosePic2").bind("tapone",function(e){Overlay.show("chkphoto");});
 		//结束时，再重新创建时的按钮
@@ -423,22 +423,22 @@ var Control = {
 		
 		$(".CLogout").bind("tapone",function(e){
 				API.logout({},function ok(result){
-					$(".islogin").hide();
-					$(".isnotlogin").show();
+					$("#islogin").hide();
+					$("#isnotlogin").show();
 					},function error(result){
 				});
 			});
 		
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 
-		$("#login #IDLogin").bind("tapone",function(e){
+		$("#IDLogin").bind("tapone",function(e){
 				var sid=$("#login .sid").val();
 				var pwd=$("#login .pwd").val();
 				API.login({email:sid,passwd:pwd},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
 					$("#login .errorbox").fadeOut();
-					$(".isnotlogin").hide();
-					$(".islogin").show();
+					$("#isnotlogin").hide();
+					$("#islogin").show();
 					Interface.onBackbutton();
 					},function error(result){
 						//登录失败，提示错误信息
@@ -450,15 +450,15 @@ var Control = {
 						});
 				});
 		});
-		$("#register #IDRegister").bind("tapone",function(e){
+		$("#IDRegister").bind("tapone",function(e){
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
 				var pwd2=$("#register .pwd2").val();
 				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
 					//注册成功，自动登录,更新登录状态,跳到登录前的一页
 					$("#register .errorbox").fadeOut();
-					$(".isnotlogin").hide();
-					$(".islogin").show();
+					$("#isnotlogin").hide();
+					$("#islogin").show();
 					Interface.onBackbutton();
 					},function error(result){
 					//登录失败，提示错误信息

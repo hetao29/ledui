@@ -513,18 +513,24 @@
 </div>
 
 <div class="appnav">
-<ul>
-	<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
-	<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
-	<li active="yes" class="CLogin" tr="login"  mark="10">登录</li>
-	<li active="yes" class="CRegister" tr="signup" mark="11">注册</li>
-</ul>
+	<ul id="isnotlogin">
+		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
+		<li active="yes" class="CLogin" tr="login"  mark="10">登录</li>
+		<li active="yes" class="CRegister" tr="signup" mark="11">注册</li>
+	</ul>
+	<ul id="islogin">
+		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱(0)</li>
+		<li active="yes" class="CAccount" tr="login"  mark="10">账号</li>
+		<li active="yes" class="CLogout" tr="signup" mark="11">退出</li>
+	</ul>
 </div>
 
 
 
 </div><!--screen end-->
-<!--
+
 
 <script src="js/cordova-2.0.0.js"></script> 
 <script src="js/jquery-1.7.2.min.js"></script>
@@ -535,8 +541,8 @@
 <script src="js/ledui.test.js"></script>
 <script src="js/ledui.api.js"></script>
 <script src="js/tr.js"></script>
--->
+<!--
 <script src="mini.js"></script>
-
+-->
 </body>
 </html>
