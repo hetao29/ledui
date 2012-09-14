@@ -89,7 +89,7 @@ $.ajaxSetup({
 
 //接口
 var API = {
-	host: "http://www.xledui.com/api.php/api/",
+	host: "http://www.ledui.com/api.php/api/",
 	//登录
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
