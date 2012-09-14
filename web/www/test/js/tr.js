@@ -18,7 +18,7 @@ var LOCALE = {
 	  title: "ledui postcard",
 	  id: "example",
 	  success_message: "The external file has been included in the page",
-	  failure_message: "There was a problem including the file"   ,     
+	  failure_message: "There was a problem including the file"   
 	},
 	//日语
 	ja:{

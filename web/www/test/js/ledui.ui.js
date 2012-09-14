@@ -200,7 +200,7 @@ var Adapta = {
 				delete(this.scrollers[sindex]);
 			}
 		}
-	},
+	}
 	
 }
 
