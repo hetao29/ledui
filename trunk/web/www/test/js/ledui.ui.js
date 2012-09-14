@@ -116,11 +116,7 @@ var Adapta = {
 	},
 	bind: function(){
 		var _this = this;
-		if(!UI.istouch){
-			$(window).bind('resize', function(){ _this.layout(); });	
-		}else{
-			/*$(window).bind('orientationchange', function(){ _this.scale(); _this.layout(); });*/		
-		}
+		$(window).bind('resize', function(){ _this.layout(); });	
 	},
 	scale: function(){
 		var win_w = $(window).width()
