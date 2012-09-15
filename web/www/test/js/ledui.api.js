@@ -438,6 +438,10 @@ var Control = {
 			Page.show($(this).attr("_to"));					  
 		});
 		
+		$('.rcvlist li').delegate($('.rcvlist'), 'tapone', function(){
+			$(this).toggleClass('checked');											  
+		});
+		
 		
 		
 		$(".CAbout").bind("tapone",function(e){Page.show(8);});
