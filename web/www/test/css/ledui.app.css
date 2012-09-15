@@ -426,11 +426,11 @@ background: -o-linear-gradient(top, #eee, #ccc);
 }
 .rcvlist .list  .checked .edit:active,
 .rcvlist .list  .checked .edit.active{
-border-left:1px solid #333;	
-background: -webkit-linear-gradient(top, #555, #333);
-background: -moz-linear-gradient(top, #555, #333);
-background: -ms-linear-gradient(top, #555, #333);
-background: -o-linear-gradient(top, #555, #333);
+border-left:1px solid #555;	
+background: -webkit-linear-gradient(top, #666, #444);
+background: -moz-linear-gradient(top, #666, #444);
+background: -ms-linear-gradient(top, #666, #444);
+background: -o-linear-gradient(top, #666, #444);
 }
 .rcvlist .list .checked .address{color:#ccc;}
 .rcvlist .list .checked *{color:#fff;}
