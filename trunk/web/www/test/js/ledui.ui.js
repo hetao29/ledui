@@ -277,8 +277,8 @@ var Touch = {
 		.bind('scroll', function(e){  e.preventDefault(); })		
 		.bind('touchmove', function(e){  e.preventDefault(); });
 		$('[active]')
-		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
-		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
+		.live('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
+		.live('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
 		$('[focus]')
 		.bind('focus', function(e) { $(this).addClass('focus'); })
 		.bind('blur', function(e) { $(this).removeClass('focus'); });
