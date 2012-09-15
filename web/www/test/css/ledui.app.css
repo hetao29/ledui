@@ -403,7 +403,7 @@ background: -o-linear-gradient(top, #ddd , #ddd 50%, #aaa 50% , #aaa );
 .rcvlist .null{padding:200px 0;color:#999;text-align:center;font-size:30px;}
 .rcvlist .list{position:relative;margin:0 auto;}
 .rcvlist .list ul{border-bottom:1px solid #ddd;}
-.rcvlist .list li{position:relative;border-top:1px solid #ddd;padding:15px 15px 15px 0;padding-left:60px;cursor:pointer;padding-right:100px;background:#fff;}
+.rcvlist .list li{position:relative;border-top:1px solid #ddd;cursor:pointer;padding-right:100px;background:#fff;}
 .rcvlist .list .checked{background:#fff;cursor:default;
 background: -webkit-linear-gradient(top, #777, #666);
 background: -moz-linear-gradient(top, #777, #666);
@@ -411,9 +411,26 @@ background: -ms-linear-gradient(top, #777, #666);
 background: -o-linear-gradient(top, #777, #666);
 border-color:#555;
 }
-.rcvlist .list .edit{display:block;position:absolute;top:0;right:0;width:90px;height:100%;}
+.rcvlist .list .info{padding:15px 0;padding-left:60px;}
+.rcvlist .list .edit{display:block;position:absolute;top:0;right:0;width:90px;height:100%;cursor:pointer;}
 .rcvlist .list .edit .icon{display:block;position:absolute;top:50%;left:50%;margin-top:-15px;margin-left:-15px;width:30px;height:30px;
 background:url(../img/app.png) no-repeat -50px -500px;
+}
+.rcvlist .list .edit:active,
+.rcvlist .list .edit.active{
+border-left:1px solid #ddd;	
+background: -webkit-linear-gradient(top, #eee, #ccc);
+background: -moz-linear-gradient(top, #eee, #ccc);
+background: -ms-linear-gradient(top, #eee, #ccc);
+background: -o-linear-gradient(top, #eee, #ccc);
+}
+.rcvlist .list  .checked .edit:active,
+.rcvlist .list  .checked .edit.active{
+border-left:1px solid #333;	
+background: -webkit-linear-gradient(top, #555, #333);
+background: -moz-linear-gradient(top, #555, #333);
+background: -ms-linear-gradient(top, #555, #333);
+background: -o-linear-gradient(top, #555, #333);
 }
 .rcvlist .list .checked .address{color:#ccc;}
 .rcvlist .list .checked *{color:#fff;}

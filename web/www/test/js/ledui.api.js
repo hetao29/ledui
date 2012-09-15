@@ -438,8 +438,14 @@ var Control = {
 			Page.show($(this).attr("_to"));					  
 		});
 		
-		$('.rcvlist li').delegate($('.rcvlist'), 'tapone', function(){
-			$(this).toggleClass('checked');											  
+		//select
+		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){
+			$(this).parent().toggleClass('checked');											  
+		});
+		//edit
+		$('.rcvlist li .edit').delegate($('.rcvlist'), 'tapone', function(){													  
+			Page.show(3);
+			return false;
 		});
 		
 		
