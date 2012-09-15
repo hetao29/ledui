@@ -106,4 +106,31 @@ class api_user{
 		}
 		return SJson::encode($result);
 	}
+	/**
+	  * 增加用户地址
+	  */
+	public function PageAddAddress($inPath){
+		$result = new api_result;
+		$db = new user_db;
+		$Address=array();
+		if(empty($_REQUEST['Name'])){	$result->error_code = -1;	};
+		if(empty($_REQUEST['Country'])){	$result->error_code = -1;	};
+		if(empty($_REQUEST['Address'])){	$result->error_code = -1;	};
+		$Address['Name']=$_REQUEST['Name'];
+		$Address['Address']=$_REQUEST['Address'];
+		$Address['Country']=$_REQUEST['Country'];
+		if(isset($_REQUEST['Mobile']))$Address['Mobile']=$_REQUEST['Mobile'];
+		if(isset($_REQUEST['Phone']))$Address['Phone']=$_REQUEST['Phone'];
+		if(isset($_REQUEST['Email']))$Address['Email']=$_REQUEST['Email'];
+		if(isset($_REQUEST['PostCode']))$Address['PostCode']=$_REQUEST['PostCode'];
+		
+		if(user_api::isLoginMobile($userID,$token) == true){
+			$id =  $db->addAddress($Address);
+			$result->result =  $db->getAddress($id);
+			$result->error_code = 0;
+		}else{
+			$result->error_code = -1;
+		}
+		return SJson::encode($result);
+	}
 }

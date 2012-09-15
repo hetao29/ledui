@@ -163,6 +163,28 @@ var API = {
 		   }
 		});
 	},
+	addAddress: function(param,ok,error){
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/user/addAddress",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+			   	LocalDataAddress.add(msg.result);
+				//保存到本地
+				if(ok)ok(msg);
+				return true;
+			   }else{
+				   if(error)error(msg);
+			   }
+		   },
+		   error:function(msg){
+		   		if(error)error(msg);
+				return false;
+		   }
+		});
+	},
 	//登出
 	logout: function(param,ok,error){
 		LocalData.setToken("","");
@@ -340,6 +362,44 @@ var LocalDataFile={
 	DataTotal:0,
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
 	Status:1
+}
+var LocalDataAddress={
+	AddressID:"",
+	Name:"",
+	Mobile:"",
+	Country:"",
+	Privince:"",
+	City:"",
+	Address:"",
+	PostCode:"",
+	Mobile:"",
+	Phone:"",
+	Key:"Address",
+	add:function(o){
+		var all = LocalDB.get(this.Key);
+		all.push(o);
+		LocalDB.set(this.Key,all);
+	},edit:function(o){
+		var all = LocalDB.get(this.Key);
+		for(var i=0;i<all.length;i++){
+			if(all[i].AddressID == o.AddressID){
+				postcards.splice(i,1,o);
+			}
+		}
+		LocalDB.set(this.Key,all);
+     	},del:function(o){
+		var all = LocalDB.get(this.Key);
+		for(var i=0;i<all.length;i++){
+			if(all[i].AddressID == o.AddressID){
+				postcards.splice(i,1);
+			}
+		}
+		LocalDB.set(this.Key,all);
+	},list:function(){
+		var all = LocalDB.get(this.Key);
+		return all;
+	}
+	
 }
 
 
