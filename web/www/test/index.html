@@ -168,6 +168,9 @@
 				<div class="l">
 					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
+				<div class="r">
+					<div class="button button_s hide" active="yes" id="delAddress">删除</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -176,14 +179,25 @@
 		<div class="rcvform">
 			<div class="chk"><div class="button button_m" active="yes">从通讯录选择</div></div>
 			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
-			<div class="item"><input type="text" placeholder="收件人手机号码" /></div>
+			<div class="item"><input type="tel" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
-							<div><select><option>选择省份</option></select></div>
-							<div><select><option>选择城市</option></select></div>							
-							<div><select><option>选择区域</option></select></div>
+							<div><select>
+								<option value=''>选择国家</option>
+								<option value='cn'>中国(含港澳台)</option>
+								<option value='other'>国外</option>
+							</select></div>
+							<div><select>
+								<option value="">选择</option>
+								<option value="北京">北京</option>
+								<option value="天津">天津</option>
+							</select></div>
+							<div><select>
+								<option>选择城市</option>
+								<option>成都</option>
+							</select></div>							
 			</div>
 			<div class="item"><input type="text" placeholder="街道地址" /></div>
-			<div class="item"><input type="text" placeholder="邮政编码" /></div>
+			<div class="item"><input type="tel" placeholder="邮政编码" /></div>
 		</div>
 	</div>	
 	</div>
