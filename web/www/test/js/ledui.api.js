@@ -543,17 +543,17 @@ var Control = {
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 		
 		//选择地址
-		$('.rcvlist li .info').live('tapone', function(){										   
+		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){										   
 			$(this).parent().toggleClass('checked');											  
 		});
 		//删除地址
-		$("#delAddress").live("tapone", function(){
+		$("#delAddress").delegate($('.rcvlist'), "tapone", function(){
 			LocalDataAddress.del($(this).attr("LocalID"));
 			LocalDataAddress.show();
 			Page.show(2);
 		});
 		//编辑地址
-		$('.edit').live('tapone', function(){
+		$('.edit').delegate($('.rcvlist'), 'tapone', function(){
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
