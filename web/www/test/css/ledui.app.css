@@ -512,6 +512,8 @@ border-color:#555;
 }
 
 .confirm{margin-top:-120px;}
+.alert{margin-top:-120px;}
+
 
 /*animate*/
 @-webkit-keyframes showfromright { 

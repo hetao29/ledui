@@ -2,11 +2,17 @@ $(document).ready(function(){
 	Adapta.init();
 	Page.init(1);	
 	Touch.init();
+	UI.redefine();
 });
 
 //UI系统
 var UI = {
-	istouch: ('createTouch' in document)	
+	istouch: ('createTouch' in document),
+	redefine: function(){
+		window.alert = function(msg){
+			Overlay.show('alert', msg);	
+		}	
+	}
 } 
 //页面显示控制
 var Page = {	
@@ -189,27 +195,33 @@ var Overlay = {
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
 			,_this = this;
-		var clickevent  = UI.istouch ? 'tapone' : 'click';
 		overlays.each(function(){
 			var o = $(this)
 				,name = o.attr('_name')
 				,handle = o.find('.close');
 			if(name){ _this.layers[name] = o; }	
-			o.bind(clickevent, function(){ return false; });
-			handle.bind(clickevent, function(){ _this.hide(); return false;	});
+			o.bind('tapone', function(e){ return false; });
+			handle.bind('tapone', function(){ _this.hide(); return false;	});
 		});
-		overlay_mask.bind(clickevent, function(){ _this.hide(); return false; });
+		overlay_mask.bind('tapone', function(){ _this.hide(); return false; });
 		if(overlay_mask.length){ this.mask = overlay_mask; }
 		this.isinit = true;
 	},
-	show: function(name){
+	show: function(name, message){
 		if(!this.isinit){ this.init(); }
 		if(name == this.curname){ return; }
 		var o = this.layers[name];
 		var _this = this;
 		if(!o || this.lock){ return; }
 		this.lock = true;
-		if(this.curname){ this.hide(this.curname); }
+		if(this.curname){ this.hide(this.curname); }		
+		if(name == 'alert'){
+			var info = o.find('.info');
+			var btnok = o.find('.button').eq(0);
+			console.log(btnok);
+			btnok.bind('tapone', function(){ _this.hide(); });
+			info.html(message);	
+		}
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
