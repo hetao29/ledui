@@ -191,7 +191,7 @@ var API = {
 		var param={};
 		param.Token= LocalData.getToken();
 		param.UserID= LocalData.getUID();
-		param.PostCard = (PostCard);
+		param.PostCard = PostCard;
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/postcard/add",
@@ -199,20 +199,18 @@ var API = {
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   	console.log(msg.result);
+			   	//console.log(msg.result);
 				//OrderID
 				//PayURL
 				//PostCard
 				//LocalID(postcard)
 				if(ok)ok(msg);
-				return true;
 			   }else{
-				   if(error)error(msg.error_msg);
+				   if(error && msg.error_msg)error(msg.error_msg);
 			   }
 		   },
 		   error:function(msg){
-		   		if(error)error(msg);
-				return false;
+		   	if(error)error(msg);
 		   }
 		});
 		
