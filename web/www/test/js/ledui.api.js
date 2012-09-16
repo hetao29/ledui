@@ -106,6 +106,8 @@ var API = {
 				dataType: "JSON",
 				success: function(msg){
 					if(msg){
+						//同步本地地址数据
+						API.synAddress();
 						if(callback)callback(true);
 					}else{
 						if(callback)callback(false);
@@ -131,6 +133,8 @@ var API = {
 			   if(msg && msg.result && msg.error_code==0){
 			   	LocalData.setToken(msg.result.UserID,msg.result.UserAccessToken);
 				if(ok)ok(msg);
+				//同步本地地址数据
+				API.synAddress();
 				return true;
 			   }else{
 				   if(error)error(msg);
@@ -163,16 +167,25 @@ var API = {
 		   }
 		});
 	},
-	addAddress: function(param,ok,error){
+	//同步地址信息，当用户登录后，或者登录后，第一次启动时
+	//把用户当前的地址上传，然后服务器下发在服务器merge后的地址数据
+	synAddress: function(ok,error){
+		var param={};
+		param.UserAccessToken = LocalData.getToken();
+		param.uid = LocalData.getUID();
+		param.AddressData = JSON.stringify(LocalDataAddress.list());
 		$.ajax({
 		   type: "POST",
-		   url: API.host+"/user/addAddress",
+		   url: API.host+"/user/synAddress",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   	LocalDataAddress.add(msg.result);
-				//保存到本地
+			   console.log(msg.result);
+			   	if(msg.result.length>0) LocalDataAddress.clear();
+				for(var i=0;i<msg.result.length;i++){
+					LocalDataAddress.add(msg.result[i]);
+				}
 				if(ok)ok(msg);
 				return true;
 			   }else{
@@ -376,37 +389,41 @@ var LocalDataFile={
 	DataSended:0,
 	//文件上传总大小
 	DataTotal:0,
+	Key:"File",
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
 	Status:1,
-	genID:function(imageURL,filesize,lastModifiedDate){
-		var str=imageURL+":"+filesize+":"+lastModifiedDate;
-		this.FileTmpID=this.strhash(str);
-	},
-	strhash:function( str ) {
-		if (str.length % 32 > 0) str += Array(33 - str.length % 32).join("z");
-		var hash = '', bytes = [], i = j = k = a = 0, dict = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','1','2','3','4','5','6','7','8','9'];
-		for (i = 0; i < str.length; i++ ) {
-			ch = str.charCodeAt(i);
-			bytes[j++] = (ch < 127) ? ch & 0xFF : 127;
-		}
-		var chunk_len = Math.ceil(bytes.length / 32);   
-		for (i=0; i<bytes.length; i++) {
-			j += bytes[i];
-			k++;
-			if ((k == chunk_len) || (i == bytes.length-1)) {
-				a = Math.floor( j / k );
-				if (a < 32)
-					hash += '0';
-				else if (a > 126)
-					hash += 'z';
-				else
-					hash += dict[  Math.floor( (a-32) / 2.76) ];
-				j = k = 0;
+	genID:function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},add:function(imageURI){
+		this.FilePath=imageURI;
+		var all = LocalDB.get(this.Key) || [];
+		var isnew=true;
+		for(var i=0;i<all.length;i++){
+			if(all[i].FilePath == this.FilePath){
+				isnew =false;
+				all.splice(i,1,this);
 			}
 		}
-		return hash;
+		if(isnew){
+			this.FileTmpID = this.genID();
+			all.unshift(this);
+		}
+		LocalDB.set(this.Key,all);
+	},get:function(imageURI){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].FilePath == imageURI){
+				return all[i];
+			}
+		}
+	},del:function(imageURI){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].FilePath == imageURI){
+				all.splice(i,1);
+			}
+		}
 	}
-
 }
 var LocalDataAddress={
 	AddressID:"",//服务器地址ID，如果>0，表明是服务器的地址
@@ -423,6 +440,8 @@ var LocalDataAddress={
 	Key:"Address",
 	genID:function(){
 		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},clear:function(){
+		LocalDB.del(this.Key);
 	},
 	get:function(LocalID){
 		var all = LocalDB.get(this.Key) || [];
@@ -558,19 +577,9 @@ var Interface = {
 	},
 
 	onPhotoURISuccess:function(imageURI){
-		LocalDataPostCard.init();
-		var F = new File(imageURI);
-		alert(F.name);
-		alert(F.fullPath);
-		alert(F.size);
-		alert(F.lastModifiedDate);
-		LocalDataFile.genID(f.fullPath,f.size,f.lastModifiedDate);
-	  	//选择了文件
-	 	//判断这个文件是不是已经上传过，从LocalDataFile里检测
-		//初始化上传明信片数据
 		Page.init(1);
 		setTimeout(function(){PhotoEditor.init(imageURI);},300);
-		//setTimeout(function(){API.upload(122,imageURI);},2000);
+		setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	
 	onFail:function (message) {
@@ -711,16 +720,60 @@ var Control = {
 		});
 		//预览，生成明信片数据,LocalDataPostCard
 		$("#toPreview").bind("tapone",function(e){
-				LocalDataPostCard.Comments=$("#comments").val();
+				LocalDataPostCard.init();
+				//选择了文件
+				//文件信息
+				LocalDataFile.add($("#photo img").attr("src"));
+				var f = LocalDataFile.get($("#photo img").attr("src"));
+				if(f)LocalDataPostCard.FileTmpID = f.FileTmpID;
+				var info=PhotoEditor.getinfo();
+				LocalDataPostCard.width=info.w;
+				LocalDataPostCard.height=info.h;
+				LocalDataPostCard.x=info.x;
+				LocalDataPostCard.y=info.y;
+				LocalDataPostCard.rotate=info.r;
+				//地址信息
 				var adr = $("#rcvlist li.checked");
 				for(var i=0;i<adr.length;i++){
 					LocalDataPostCard.Address.push(LocalDataAddress.get($(adr[i]).attr("LocalID")));
 				}
+				//评论信息
+				LocalDataPostCard.Comments=$("#comments").val();
 				console.log(LocalDataPostCard);
+				//显示预览页面
+				$("#postinfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
+				$("#postinfo [name='Address']").html(
+						LocalDataPostCard.Address[0].Country+" "+
+						LocalDataPostCard.Address[0].Privince +" "+
+						LocalDataPostCard.Address[0].City+" "+
+						LocalDataPostCard.Address[0].Address+" "
+						);
+				$("#postinfo [name='PostCode']").html(LocalDataPostCard.Address[0].PostCode);
+				$("#msginfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
+				$("#msginfo [name='Comments']").html(LocalDataPostCard.Comments);
+				//获取登录者的名字
+				//$("#msginfo [name='FromName']").html();
+				Page.show(5);
 		});
 		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
 		//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
 		$("#toSend").bind("tapone",function(e){
+				API.islogin(function(isLogin){
+					if(isLogin){
+						//开始掉用接口
+						//修改登录，注册，返回页面为 0
+						Page.show(6);
+						$("#titlebar_login .button_s_back").attr("_back",0);
+						$("#titlebar_register .button_s_back").attr("_back",0);
+					}else{
+						//指定到登录
+						Page.show(10);
+						$("#titlebar_login .button_s_back").attr("_back",6);
+						$("#titlebar_register .button_s_back").attr("_back",6);
+						//修改登录，注册，返回页面为 6
+					}
+					});
+				//
 		});
 		
 		
