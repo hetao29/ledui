@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(0);	
+	Page.init(1);	
 	Touch.init();
 });
 
@@ -125,81 +125,61 @@ var Adapta = {
 		
 		this.ratio = win_w/scr_w;
 		$('body').css('zoom', this.ratio);
-		$('.screen').css({
-			'height': win_h/this.ratio,
-		});
-		/*
-		$('.overlays').css({
-			'height': win_h/this.ratio,
-			'zoom': this.ratio
-		});*/
+		$('.screen').css({ 'height': win_h/this.ratio, });
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
 			,hd = pg.find('.panel_head')
 			,bd = pg.find('.panel_body')
-			,ft = pg.find('.panel_foot');
-		/*
-		var H = $(window).height()/this.ratio
-			,h1 = h_hd = hd.height()
-			,h3 = ft.height()
-			,h2_min = parseInt(bd.attr('_minheight'), 10) || h_bd
-			,h2 = H - h1 - h3
-			
-		bd.css({'top': h1, 'height': h2});
-		var is_enough = H >= h1 + h2_min + h3;
-		var h_pg = is_enough ? H : (h1 + (h_bd<=h2_min ? h2_min : h_bd) + h3)
-			,h_bd = is_enough ? h2 :(h_bd<=h2_min ? h2_min : h_bd);
-			
-		$('.screen').css('height', h_pg);
-		pg.css('height', h_pg);
-		bd.css('height', h_bd);
-		ft.css('top', h_hd + h_bd);
-		*/
-		var H = $(window).height()/this.ratio
+			,ft = pg.find('.panel_foot')
+			,H = $(window).height()/this.ratio
 			,h1 = hd.outerHeight(true)
 			,h3 = ft.outerHeight(true)
-			,h2 = H - h1 - h3
+			,h2 = H - h1 - h3;
 		$('.screen').css('height', H);
 		pg.css('height', H);
 		bd.css('top', h1).css('height', h2);
 		
-		this.scroller(pg);
+		this.chkscroll(pg);
 	},
 	
-	scroller: function(page){		
-		var bd = page.find('.panel_body');
-		var box = bd.find('.panel_body_box');
-		var h = 0;
-		var config = {
-			hScroll: false,
-			vScroll: true,
-			hScrollbar: false,
-			vScrollbar: true,
-			zoom: false
-		};		
+	chkscroll: function(){
+		var pg = Page.getcurrentpage()
+			,bd = pg.find('.panel_body')
+			,box = bd.find('.panel_body_box')
+			,h = 0
+			,_this = this
+			,config = {
+				hScroll: false,
+				vScroll: true,
+				hScrollbar: false,
+				vScrollbar: true,
+				zoom: false,
+				//解决浏览器里不能点击输入框的问题,hetal
+				onBeforeScrollStart: function (e) {
+					var target = e.target;
+					while (target.nodeType != 1) target = target.parentNode;
+					if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA'){
+						e.preventDefault();
+					}	
+				}
+			};		
 		box.children().each(function(){ h += $(this).height(); })
 		box.css('height', h);
+		
+		$('[scrollinstall]').each(function(){
+			var sindex = $(this).attr('scrollindex');
+			$(this).removeAttr('scrollinstall').removeAttr('scrollindex');
+			_this.scrollers[sindex].destroy();
+			delete(_this.scrollers[sindex]);
+		});
+		this.sindex = -1;
 		if(bd.height() < h){
-			if(!bd.attr('scrollinstall')){
-				this.sindex ++;
-				this.scrollers[this.sindex]= new iScroll(bd.get(0), config);
-				bd
-				.attr('scrollinstall', 'true')
-				.attr('scrollindex', this.sindex);
-			}
-		}else{
-			if(bd.attr('scrollinstall')){
-				var sindex = bd.attr('scrollindex');
-				bd
-				.removeAttr('scrollinstall')
-				.removeAttr('scrollindex');
-				this.scrollers[sindex].destroy();
-				delete(this.scrollers[sindex]);
-			}
+			this.sindex ++;
+			this.scrollers[this.sindex]= new iScroll(bd.get(0), config);
+			bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
 		}
 	}
-	
 }
 
 //遮罩层
@@ -277,8 +257,8 @@ var Touch = {
 		.bind('scroll', function(e){  e.preventDefault(); })		
 		.bind('touchmove', function(e){  e.preventDefault(); });
 		$('[active]')
-		.bind('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
-		.bind('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
+		.live('touchstart', function(e) { $(this).addClass('active'); e.preventDefault(); })
+		.live('touchend', function(e) { $(this).removeClass('active'); e.preventDefault(); });		
 		$('[focus]')
 		.bind('focus', function(e) { $(this).addClass('focus'); })
 		.bind('blur', function(e) { $(this).removeClass('focus'); });
