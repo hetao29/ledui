@@ -395,7 +395,7 @@ var LocalDataAddress={
 				isnew =false;
 			}
 		}
-		if(isnew)all.push(o);
+		if(isnew)all.unshift(o);
 		LocalDB.set(this.Key,all);
 	},edit:function(o){
 		var all = LocalDB.get(this.Key) || [];
