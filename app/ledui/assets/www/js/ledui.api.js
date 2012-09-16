@@ -1,21 +1,4 @@
 
- function onGEOSuccess(position) {
-        alert('Latitude: '           + position.coords.latitude              + '\n' +
-                            'Longitude: '          + position.coords.longitude             + '\n' +
-                            'Altitude: '           + position.coords.altitude              + '\n' +
-                            'Accuracy: '           + position.coords.accuracy              + '\n' +
-                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
-                            'Heading: '            + position.coords.heading               + '\n' +
-                            'Speed: '              + position.coords.speed                 + '\n' +
-                            'Timestamp: '          +                                   position.timestamp          + '\n');
-    }
-
-    // onError Callback receives a PositionError object
-    //
-    function onGEOError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-    }
 
     function onSuccess(contacts) {
 		
@@ -63,6 +46,7 @@
         alert('onError!');
     }
 //{{{
+//复杂的数据要进行JSON编码，不过有可能程序会FC
 var AjaxSetup={
 	stat:0, //0,1 start, 2 complete
 	msg:""
@@ -106,6 +90,8 @@ var API = {
 				dataType: "JSON",
 				success: function(msg){
 					if(msg){
+						//同步本地地址数据
+						API.synAddress();
 						if(callback)callback(true);
 					}else{
 						if(callback)callback(false);
@@ -131,6 +117,8 @@ var API = {
 			   if(msg && msg.result && msg.error_code==0){
 			   	LocalData.setToken(msg.result.UserID,msg.result.UserAccessToken);
 				if(ok)ok(msg);
+				//同步本地地址数据
+				API.synAddress();
 				return true;
 			   }else{
 				   if(error)error(msg);
@@ -163,16 +151,25 @@ var API = {
 		   }
 		});
 	},
-	addAddress: function(param,ok,error){
+	//同步地址信息，当用户登录后，或者登录后，第一次启动时
+	//把用户当前的地址上传，然后服务器下发在服务器merge后的地址数据
+	synAddress: function(ok,error){
+		var param={};
+		param.Token= LocalData.getToken();
+		param.UserID= LocalData.getUID();
+		param.AddressData = JSON.stringify(LocalDataAddress.list());
 		$.ajax({
 		   type: "POST",
-		   url: API.host+"/user/addAddress",
+		   url: API.host+"/user/synAddress",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   	LocalDataAddress.add(msg.result);
-				//保存到本地
+			   console.log(msg.result);
+			   	if(msg.result.length>0) LocalDataAddress.clear();
+				for(var i=0;i<msg.result.length;i++){
+					LocalDataAddress.add(msg.result[i]);
+				}
 				if(ok)ok(msg);
 				return true;
 			   }else{
@@ -191,26 +188,51 @@ var API = {
 		if(ok)ok();return;
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
-	createPostCard:function(){
+	addPostCard:function(PostCard,ok,error){
+		var param={};
+		param.Token= LocalData.getToken();
+		param.UserID= LocalData.getUID();
+		param.PostCard = JSON.stringify(PostCard);
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/postcard/add",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+			   	//console.log(msg.result);
+				//OrderID
+				//PayURL
+				//PostCard
+				//LocalID(postcard)
+				if(ok)ok(msg);
+			   }else{
+				   if(error && msg.error_msg)error(msg.error_msg);
+			   }
+		   },
+		   error:function(msg){
+		   	if(error)error(msg);
+		   }
+		});
 		
 	},
 	upload:function(PostCardID,imageURI){
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		
-		 var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpeg";
-			options.chunkedMode=true;
+	 	var options = new FileUploadOptions();
+  		options.fileKey="file";
+		options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+		options.mimeType="image/jpeg";
+           	options.chunkedMode=true;
 
-            var params = new Object();
-            params.value1 = "test";
-            params.value2 = "param";
+       var params = new Object();
+       params.value1 = "test";
+       params.value2 = "param";
 
-            options.params = params;
+       options.params = params;
 
-            var ft = new FileTransfer();
-            ft.upload(imageURI, "http://www.ledui.com/test.php", function ok(r){
+       var ft = new FileTransfer();
+       ft.upload(imageURI, "http://www.ledui.com/test.php", function ok(r){
 					alert(r.response);
 																			 
 				}, function fail(){
@@ -292,28 +314,28 @@ var LocalData={
 		return LocalDB.get(this.uid);
 	},
 	//增加本地一个状态
-	addPostCard:function(LocalPostCardItem){
-		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	addPostCard:function(LocalDataPostCard){
+		LocalDataPostCard.LocalID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 		var postcards = LocalDB.get(this.postcards) || [];
-		postcards.push(LocalPostCardItem);
+		postcards.push(LocalDataPostCard);
 		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
-	delPostCard:function(TmpID){
+	delPostCard:function(LocalID){
 		var postcards = LocalDB.get(this.postcards) || [];
 		for(var i in postcards){
-			if(postcards[i].TmpID==TmpID){
+			if(postcards[i].LocalID==LocalID){
 				postcards.splice(i,1);
 			}
 		}
 		LocalDB.set(this.postcards,postcards);
 	},
 	//更新本地的一个状态
-	updatePostCard:function(TmpID,LocalPostCardItem){
+	updatePostCard:function(LocalID,LocalDataPostCard){
 		var postcards = LocalDB.get(this.postcards) ||[];
 		for(var i in postcards){
-			if(postcards[i].TmpID==TmpID){
-				postcards.splice(i,1,LocalPostCardItem);
+			if(postcards[i].LocalID==LocalID){
+				postcards.splice(i,1,LocalDataPostCard);
 			}
 		}
 		LocalDB.set(this.postcards,postcards);
@@ -333,19 +355,38 @@ alert(LocalData.getAll().length);
 */
 //本地的明信片状态
 var LocalDataPostCard={
-	PostCardTmpID:"",
+	LocalID:"",
 	FileTmpID:"",
+	ImageFileID:"",
+	Latitude:"",
+	Longitude:"",
 	//明信片ID
 	PostCardID:"",//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
-	Address:"",
+	Address:[],//发送地址
 	Comments:"",
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
 	Status:1,
 	width:"",
 	height:"",
-	left:"",
-	top:"",
-	rotate:""
+	x:"",
+	y:"",
+	rotate:"",
+	genID:function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},
+	init:function(){
+		this.LocalID=LocalDataPostCard.genID();
+		this.FileTmpID="";
+		this.PostCardID="";
+		this.Address=[];
+		this.Comments="";
+		this.Status=1;
+		this.width="";
+		this.height="";
+		this.x="";
+		this.y="";
+		this.rotate="";
+	}
 }
 //待上传的文件类，这样能实现同一图片，做多张明信片时的秒传
 var LocalDataFile={
@@ -360,8 +401,41 @@ var LocalDataFile={
 	DataSended:0,
 	//文件上传总大小
 	DataTotal:0,
+	Key:"File",
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
-	Status:1
+	Status:1,
+	genID:function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},add:function(imageURI){
+		this.FilePath=imageURI;
+		var all = LocalDB.get(this.Key) || [];
+		var isnew=true;
+		for(var i=0;i<all.length;i++){
+			if(all[i].FilePath == this.FilePath){
+				isnew =false;
+				all.splice(i,1,this);
+			}
+		}
+		if(isnew){
+			this.FileTmpID = this.genID();
+			all.unshift(this);
+		}
+		LocalDB.set(this.Key,all);
+	},get:function(imageURI){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].FilePath == imageURI){
+				return all[i];
+			}
+		}
+	},del:function(imageURI){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].FilePath == imageURI){
+				all.splice(i,1);
+			}
+		}
+	}
 }
 var LocalDataAddress={
 	AddressID:"",//服务器地址ID，如果>0，表明是服务器的地址
@@ -378,6 +452,8 @@ var LocalDataAddress={
 	Key:"Address",
 	genID:function(){
 		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},clear:function(){
+		LocalDB.del(this.Key);
 	},
 	get:function(LocalID){
 		var all = LocalDB.get(this.Key) || [];
@@ -424,7 +500,7 @@ var LocalDataAddress={
 			//显示各地址
 			var address = LocalDataAddress.list();
 			for(var i =0;i<address.length;i++){
-				var html='<li>'+
+				var html='<li localid="'+address[i].LocalID+'">'+
 					'<div class="edit" LocalID="'+address[i].LocalID+
 						'"active="yes"><div class="icon"></div></div>'+
 					'<div class="info">'+
@@ -458,7 +534,7 @@ var LocalDataAddress={
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
 				$("#delAddress").attr("LocalID",id).show();
-				$("#addAddress").text("edit").tr();
+				$("#addAddress").text("edit".tr());
 				$("#rcvform").each(function(){
 					for(var i in adr){
 						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
@@ -480,48 +556,64 @@ var LocalDataAddress={
 //Interface方法
 //Interface.onBackbutton();
 var Interface = {
+	Latitude:"",
+	Longitude:"",
+	Device:{},
 	/**
 	 * 返回按钮事件
 	 */
 	onBackbutton:function (){
-		if(Overlay.curname!=""){
-			Overlay.hide(Overlay.curname);
-			return;
-		}
-		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
-		if(p){
-			Page.show(p);
-			return;
-		}
-		//如果，是第0页，按后退，就提示程序退出
-		Overlay.show("quit");
+	        if(Overlay.curname!=""){
+	       	 Overlay.hide(Overlay.curname);
+	       	 return;
+	        }
+	        var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
+	        if(p){
+	       	 Page.show(p);
+	       	 return;
+	        }
+	        //如果，是第0页，按后退，就提示程序退出
+	        Overlay.show("quit");
 	},
 	/**
 	 * 当设备准备好时
 	 */
 	onDeviceReady:function () {
 		document.addEventListener("backbutton", Interface.onBackbutton, false);
-		navigator.geolocation.getCurrentPosition(onGEOSuccess, onGEOError);
-		//test
-		/*
- 		var options = new ContactFindOptions();
-        options.filter=""; 
-		options.multiple=true;
-        var fields  = ["displayName","addresses","phoneNumbers","emails"];
-        navigator.contacts.find(fields , onSuccess, onError, options);
-		*/
+		navigator.geolocation.getCurrentPosition(Interface.onGEOSuccess, Interface.onGEOError);
+		for(var i in device){
+			Interface.Device[i]=device[i];
+		}
+		      //test
+		      /*
+			 var options = new ContactFindOptions();
+			 options.filter=""; 
+			 options.multiple=true;
+			 var fields  = ["displayName","addresses","phoneNumbers","emails"];
+			 navigator.contacts.find(fields , onSuccess, onError, options);
+		       */
 	},
-
 	onPhotoURISuccess:function(imageURI){
 		Page.init(1);
 		setTimeout(function(){PhotoEditor.init(imageURI);},300);
 		setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
-	
 	onFail:function (message) {
-		//alert('Failed because: ' + message);
-	}
-	
+	       LocalDataPostCard.init();
+	       //alert('Failed because: ' + message);
+       },onGEOSuccess:function(position) {
+	       this.Longitude = position.coords.longitude;
+	       this.Latitude= position.coords.latitude;
+	//       alert('Latitude: '           + position.coords.latitude              + '\n' +
+	//		       'Longitude: '          + position.coords.longitude             + '\n' +
+	//		       'Altitude: '           + position.coords.altitude              + '\n' +
+	//		       'Accuracy: '           + position.coords.accuracy              + '\n' +
+	//		       'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
+	//		       'Heading: '            + position.coords.heading               + '\n' +
+	//		       'Speed: '              + position.coords.speed                 + '\n' +
+	//		       'Timestamp: '          +                                   position.timestamp          + '\n');
+       },onGEOError:function(error) {
+       }
 }
 //界面操作
 var Control = {
@@ -575,7 +667,7 @@ var Control = {
 		//添加新地址的时候，进行重置
 		$(".rcvcreate").bind("tapone",function(e){
 			$("#delAddress").attr("LocalID","").hide();
-			$("#addAddress").text("add").tr();
+			$("#addAddress").text("add".tr());
 			$("#rcvform").each(function(){this.reset();});
 			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
 			Page.show(3);
@@ -646,6 +738,91 @@ var Control = {
 				LocalDataAddress.show();
 				Page.show(2);
 		});
+		$("#toComments").bind("tapone",function(e){
+				if($("#rcvlist li.checked").length==0){
+					alert("请选择收件人");
+					return;
+				};
+				Page.show(4);
+		});
+		//预览，生成明信片数据,LocalDataPostCard
+		$("#toPreview").bind("tapone",function(e){
+				LocalDataPostCard.init();
+				//选择了文件
+				//文件信息
+				LocalDataFile.add($("#photo img").attr("src"));
+				var f = LocalDataFile.get($("#photo img").attr("src"));
+				if(f){
+					LocalDataPostCard.FileTmpID = f.FileTmpID;
+					LocalDataPostCard.ImageFileID= f.ImageFileID;
+				}
+				LocalDataPostCard.Latitude = Interface.Latitude;
+				LocalDataPostCard.Longitude= Interface.Longitude;
+
+				LocalDataPostCard.Device = Interface.Device;
+
+				var info=PhotoEditor.getinfo();
+				if(info){
+				LocalDataPostCard.width=info.w;
+				LocalDataPostCard.height=info.h;
+				LocalDataPostCard.x=info.x;
+				LocalDataPostCard.y=info.y;
+				LocalDataPostCard.rotate=info.r;
+				}
+				LocalDataPostCard.zoom=PhotoEditor.zoom_ui;
+				//地址信息
+				var adr = $("#rcvlist li.checked");
+				for(var i=0;i<adr.length;i++){
+					LocalDataPostCard.Address.push(LocalDataAddress.get($(adr[i]).attr("LocalID")));
+				}
+				//评论信息
+				LocalDataPostCard.Comments=$("#comments").val();
+				console.log(LocalDataPostCard);
+				//显示预览页面
+				$("#postinfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
+				$("#postinfo [name='Address']").html(
+						LocalDataPostCard.Address[0].Country+" "+
+						LocalDataPostCard.Address[0].Privince +" "+
+						LocalDataPostCard.Address[0].City+" "+
+						LocalDataPostCard.Address[0].Address+" "
+						);
+				$("#postinfo [name='PostCode']").html(LocalDataPostCard.Address[0].PostCode);
+				$("#msginfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
+				$("#msginfo [name='Comments']").html(LocalDataPostCard.Comments);
+				LocalData.addPostCard(LocalDataPostCard);
+				//获取登录者的名字
+				//$("#msginfo [name='FromName']").html();
+				Page.show(5);
+		});
+		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
+		//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
+		$("#toSend").bind("tapone",function(e){
+				API.islogin(function(isLogin){
+					if(isLogin){
+						//开始掉用接口
+						//修改登录，注册，返回页面为 0
+						API.addPostCard(LocalDataPostCard,function ok(){
+								Page.show(6);
+								$("#titlebar_login .button_s_back").attr("_back",0);
+								$("#titlebar_register .button_s_back").attr("_back",0);
+								$("#titlebar_about .button_s_back").attr("_back",0);
+								$("#titlebar_postcard .button_s_back").attr("_back",0);
+							},function error(msg){
+								alert("错误，["+msg+"]请重试");
+							});
+					}else{
+						//指定到登录,BUG
+						Page.show(10);
+						$("#titlebar_login .button_s_back").attr("_back",5);
+						$("#titlebar_register .button_s_back").attr("_back",5);
+						$("#titlebar_about .button_s_back").attr("_back",5);
+						$("#titlebar_postcard .button_s_back").attr("_back",5);
+						$("#login .errorbox").html("need2login".tr()).show();
+						//修改登录，注册，返回页面为 6
+					}
+				});
+				//
+		});
 		
 		
 
@@ -672,7 +849,7 @@ var Control = {
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
 				var pwd2=$("#register .pwd2").val();
-				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
+				API.register({email:sid,passwd:pwd,passwd2:pwd2,device:Interface.Device},function ok(result){
 					//注册成功，自动登录,更新登录状态,跳到登录前的一页
 					$("#register .errorbox").fadeOut();
 					$("#isnotlogin").hide();

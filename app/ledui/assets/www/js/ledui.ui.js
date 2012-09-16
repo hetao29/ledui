@@ -125,7 +125,7 @@ var Adapta = {
 		
 		this.ratio = win_w/scr_w;
 		$('body').css('zoom', this.ratio);
-		$('.screen').css({ 'height': win_h/this.ratio, });
+		$('.screen').css({ 'height': win_h/this.ratio});
 	},
 	layout: function(){		
 		var  pg = Page.getcurrentpage()	
