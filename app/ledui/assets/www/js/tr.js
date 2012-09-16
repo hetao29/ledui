@@ -3,6 +3,8 @@ var LOCALE = {
 	//中文
 	zh:{
 	//	create:"创建一张明信片"
+		add:"添加",
+    		edit:"编辑",
 	},
 	zh_tw:{
 		create:"创建一张明信片(zh_tw)"
@@ -44,21 +46,30 @@ var LOCALE = {
 	it:{
 	}
 }
-
-
-$(document).ready(function(){
+function tr(k){
 	var language = window.navigator.userLanguage || window.navigator.language;
 	language = language.toLowerCase().replace("-","_");
 	
-	if((eval("LOCALE."+language))){
+	if(LOCALE[language]){
 	}else{
 		language = language.split("_")[0];
-		if(!(eval("LOCALE."+language)))return;
+		if(!LOCALE[language])return k;
 	}
 	
+	return LOCALE[language][k];
+}
+(function($) {       
+	$.fn.tr= function() {     
+		var t = tr($(this).text());
+		$(this).text(t);
+	};     
+})(jQuery);
+
+
+$(document).ready(function(){
 	$("[tr]").each(function(i,e){
 		var k = $(e).attr("tr");
-		var v = (eval("LOCALE."+language+"."+k));
+		var v = tr(k);
 		if(v){
 			$(e).html(v);
 		}

@@ -163,6 +163,28 @@ var API = {
 		   }
 		});
 	},
+	addAddress: function(param,ok,error){
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/user/addAddress",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+			   	LocalDataAddress.add(msg.result);
+				//保存到本地
+				if(ok)ok(msg);
+				return true;
+			   }else{
+				   if(error)error(msg);
+			   }
+		   },
+		   error:function(msg){
+		   		if(error)error(msg);
+				return false;
+		   }
+		});
+	},
 	//登出
 	logout: function(param,ok,error){
 		LocalData.setToken("","");
@@ -272,13 +294,13 @@ var LocalData={
 	//增加本地一个状态
 	addPostCard:function(LocalPostCardItem){
 		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
-		var postcards = LocalDB.get(this.postcards);
+		var postcards = LocalDB.get(this.postcards) || [];
 		postcards.push(LocalPostCardItem);
 		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
 	delPostCard:function(TmpID){
-		var postcards = LocalDB.get(this.postcards);
+		var postcards = LocalDB.get(this.postcards) || [];
 		for(var i in postcards){
 			if(postcards[i].TmpID==TmpID){
 				postcards.splice(i,1);
@@ -288,7 +310,7 @@ var LocalData={
 	},
 	//更新本地的一个状态
 	updatePostCard:function(TmpID,LocalPostCardItem){
-		var postcards = LocalDB.get(this.postcards);
+		var postcards = LocalDB.get(this.postcards) ||[];
 		for(var i in postcards){
 			if(postcards[i].TmpID==TmpID){
 				postcards.splice(i,1,LocalPostCardItem);
@@ -340,6 +362,116 @@ var LocalDataFile={
 	DataTotal:0,
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
 	Status:1
+}
+var LocalDataAddress={
+	AddressID:"",//服务器地址ID，如果>0，表明是服务器的地址
+	LocalID:"",//本地生成的临时地址ID
+	Name:"",
+	Mobile:"",
+	Country:"",
+	Privince:"",
+	City:"",
+	Address:"",
+	PostCode:"",
+	Mobile:"",
+	Phone:"",
+	Key:"Address",
+	genID:function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},
+	get:function(LocalID){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].LocalID== LocalID){
+				return all[i];
+			}
+		}
+	},add:function(o){
+		var all = LocalDB.get(this.Key) || [];
+		var isnew=true;
+		for(var i=0;i<all.length;i++){
+			if(all[i].LocalID== o.LocalID){
+				all.splice(i,1,o);
+				isnew =false;
+			}
+		}
+		if(isnew)all.unshift(o);
+		LocalDB.set(this.Key,all);
+	},edit:function(o){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].LocalID== o.LocalID){
+				all.splice(i,1,o);
+			}
+		}
+		LocalDB.set(this.Key,all);
+     	},del:function(LocalID){
+		var all = LocalDB.get(this.Key) || [];
+		for(var i=0;i<all.length;i++){
+			if(all[i].LocalID== LocalID){
+				all.splice(i,1);
+			}
+		}
+		LocalDB.set(this.Key,all);
+	},list:function(){
+		var all = LocalDB.get(this.Key) || [];
+		return all;
+	},upload:function(){
+	},show:function(){
+		if(LocalDataAddress.list().length>0){
+			$("#rcvlist .list div").hide();
+			$("#rcvlist .list ul").show().html("");
+			//显示各地址
+			var address = LocalDataAddress.list();
+			for(var i =0;i<address.length;i++){
+				var html='<li>'+
+					'<div class="edit" LocalID="'+address[i].LocalID+
+						'"active="yes"><div class="icon"></div></div>'+
+					'<div class="info">'+
+					'<div class="checkbox"><div class="icon"></div></div>'+
+					'<span class="name">'+address[i].Name+'</span>'+
+					'<span class="phone">'+(address[i].Mobile||"")+'</span>'+
+					'<span class="address">'+(address[i].Country||"")+" "+
+						(address[i].Privince||"")+" " +(address[i].City||"")+" "+address[i].Address+'</span>'+
+					'</div>'+
+					'</li>';
+				$("#rcvlist .list ul").append(html);
+			}
+		}else{
+			$("#rcvlist .list div").show();
+			$("#rcvlist .list ul").hide();
+		}
+		
+		//选择地址
+		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){
+			$(this).parent().toggleClass('checked');
+		});
+		//删除地址
+		$("#delAddress").delegate($('.rcvlist'), "tapone", function(){
+			LocalDataAddress.del($(this).attr("LocalID"));
+			LocalDataAddress.show();
+			Page.show(2);
+		});
+		//编辑地址
+		$('.rcvlist .edit').delegate($('.rcvlist'), 'tapone', function(){
+			var id = $(this).attr("LocalID");
+			var adr = LocalDataAddress.get(id);
+			if(id && adr){
+				$("#delAddress").attr("LocalID",id).show();
+				$("#addAddress").text("edit").tr();
+				$("#rcvform").each(function(){
+					for(var i in adr){
+						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
+					}
+				});
+
+				Page.show(3);
+			}
+			return false;
+		});
+		
+	}
+	
 }
 
 
@@ -402,21 +534,19 @@ var Control = {
 		  		$("#login .errorbox").fadeOut();
 		  		$("#isnotlogin").hide();
 		  		$("#islogin").show();
-		  	      }
+		  	}
 		});
 		//b.明信片状态查询
 		//2.界面接口
-		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
-		//for test
-		//$("#choosePic").bind("click",function(e){Page.show(1);});
+		$("#choosePic").bind("tapone", function(e){Overlay.show("chkphoto");});
 		//重选按钮
-		$("#choosePic2").bind("tapone",function(e){Overlay.show("chkphoto");});
+		$("#choosePic2").bind("tapone", function(e){Overlay.show("chkphoto");});
 		//结束时，再重新创建时的按钮
-		$("#choosePic3").bind("tapone",function(e){Overlay.show("chkphoto");});
+		$("#choosePic3").bind("tapone", function(e){Overlay.show("chkphoto");});
 		$("#quitOK").bind("tapone",function(e){navigator.app.exitApp();});
 		$("#quitCancel").bind("tapone",function(e){Overlay.hide("quit");});
 		
-		$("#choosePicFromCamera").bind("tapone",function(e){
+		$("#choosePicFromCamera").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 				{quality: 100, 
 				 allowEdit: true,
@@ -425,7 +555,7 @@ var Control = {
 			);
 			Overlay.hide("chkphoto");
 		});
-		$("#choosePicFromAlbum").bind("tapone",function(e){
+		$("#choosePicFromAlbum").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 				{quality: 100, 
 				 sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
@@ -434,8 +564,21 @@ var Control = {
 			Overlay.hide("chkphoto");
 		});
 		
-		$("[_to]").bind("tapone",function(e){
+		//go
+		$("[_to]").bind("tapone", function(e){
 			Page.show($(this).attr("_to"));					  
+		});
+		//back
+		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+		
+		
+		//添加新地址的时候，进行重置
+		$(".rcvcreate").bind("tapone",function(e){
+			$("#delAddress").attr("LocalID","").hide();
+			$("#addAddress").text("add").tr();
+			$("#rcvform").each(function(){this.reset();});
+			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
+			Page.show(3);
 		});
 		
 		
@@ -446,14 +589,65 @@ var Control = {
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
 		
 		$(".CLogout").bind("tapone",function(e){
-				API.logout({},function ok(result){
-					$("#islogin").hide();
-					$("#isnotlogin").show();
-					},function error(result){
-				});
+			API.logout({},function ok(result){
+				$("#islogin").hide();
+				$("#isnotlogin").show();
+				},function error(result){
 			});
+		});
 		
-		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+		
+
+		$("#rcvform #country").bind("change",function(e){
+				//console.log($(this).find("option:selected").text());
+				//console.log($(this).val());
+				if($(this).val()=="中国"){
+					$("#privince").html('<option value="">选择</option>').slideDown();
+					for(var i =0;i<City.all.length;i++){
+						var n = City.all[i].n;
+						$("#privince").append('<option value="'+n+'">'+n+'</option>');
+					}
+				}else{
+					$("#privince").html('').slideUp();
+					$("#city").html('').hide();
+				}
+		}).trigger("change");
+		$("#addAddress").bind("tapone",function(e){
+			var r = {};
+			var a =  $("#rcvform").serializeArray();
+			for(var i in a){
+				var k = a[i].name	;
+				var v = a[i].value;
+				r[k]=v;
+			}
+			if(r.Name==""){
+				alert("收件人名字不能为空");
+			}else if(r.Address==""){
+				alert("收件人地址不能为空");
+			}else{
+				LocalDataAddress.add(r);
+				LocalDataAddress.show();
+				Page.show(2);
+			}
+		});
+		$("#rcvform #privince").bind("change",function(e){
+				var city = City.listCity($(this).val());
+				if(city.length>0){
+					$("#city").html('<option value="">选择</option>').slideDown();
+					for(var i =0;i<city.length;i++){
+						var n = city[i];
+						$("#city").append('<option value="'+n+'">'+n+'</option>');
+					}
+				}else{
+					$("#city").html('').slideUp();
+				}
+		});
+		$("#toAddress").bind("tapone",function(e){
+				LocalDataAddress.show();
+				Page.show(2);
+		});
+		
+		
 
 		$("#IDLogin").bind("tapone",function(e){
 				var sid=$("#login .sid").val();
