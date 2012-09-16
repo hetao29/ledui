@@ -176,30 +176,32 @@
 	</div>
 	<div class="panel_body">		
 	<div class="panel_body_box">	
-		<div class="rcvform" id="rcvform">
+		<div class="rcvform">
+	       		<form id="rcvform">
 			<div class="chk"><div class="button button_m" active="yes">从通讯录选择</div></div>
-			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
-			<div class="item"><input type="tel" placeholder="收件人手机号码" /></div>
+			<div class="item"><input name="Name" type="text" placeholder="收件人姓名" /></div>
+			<div class="item"><input name="Mobile" type="tel" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
-							<div><select id="country">
+							<div><select name="Country" id="country">
 								<option value='cn'>中国(含港澳台)</option>
 								<option value='other'>国外</option>
 							</select></div>
-							<div><select id="privince">
+							<div><select name="Privince" id="privince">
 								<option value="">选择</option>
 							</select></div>
-							<div><select id="city">
-								<option>选择城市</option>
+							<div><select name="City" id="city">
+								<option value="">选择</option>
 							</select></div>							
 			</div>
-			<div class="item"><input type="text" placeholder="详细地址" /></div>
-			<div class="item"><input type="tel" placeholder="邮政编码" /></div>
+			<div class="item"><input type="text" name="Address" placeholder="详细地址" /></div>
+			<div class="item"><input type="tel" name="PostCode" placeholder="邮政编码" /></div>
+			</form>
 		</div>
 	</div>	
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" _to="2" active="yes">添加</div>
+			<div class="button button_l" active="yes" id="addAddress">添加</div>
 		</div>
 	</div>
 </div>

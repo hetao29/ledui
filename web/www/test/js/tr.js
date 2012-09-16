@@ -50,15 +50,15 @@ $(document).ready(function(){
 	var language = window.navigator.userLanguage || window.navigator.language;
 	language = language.toLowerCase().replace("-","_");
 	
-	if((eval("LOCALE."+language))){
+	if(LOCALE[language]){
 	}else{
 		language = language.split("_")[0];
-		if(!(eval("LOCALE."+language)))return;
+		if(!LOCALE[language])return;
 	}
 	
 	$("[tr]").each(function(i,e){
 		var k = $(e).attr("tr");
-		var v = (eval("LOCALE."+language+"."+k));
+		var v = LOCALE[language][k];
 		if(v){
 			$(e).html(v);
 		}
