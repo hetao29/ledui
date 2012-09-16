@@ -505,21 +505,19 @@ var Control = {
 		  		$("#login .errorbox").fadeOut();
 		  		$("#isnotlogin").hide();
 		  		$("#islogin").show();
-		  	      }
+		  	}
 		});
 		//b.明信片状态查询
 		//2.界面接口
-		$("#choosePic").bind("touchend",function(e){Overlay.show("chkphoto");});
-		//for test
-		//$("#choosePic").bind("click",function(e){Page.show(1);});
+		$("#choosePic").bind("tapone", function(e){Overlay.show("chkphoto");});
 		//重选按钮
-		$("#choosePic2").bind("tapone",function(e){Overlay.show("chkphoto");});
+		$("#choosePic2").bind("tapone", function(e){Overlay.show("chkphoto");});
 		//结束时，再重新创建时的按钮
-		$("#choosePic3").bind("tapone",function(e){Overlay.show("chkphoto");});
+		$("#choosePic3").bind("tapone", function(e){Overlay.show("chkphoto");});
 		$("#quitOK").bind("tapone",function(e){navigator.app.exitApp();});
 		$("#quitCancel").bind("tapone",function(e){Overlay.hide("quit");});
 		
-		$("#choosePicFromCamera").bind("tapone",function(e){
+		$("#choosePicFromCamera").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 				{quality: 100, 
 				 allowEdit: true,
@@ -528,7 +526,7 @@ var Control = {
 			);
 			Overlay.hide("chkphoto");
 		});
-		$("#choosePicFromAlbum").bind("tapone",function(e){
+		$("#choosePicFromAlbum").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
 				{quality: 100, 
 				 sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
@@ -537,21 +535,25 @@ var Control = {
 			Overlay.hide("chkphoto");
 		});
 		
-		$("[_to]").bind("tapone",function(e){
+		//go
+		$("[_to]").bind("tapone", function(e){
 			Page.show($(this).attr("_to"));					  
 		});
+		//back
+		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 		
-		//select
-		$('.rcvlist li .info').live('click', function(){
+		//选择地址
+		$('.rcvlist li .info').live('tapone', function(){										   
 			$(this).parent().toggleClass('checked');											  
 		});
-		//编辑地址
-		$("#delAddress").live("click",function(){
-				LocalDataAddress.del($(this).attr("LocalID"));
-				LocalDataAddress.show();
-				Page.show(2);
+		//删除地址
+		$("#delAddress").live("tapone", function(){
+			LocalDataAddress.del($(this).attr("LocalID"));
+			LocalDataAddress.show();
+			Page.show(2);
 		});
-		$('.edit').live('click', function(){
+		//编辑地址
+		$('.edit').live('tapone', function(){
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
@@ -568,7 +570,7 @@ var Control = {
 			return false;
 		});
 		//添加新地址的时候，进行重置
-		$(".rcvcreate").bind("click",function(e){
+		$(".rcvcreate").bind("tapone",function(e){
 			$("#delAddress").attr("LocalID","").hide();
 			$("#addAddress").text("add").tr();
 			$("#rcvform").each(function(){this.reset();});
@@ -583,14 +585,14 @@ var Control = {
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
 		
 		$(".CLogout").bind("tapone",function(e){
-				API.logout({},function ok(result){
-					$("#islogin").hide();
-					$("#isnotlogin").show();
-					},function error(result){
-				});
+			API.logout({},function ok(result){
+				$("#islogin").hide();
+				$("#isnotlogin").show();
+				},function error(result){
 			});
+		});
 		
-		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+		
 
 		$("#rcvform #country").bind("change",function(e){
 				//console.log($(this).find("option:selected").text());
@@ -637,6 +639,8 @@ var Control = {
 				}
 		});
 		LocalDataAddress.show();
+		
+		
 
 		$("#IDLogin").bind("tapone",function(e){
 				var sid=$("#login .sid").val();
