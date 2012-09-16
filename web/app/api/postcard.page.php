@@ -7,6 +7,7 @@ class api_postcard{
 		$result = new api_result;
 		$userID = $_REQUEST['UserID'];
 		$token = $_REQUEST['Token'];
+		error_log(var_export($_REQUEST,true),3,"/tmp/log.postcard.log");
 		$data=new stdclass;
 		$data->PostCardID="TO GEN";
 		$data->LocalID=$_REQUEST['PostCard']['LocalID'];

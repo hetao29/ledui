@@ -4,7 +4,7 @@ var LOCALE = {
 	zh:{
 	//	create:"创建一张明信片"
 		add:"添加",
-    		edit:"编辑",
+    		edit:"编辑"
 	},
 	zh_tw:{
 		create:"创建一张明信片(zh_tw)"

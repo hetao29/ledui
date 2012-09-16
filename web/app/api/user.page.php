@@ -94,12 +94,19 @@ class api_user{
 	 */
 	public function pageGetInfo($inPath){
 		$result = new api_result;
-		$db = new user_db;
+		$dbu = new user_db;
+		$dbm = new money_db;
+		$data = new stdclass;
 		$userID = $_REQUEST['UserID'];
 		$token = $_REQUEST['Token'];
 		
 		if(user_api::isLoginMobile($userID,$token) == true){
-			$result->result =  user_api::getUserByID($userID);
+			$data->UserProfile =  user_api::getUserByID($userID);
+			$data->ScoerCurrent = money_api::getScoreByID($UserID);
+			$money = money_api::getMoneyByID($UserID);
+			$data->MoneyCurrent = $money['MoneyCurrent'];
+			$data->MoneyCurrency = $money['MoneyCurrency'];
+			$result->result =  $data;
 			$result->error_code = 0;
 		}else{
 			$result->error_code = -1;
