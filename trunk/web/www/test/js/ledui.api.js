@@ -850,7 +850,7 @@ var Control = {
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
 				var pwd2=$("#register .pwd2").val();
-				API.register({email:sid,passwd:pwd,passwd2:pwd2},function ok(result){
+				API.register({email:sid,passwd:pwd,passwd2:pwd2,device:Interface.Device},function ok(result){
 					//注册成功，自动登录,更新登录状态,跳到登录前的一页
 					$("#register .errorbox").fadeOut();
 					$("#isnotlogin").hide();
