@@ -376,24 +376,40 @@ var LocalDataAddress={
 	Mobile:"",
 	Phone:"",
 	Key:"Address",
-	add:function(o){
-		o.LocalID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	genID:function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},
+	get:function(LocalID){
 		var all = LocalDB.get(this.Key) || [];
-		all.push(o);
+		for(var i=0;i<all.length;i++){
+			if(all[i].LocalID== LocalID){
+				return all[i];
+			}
+		}
+	},add:function(o){
+		var all = LocalDB.get(this.Key) || [];
+		var isnew=true;
+		for(var i=0;i<all.length;i++){
+			if(all[i].LocalID== o.LocalID){
+				all.splice(i,1,o);
+				isnew =false;
+			}
+		}
+		if(isnew)all.push(o);
 		LocalDB.set(this.Key,all);
 	},edit:function(o){
 		var all = LocalDB.get(this.Key) || [];
 		for(var i=0;i<all.length;i++){
 			if(all[i].LocalID== o.LocalID){
-				postcards.splice(i,1,o);
+				all.splice(i,1,o);
 			}
 		}
 		LocalDB.set(this.Key,all);
-     	},del:function(o){
+     	},del:function(LocalID){
 		var all = LocalDB.get(this.Key) || [];
 		for(var i=0;i<all.length;i++){
-			if(all[i].LocalID== o.LocalID){
-				postcards.splice(i,1);
+			if(all[i].LocalID== LocalID){
+				all.splice(i,1);
 			}
 		}
 		LocalDB.set(this.Key,all);
@@ -401,6 +417,30 @@ var LocalDataAddress={
 		var all = LocalDB.get(this.Key) || [];
 		return all;
 	},upload:function(){
+	},show:function(){
+		if(LocalDataAddress.list().length>0){
+			$("#rcvlist .list div").hide();
+			$("#rcvlist .list ul").show().html("");
+			//显示各地址
+			var address = LocalDataAddress.list();
+			for(var i =0;i<address.length;i++){
+				var html='<li>'+
+					'<div class="edit" LocalID="'+address[i].LocalID+
+						'"active="yes"><div class="icon"></div></div>'+
+					'<div class="info">'+
+					'<div class="checkbox"><div class="icon"></div></div>'+
+					'<span class="name">'+address[i].Name+'</span>'+
+					'<span class="phone">'+address[i].Mobile+'</span>'+
+					'<span class="address">'+address[i].Country+" "+
+						address[i].Privince+" " +address[i].City+" "+address[i].Address+'</span>'+
+					'</div>'+
+					'</li>';
+				$("#rcvlist .list ul").append(html);
+			}
+		}else{
+			$("#rcvlist .list div").show();
+			$("#rcvlist .list ul").hide();
+		}
 	}
 	
 }
@@ -502,13 +542,38 @@ var Control = {
 		});
 		
 		//select
-		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){
+		$('.rcvlist li .info').live('click', function(){
 			$(this).parent().toggleClass('checked');											  
 		});
-		//edit
-		$('.rcvlist li .edit').delegate($('.rcvlist'), 'tapone', function(){													  
-			Page.show(3);
+		//编辑地址
+		$("#delAddress").live("click",function(){
+				LocalDataAddress.del($(this).attr("LocalID"));
+				LocalDataAddress.show();
+				Page.show(2);
+		});
+		$('.rcvlist li .edit').live('click', function(){
+			var id = $(this).attr("LocalID");
+			var adr = LocalDataAddress.get(id);
+			if(id && adr){
+				$("#delAddress").attr("LocalID",id).show();
+				$("#addAddress").text("edit").tr();
+				$("#rcvform").each(function(){
+					for(var i in adr){
+						$(this).find("[name='"+i+"']").val(adr[i]);
+					}
+				});
+				$("#rcvform #privince").trigger("change");//显示城市名
+
+				Page.show(3);
+			}
 			return false;
+		});
+		//添加新地址的时候，进行重置
+		$(".rcvcreate").bind("click",function(e){
+			$("#delAddress").attr("LocalID","").hide();
+				$("#addAddress").text("add").tr();
+			$("#rcvform").each(function(){this.reset();});
+			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
 		});
 		
 		
@@ -527,10 +592,11 @@ var Control = {
 			});
 		
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+
 		$("#rcvform #country").bind("change",function(e){
 				//console.log($(this).find("option:selected").text());
 				//console.log($(this).val());
-				if($(this).val()=="cn"){
+				if($(this).val()=="中国"){
 					$("#privince").html('<option value="">选择</option>').slideDown();
 					for(var i =0;i<City.all.length;i++){
 						var n = City.all[i].n;
@@ -555,6 +621,7 @@ var Control = {
 				alert("收件人地址不能为空");
 			}else{
 				LocalDataAddress.add(r);
+				LocalDataAddress.show();
 				Page.show(2);
 			}
 		});
@@ -570,6 +637,7 @@ var Control = {
 					$("#city").html('').slideUp();
 				}
 		});
+		LocalDataAddress.show();
 
 		$("#IDLogin").bind("tapone",function(e){
 				var sid=$("#login .sid").val();

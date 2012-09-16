@@ -102,10 +102,10 @@
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">
-		<div class="rcvlist">
+		<div class="rcvlist" id="rcvlist">
 			<div class="list">
 				<div class="null">没有可选地址，请添加</div>
-				<ul>
+				<ul class="hide">
 					<li>
 						<div class="edit" active="yes"><div class="icon"></div></div>						
 						<div class="info">
@@ -115,7 +115,7 @@
 							<span class="address">四川省成都市高新西区金粮路西江月</span>
 						</div>
 					</li>
-					<li>
+					<!--<li>
 						<div class="edit" active="yes"><div class="icon"></div></div>
 						<div class="info">
 							<div class="checkbox"><div class="icon"></div></div>
@@ -142,6 +142,7 @@
 							<span class="address">望云西路10号（近环城西路）</span>
 						</div>	
 					</li>
+					-->
 				
 				</ul>
 			</div>
@@ -178,13 +179,14 @@
 	<div class="panel_body_box">	
 		<div class="rcvform">
 	       		<form id="rcvform">
+			<input name="LocalID" type="hidden" />
 			<div class="chk"><div class="button button_m" active="yes">从通讯录选择</div></div>
 			<div class="item"><input name="Name" type="text" placeholder="收件人姓名" /></div>
 			<div class="item"><input name="Mobile" type="tel" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
 							<div><select name="Country" id="country">
-								<option value='cn'>中国(含港澳台)</option>
-								<option value='other'>国外</option>
+								<option value='中国'>中国(含港澳台)</option>
+								<option value='国外'>国外</option>
 							</select></div>
 							<div><select name="Privince" id="privince">
 								<option value="">选择</option>
