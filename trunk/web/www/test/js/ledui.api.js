@@ -441,6 +441,35 @@ var LocalDataAddress={
 			$("#rcvlist .list div").show();
 			$("#rcvlist .list ul").hide();
 		}
+		
+		//选择地址
+		$('.rcvlist li .info').delegate($('.rcvlist'), 'click', function(){										   
+			$(this).parent().toggleClass('checked');											  
+		});
+		//删除地址
+		$("#delAddress").delegate($('.rcvlist'), "tapone", function(){
+			LocalDataAddress.del($(this).attr("LocalID"));
+			LocalDataAddress.show();
+			Page.show(2);
+		});
+		//编辑地址
+		$('.rcvlist .edit').delegate($('.rcvlist'), 'tapone', function(){
+			var id = $(this).attr("LocalID");
+			var adr = LocalDataAddress.get(id);
+			if(id && adr){
+				$("#delAddress").attr("LocalID",id).show();
+				$("#addAddress").text("edit").tr();
+				$("#rcvform").each(function(){
+					for(var i in adr){
+						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
+					}
+				});
+
+				Page.show(3);
+			}
+			return false;
+		});
+		
 	}
 	
 }
@@ -542,33 +571,7 @@ var Control = {
 		//back
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 		
-		//选择地址
-		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){										   
-			$(this).parent().toggleClass('checked');											  
-		});
-		//删除地址
-		$("#delAddress").delegate($('.rcvlist'), "tapone", function(){
-			LocalDataAddress.del($(this).attr("LocalID"));
-			LocalDataAddress.show();
-			Page.show(2);
-		});
-		//编辑地址
-		$('.edit').delegate($('.rcvlist'), 'tapone', function(){
-			var id = $(this).attr("LocalID");
-			var adr = LocalDataAddress.get(id);
-			if(id && adr){
-				$("#delAddress").attr("LocalID",id).show();
-				$("#addAddress").text("edit").tr();
-				$("#rcvform").each(function(){
-					for(var i in adr){
-						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
-					}
-				});
-
-				Page.show(3);
-			}
-			return false;
-		});
+		
 		//添加新地址的时候，进行重置
 		$(".rcvcreate").bind("tapone",function(e){
 			$("#delAddress").attr("LocalID","").hide();
