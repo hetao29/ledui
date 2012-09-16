@@ -1,21 +1,4 @@
 
- function onGEOSuccess(position) {
-        alert('Latitude: '           + position.coords.latitude              + '\n' +
-                            'Longitude: '          + position.coords.longitude             + '\n' +
-                            'Altitude: '           + position.coords.altitude              + '\n' +
-                            'Accuracy: '           + position.coords.accuracy              + '\n' +
-                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
-                            'Heading: '            + position.coords.heading               + '\n' +
-                            'Speed: '              + position.coords.speed                 + '\n' +
-                            'Timestamp: '          +                                   position.timestamp          + '\n');
-    }
-
-    // onError Callback receives a PositionError object
-    //
-    function onGEOError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-    }
 
     function onSuccess(contacts) {
 		
@@ -171,9 +154,9 @@ var API = {
 	//把用户当前的地址上传，然后服务器下发在服务器merge后的地址数据
 	synAddress: function(ok,error){
 		var param={};
-		param.UserAccessToken = LocalData.getToken();
-		param.uid = LocalData.getUID();
-		param.AddressData = JSON.stringify(LocalDataAddress.list());
+		param.Token= LocalData.getToken();
+		param.UserID= LocalData.getUID();
+		param.AddressData = LocalDataAddress.list();
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/synAddress",
@@ -204,26 +187,53 @@ var API = {
 		if(ok)ok();return;
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
-	createPostCard:function(){
+	addPostCard:function(PostCard,ok,error){
+		var param={};
+		param.Token= LocalData.getToken();
+		param.UserID= LocalData.getUID();
+		param.PostCard = (PostCard);
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/postcard/add",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+			   	console.log(msg.result);
+				//OrderID
+				//PayURL
+				//PostCard
+				//LocalID(postcard)
+				if(ok)ok(msg);
+				return true;
+			   }else{
+				   if(error)error(msg.error_msg);
+			   }
+		   },
+		   error:function(msg){
+		   		if(error)error(msg);
+				return false;
+		   }
+		});
 		
 	},
 	upload:function(PostCardID,imageURI){
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		
-		 var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpeg";
-			options.chunkedMode=true;
+	 	var options = new FileUploadOptions();
+  		options.fileKey="file";
+		options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+		options.mimeType="image/jpeg";
+           	options.chunkedMode=true;
 
-            var params = new Object();
-            params.value1 = "test";
-            params.value2 = "param";
+       var params = new Object();
+       params.value1 = "test";
+       params.value2 = "param";
 
-            options.params = params;
+       options.params = params;
 
-            var ft = new FileTransfer();
-            ft.upload(imageURI, "http://www.ledui.com/test.php", function ok(r){
+       var ft = new FileTransfer();
+       ft.upload(imageURI, "http://www.ledui.com/test.php", function ok(r){
 					alert(r.response);
 																			 
 				}, function fail(){
@@ -305,28 +315,28 @@ var LocalData={
 		return LocalDB.get(this.uid);
 	},
 	//增加本地一个状态
-	addPostCard:function(LocalPostCardItem){
-		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	addPostCard:function(LocalDataPostCard){
+		LocalDataPostCard.LocalID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 		var postcards = LocalDB.get(this.postcards) || [];
-		postcards.push(LocalPostCardItem);
+		postcards.push(LocalDataPostCard);
 		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
-	delPostCard:function(TmpID){
+	delPostCard:function(LocalID){
 		var postcards = LocalDB.get(this.postcards) || [];
 		for(var i in postcards){
-			if(postcards[i].TmpID==TmpID){
+			if(postcards[i].LocalID==LocalID){
 				postcards.splice(i,1);
 			}
 		}
 		LocalDB.set(this.postcards,postcards);
 	},
 	//更新本地的一个状态
-	updatePostCard:function(TmpID,LocalPostCardItem){
+	updatePostCard:function(LocalID,LocalDataPostCard){
 		var postcards = LocalDB.get(this.postcards) ||[];
 		for(var i in postcards){
-			if(postcards[i].TmpID==TmpID){
-				postcards.splice(i,1,LocalPostCardItem);
+			if(postcards[i].LocalID==LocalID){
+				postcards.splice(i,1,LocalDataPostCard);
 			}
 		}
 		LocalDB.set(this.postcards,postcards);
@@ -348,6 +358,9 @@ alert(LocalData.getAll().length);
 var LocalDataPostCard={
 	LocalID:"",
 	FileTmpID:"",
+	ImageFileID:"",
+	Latitude:"",
+	Longitude:"",
 	//明信片ID
 	PostCardID:"",//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
 	Address:[],//发送地址
@@ -356,14 +369,14 @@ var LocalDataPostCard={
 	Status:1,
 	width:"",
 	height:"",
-	left:"",
-	top:"",
+	x:"",
+	y:"",
 	rotate:"",
 	genID:function(){
 		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 	},
 	init:function(){
-		this.LocalID=this.genID;
+		this.LocalID=LocalDataPostCard.genID();
 		this.FileTmpID="";
 		this.PostCardID="";
 		this.Address=[];
@@ -371,8 +384,8 @@ var LocalDataPostCard={
 		this.Status=1;
 		this.width="";
 		this.height="";
-		this.left="";
-		this.top="";
+		this.x="";
+		this.y="";
 		this.rotate="";
 	}
 }
@@ -544,49 +557,60 @@ var LocalDataAddress={
 //Interface方法
 //Interface.onBackbutton();
 var Interface = {
+	Latitude:"",
+	Longitude:"",
 	/**
 	 * 返回按钮事件
 	 */
 	onBackbutton:function (){
-		if(Overlay.curname!=""){
-			Overlay.hide(Overlay.curname);
-			return;
-		}
-		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
-		if(p){
-			Page.show(p);
-			return;
-		}
-		//如果，是第0页，按后退，就提示程序退出
-		Overlay.show("quit");
+	        if(Overlay.curname!=""){
+	       	 Overlay.hide(Overlay.curname);
+	       	 return;
+	        }
+	        var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
+	        if(p){
+	       	 Page.show(p);
+	       	 return;
+	        }
+	        //如果，是第0页，按后退，就提示程序退出
+	        Overlay.show("quit");
 	},
 	/**
 	 * 当设备准备好时
 	 */
 	onDeviceReady:function () {
 		document.addEventListener("backbutton", Interface.onBackbutton, false);
-		navigator.geolocation.getCurrentPosition(onGEOSuccess, onGEOError);
-		//test
-		/*
- 		var options = new ContactFindOptions();
-        options.filter=""; 
-		options.multiple=true;
-        var fields  = ["displayName","addresses","phoneNumbers","emails"];
-        navigator.contacts.find(fields , onSuccess, onError, options);
-		*/
+		navigator.geolocation.getCurrentPosition(Interface.onGEOSuccess, Interface.onGEOError);
+		      //test
+		      /*
+			 var options = new ContactFindOptions();
+			 options.filter=""; 
+			 options.multiple=true;
+			 var fields  = ["displayName","addresses","phoneNumbers","emails"];
+			 navigator.contacts.find(fields , onSuccess, onError, options);
+		       */
 	},
-
 	onPhotoURISuccess:function(imageURI){
 		Page.init(1);
 		setTimeout(function(){PhotoEditor.init(imageURI);},300);
 		setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
-	
 	onFail:function (message) {
-		LocalDataPostCard.init();
-		//alert('Failed because: ' + message);
-	}
-	
+	       LocalDataPostCard.init();
+	       //alert('Failed because: ' + message);
+       },onGEOSuccess:function(position) {
+	       this.Longitude = position.coords.longitude;
+	       this.Latitude= position.coords.latitude;
+	       alert('Latitude: '           + position.coords.latitude              + '\n' +
+			       'Longitude: '          + position.coords.longitude             + '\n' +
+			       'Altitude: '           + position.coords.altitude              + '\n' +
+			       'Accuracy: '           + position.coords.accuracy              + '\n' +
+			       'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
+			       'Heading: '            + position.coords.heading               + '\n' +
+			       'Speed: '              + position.coords.speed                 + '\n' +
+			       'Timestamp: '          +                                   position.timestamp          + '\n');
+       },onGEOError:function(error) {
+       }
 }
 //界面操作
 var Control = {
@@ -725,13 +749,22 @@ var Control = {
 				//文件信息
 				LocalDataFile.add($("#photo img").attr("src"));
 				var f = LocalDataFile.get($("#photo img").attr("src"));
-				if(f)LocalDataPostCard.FileTmpID = f.FileTmpID;
+				if(f){
+					LocalDataPostCard.FileTmpID = f.FileTmpID;
+					LocalDataPostCard.ImageFileID= f.ImageFileID;
+				}
+				LocalDataPostCard.Latitude = Interface.Latitude;
+				LocalDataPostCard.Longitude= Interface.Longitude;
+
 				var info=PhotoEditor.getinfo();
+				if(info){
 				LocalDataPostCard.width=info.w;
 				LocalDataPostCard.height=info.h;
 				LocalDataPostCard.x=info.x;
 				LocalDataPostCard.y=info.y;
 				LocalDataPostCard.rotate=info.r;
+				}
+				LocalDataPostCard.zoom=PhotoEditor.zoom_ui;
 				//地址信息
 				var adr = $("#rcvlist li.checked");
 				for(var i=0;i<adr.length;i++){
@@ -751,6 +784,7 @@ var Control = {
 				$("#postinfo [name='PostCode']").html(LocalDataPostCard.Address[0].PostCode);
 				$("#msginfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
 				$("#msginfo [name='Comments']").html(LocalDataPostCard.Comments);
+				LocalData.addPostCard(LocalDataPostCard);
 				//获取登录者的名字
 				//$("#msginfo [name='FromName']").html();
 				Page.show(5);
@@ -762,9 +796,13 @@ var Control = {
 					if(isLogin){
 						//开始掉用接口
 						//修改登录，注册，返回页面为 0
-						Page.show(6);
-						$("#titlebar_login .button_s_back").attr("_back",0);
-						$("#titlebar_register .button_s_back").attr("_back",0);
+						API.addPostCard(LocalDataPostCard,function ok(){
+								Page.show(6);
+								$("#titlebar_login .button_s_back").attr("_back",0);
+								$("#titlebar_register .button_s_back").attr("_back",0);
+							},function error(msg){
+								alert("错误，["+msg+"]请重试");
+							});
 					}else{
 						//指定到登录
 						Page.show(10);
