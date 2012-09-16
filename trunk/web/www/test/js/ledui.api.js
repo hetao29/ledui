@@ -578,6 +578,7 @@ var Control = {
 			$("#addAddress").text("add").tr();
 			$("#rcvform").each(function(){this.reset();});
 			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
+			Page.show(3);
 		});
 		
 		
