@@ -638,7 +638,10 @@ var Control = {
 					$("#city").html('').slideUp();
 				}
 		});
-		LocalDataAddress.show();
+		$("#toAddress").bind("tapone",function(e){
+				LocalDataAddress.show();
+				Page.show(2);
+		});
 		
 		
 
