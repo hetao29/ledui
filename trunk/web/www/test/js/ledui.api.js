@@ -46,6 +46,7 @@
         alert('onError!');
     }
 //{{{
+//复杂的数据要进行JSON编码，不过有可能程序会FC
 var AjaxSetup={
 	stat:0, //0,1 start, 2 complete
 	msg:""
@@ -156,7 +157,7 @@ var API = {
 		var param={};
 		param.Token= LocalData.getToken();
 		param.UserID= LocalData.getUID();
-		param.AddressData = LocalDataAddress.list();
+		param.AddressData = JSON.stringify(LocalDataAddress.list());
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/synAddress",
@@ -191,7 +192,7 @@ var API = {
 		var param={};
 		param.Token= LocalData.getToken();
 		param.UserID= LocalData.getUID();
-		param.PostCard = PostCard;
+		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/postcard/add",
