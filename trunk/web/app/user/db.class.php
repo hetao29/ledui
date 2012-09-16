@@ -60,5 +60,11 @@ class user_db{
 	function delAddress($AddID){
 		return $this->_db->delete("t_user_address",array("AddressID"=>$AddID));
 	}
+	function updateAddressDef($AddID,$Def){
+		return $this->_db->update("t_user_address",array("AddressID"=>$AddID),array("Def"=>$Def));
+	}
+	function getAddressListByUserID($UserID){
+		return $this->_db->select("t_user_address",array("UserID"=>$UserID,"*"),"",array("Def"=>"desc","AddressID"=>"asc"));
+	}
 
 }

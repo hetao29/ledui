@@ -107,11 +107,31 @@ class api_user{
 		return SJson::encode($result);
 	}
 	/**
-	  * 增加用户地址
+	  * 同步用户地址
 	  */
-	public function PageAddAddress($inPath){
+	public function PagesynAddress($inPath){
 		$result = new api_result;
+		if(user_api::isLoginMobile($userID,$token) != true){
+			$result->error_code = -1;
+			return SJson::encode($result);
+		}
 		$db = new user_db;
+		//print_r($_REQUEST['AddressData']);
+		$r = SJson::decode($_REQUEST['AddressData']);
+		if(count(r)>0){
+			//更新用户所有的Address为删除状态
+		}
+		foreach($r as &$t){
+			//TODO
+			//更新记录，或者新增记录
+			$t->AddressID=999;//for test
+			//更新当前记录为正常记录
+		}
+		$result->result = $r; 
+		$result->error_code = 0;
+		return SJson::encode($result);
+		exit;
+		/*
 		$Address=array();
 		if(empty($_REQUEST['Name'])){	$result->error_code = -1;	};
 		if(empty($_REQUEST['Country'])){	$result->error_code = -1;	};
@@ -132,5 +152,6 @@ class api_user{
 			$result->error_code = -1;
 		}
 		return SJson::encode($result);
+		*/
 	}
 }

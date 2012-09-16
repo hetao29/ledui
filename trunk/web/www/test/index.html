@@ -229,17 +229,15 @@
 	<div class="panel_body_box">	
 		<div class="preview">
 			<div class="card">
-				<div class="postinfo">
-					<div>龚华彬 收</div>
-					<div>四川省成都市金牛区<br>
-						金粮路西江月2-1-305</div>
-					<div>610000</div>
-					<div>中国</div>
+				<div class="postinfo" id="postinfo">
+					<div name="Name"></div>
+					<div name="Address"></div>
+					<div name="PostCode"></div>
 				</div>
-				<div class="msginfo">
-					<div class="t1">亲爱的龚华彬, 您好</div>
-					<div class="t2">不用信封就可以直接投寄的载有信息的卡片；一种必须贴有胶粘邮票的卡片 ，在一面上有一种装饰（如一幅画）的这类卡片 ； 具有政府印制的邮具有政府印制的邮具有政府印制的邮票标记或官方的回信费已付标记的卡片...。</div>
-					<div class="t3">Hetal</div>
+				<div class="msginfo" id="msginfo">
+					<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
+					<div class="t2" name="Comments"></div>
+					<div class="t3" name="FromName">您的朋友</div>
 				</div>
 			</div>
 			<div class="agreement"> <span class="ico ico_agree"></span>我已接受 <a href="#">条款</a> </div>
@@ -248,7 +246,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" _to="6"  active="yes">发送</div>
+			<div class="button button_l" __to="6" id="toSend" active="yes">发送</div>
 		</div>
 	</div>
 </div>
@@ -394,7 +392,7 @@
 -->
 <div class="page" _page="10" _name="登录" _hasnav="true">
 	<div class="panel_head">
-		<div class="titlebar">
+		<div class="titlebar" id="titlebar_login">
 			<div class="title">登录</div>
 			<div class="action">
 				<div class="l">
@@ -427,7 +425,7 @@
 -->
 <div class="page" _page="11" _name="注册" _hasnav="true">
 	<div class="panel_head">
-		<div class="titlebar">
+		<div class="titlebar" id="titlebar_register">
 			<div class="title">注册</div>
 			<div class="action">
 				<div class="l">
