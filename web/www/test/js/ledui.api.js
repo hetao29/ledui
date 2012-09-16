@@ -430,9 +430,9 @@ var LocalDataAddress={
 					'<div class="info">'+
 					'<div class="checkbox"><div class="icon"></div></div>'+
 					'<span class="name">'+address[i].Name+'</span>'+
-					'<span class="phone">'+address[i].Mobile+'</span>'+
-					'<span class="address">'+address[i].Country+" "+
-						address[i].Privince+" " +address[i].City+" "+address[i].Address+'</span>'+
+					'<span class="phone">'+(address[i].Mobile||"")+'</span>'+
+					'<span class="address">'+(address[i].Country||"")+" "+
+						(address[i].Privince||"")+" " +(address[i].City||"")+" "+address[i].Address+'</span>'+
 					'</div>'+
 					'</li>';
 				$("#rcvlist .list ul").append(html);
@@ -559,10 +559,9 @@ var Control = {
 				$("#addAddress").text("edit").tr();
 				$("#rcvform").each(function(){
 					for(var i in adr){
-						$(this).find("[name='"+i+"']").val(adr[i]);
+						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
 					}
 				});
-				$("#rcvform #privince").trigger("change");//显示城市名
 
 				Page.show(3);
 			}
@@ -571,7 +570,7 @@ var Control = {
 		//添加新地址的时候，进行重置
 		$(".rcvcreate").bind("click",function(e){
 			$("#delAddress").attr("LocalID","").hide();
-				$("#addAddress").text("add").tr();
+			$("#addAddress").text("add").tr();
 			$("#rcvform").each(function(){this.reset();});
 			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
 		});
