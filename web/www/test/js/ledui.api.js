@@ -551,7 +551,7 @@ var Control = {
 				LocalDataAddress.show();
 				Page.show(2);
 		});
-		$('.rcvlist li .edit').live('click', function(){
+		$('.edit').live('click', function(){
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
