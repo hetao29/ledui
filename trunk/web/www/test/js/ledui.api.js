@@ -294,13 +294,13 @@ var LocalData={
 	//增加本地一个状态
 	addPostCard:function(LocalPostCardItem){
 		LocalPostCardItem.TmpID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
-		var postcards = LocalDB.get(this.postcards);
+		var postcards = LocalDB.get(this.postcards) || [];
 		postcards.push(LocalPostCardItem);
 		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
 	delPostCard:function(TmpID){
-		var postcards = LocalDB.get(this.postcards);
+		var postcards = LocalDB.get(this.postcards) || [];
 		for(var i in postcards){
 			if(postcards[i].TmpID==TmpID){
 				postcards.splice(i,1);
@@ -310,7 +310,7 @@ var LocalData={
 	},
 	//更新本地的一个状态
 	updatePostCard:function(TmpID,LocalPostCardItem){
-		var postcards = LocalDB.get(this.postcards);
+		var postcards = LocalDB.get(this.postcards) ||[];
 		for(var i in postcards){
 			if(postcards[i].TmpID==TmpID){
 				postcards.splice(i,1,LocalPostCardItem);
@@ -364,7 +364,8 @@ var LocalDataFile={
 	Status:1
 }
 var LocalDataAddress={
-	AddressID:"",
+	AddressID:"",//服务器地址ID，如果>0，表明是服务器的地址
+	LocalID:"",//本地生成的临时地址ID
 	Name:"",
 	Mobile:"",
 	Country:"",
@@ -376,28 +377,30 @@ var LocalDataAddress={
 	Phone:"",
 	Key:"Address",
 	add:function(o){
-		var all = LocalDB.get(this.Key);
+		o.LocalID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+		var all = LocalDB.get(this.Key) || [];
 		all.push(o);
 		LocalDB.set(this.Key,all);
 	},edit:function(o){
-		var all = LocalDB.get(this.Key);
+		var all = LocalDB.get(this.Key) || [];
 		for(var i=0;i<all.length;i++){
-			if(all[i].AddressID == o.AddressID){
+			if(all[i].LocalID== o.LocalID){
 				postcards.splice(i,1,o);
 			}
 		}
 		LocalDB.set(this.Key,all);
      	},del:function(o){
-		var all = LocalDB.get(this.Key);
+		var all = LocalDB.get(this.Key) || [];
 		for(var i=0;i<all.length;i++){
-			if(all[i].AddressID == o.AddressID){
+			if(all[i].LocalID== o.LocalID){
 				postcards.splice(i,1);
 			}
 		}
 		LocalDB.set(this.Key,all);
 	},list:function(){
-		var all = LocalDB.get(this.Key);
+		var all = LocalDB.get(this.Key) || [];
 		return all;
+	},upload:function(){
 	}
 	
 }
@@ -528,7 +531,7 @@ var Control = {
 				//console.log($(this).find("option:selected").text());
 				//console.log($(this).val());
 				if($(this).val()=="cn"){
-					$("#privince").html('<option>选择</option>').slideDown();
+					$("#privince").html('<option value="">选择</option>').slideDown();
 					for(var i =0;i<City.all.length;i++){
 						var n = City.all[i].n;
 						$("#privince").append('<option value="'+n+'">'+n+'</option>');
@@ -538,10 +541,27 @@ var Control = {
 					$("#city").html('').hide();
 				}
 		}).trigger("change");
+		$("#addAddress").bind("tapone",function(e){
+			var r = {};
+			var a =  $("#rcvform").serializeArray();
+			for(var i in a){
+				var k = a[i].name	;
+				var v = a[i].value;
+				r[k]=v;
+			}
+			if(r.Name==""){
+				alert("收件人名字不能为空");
+			}else if(r.Address==""){
+				alert("收件人地址不能为空");
+			}else{
+				LocalDataAddress.add(r);
+				Page.show(2);
+			}
+		});
 		$("#rcvform #privince").bind("change",function(e){
 				var city = City.listCity($(this).val());
 				if(city.length>0){
-					$("#city").html('<option>选择</option>').slideDown();
+					$("#city").html('<option value="">选择</option>').slideDown();
 					for(var i =0;i<city.length;i++){
 						var n = city[i];
 						$("#city").append('<option value="'+n+'">'+n+'</option>');
