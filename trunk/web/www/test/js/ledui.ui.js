@@ -225,7 +225,7 @@ var Overlay = {
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.css('height', $('.screen').height()).stop().animate({opacity: 0.5}, 500).show();
+		this.mask.stop().animate({opacity: 0.5}, 500).show();
 		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 500);			
 	},
 	hide: function(name){
