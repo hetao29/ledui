@@ -531,6 +531,7 @@ border-color:#555;
 100% { opacity: 1; transform: translateX(0); } 
 }
 .showfromright {
+	z-index:2;
 	-webkit-animation-name: showfromright;
 	-moz-animation-name: showfromright;
 	-o-animation-name: showfromright;
@@ -554,6 +555,7 @@ border-color:#555;
 100% { opacity: 1; transform: translateX(0); } 
 }
 .showfromleft {
+	z-index:2;
 	-webkit-animation-name: showfromleft;
 	-moz-animation-name: showfromleft;
 	-o-animation-name: showfromleft;
@@ -564,21 +566,22 @@ border-color:#555;
 
 @-webkit-keyframes hidefromleft { 
 0% { opacity: 1; -webkit-transform: translateX(0); }
-100% { opacity: 0.2; -webkit-transform: translateX(-600px); }
+100% { opacity: 0; -webkit-transform: translateX(-600px); }
 }
 @-moz-keyframes hidefromleft {
 0% { opacity: 1; -moz-transform: translateX(0); }
-100% { opacity: 0.2; -moz-transform: translateX(-600px); }
+100% { opacity: 0; -moz-transform: translateX(-600px); }
 }
 @-o-keyframes hidefromleft {
 0% { opacity: 1; -o-transform: translateX(0); }
-100% { opacity: 0.2; -o-transform: translateX(-600px); }
+100% { opacity: 0; -o-transform: translateX(-600px); }
 }
 @keyframes hidefromleft {
 0% { opacity: 1; transform: translateX(0); }
-100% { opacity: 0.2; transform: translateX(-600px); }
+100% { opacity: 0; transform: translateX(-600px); }
 }
 .hidefromleft {
+	z-index:1;
 	-webkit-animation-name: hidefromleft;
 	-moz-animation-name: hidefromleft;
 	-o-animation-name: hidefromleft;
@@ -588,21 +591,22 @@ border-color:#555;
 
 @-webkit-keyframes hidefromright { 
 0% { opacity: 1; -webkit-transform: translateX(0); }
-100% { opacity: 0.2; -webkit-transform: translateX(600px); }
+100% { opacity: 0; -webkit-transform: translateX(600px); }
 }
 @-moz-keyframes hidefromright {
 0% { opacity: 1; -moz-transform: translateX(0); }
-100% { opacity: 0.2; -moz-transform: translateX(600px); }
+100% { opacity: 0; -moz-transform: translateX(600px); }
 }
 @-o-keyframes hidefromright {
 0% { opacity: 1; -o-transform: translateX(0); }
-100% { opacity: 0.2; -o-transform: translateX(600px); }
+100% { opacity: 0; -o-transform: translateX(600px); }
 }
 @keyframes hidefromright {
 0% { opacity: 1; transform: translateX(0); }
-100% { opacity: 0.2; transform: translateX(600px); }
+100% { opacity: 0; transform: translateX(600px); }
 }
 .hidefromright {
+	z-index:1;
 	-webkit-animation-name: hidefromright;
 	-moz-animation-name: hidefromright;
 	-o-animation-name: hidefromright;
