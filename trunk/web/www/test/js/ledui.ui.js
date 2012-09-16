@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(2);	
+	Page.init();	
 	Touch.init();
 });
 
