@@ -378,8 +378,8 @@ var LocalDataFile={
 	DataTotal:0,
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
 	Status:1,
-	genID:function(imageURL,filesize){
-		var str=imageURL+":"+filesize;
+	genID:function(imageURL,filesize,lastModifiedDate){
+		var str=imageURL+":"+filesize+":"+lastModifiedDate;
 		this.FileTmpID=this.strhash(str);
 	},
 	strhash:function( str ) {
@@ -559,6 +559,12 @@ var Interface = {
 
 	onPhotoURISuccess:function(imageURI){
 		LocalDataPostCard.init();
+		var F = new File(imageURI);
+		alert(F.name);
+		alert(F.fullPath);
+		alert(F.size);
+		alert(F.lastModifiedDate);
+		LocalDataFile.genID(f.fullPath,f.size,f.lastModifiedDate);
 	  	//选择了文件
 	 	//判断这个文件是不是已经上传过，从LocalDataFile里检测
 		//初始化上传明信片数据
