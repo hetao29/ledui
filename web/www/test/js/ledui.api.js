@@ -524,6 +524,32 @@ var Control = {
 			});
 		
 		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+		$("#rcvform #country").bind("change",function(e){
+				//console.log($(this).find("option:selected").text());
+				//console.log($(this).val());
+				if($(this).val()=="cn"){
+					$("#privince").html('<option>选择</option>').slideDown();
+					for(var i =0;i<City.all.length;i++){
+						var n = City.all[i].n;
+						$("#privince").append('<option value="'+n+'">'+n+'</option>');
+					}
+				}else{
+					$("#privince").html('').slideUp();
+					$("#city").html('').hide();
+				}
+		}).trigger("change");
+		$("#rcvform #privince").bind("change",function(e){
+				var city = City.listCity($(this).val());
+				if(city.length>0){
+					$("#city").html('<option>选择</option>').slideDown();
+					for(var i =0;i<city.length;i++){
+						var n = city[i];
+						$("#city").append('<option value="'+n+'">'+n+'</option>');
+					}
+				}else{
+					$("#city").html('').slideUp();
+				}
+		});
 
 		$("#IDLogin").bind("tapone",function(e){
 				var sid=$("#login .sid").val();

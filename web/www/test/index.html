@@ -176,27 +176,23 @@
 	</div>
 	<div class="panel_body">		
 	<div class="panel_body_box">	
-		<div class="rcvform">
+		<div class="rcvform" id="rcvform">
 			<div class="chk"><div class="button button_m" active="yes">从通讯录选择</div></div>
 			<div class="item"><input type="text" placeholder="收件人姓名" /></div>
 			<div class="item"><input type="tel" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
-							<div><select>
-								<option value=''>选择国家</option>
+							<div><select id="country">
 								<option value='cn'>中国(含港澳台)</option>
 								<option value='other'>国外</option>
 							</select></div>
-							<div><select>
+							<div><select id="privince">
 								<option value="">选择</option>
-								<option value="北京">北京</option>
-								<option value="天津">天津</option>
 							</select></div>
-							<div><select>
+							<div><select id="city">
 								<option>选择城市</option>
-								<option>成都</option>
 							</select></div>							
 			</div>
-			<div class="item"><input type="text" placeholder="街道地址" /></div>
+			<div class="item"><input type="text" placeholder="详细地址" /></div>
 			<div class="item"><input type="tel" placeholder="邮政编码" /></div>
 		</div>
 	</div>	
@@ -580,6 +576,7 @@
 <script src="js/ledui.test.js"></script>
 <script src="js/ledui.api.js"></script>
 <script src="js/tr.js"></script>
+<script src="js/city.js"></script>
 <!--
 <script src="mini.js"></script>
 -->
