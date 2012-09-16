@@ -443,7 +443,7 @@ var LocalDataAddress={
 		}
 		
 		//选择地址
-		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){										   
+		$('.rcvlist li .info').delegate($('.rcvlist'), 'click', function(){										   
 			$(this).parent().toggleClass('checked');											  
 		});
 		//删除地址
