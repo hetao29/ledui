@@ -535,7 +535,7 @@ var LocalDataAddress={
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
 				$("#delAddress").attr("LocalID",id).show();
-				$("#addAddress").text("edit").tr();
+				$("#addAddress").text("edit".tr());
 				$("#rcvform").each(function(){
 					for(var i in adr){
 						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
@@ -559,6 +559,7 @@ var LocalDataAddress={
 var Interface = {
 	Latitude:"",
 	Longitude:"",
+	Device:{},
 	/**
 	 * 返回按钮事件
 	 */
@@ -581,6 +582,9 @@ var Interface = {
 	onDeviceReady:function () {
 		document.addEventListener("backbutton", Interface.onBackbutton, false);
 		navigator.geolocation.getCurrentPosition(Interface.onGEOSuccess, Interface.onGEOError);
+		for(var i in device){
+			Interface.Device[i]=device[i];
+		}
 		      //test
 		      /*
 			 var options = new ContactFindOptions();
@@ -601,14 +605,14 @@ var Interface = {
        },onGEOSuccess:function(position) {
 	       this.Longitude = position.coords.longitude;
 	       this.Latitude= position.coords.latitude;
-	       alert('Latitude: '           + position.coords.latitude              + '\n' +
-			       'Longitude: '          + position.coords.longitude             + '\n' +
-			       'Altitude: '           + position.coords.altitude              + '\n' +
-			       'Accuracy: '           + position.coords.accuracy              + '\n' +
-			       'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
-			       'Heading: '            + position.coords.heading               + '\n' +
-			       'Speed: '              + position.coords.speed                 + '\n' +
-			       'Timestamp: '          +                                   position.timestamp          + '\n');
+	//       alert('Latitude: '           + position.coords.latitude              + '\n' +
+	//		       'Longitude: '          + position.coords.longitude             + '\n' +
+	//		       'Altitude: '           + position.coords.altitude              + '\n' +
+	//		       'Accuracy: '           + position.coords.accuracy              + '\n' +
+	//		       'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
+	//		       'Heading: '            + position.coords.heading               + '\n' +
+	//		       'Speed: '              + position.coords.speed                 + '\n' +
+	//		       'Timestamp: '          +                                   position.timestamp          + '\n');
        },onGEOError:function(error) {
        }
 }
@@ -664,7 +668,7 @@ var Control = {
 		//添加新地址的时候，进行重置
 		$(".rcvcreate").bind("tapone",function(e){
 			$("#delAddress").attr("LocalID","").hide();
-			$("#addAddress").text("add").tr();
+			$("#addAddress").text("add".tr());
 			$("#rcvform").each(function(){this.reset();});
 			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
 			Page.show(3);
@@ -756,6 +760,8 @@ var Control = {
 				LocalDataPostCard.Latitude = Interface.Latitude;
 				LocalDataPostCard.Longitude= Interface.Longitude;
 
+				LocalDataPostCard.Device = Interface.Device;
+
 				var info=PhotoEditor.getinfo();
 				if(info){
 				LocalDataPostCard.width=info.w;
@@ -800,17 +806,22 @@ var Control = {
 								Page.show(6);
 								$("#titlebar_login .button_s_back").attr("_back",0);
 								$("#titlebar_register .button_s_back").attr("_back",0);
+								$("#titlebar_about .button_s_back").attr("_back",0);
+								$("#titlebar_postcard .button_s_back").attr("_back",0);
 							},function error(msg){
 								alert("错误，["+msg+"]请重试");
 							});
 					}else{
-						//指定到登录
+						//指定到登录,BUG
 						Page.show(10);
-						$("#titlebar_login .button_s_back").attr("_back",6);
-						$("#titlebar_register .button_s_back").attr("_back",6);
+						$("#titlebar_login .button_s_back").attr("_back",5);
+						$("#titlebar_register .button_s_back").attr("_back",5);
+						$("#titlebar_about .button_s_back").attr("_back",5);
+						$("#titlebar_postcard .button_s_back").attr("_back",5);
+						$("#login .errorbox").html("need2login".tr()).show();
 						//修改登录，注册，返回页面为 6
 					}
-					});
+				});
 				//
 		});
 		

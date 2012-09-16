@@ -2,9 +2,9 @@
 var LOCALE = {
 	//中文
 	zh:{
-	//	create:"创建一张明信片"
 		add:"添加",
-    		edit:"编辑"
+    		edit:"编辑",
+		need2login:"需要登录后才能继续...",
 	},
 	zh_tw:{
 		create:"创建一张明信片(zh_tw)"
@@ -58,6 +58,9 @@ function tr(k){
 	
 	return LOCALE[language][k];
 }
+String.prototype.tr=function(){
+	return tr(this);
+};
 (function($) {       
 	$.fn.tr= function() {     
 		var t = tr($(this).text());
