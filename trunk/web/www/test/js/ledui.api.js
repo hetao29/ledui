@@ -333,11 +333,11 @@ alert(LocalData.getAll().length);
 */
 //本地的明信片状态
 var LocalDataPostCard={
-	PostCardTmpID:"",
+	LocalID:"",
 	FileTmpID:"",
 	//明信片ID
 	PostCardID:"",//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
-	Address:"",
+	Address:[],//发送地址
 	Comments:"",
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
 	Status:1,
@@ -345,7 +345,23 @@ var LocalDataPostCard={
 	height:"",
 	left:"",
 	top:"",
-	rotate:""
+	rotate:"",
+	genID:function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},
+	init:function(){
+		this.LocalID=this.genID;
+		this.FileTmpID="";
+		this.PostCardID="";
+		this.Address=[];
+		this.Comments="";
+		this.Status=1;
+		this.width="";
+		this.height="";
+		this.left="";
+		this.top="";
+		this.rotate="";
+	}
 }
 //待上传的文件类，这样能实现同一图片，做多张明信片时的秒传
 var LocalDataFile={
@@ -361,7 +377,36 @@ var LocalDataFile={
 	//文件上传总大小
 	DataTotal:0,
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
-	Status:1
+	Status:1,
+	genID:function(imageURL,filesize){
+		var str=imageURL+":"+filesize;
+		this.FileTmpID=this.strhash(str);
+	},
+	strhash:function( str ) {
+		if (str.length % 32 > 0) str += Array(33 - str.length % 32).join("z");
+		var hash = '', bytes = [], i = j = k = a = 0, dict = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','1','2','3','4','5','6','7','8','9'];
+		for (i = 0; i < str.length; i++ ) {
+			ch = str.charCodeAt(i);
+			bytes[j++] = (ch < 127) ? ch & 0xFF : 127;
+		}
+		var chunk_len = Math.ceil(bytes.length / 32);   
+		for (i=0; i<bytes.length; i++) {
+			j += bytes[i];
+			k++;
+			if ((k == chunk_len) || (i == bytes.length-1)) {
+				a = Math.floor( j / k );
+				if (a < 32)
+					hash += '0';
+				else if (a > 126)
+					hash += 'z';
+				else
+					hash += dict[  Math.floor( (a-32) / 2.76) ];
+				j = k = 0;
+			}
+		}
+		return hash;
+	}
+
 }
 var LocalDataAddress={
 	AddressID:"",//服务器地址ID，如果>0，表明是服务器的地址
@@ -424,7 +469,7 @@ var LocalDataAddress={
 			//显示各地址
 			var address = LocalDataAddress.list();
 			for(var i =0;i<address.length;i++){
-				var html='<li>'+
+				var html='<li localid="'+address[i].LocalID+'">'+
 					'<div class="edit" LocalID="'+address[i].LocalID+
 						'"active="yes"><div class="icon"></div></div>'+
 					'<div class="info">'+
@@ -513,12 +558,17 @@ var Interface = {
 	},
 
 	onPhotoURISuccess:function(imageURI){
+		LocalDataPostCard.init();
+	  	//选择了文件
+	 	//判断这个文件是不是已经上传过，从LocalDataFile里检测
+		//初始化上传明信片数据
 		Page.init(1);
 		setTimeout(function(){PhotoEditor.init(imageURI);},300);
-		setTimeout(function(){API.upload(122,imageURI);},2000);
+		//setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	
 	onFail:function (message) {
+		LocalDataPostCard.init();
 		//alert('Failed because: ' + message);
 	}
 	
@@ -645,6 +695,26 @@ var Control = {
 		$("#toAddress").bind("tapone",function(e){
 				LocalDataAddress.show();
 				Page.show(2);
+		});
+		$("#toComments").bind("tapone",function(e){
+				if($("#rcvlist li.checked").length==0){
+					alert("请选择收件人");
+					return;
+				};
+				Page.show(4);
+		});
+		//预览，生成明信片数据,LocalDataPostCard
+		$("#toPreview").bind("tapone",function(e){
+				LocalDataPostCard.Comments=$("#comments").val();
+				var adr = $("#rcvlist li.checked");
+				for(var i=0;i<adr.length;i++){
+					LocalDataPostCard.Address.push(LocalDataAddress.get($(adr[i]).attr("LocalID")));
+				}
+				console.log(LocalDataPostCard);
+		});
+		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
+		//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
+		$("#toSend").bind("tapone",function(e){
 		});
 		
 		
