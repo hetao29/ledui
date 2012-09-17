@@ -315,9 +315,15 @@ var LocalData={
 	},
 	//增加本地一个状态
 	addPostCard:function(LocalDataPostCard){
-		LocalDataPostCard.LocalID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 		var postcards = LocalDB.get(this.postcards) || [];
-		postcards.push(LocalDataPostCard);
+		var isnew=true;
+		for(var i=0;i<postcards.length;i++){
+			if(postcards[i].LocalID == LocalDataPostCard.LocalID){
+				postcards.splice(i,1,LocalDataPostCard);
+				isnew = false;
+			}
+		}
+		if(isnew)postcards.push(LocalDataPostCard);
 		LocalDB.set(this.postcards,postcards);
 	},
 	//删除本地状态，当取消，或者成功时
@@ -355,17 +361,20 @@ alert(LocalData.getAll().length);
 */
 //本地的明信片状态
 var LocalDataPostCard={
-	LocalID:"",
-	FileTmpID:"",
-	ImageFileID:"",
-	Latitude:"",
-	Longitude:"",
-	//明信片ID
+	//{{明信片信息，和服务器保存的结果对应
 	PostCardID:"",//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
-	Address:[],//发送地址
-	Comments:"",
+	PayURL:"",
+	OrderID:"",
+	ImageFileID:"",
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
 	Status:1,
+	//}}
+	LocalID:"",
+	FileTmpID:"",
+	Latitude:"",
+	Longitude:"",
+	Address:[],//发送地址
+	Comments:"",
 	width:"",
 	height:"",
 	x:"",
@@ -631,6 +640,10 @@ var Control = {
 		//b.明信片状态查询
 		//2.界面接口
 		$("#choosePic").bind("tapone", function(e){Overlay.show("chkphoto");});
+		$('#photo').delegate($('img'), 'change', function(){
+			//选择照片成功后，初始化明信片
+			LocalDataPostCard.init();
+		});
 		//重选按钮
 		$("#choosePic2").bind("tapone", function(e){Overlay.show("chkphoto");});
 		//结束时，再重新创建时的按钮
@@ -735,6 +748,10 @@ var Control = {
 				}
 		});
 		$("#toAddress").bind("tapone",function(e){
+				if(!$("#photo img").attr("src") || $("#photo img").attr("src")==""){
+					alert("请选择图片");
+					return;
+				};
 				LocalDataAddress.show();
 				Page.show(2);
 		});
@@ -747,7 +764,6 @@ var Control = {
 		});
 		//预览，生成明信片数据,LocalDataPostCard
 		$("#toPreview").bind("tapone",function(e){
-				LocalDataPostCard.init();
 				//选择了文件
 				//文件信息
 				LocalDataFile.add($("#photo img").attr("src"));

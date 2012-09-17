@@ -1,7 +1,7 @@
 //测试脚本
 var Test = {
 	init: function(){
-		//this.testpage();
+		this.testpage();
 	},
 	testpage: function(){
 		
