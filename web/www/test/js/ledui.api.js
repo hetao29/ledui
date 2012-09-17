@@ -807,7 +807,7 @@ var Control = {
 					var photoinfo = LocalDataPostCard.photo;
 					var style = Photoinfo.tostyle(photoinfo);
 					var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
-					$('.card_front .photo').append(img);
+					$('.card_front .photo').html('').append(img);
 				}
 				Preview.showside('back');
 				Page.show(5);
