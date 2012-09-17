@@ -326,6 +326,14 @@ var LocalData={
 		if(isnew)postcards.push(LocalDataPostCard);
 		LocalDB.set(this.postcards,postcards);
 	},
+	getPostCard:function(LocalID){
+		var postcards = LocalDB.get(this.postcards) || [];
+		for(var i=0;i<postcards.length;i++){
+			if(postcards[i].LocalID == LocalID){
+				return postcards[i];
+			}
+		}
+	},
 	//删除本地状态，当取消，或者成功时
 	delPostCard:function(LocalID){
 		var postcards = LocalDB.get(this.postcards) || [];
@@ -335,7 +343,7 @@ var LocalData={
 			}
 		}
 		LocalDB.set(this.postcards,postcards);
-	},listPostCard:function(LocalID,LocalDataPostCard){
+	},listPostCard:function(LocalDataPostCard){
 		return LocalDB.get(this.postcards) ||[];
 	},
 	clear:function(){
@@ -603,6 +611,9 @@ var Interface = {
        },onGEOSuccess:function(position) {
 	       this.Longitude = position.coords.longitude;
 	       this.Latitude= position.coords.latitude;
+	       LocalDataPostCard.Latitude = Interface.Latitude;
+	       LocalDataPostCard.Longitude= Interface.Longitude;
+	       LocalDataPostCard.Device = Interface.Device;
 	//       alert('Latitude: '           + position.coords.latitude              + '\n' +
 	//		       'Longitude: '          + position.coords.longitude             + '\n' +
 	//		       'Altitude: '           + position.coords.altitude              + '\n' +
@@ -616,6 +627,30 @@ var Interface = {
 }
 //界面操作
 var Control = {
+	showPreview:function(){
+			    //显示预览页面
+			    $("#postinfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
+			    $("#postinfo [name='Address']").html(
+					    LocalDataPostCard.Address[0].Country+" "+
+					    LocalDataPostCard.Address[0].Privince +" "+
+					    LocalDataPostCard.Address[0].City+" "+
+					    LocalDataPostCard.Address[0].Address+" "
+					    );
+			    $("#postinfo [name='PostCode']").html(LocalDataPostCard.Address[0].PostCode);
+			    $("#msginfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
+			    $("#msginfo [name='Comments']").html(LocalDataPostCard.Comments);
+			    LocalData.addPostCard(LocalDataPostCard);
+			    //获取登录者的名字
+			    //$("#msginfo [name='FromName']").html();
+			    if(LocalDataPostCard.photo){
+				    var photoinfo = LocalDataPostCard.photo;
+				    var style = Photoinfo.tostyle(photoinfo);
+				    var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
+				    $('.card_front .photo').html('').append(img);
+			    }
+			    Preview.showside('back');
+			    Page.show(5);
+	    },
 	init: function(n){
 		/*初始化*/
 		//1.数据初始化
@@ -715,7 +750,7 @@ var Control = {
 					'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
 					'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
 					'<div class="actions">'+
-						'<div class="act" active="yes"><span class="ico ico_view"><em>查看</em></span></div>'+
+						'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
 						'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
 					'</div>'+
 					'</li>';
@@ -726,6 +761,16 @@ var Control = {
 		});
 		//真不会用delegate,大师
 		//$("#maillist").delegate($(".ico_delete"),"click",function(){});
+		$(".ico_view").live("click",function(e){
+				//回到管理邮箱
+				$("#titlebar_preview .button_s_back").attr("_back",9);
+				var lid=$(this).attr("LocalID");
+				LocalDataPostCard = LocalData.getPostCard(lid);
+				console.log(LocalDataPostCard);
+				//正常新加，预览的返回为评论
+				Control.showPreview();
+				
+		});
 		$(".ico_delete").live("click",function(){
 				alert("删除确认框,todo");
 				//删除明信片
@@ -795,6 +840,22 @@ var Control = {
 					alert("请选择图片");
 					return;
 				};
+				//选择了文件
+				var f = LocalDataFile.add($("#photo img").attr("src"));
+				if(f && f.FileTmpID){
+					LocalDataPostCard.FileTmpID = f.FileTmpID;
+					LocalDataPostCard.ImageFileID= f.ImageFileID;
+				}
+
+				if(Interface.Latitude!=""){
+				LocalDataPostCard.Latitude = Interface.Latitude;
+				LocalDataPostCard.Longitude= Interface.Longitude;
+				LocalDataPostCard.Device = Interface.Device;
+				}
+
+				var info=PhotoEditor.getinfo();
+				if(info){ LocalDataPostCard.photo = info; }
+
 				LocalDataAddress.show();
 				Page.show(2);
 		});
@@ -803,58 +864,25 @@ var Control = {
 					alert("请选择收件人");
 					return;
 				};
-				Page.show(4);
-		});
-		//预览，生成明信片数据,LocalDataPostCard
-		$("#toPreview").bind("tapone",function(e){
-				//选择了文件
-				//文件信息
-				var f = LocalDataFile.add($("#photo img").attr("src"));
-				//var f = LocalDataFile.get($("#photo img").attr("src"));
-				if(f && f.FileTmpID){
-					LocalDataPostCard.FileTmpID = f.FileTmpID;
-					LocalDataPostCard.ImageFileID= f.ImageFileID;
-				}
-				LocalDataPostCard.Latitude = Interface.Latitude;
-				LocalDataPostCard.Longitude= Interface.Longitude;
-
-				LocalDataPostCard.Device = Interface.Device;
-
-				var info=PhotoEditor.getinfo();
-				if(info){ LocalDataPostCard.photo = info; }
-				
-				//不需要记这个 界面zoom
-				//LocalDataPostCard.zoom=PhotoEditor.zoom_ui;
 				//地址信息
 				var adr = $("#rcvlist li.checked");
 				LocalDataPostCard.Address=[];
 				for(var i=0;i<adr.length;i++){
 					LocalDataPostCard.Address.push(LocalDataAddress.get($(adr[i]).attr("LocalID")));
 				}
+				Page.show(4);
+		});
+		//预览，生成明信片数据,LocalDataPostCard
+		$("#comments").bind("change",function(e){
+				console.log($(this).val());
 				//评论信息
-				LocalDataPostCard.Comments=$("#comments").val();
-				//显示预览页面
-				$("#postinfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
-				$("#postinfo [name='Address']").html(
-						LocalDataPostCard.Address[0].Country+" "+
-						LocalDataPostCard.Address[0].Privince +" "+
-						LocalDataPostCard.Address[0].City+" "+
-						LocalDataPostCard.Address[0].Address+" "
-						);
-				$("#postinfo [name='PostCode']").html(LocalDataPostCard.Address[0].PostCode);
-				$("#msginfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
-				$("#msginfo [name='Comments']").html(LocalDataPostCard.Comments);
-				LocalData.addPostCard(LocalDataPostCard);
-				//获取登录者的名字
-				//$("#msginfo [name='FromName']").html();
-				if(LocalDataPostCard.photo){
-					var photoinfo = LocalDataPostCard.photo;
-					var style = Photoinfo.tostyle(photoinfo);
-					var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
-					$('.card_front .photo').html('').append(img);
-				}
-				Preview.showside('back');
-				Page.show(5);
+				LocalDataPostCard.Comments=$(this).val();
+		});
+		$("#toPreview").bind("tapone",function(e){
+				$("#titlebar_preview .button_s_back").attr("_back",4);
+				//正常新加，预览的返回为评论
+				Control.showPreview();
+				
 		});
 		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
 		//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
