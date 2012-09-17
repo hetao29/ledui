@@ -333,7 +333,7 @@ var PhotoEditor = {
 		})
 		.bind('error', function(){
 			this.loading.hide();				
-		});		
+		}).trigger("change");		
 	},
 	bind: function(){
 		var _this = this;
