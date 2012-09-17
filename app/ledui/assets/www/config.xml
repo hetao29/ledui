@@ -4,10 +4,10 @@
 	id		= "com.ledui.postcard"
 	version 	= "1.0.0">
 
-	<name>Ledui Postcard</name>
+	<name>乐兑明信片</name>
 
 	<description>
-		Ledui Postcard
+		乐兑明信片，好用的明信片
 	</description>
 
 	<author href="http://www.ledui.com/"
