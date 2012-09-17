@@ -188,14 +188,14 @@ var API = {
 		if(ok)ok();return;
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
-	addPostCard:function(PostCard,ok,error){
+	postPostCard:function(PostCard,ok,error){
 		var param={};
 		param.Token= LocalData.getToken();
 		param.UserID= LocalData.getUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 		   type: "POST",
-		   url: API.host+"/postcard/add",
+		   url: API.host+"/postcard/post",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
@@ -891,7 +891,7 @@ var Control = {
 					if(isLogin){
 						//开始掉用接口
 						//修改登录，注册，返回页面为 0
-						API.addPostCard(LocalDataPostCard,function ok(){
+						API.postPostCard(LocalDataPostCard,function ok(){
 								Page.show(6);
 								$("#titlebar_login .button_s_back").attr("_back",0);
 								$("#titlebar_register .button_s_back").attr("_back",0);
