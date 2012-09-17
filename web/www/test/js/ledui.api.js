@@ -542,6 +542,8 @@ var LocalDataAddress={
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
+				$("#head_add .button_m").hide();
+				$("#head_add .title").html("editAddress".tr());
 				$("#delAddress").attr("LocalID",id).show();
 				$("#addAddress").text("edit".tr());
 				$("#rcvform").each(function(){
@@ -678,10 +680,13 @@ var Control = {
 		
 		
 		//添加新地址的时候，进行重置
-		$(".rcvcreate").bind("tapone",function(e){
+		$("#rcvcreate").bind("tapone",function(e){
 			$("#delAddress").attr("LocalID","").hide();
+			$("#head_add .button_m").show();
+			$("#head_add .title").html("addAddress".tr());
 			$("#addAddress").text("add".tr());
 			$("#rcvform").each(function(){this.reset();});
+			$("#rcvform #country").trigger("change");
 			$("#rcvform [name=LocalID]").val(LocalDataAddress.genID());
 			Page.show(3);
 		});

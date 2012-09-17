@@ -2,6 +2,8 @@ var LOCALE = {
 	//中文
 	zh:{
 		add:"添加",
+		addAddress:"输入新地址",
+		editAddress:"修改地址",
     		edit:"编辑",
 		need2login:"需要登录后才能继续..."
 	},
