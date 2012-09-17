@@ -489,7 +489,7 @@ color:#fff;
 
 .preview{position:absolute;top:50%;left:50%;width:600px;height:520px;margin-left:-300px;margin-top:-260px;padding-top:20px;}
 .preview .view{position:relative;width:560px;height:360px;margin:0 auto 30px auto;}
-.preview .card{display:none;position:absolute;top:0;left:0;width:560px;height:350px;overflow:hidden;box-shadow:0 0 10px #555;
+.preview .card{visibility:hidden;position:absolute;top:0;left:0;width:560px;height:350px;overflow:hidden;box-shadow:0 0 10px #555;
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
 -ms-backface-visibility: hidden;
