@@ -387,7 +387,7 @@ var PhotoEditor = {
 		this.loading.show();
 		//img loaded bind event
 		var _this = this;
-		this.img = $('<img deg="0" src='+ img +' />')
+		this.img = $('<img id="photoeditorimg" deg="0" src='+ img +' />')
 		.appendTo(this.box)
 		.bind('load', function(){
 			var size = _this.getimgsize();
@@ -400,6 +400,13 @@ var PhotoEditor = {
 			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
+			Filtrr2('#photoeditorimg', function() {
+
+				this.brighten(40)
+					.saturate(50)
+					.render();
+					  
+			});
 		})
 		.bind('error', function(){
 			this.loading.hide();				
