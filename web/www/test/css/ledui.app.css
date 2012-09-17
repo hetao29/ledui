@@ -517,6 +517,10 @@ animation-delay: 0s;
 animation-timing-function: fadeIn;
 animation-fill-mode: both;
 
+-webkit-transform: scaleX(1);
+-moz-transform: scaleX(1);
+-o-transform: scaleX(1);
+-ms-transform: scaleX(1);
 }
 .preview .card_front{background:#fff;}
 .preview .photo{z-index:1;position:absolute;width:1920px;height:1200px;top:50%;left:50%;margin-left:-960px;margin-top:-600px;
