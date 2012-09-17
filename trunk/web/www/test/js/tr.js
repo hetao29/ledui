@@ -96,7 +96,6 @@ $(document).ready(function(){
 		var e = $(this)
 			,k = $(e).attr("tr_placehodler")
 			,v = tr(k)
-		alert(k + ',' + v)
 		if(v){ e.attr("placehodler", v); }
 	});
 	
