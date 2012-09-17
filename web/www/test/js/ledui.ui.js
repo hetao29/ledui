@@ -318,34 +318,34 @@ var Preview = {
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
 			if(animate){				
-				this.panel_back.addClass('unflipx').css('visibility', 'visible');
+				this.panel_back.addClass('unflipx').show();
 				setTimeout(function(){
-					_this.panel_back.css('visibility', 'hidden').removeClass('unflipx');				
-					_this.panel_front.addClass('flipx').css('visibility', 'visible');
+					_this.panel_back.hide().removeClass('unflipx');				
+					_this.panel_front.addClass('flipx').show();
 					setTimeout(function(){
 						_this.panel_front.removeClass('flipx');				
 					}, 350);
 				}, 350);
 			}else{
-				this.panel_front.css('visibility', 'visible');
-				this.panel_back.css('visibility', 'hidden');	
+				this.panel_front.show();
+				this.panel_back.hide();	
 			}
 			
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
 			if(animate){
-				this.panel_front.addClass('unflipx').css('visibility', 'visible');
+				this.panel_front.addClass('unflipx').show();
 				setTimeout(function(){
-					_this.panel_front.css('visibility', 'hidden').removeClass('unflipx');				
-					_this.panel_back.addClass('flipx').css('visibility', 'visible');
+					_this.panel_front.hide().removeClass('unflipx');				
+					_this.panel_back.addClass('flipx').show();
 					setTimeout(function(){
 						_this.panel_back.removeClass('flipx');				
 					}, 350);
 				}, 350);
 			}else{
-				this.panel_front.css('visibility', 'hidden');
-				this.panel_back.css('visibility', 'visible');
+				this.panel_front.hide();
+				this.panel_back.show();
 			}
 		}
 		
