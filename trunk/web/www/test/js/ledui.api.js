@@ -375,11 +375,7 @@ var LocalDataPostCard={
 	Longitude:"",
 	Address:[],//发送地址
 	Comments:"",
-	width:"",
-	height:"",
-	x:"",
-	y:"",
-	rotate:"",
+	photo:{}, //width:"", //height:"", //x:"", //y:"", //rotate:"",
 	genID:function(){
 		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 	},
@@ -789,6 +785,7 @@ var Control = {
 				//LocalDataPostCard.zoom=PhotoEditor.zoom_ui;
 				//地址信息
 				var adr = $("#rcvlist li.checked");
+				LocalDataPostCard.Address=[];
 				for(var i=0;i<adr.length;i++){
 					LocalDataPostCard.Address.push(LocalDataAddress.get($(adr[i]).attr("LocalID")));
 				}
