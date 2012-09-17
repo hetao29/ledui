@@ -722,6 +722,7 @@ var Control = {
 		$(".CPostCard").bind("tapone",function(e){
 				var postcards = LocalData.listPostCard();
 				$("#maillist ul").html("");
+				var html="";
 				for(var i=0;i<postcards.length;i++){
 					var photo=postcards[i].photo;
 					var to=[];
@@ -738,7 +739,7 @@ var Control = {
 						case 4:st="等待邮寄";break;
 						case 5:st="已经寄出";break;
 					}
-					var html='<li>'+
+					html+='<li>'+
 					'<div class="cover">'+
 						'<div class="photo">'+
 							'<img style="width:'+photo.w+'px;height:'+photo.h+'px;left:'+photo.x+'px;top:'+photo.y+'px;-webkit-transform:rotate('+photo.r+'deg);" src="'+photo.o+'" />'+
@@ -754,10 +755,12 @@ var Control = {
 						'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
 					'</div>'+
 					'</li>';
-					$("#maillist ul").append(html);
 				}
-
 				Page.show(9);
+				setTimeout(function(){
+					$("#maillist ul").html(html);
+				},300);
+
 		});
 		//真不会用delegate,大师
 		//$("#maillist").delegate($(".ico_delete"),"click",function(){});
