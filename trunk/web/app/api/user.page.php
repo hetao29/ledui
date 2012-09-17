@@ -120,7 +120,7 @@ class api_user{
 		$result = new api_result;
 		$userID = $_REQUEST['UserID'];
 		$token = $_REQUEST['Token'];
-		$r = ($_REQUEST['AddressData']);
+		$r = SJson::decode($_REQUEST['AddressData']);
 		if(user_api::isLoginMobile($userID,$token) != true){
 			$result->error_code = -1;
 			return SJson::encode($result);
@@ -133,7 +133,7 @@ class api_user{
 		foreach($r as &$t){
 			//TODO
 			//更新记录，或者新增记录
-			$t['AddressID']=999;//for test
+			$t->AddressID=999;//for test
 			//更新当前记录为正常记录
 		}
 		$result->result = $r; 

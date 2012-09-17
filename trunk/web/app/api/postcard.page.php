@@ -7,7 +7,9 @@ class api_postcard{
 		$result = new api_result;
 		$userID = $_REQUEST['UserID'];
 		$token = $_REQUEST['Token'];
+		$PostCard = SJson::decode($_REQUEST['PostCard']);
 		error_log(var_export($_REQUEST,true),3,"/tmp/log.postcard.log");
+		error_log(var_export($PostCard,true),3,"/tmp/log.postcard.log");
 		$data=new stdclass;
 		$data->PostCardID="TO GEN";
 		$data->LocalID=$_REQUEST['PostCard']['LocalID'];
