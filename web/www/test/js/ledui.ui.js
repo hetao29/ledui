@@ -54,9 +54,12 @@ var Page = {
 		this.current_prev = this.current;
 		this.current = n;
 		
-		Adapta.layout();
+		if(!page.attr("layouted")){
+			Adapta.layout();
+			page.attr("layouted",true);
+		}
 		
-		var appnav = $('.appnav'); 
+		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
 			appnav.show(); 
 			$.each(appnav.find('li'), function(){
