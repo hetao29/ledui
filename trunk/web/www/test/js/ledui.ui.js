@@ -17,6 +17,8 @@ var UI = {
 //页面显示控制
 var Page = {	
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
+	scrollers: {},
+	sindex: -1,
 	init: function(n){
 		var n = arguments[0] ? arguments[0] : 0;
 		this.pages = this.seri();
@@ -54,10 +56,12 @@ var Page = {
 		this.current_prev = this.current;
 		this.current = n;
 		
-		if(!page.attr("layouted")){
+		if( page.attr('layout_width') != Adapta.layoutinfo.width 
+			|| page.attr('layout_height') != Adapta.layoutinfo.height){
 			Adapta.layout();
-			page.attr("layouted",true);
 		}
+		
+		this.chkscroll(page);
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
@@ -111,49 +115,9 @@ var Page = {
 	getpages: function(){ return this.pages; },
 	gettotal: function(){ return this.total; },
 	getcurrent: function(){ return this.current; },
-	getcurrentpage: function(){ return this.getpage(this.current); }
-}
-
-//屏幕适配器
-var Adapta = {
-	ratio: 1,
-	scrollers: {},
-	sindex: -1,
-	init: function(){
-		if(UI.istouch){ this.scale(); }
-		this.bind();
-	},
-	bind: function(){
-		var _this = this;
-		$(window).bind('resize', function(){ _this.layout(); });	
-	},
-	scale: function(){
-		var win_w = $(window).width()
-			,win_h = $(window).height()
-			,scr_w = $('.screen').width()
-		
-		this.ratio = win_w/scr_w;
-		$('body').css('zoom', this.ratio);
-		$('.screen').css({ 'height': win_h/this.ratio});
-	},
-	layout: function(){		
-		var  pg = Page.getcurrentpage()	
-			,hd = pg.find('.panel_head')
-			,bd = pg.find('.panel_body')
-			,ft = pg.find('.panel_foot')
-			,H = $(window).height()/this.ratio
-			,h1 = hd.outerHeight(true)
-			,h3 = ft.outerHeight(true)
-			,h2 = H - h1 - h3;
-		$('.screen').css('height', H);
-		pg.css('height', H);
-		bd.css('top', h1).css('height', h2);
-		
-		this.chkscroll(pg);
-	},
-	
-	chkscroll: function(){
-		var pg = Page.getcurrentpage()
+	getcurrentpage: function(){ return this.getpage(this.current); },
+	chkscroll: function(page){
+		var pg = page
 			,bd = pg.find('.panel_body')
 			,box = bd.find('.panel_body_box')
 			,h = 0
@@ -188,6 +152,50 @@ var Adapta = {
 			this.scrollers[this.sindex]= new iScroll(bd.get(0), config);
 			bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
 		}
+	}
+}
+
+//屏幕适配器
+var Adapta = {
+	ratio: 1,
+	layoutinfo: {width:0, height: 0},
+	init: function(){
+		if(UI.istouch){ this.scale(); }
+		this.bind();
+	},
+	bind: function(){
+		var _this = this;
+		$(window).bind('resize', function(){ _this.layout(); });	
+	},
+	scale: function(){
+		var win_w = $(window).width()
+			,win_h = $(window).height()
+			,scr_w = $('.screen').width()
+		
+		this.ratio = win_w/scr_w;
+		$('body').css('zoom', this.ratio);
+		$('.screen').css({ 'height': win_h/this.ratio});
+		return this;
+	},
+	layout: function(){		
+		var  pg = Page.getcurrentpage()	
+			,hd = pg.find('.panel_head')
+			,bd = pg.find('.panel_body')
+			,ft = pg.find('.panel_foot')
+			,win_w = $(window).width()
+			,win_h = $(window).height()
+			,H = win_h/this.ratio
+			,h1 = hd.outerHeight(true)
+			,h3 = ft.outerHeight(true)
+			,h2 = H - h1 - h3;
+		$('.screen').css('height', H);
+		pg.css('height', H);
+		bd.css('top', h1).css('height', h2);
+		this.layoutinfo = {width: win_w,  height: win_h};
+		pg.attr('layout_width', win_w).attr('layout_height', win_h);
+		
+		Page.chkscroll(pg);
+		return this;
 	}
 }
 
