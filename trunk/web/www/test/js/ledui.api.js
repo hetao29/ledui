@@ -335,16 +335,8 @@ var LocalData={
 			}
 		}
 		LocalDB.set(this.postcards,postcards);
-	},
-	//更新本地的一个状态
-	updatePostCard:function(LocalID,LocalDataPostCard){
-		var postcards = LocalDB.get(this.postcards) ||[];
-		for(var i in postcards){
-			if(postcards[i].LocalID==LocalID){
-				postcards.splice(i,1,LocalDataPostCard);
-			}
-		}
-		LocalDB.set(this.postcards,postcards);
+	},listPostCard:function(LocalID,LocalDataPostCard){
+		return LocalDB.get(this.postcards) ||[];
 	},
 	clear:function(){
 		for(var i in window.localStorage){
@@ -376,21 +368,19 @@ var LocalDataPostCard={
 	Address:[],//发送地址
 	Comments:"",
 	photo:{}, //width:"", //height:"", //x:"", //y:"", //rotate:"",
+	date:"",
 	genID:function(){
 		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 	},
 	init:function(){
 		this.LocalID=LocalDataPostCard.genID();
+		this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
 		this.FileTmpID="";
 		this.PostCardID="";
 		this.Address=[];
 		this.Comments="";
 		this.Status=1;
-		this.width="";
-		this.height="";
-		this.x="";
-		this.y="";
-		this.rotate="";
+		this.photo={};
 	}
 }
 //待上传的文件类，这样能实现同一图片，做多张明信片时的秒传
@@ -418,7 +408,8 @@ var LocalDataFile={
 		for(var i=0;i<all.length;i++){
 			if(all[i].FilePath == this.FilePath){
 				isnew =false;
-				all.splice(i,1,this);
+				return all[i];
+				//all.splice(i,1,this);
 			}
 		}
 		if(isnew){
@@ -426,6 +417,7 @@ var LocalDataFile={
 			all.unshift(this);
 		}
 		LocalDB.set(this.Key,all);
+		return this;
 	},get:function(imageURI){
 		var all = LocalDB.get(this.Key) || [];
 		for(var i=0;i<all.length;i++){
@@ -690,9 +682,59 @@ var Control = {
 		
 		
 		$(".CAbout").bind("tapone",function(e){Page.show(8);});
-		$(".CPostCard").bind("tapone",function(e){Page.show(9);});
 		$(".CLogin").bind("tapone",function(e){Page.show(10);});		
 		$(".CRegister").bind("tapone",function(e){Page.show(11);});
+		$(".CPostCard").bind("tapone",function(e){
+				var postcards = LocalData.listPostCard();
+				$("#maillist ul").html("");
+				for(var i=0;i<postcards.length;i++){
+					var photo=postcards[i].photo;
+					var to=[];
+					for(var j=0;j<postcards[i].Address.length;j++){
+						to.push(postcards[i].Address[j].Name);
+					}
+
+					var st="";
+					//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
+					switch(postcards[i].Status){
+						case 1:st="未支付";break;
+						case 2:st="上传中";break;
+						case 3:st="等待打印";break;
+						case 4:st="等待邮寄";break;
+						case 5:st="已经寄出";break;
+					}
+					var html='<li>'+
+					'<div class="cover">'+
+						'<div class="photo">'+
+							'<img style="width:'+photo.w+'px;height:'+photo.h+'px;left:'+photo.x+'px;top:'+photo.y+'px;-webkit-transform:rotate('+photo.r+'deg);" src="'+photo.o+'" />'+
+						'</div>'+
+						'<div class="selc"></div>'+
+						'<div class="fake"></div>'+
+					'</div>'+
+					'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
+					'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
+					'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
+					'<div class="actions">'+
+						'<div class="act" active="yes"><span class="ico ico_view"><em>查看</em></span></div>'+
+						'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
+					'</div>'+
+					'</li>';
+					$("#maillist ul").append(html);
+				}
+
+				Page.show(9);
+		});
+		//真不会用delegate,大师
+		//$("#maillist").delegate($(".ico_delete"),"click",function(){});
+		$(".ico_delete").live("click",function(){
+				alert("删除确认框,todo");
+				//删除明信片
+				//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
+				//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
+				//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
+				console.log($(this));
+				console.log($(this).attr("localid"));
+		});
 		
 		$(".CLogout").bind("tapone",function(e){
 			API.logout({},function ok(result){
@@ -767,9 +809,9 @@ var Control = {
 		$("#toPreview").bind("tapone",function(e){
 				//选择了文件
 				//文件信息
-				LocalDataFile.add($("#photo img").attr("src"));
-				var f = LocalDataFile.get($("#photo img").attr("src"));
-				if(f){
+				var f = LocalDataFile.add($("#photo img").attr("src"));
+				//var f = LocalDataFile.get($("#photo img").attr("src"));
+				if(f && f.FileTmpID){
 					LocalDataPostCard.FileTmpID = f.FileTmpID;
 					LocalDataPostCard.ImageFileID= f.ImageFileID;
 				}
