@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(9);	
+	Page.init(1);	
 	Touch.init();
 	UI.redefine();
 });
@@ -218,7 +218,6 @@ var Overlay = {
 		if(name == 'alert'){
 			var info = o.find('.info');
 			var btnok = o.find('.button').eq(0);
-			console.log(btnok);
 			btnok.bind('tapone', function(){ _this.hide(); });
 			info.html(message);	
 		}
@@ -244,7 +243,6 @@ var Loading = {
 	init: function(){
 		this.loading = $('.apploading');
 		this.text = this.loading.find('.text');
-		console.log(this.text);
 		this.isinit = true;
 	},
 	show: function(text){
@@ -277,7 +275,7 @@ var Touch = {
 	}
 }
 
-var Convert = {
+var Photoinfo = {
 	tostyle: function(info){
 		var prefix = ($.browser.webkit)  ? '-webkit-' : 
 				 ($.browser.mozilla) ? '-moz-' :
@@ -294,6 +292,67 @@ var Convert = {
 		return style;
 	}
 }
+
+var Preview = {
+	side: '',
+	isinit: false,
+	init: function(){
+		this.handles = $('#chardchoice li');
+		this.handle_front = this.handles.eq(0);
+		this.handle_back = this.handles.eq(1);
+		this.panel_front = $('.preview .card_front');
+		this.panel_back = $('.preview .card_back');
+		this.bind();
+		this.isinit = true;
+	},
+	bind: function(){
+		var _this = this;
+		this.handle_front.bind('tapone', function(){ _this.showside('front', true); });
+		this.handle_back.bind('tapone', function(){ _this.showside('back', true); });
+	},
+	showside: function(side, animate){
+		if(!this.isinit){ this.init(); }
+		if(side == this.side){ return this; }
+		var _this = this;
+		if(side == 'front'){
+			this.handle_front.addClass('current');
+			this.handle_back.removeClass('current');
+			if(animate){				
+				this.panel_back.addClass('unflipx').show();
+				setTimeout(function(){
+					_this.panel_back.hide().removeClass('unflipx');				
+					_this.panel_front.addClass('flipx').show();
+					setTimeout(function(){
+						_this.panel_front.removeClass('flipx');				
+					}, 350);
+				}, 350);
+			}else{
+				this.panel_front.show();
+				this.panel_back.hide();	
+			}
+			
+		}else if(side == 'back'){
+			this.handle_front.removeClass('current');
+			this.handle_back.addClass('current');
+			if(animate){
+				this.panel_front.addClass('unflipx').show();
+				setTimeout(function(){
+					_this.panel_front.hide().removeClass('unflipx');				
+					_this.panel_back.addClass('flipx').show();
+					setTimeout(function(){
+						_this.panel_back.removeClass('flipx');				
+					}, 350);
+				}, 350);
+			}else{
+				this.panel_front.hide();
+				this.panel_back.show();
+			}
+		}
+		
+		this.side = side;
+	}
+}
+
 
 //照片编辑器
 var PhotoEditor = {

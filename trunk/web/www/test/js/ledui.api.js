@@ -778,14 +778,10 @@ var Control = {
 				LocalDataPostCard.Device = Interface.Device;
 
 				var info=PhotoEditor.getinfo();
-				if(info){
-				LocalDataPostCard.width=info.w;
-				LocalDataPostCard.height=info.h;
-				LocalDataPostCard.x=info.x;
-				LocalDataPostCard.y=info.y;
-				LocalDataPostCard.rotate=info.r;
-				}
-				LocalDataPostCard.zoom=PhotoEditor.zoom_ui;
+				if(info){ LocalDataPostCard.photo = info; }
+				
+				//不需要记这个 界面zoom
+				//LocalDataPostCard.zoom=PhotoEditor.zoom_ui;
 				//地址信息
 				var adr = $("#rcvlist li.checked");
 				for(var i=0;i<adr.length;i++){
@@ -793,7 +789,6 @@ var Control = {
 				}
 				//评论信息
 				LocalDataPostCard.Comments=$("#comments").val();
-				console.log(LocalDataPostCard);
 				//显示预览页面
 				$("#postinfo [name='Name']").html(LocalDataPostCard.Address[0].Name);
 				$("#postinfo [name='Address']").html(
@@ -808,6 +803,13 @@ var Control = {
 				LocalData.addPostCard(LocalDataPostCard);
 				//获取登录者的名字
 				//$("#msginfo [name='FromName']").html();
+				if(LocalDataPostCard.photo){
+					var photoinfo = LocalDataPostCard.photo;
+					var style = Photoinfo.tostyle(photoinfo);
+					var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
+					$('.card_front .photo').append(img);
+				}
+				Preview.showside('back');
 				Page.show(5);
 		});
 		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
