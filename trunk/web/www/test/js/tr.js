@@ -3,7 +3,7 @@ var LOCALE = {
 	zh:{
 		add:"添加",
     		edit:"编辑",
-		need2login:"需要登录后才能继续...",
+		need2login:"需要登录后才能继续..."
 	},
 	zh_tw:{
 		create:"创建一张明信片(zh_tw)"
