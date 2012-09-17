@@ -764,7 +764,7 @@ var Control = {
 		});
 		//真不会用delegate,大师
 		//$("#maillist").delegate($(".ico_delete"),"click",function(){});
-		$(".ico_view").live("click",function(e){
+		$(".ico_view").live("click touchend",function(e){
 				//回到管理邮箱
 				$("#titlebar_preview .button_s_back").attr("_back",9);
 				var lid=$(this).attr("LocalID");
@@ -774,7 +774,7 @@ var Control = {
 				Control.showPreview();
 				
 		});
-		$(".ico_delete").live("click",function(){
+		$(".ico_delete").live("click touchend",function(){
 				alert("删除确认框,todo");
 				//删除明信片
 				//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
