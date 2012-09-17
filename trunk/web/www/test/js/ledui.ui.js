@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	Adapta.init();
-	Page.init(1);	
+	Page.init(9);	
 	Touch.init();
 	UI.redefine();
 });
@@ -277,6 +277,24 @@ var Touch = {
 	}
 }
 
+var Convert = {
+	tostyle: function(info){
+		var prefix = ($.browser.webkit)  ? '-webkit-' : 
+				 ($.browser.mozilla) ? '-moz-' :
+				 ($.browser.ms)      ? '-o-' :
+				 ($.browser.opera)   ? '-ms-' : '';
+		
+		var style = '';
+		var rotate = prefix + 'transform:rotate('+ info.r +'deg);';
+		style += 'width:' + info.w + 'px;'
+			  +  'height:' + info.h + 'px;'
+			  +  'left:' + info.x + 'px;'
+			  +  'top:' + info.y + 'px;'
+			  +  rotate;
+		return style;
+	}
+}
+
 //照片编辑器
 var PhotoEditor = {
 	isfirstrun: true,
@@ -291,7 +309,7 @@ var PhotoEditor = {
 		if(!img){ return; }
 		this.zoom_ui = this._getzoom();
 		this.isready = false;
-		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0};
+		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0 };
 		this.box = $('#photo');
 		this.panel = $('#photopanel');
 		this.loading = $('#photoloading');
