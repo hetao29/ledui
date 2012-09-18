@@ -744,7 +744,8 @@ var Control = {
 										var postcard = new LeduiPostCard();
 										postcard.del(window.__lid);
 										console.log(window.__lid);
-										window.__p.slideUp("fast",function(){window.__p.remove();});
+										//window.__p.slideUp("fast",function(){window.__p.remove();});
+										window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
 									}
 								}
 							);
