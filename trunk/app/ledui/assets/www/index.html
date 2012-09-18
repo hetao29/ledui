@@ -41,7 +41,7 @@
 <div class="page" _page="1" _name="编辑图片">
 	<div class="panel_head">
 		<div class="titlebar">
-			<div class="title">编辑图片</div>
+			<div class="title" tr="title_editphoto">编辑图片</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" active="yes" _back="0"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -55,11 +55,11 @@
 	<div class="panel_body">
 	<div class="panel_body_box">
 		<div class="photoeditor">
+			<div class="loading" id="photoloading"><div class="ico"></div><div class="lay"></div></div>
 			<div class="view">
 				<div class="selection" id="photoselection"></div>
 				<div class="photo" id="photo"></div>
 				<div class="mask"><div class="l"></div><div class="r"></div><div class="t"></div><div class="b"></div></div>
-				<div class="loading" id="photoloading"><div class="ico"></div><div class="lay"></div></div>
 				<div class="panel" id="photopanel"></div>
 			</div>
 			<div class="tool">
@@ -77,7 +77,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" id="toAddress" active="yes">下一步</div>
+			<div class="button button_l" id="toAddress" active="yes" tr="next">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -89,14 +89,14 @@
 <div class="page" _page="2" _name="收件人信息">
 	<div class="panel_head">
 		<div class="titlebar">
-			<div class="title">收件人信息</div>
+			<div class="title" tr="title_addresseeinfo">收件人信息</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" active="yes" _back="1"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
-		<div class="rcvcreate">
+		<div class="rcvcreate" id="rcvcreate">
 			<div class="button button_m" active="yes">增加新地址</div>				
 		</div>
 	</div>
@@ -122,7 +122,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" __to="4" id="toComments" active="yes">下一步</div>
+			<div class="button button_l" __to="4" id="toComments" active="yes" tr="next">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -133,9 +133,9 @@
 *************************************
 -->
 <div class="page" _page="3" _name="添加收件人信息">
-	<div class="panel_head">
+	<div class="panel_head" id="head_add">
 		<div class="titlebar">
-			<div class="title">输入新地址</div>
+			<div class="title" tr="title_newaddress">输入新地址</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -145,14 +145,16 @@
 				</div>
 			</div>
 		</div>
+		<div class="adrchk">
+			<div class="button button_m" active="yes">从通讯录选择</div>
+		</div>
 	</div>
 	<div class="panel_body">		
 	<div class="panel_body_box">	
 		<div class="rcvform">
-	       		<form id="rcvform">
+			<form id="rcvform">
 			<input name="AddressID" type="hidden" />
 			<input name="LocalID" type="hidden" />
-			<div class="chk"><div class="button button_m" active="yes">从通讯录选择</div></div>
 			<div class="item"><input name="Name" type="text" placeholder="收件人姓名" /></div>
 			<div class="item"><input name="Mobile" type="tel" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
@@ -187,7 +189,7 @@
 <div class="page" _page="4" _name="输入留言信息">
 	<div class="panel_head">
 		<div class="titlebar">
-			<div class="title">输入留言信息</div>
+			<div class="title" tr="title_inputmessage">输入留言信息</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -205,7 +207,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" __to="5" id="toPreview" active="yes">下一步</div>
+			<div class="button button_l" __to="5" id="toPreview" active="yes" tr="next">下一步</div>
 		</div>
 	</div>
 </div> 
@@ -216,8 +218,8 @@
 -->
 <div class="page" _page="5" _name="预览">
 	<div class="panel_head">
-		<div class="titlebar">
-			<div class="title">预览</div>
+		<div class="titlebar" id="titlebar_preview">
+			<div class="title" tr="title_preview">预览</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="4" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -228,19 +230,35 @@
 	<div class="panel_body">
 	<div class="panel_body_box">	
 		<div class="preview">
-			<div class="card">
-				<div class="postinfo" id="postinfo">
-					<div name="Name"></div>
-					<div name="Address"></div>
-					<div name="PostCode"></div>
+			<div class="choice" id="chardchoice">
+				<ul>
+				<li active="yes">正面</li>
+				<li active="yes">反面</li>
+				</ul>
+			</div>
+			<div class="view">
+				<!--正面-->
+				<div class="card card_front">
+					<div class="photo">
+					</div>
 				</div>
-				<div class="msginfo" id="msginfo">
-					<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
-					<div class="t2" name="Comments"></div>
-					<div class="t3" name="FromName">您的朋友</div>
+				<!--背面--->
+				<div class="card card_back">
+					<div class="postinfo" id="postinfo">
+						<div name="Name"></div>
+						<div name="Address"></div>
+						<div name="PostCode"></div>
+					</div>
+					<div class="msginfo" id="msginfo">
+						<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
+						<div class="t2" name="Comments"></div>
+						<div class="t3" name="FromName">您的朋友</div>
+					</div>
 				</div>
 			</div>
-			<div class="agreement"> <span class="ico ico_agree"></span>我已接受 <a href="#">条款</a> </div>
+			<div class="agreement">
+				<span class="ico ico_agree"></span>我已接受 <a href="#">条款</a>
+			</div>
 		</div>
 	</div>	
 	</div>
@@ -378,6 +396,94 @@
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">
+		<div class="maillist" id="maillist">
+			<div class="list">
+			<ul>
+				<li>
+					<div class="cover">
+						<div class="photo">
+							<img style="" />
+						</div>
+						<div class="selc"></div>
+						<div class="fake"></div>
+					</div>
+					<div class="title"></div>
+					<div class="status"></div>
+					<div class="time"></div>
+					<div class="actions">
+						<div class="act" active="yes"><span class="ico ico_view"><em></em></span></div>
+						<div class="act" active="yes"><span class="ico ico_delete"><em></em></span></div>
+					</div>
+				</li>
+				<!--
+				<li>
+					<div class="cover">
+						<div class="photo">
+							<img style="width:3982px;height:5972px;left:-1340.7000732421875px;top:-2313.300048828125px;-webkit-transform:rotate(90deg);" src="http://42.121.85.21/test/testimg/test2.jpg" />
+						</div>
+						<div class="selc"></div>
+						<div class="fake"></div>
+					</div>
+					<div class="title">送给 <span>xxx</span> 的明信片</div>
+					<div class="status"><label>状态</label>：<span class="pass">已寄出</span></div>
+					<div class="time"><label>创建时间</label>：<span>2012-03-24</span></div>
+					<div class="actions">
+						<div class="act" active="yes"><span class="ico ico_view"><em>查看</em></span></div>
+						<div class="act" active="yes"><span class="ico ico_delete"><em>删除</em></span></div>
+					</div>
+				</li>
+				<li>
+					<div class="cover">
+						<div class="photo">
+							<img style="width:5734px;height:3584px;left:-1926px;top:-1658px;-webkit-transform:rotate(0deg);" src="http://42.121.85.21/test/testimg/test.jpg" />
+						</div>
+						<div class="selc"></div>
+						<div class="fake"></div>
+					</div>
+					<div class="title">送给 <span>xxx</span> 的明信片</div>
+					<div class="status"><label>状态</label>：<span class="wait">待支付</span></div>
+					<div class="time"><label>创建时间</label>：<span>2012-03-24</span></div>
+					<div class="actions">
+						<div class="act" active="yes"><span class="ico ico_view"><em>查看</em></span></div>
+						<div class="act" active="yes"><span class="ico ico_delete"><em>删除</em></span></div>
+					</div>
+				</li>
+				<li>
+					<div class="cover">
+						<div class="photo">
+							<img style="width:1433px;height:1264px;left:228.00006103515625px;top:-406.47186279296875px;-webkit-transform:rotate(180deg);" src="http://42.121.85.21/test/testimg/test3.jpg" />
+						</div>
+						<div class="selc"></div>
+						<div class="fake"></div>
+					</div>
+					<div class="title">送给 <span>xxx</span> 的明信片</div>
+					<div class="status"><label>状态</label>：<span class="pass">已寄出</span></div>
+					<div class="time"><label>创建时间</label>：<span>2012-03-24</span></div>
+					<div class="actions">
+						<div class="act" active="yes"><span class="ico ico_view"><em>查看</em></span></div>
+						<div class="act" active="yes"><span class="ico ico_delete"><em>删除</em></span></div>
+					</div>
+				</li>
+				<li>
+					<div class="cover">
+						<div class="photo">
+							<img style="width:3982px;height:5972px;left:-1340.7000732421875px;top:-2313.300048828125px;-webkit-transform:rotate(90deg);" src="http://42.121.85.21/test/testimg/test2.jpg" />
+						</div>
+						<div class="selc"></div>
+						<div class="fake"></div>
+					</div>
+					<div class="title">送给 <span>xxx</span> 的明信片</div>
+					<div class="status"><label>状态</label>：<span class="wait">待支付</span></div>
+					<div class="time"><label>创建时间</label>：<span>2012-03-24</span></div>
+					<div class="actions">
+						<div class="act" active="yes"><span class="ico ico_view"><em>查看</em></span></div>
+						<div class="act" active="yes"><span class="ico ico_delete"><em>删除</em></span></div>
+					</div>
+				</li>							
+				-->
+			</ul>
+			</div>
+		</div>
 	</div>	
 	</div>
 	<div class="panel_foot">		
@@ -405,8 +511,8 @@
 	<div class="panel_body_box">
 		<div class="logform" id="login" >
 			<div class="errorbox hide">登录失败~~~</div>
-			<div class="item"><input type="email" class="sid" placeholder="邮箱地址" /></div>
-			<div class="item"><input type="password" class="pwd" placeholder="密码" /></div>
+			<div class="item"><input type="email" class="sid" placeholder="邮箱地址" tr_placeholder="email" /></div>
+			<div class="item"><input type="password" class="pwd" placeholder="密码" tr_placeholder="password" /></div>
 		</div>
 	</div>	
 	</div>
@@ -510,6 +616,21 @@
 		<div class="ft"></div>
 	</div>
 </div>
+<div class="overlay alert" _name="alert">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title">错误</div>
+		</div>
+		<div class="bd">
+			<div class="info"></div>
+			<div class="action">
+				<div class="button button_o" active="yes">确认</div>
+			</div>
+		</div>
+		<div class="ft"></div>
+	</div>
+</div>
+
 </div><!--overlays end-->
 
 <div class="apploading">
@@ -521,7 +642,7 @@
 	<div class="mask"></div>
 </div>
 
-<div class="appnav">
+<div class="appnav" id="appnav">
 	<ul id="isnotlogin">
 		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
 		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
@@ -541,11 +662,12 @@
 </div><!--screen end-->
 
 
-<script src="js/cordova-2.0.0.js"></script> 
-<script src="js/jquery-1.7.2.min.js"></script>
+<script src="cordova.js"></script> 
+<script src="js/jquery-1.8.1.min.js"></script>
 <script src="js/jgestures.min.js"></script>  
 <script src="js/hammer.js"></script> 
 <script src="js/iscroll-min.js"></script> 
+<script src="js/filtrr.js"></script> 
 <script src="js/ledui.ui.js"></script> 
 <script src="js/ledui.test.js"></script>
 <script src="js/ledui.api.js"></script>
