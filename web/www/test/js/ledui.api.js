@@ -391,6 +391,41 @@ LocalData.add({fjeow:'xx'});
 alert(LocalData.getAll().length);
 */
 //本地的明信片状态
+var LocalDataPostCardV2=function(){
+	//{{明信片信息，和服务器保存的结果对应
+	this.PostCardID="";//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
+	this.PayURL="";
+	this.OrderID="";
+	this.ImageFileID="";
+	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
+	this.Status=1;
+	//}}
+	this.LocalID="";
+	this.FileTmpID="";
+	this.Latitude="";
+	this.Longitude="";
+	this.Address=[];//发送地址
+	this.Comments="";
+	this.photo={}; //width:"", //height:"", //x:"", //y:"", //rotate:"",
+	this.date="";
+}
+LocalDataPostCardV2.prototype={ 
+	genID: function(){
+		return (new Date()).getTime() +":"+Math.floor(Math.random()*10000);
+	},
+	init:function(){
+		this.LocalID=LocalDataPostCard.genID();
+		this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
+		this.FileTmpID="";
+		this.PostCardID="";
+		this.Address=[];
+		this.Comments="";
+		this.Status=1;
+		this.photo={};
+	}
+}
+//var x = new LocalDataPostCardV2;
+//alert(x.genID());
 var LocalDataPostCard={
 	//{{明信片信息，和服务器保存的结果对应
 	PostCardID:"",//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
