@@ -781,13 +781,14 @@ var Control = {
 						}
 	
 						var st="";
+						var st_css="pass";
 						//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
 						switch(postcards[i].Status){
-							case 1:st="未支付";break;
-							case 2:st="上传中";break;
-							case 3:st="等待打印";break;
-							case 4:st="等待邮寄";break;
-							case 5:st="已经寄出";break;
+							case 1:st="st_unpay".tr();st_css="wait";break;
+							case 2:st="st_uploading".tr();break;
+							case 3:st="st_printing".tr();break;
+							case 4:st="st_posting".tr();break;
+							case 5:st="st_posted".tr();break;
 						}
 						
 						var style = Photoinfo.tostyle(photo);
@@ -800,7 +801,7 @@ var Control = {
 							'<div class="fake"></div>'+
 						'</div>'+
 						'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
-						'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
+						'<div class="status"><label>状态</label>：<span class="'+st_css+'">'+st+'</span></div>'+
 						'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
 						'<div class="actions">'+
 							'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
