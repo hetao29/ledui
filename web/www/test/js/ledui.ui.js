@@ -478,7 +478,7 @@ var PhotoEditor = {
 			});*/
 		})
 		.bind('error', function(){
-			this.loading.hide();				
+			_this.loading.hide();				
 		}).appendTo(this.box).
 		attr("src",img).
 		trigger("change");		
