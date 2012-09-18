@@ -36,8 +36,9 @@ var Page = {
 		var page_current = this.getpage(this.current), page = this.getpage(n);
 		if(!page){ return; }
 		
-		var show_direction = n > this.current ? 'right' : 'left'
-			,hide_direction = n > this.current ? 'left' :  'right'
+		var n0 = this.current;
+		var show_direction = n > n0 ? 'right' : 'left'
+			,hide_direction = n > n0 ? 'left' :  'right'
 			,_this = this;
 		if(page_current){
 			this.lock = true;
@@ -73,7 +74,7 @@ var Page = {
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
-			appnav.show(); 
+			appnav.slideDown(); 
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){

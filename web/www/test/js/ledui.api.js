@@ -743,8 +743,8 @@ var Control = {
 		API.islogin(function(r){
 		  	if(r){
 		  		$("#login .errorbox").fadeOut();
-		  		$("#isnotlogin").hide();
-		  		$("#islogin").show();
+		  		$("#isnotlogin").fadeOut();
+		  		$("#islogin").fadeIn();
 		  	}
 		});
 		//b.明信片状态查询
@@ -877,8 +877,8 @@ var Control = {
 		
 		$("#appnav .CLogout").bind("tapone",function(e){
 			API.logout({},function ok(result){
-				$("#islogin").hide();
-				$("#isnotlogin").show();
+				$("#islogin").fadeOut();
+				$("#isnotlogin").fadeIn();
 				},function error(result){
 			});
 		});
@@ -1022,8 +1022,8 @@ var Control = {
 				API.login({email:sid,passwd:pwd},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
 					$("#login .errorbox").fadeOut();
-					$("#isnotlogin").hide();
-					$("#islogin").show();
+					$("#isnotlogin").fadeOut();
+					$("#islogin").fadeIn();
 					Interface.onBackbutton();
 					},function error(result){
 						//登录失败，提示错误信息
@@ -1042,8 +1042,8 @@ var Control = {
 				API.register({email:sid,passwd:pwd,passwd2:pwd2,device:Interface.Device},function ok(result){
 					//注册成功，自动登录,更新登录状态,跳到登录前的一页
 					$("#register .errorbox").fadeOut();
-					$("#isnotlogin").hide();
-					$("#islogin").show();
+					$("#isnotlogin").fadeOut();
+					$("#islogin").fadeIn();
 					Interface.onBackbutton();
 					},function error(result){
 					//登录失败，提示错误信息
