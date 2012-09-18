@@ -477,12 +477,13 @@ var Control = {
 				};
 				Page.show(4,function(){
 					//地址信息
+					/*
 					var adr = $("#rcvlist li.checked");
 					CurrentPostCard.Address=[];
 					var ado = new LeduiAddress();
 					for(var i=0;i<adr.length;i++){
 						CurrentPostCard.Address.push(ado.get($(adr[i]).attr("LocalID")));
-					}
+					}*/
 				});
 		});
 		//预览，生成明信片数据,LocalDataPostCard
@@ -615,6 +616,13 @@ var Control = {
 		//选择地址
 		$('#rcvlist li .info').bind('tapone', function(){
 			$(this).parent().toggleClass('checked');
+			
+			var adr = $("#rcvlist li.checked");
+			CurrentPostCard.Address=[];
+			var ado = new LeduiAddress();
+			for(var i=0;i<adr.length;i++){
+				CurrentPostCard.Address.push(ado.get($(adr[i]).attr("LocalID")));
+			}
 		});
 		//删除地址
 		$("#delAddress").bind("tapone", function(){
