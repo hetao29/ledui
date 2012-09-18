@@ -724,46 +724,46 @@ var Control = {
 		$("#appnav .CAbout").bind("tapone",function(e){Page.show(8);});
 		$("#appnav .CLogin").bind("tapone",function(e){Page.show(10);});		
 		$("#appnav .CRegister").bind("tapone",function(e){Page.show(11);});
-		$("#appnav .CPostCard").bind("tapone",function(e){
-				var postcards = LocalData.listPostCard();
-				$("#maillist ul").html("");
-				var html="";
-				for(var i=0;i<postcards.length;i++){
-					var photo=postcards[i].photo;
-					var to=[];
-					for(var j=0;j<postcards[i].Address.length;j++){
-						to.push(postcards[i].Address[j].Name);
-					}
-
-					var st="";
-					//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
-					switch(postcards[i].Status){
-						case 1:st="未支付";break;
-						case 2:st="上传中";break;
-						case 3:st="等待打印";break;
-						case 4:st="等待邮寄";break;
-						case 5:st="已经寄出";break;
-					}
-					
-				    var style = Photoinfo.tostyle(photo);
-					html+='<li active="yes">'+
-					'<div class="cover">'+
-						'<div class="photo">'+
-							'<img style="'+style+'" src="'+photo.o+'" />'+
-						'</div>'+
-						'<div class="selc"></div>'+
-						'<div class="fake"></div>'+
-					'</div>'+
-					'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
-					'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
-					'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
-					'<div class="actions">'+
-						'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
-						'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
-					'</div>'+
-					'</li>';
-				}
+		$("#appnav .CPostCard").bind("tapone",function(e){					   
 				Page.show(9,function(){
+					var postcards = LocalData.listPostCard();
+					$("#maillist ul").html("");
+					var html="";
+					for(var i=0;i<postcards.length;i++){
+						var photo=postcards[i].photo;
+						var to=[];
+						for(var j=0;j<postcards[i].Address.length;j++){
+							to.push(postcards[i].Address[j].Name);
+						}
+	
+						var st="";
+						//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
+						switch(postcards[i].Status){
+							case 1:st="未支付";break;
+							case 2:st="上传中";break;
+							case 3:st="等待打印";break;
+							case 4:st="等待邮寄";break;
+							case 5:st="已经寄出";break;
+						}
+						
+						var style = Photoinfo.tostyle(photo);
+						html+='<li active="yes">'+
+						'<div class="cover">'+
+							'<div class="photo">'+
+								'<img style="'+style+'" src="'+photo.o+'" />'+
+							'</div>'+
+							'<div class="selc"></div>'+
+							'<div class="fake"></div>'+
+						'</div>'+
+						'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
+						'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
+						'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
+						'<div class="actions">'+
+							'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
+							'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
+						'</div>'+
+						'</li>';
+					}
 					$("#maillist ul").html(html);
 				});
 
