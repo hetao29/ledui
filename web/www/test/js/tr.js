@@ -94,11 +94,13 @@ $(document).ready(function(){
 			,v = tr(k);
 		if(v){ e.html(v); }
 	});
-	$("[tr_placehodler]").each(function(){		
+	$("[tr_placeholder]").each(function(){		
 		var e = $(this)
-			,k = $(e).attr("tr_placehodler")
+			,k = $(e).attr("tr_placeholder")
 			,v = tr(k)
-		if(v){ e.attr("placehodler", v); }
+			console.log($(this));
+			console.log($(this));
+		if(v){ e.attr("placeholder", v); }
 	});
 	
 });
