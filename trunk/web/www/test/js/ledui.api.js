@@ -524,20 +524,22 @@ var LocalDataAddress={
 		}
 		
 		//选择地址
-		$('.rcvlist li .info').delegate($('.rcvlist'), 'tapone', function(){
+		$('#rcvlist li .info').delegate($('#rcvlist'), 'tapone', function(){
 			$(this).parent().toggleClass('checked');
 		});
 		//删除地址
-		$("#delAddress").delegate($('.rcvlist'), "tapone", function(){
+		$("#delAddress").delegate($('#rcvlist'), "tapone", function(){
 			LocalDataAddress.del($(this).attr("LocalID"));
 			LocalDataAddress.show();
 			Page.show(2);
 		});
 		//编辑地址
-		$('.rcvlist .edit').delegate($('.rcvlist'), 'tapone', function(){
+		$('#rcvlist .edit').delegate($('#rcvlist'), 'tapone', function(){
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
+				Page.show(3);
+				setTimeout(function(){
 				$("#head_add .button_m").hide();
 				$("#head_add .title").html("editAddress".tr());
 				$("#delAddress").attr("LocalID",id).show();
@@ -547,8 +549,8 @@ var LocalDataAddress={
 						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
 					}
 				});
+				},300);
 
-				Page.show(3);
 			}
 			return false;
 		});
@@ -695,11 +697,11 @@ var Control = {
 		});
 		
 		//go
-		$("[_to]").bind("tapone", function(e){
+		$("div[_to]").bind("tapone", function(e){
 			Page.show($(this).attr("_to"));					  
 		});
 		//back
-		$(".button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+		$("div.button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
 		
 		
 		//添加新地址的时候，进行重置
@@ -716,10 +718,10 @@ var Control = {
 		
 		
 		
-		$(".CAbout").bind("tapone",function(e){Page.show(8);});
-		$(".CLogin").bind("tapone",function(e){Page.show(10);});		
-		$(".CRegister").bind("tapone",function(e){Page.show(11);});
-		$(".CPostCard").bind("tapone",function(e){
+		$("#appnav .CAbout").bind("tapone",function(e){Page.show(8);});
+		$("#appnav .CLogin").bind("tapone",function(e){Page.show(10);});		
+		$("#appnav .CRegister").bind("tapone",function(e){Page.show(11);});
+		$("#appnav .CPostCard").bind("tapone",function(e){
 				var postcards = LocalData.listPostCard();
 				$("#maillist ul").html("");
 				var html="";
@@ -764,7 +766,7 @@ var Control = {
 		});
 		//真不会用delegate,大师
 		//$("#maillist").delegate($(".ico_delete"),"click",function(){});
-		$(".ico_view").live("click touchend",function(e){
+		$("#maillist .ico_view").live("click touchend",function(e){
 				//回到管理邮箱
 				$("#titlebar_preview .button_s_back").attr("_back",9);
 				var lid=$(this).attr("LocalID");
@@ -774,7 +776,7 @@ var Control = {
 				Control.showPreview();
 				
 		});
-		$(".ico_delete").live("click touchend",function(){
+		$("#maillist .ico_delete").live("click touchend",function(){
 				alert("删除确认框,todo");
 				//删除明信片
 				//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
@@ -784,7 +786,7 @@ var Control = {
 				console.log($(this).attr("localid"));
 		});
 		
-		$(".CLogout").bind("tapone",function(e){
+		$("#appnav .CLogout").bind("tapone",function(e){
 			API.logout({},function ok(result){
 				$("#islogin").hide();
 				$("#isnotlogin").show();
