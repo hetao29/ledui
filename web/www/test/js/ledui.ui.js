@@ -54,7 +54,7 @@ var Page = {
 					callback();
 				}				
 				_this.chkscroll(page, scrollpos);	
-			}, 500);
+			}, 450);
 		}else{			
 			//first page load
 			page.show();
@@ -366,7 +366,7 @@ var Photoinfo = {
 				 ($.browser.opera)   ? '-ms-' : '';
 		
 		var style = '';
-		var rotate = prefix + 'transform:rotate('+ info.r ? info.r : info.rotate +'deg);';
+		var rotate = prefix + 'transform:rotate('+ info.r +'deg);';
 		style += 'width:' + info.w + 'px;'
 			  +  'height:' + info.h + 'px;'
 			  +  'left:' + info.x + 'px;'
