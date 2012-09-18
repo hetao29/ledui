@@ -363,6 +363,7 @@ var Control = {
 		$("#appnav .CLogin").bind("tapone",function(e){Page.show(10);});		
 		$("#appnav .CRegister").bind("tapone",function(e){Page.show(11);});
 		$("#appnav .CPostCard").bind("tapone",function(e){					   
+				$("#maillist ul").html('');
 				Page.show(9,function(){
 									 Control.showPostCard();
 				}, { y:0 });
@@ -680,76 +681,84 @@ var Control = {
 					var ul = $("#maillist ul");
 					ul.html("");
 					for(var i=postcards.length-1;i>=0;i--){
-						var photo=postcards[i].photo;
-						var to=[];
-						for(var j=0;j<postcards[i].Address.length;j++){
-							to.push(postcards[i].Address[j].Name);
-						}
-	
-						var st="";
-						var st_css="pass";
-						//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
-						switch(postcards[i].Status){
-							case 1:st="st_unpay".tr();st_css="wait";break;
-							case 2:st="st_uploading".tr();break;
-							case 3:st="st_printing".tr();break;
-							case 4:st="st_posting".tr();break;
-							case 5:st="st_posted".tr();break;
-						}
-						
-						var style = Photoinfo.tostyle(photo);
-						var html='<li active="yes">'+
-							'<div class="cardinfo"><div class="cover">'+
-							'<div class="photo">'+
-								'<img style="'+style+'" src="'+photo.o+'" />'+
-							'</div>'+
-							'<div class="selc"></div>'+
-							'<div class="fake"></div>'+
-						'</div>'+
-						'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
-						'<div class="status"><label>状态</label>：<span class="'+st_css+'">'+st+'</span></div>'+
-						'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
-						'<div class="actions">'+
-							'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
-							'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
-						'</div></div></li>';
-						ul.append(html);
-					}
-					$("#maillist .ico_view").bind("tapone",function(){
-							console.log(this);
-							console.log($(this));
-							//回到管理邮箱
-							$("#titlebar_preview .button_s_back").attr("_back",9);
-							var lid=$(this).attr("LocalID");
-							var postcard = new LeduiPostCard();
-							CurrentPostCard = postcard.get(lid);
-							console.log(CurrentPostCard);
-							//正常新加，预览的返回为评论
-							Control.showPreview();
-
-					});
-					$("#maillist .ico_delete").bind("tapone",function(){
-							//用全局变量，解决在confirm后，lid的值变会的问题
-							window.__lid =$(this).attr("LocalID");
-							window.__p = $(this).parents("li");
-							console.log(window.lid);
-							confirm("delConfirm".tr(),{
-									cancel:function(){
-									},ok:function(){
-									//删除明信片
-									//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
-									//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
-									//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
-									
-										var postcard = new LeduiPostCard();
-										postcard.del(window.__lid);
-										console.log(window.__lid);
-										//window.__p.slideUp("fast",function(){window.__p.remove();});
-										window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
-									}
+						(function(i){
+							setTimeout(function(){	  
+								var photo=postcards[i].photo;
+								var to=[];
+								for(var j=0;j<postcards[i].Address.length;j++){
+									to.push(postcards[i].Address[j].Name);
 								}
-							);
-					});		
+			
+								var st="";
+								var st_css="pass";
+								//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
+								switch(postcards[i].Status){
+									case 1:st="st_unpay".tr();st_css="wait";break;
+									case 2:st="st_uploading".tr();break;
+									case 3:st="st_printing".tr();break;
+									case 4:st="st_posting".tr();break;
+									case 5:st="st_posted".tr();break;
+								}
+								
+								var style = Photoinfo.tostyle(photo);
+								var html='<li active="yes">'+
+									'<div class="cardinfo"><div class="cover">'+
+									'<div class="photo">'+
+										'<img style="'+style+'" src="'+photo.o+'" />'+
+									'</div>'+
+									'<div class="selc"></div>'+
+									'<div class="fake"></div>'+
+								'</div>'+
+								'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
+								'<div class="status"><label>状态</label>：<span class="'+st_css+'">'+st+'</span></div>'+
+								'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
+								'<div class="actions">'+
+									'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
+									'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
+								'</div></div></li>';
+								var li = $(html);
+								
+								ul.append(li);
+								
+								li.find(".ico_view").bind("tapone",function(){
+										//回到管理邮箱
+										$("#titlebar_preview .button_s_back").attr("_back",9);
+										var lid=$(this).attr("LocalID");
+										var postcard = new LeduiPostCard();
+										CurrentPostCard = postcard.get(lid);
+										console.log(CurrentPostCard);
+										//正常新加，预览的返回为评论
+										Control.showPreview();
+			
+								});
+								li.find(".ico_delete").bind("tapone",function(){
+										//用全局变量，解决在confirm后，lid的值变会的问题
+										window.__lid =$(this).attr("LocalID");
+										window.__p = $(this).parents("li");
+										console.log(window.lid);
+										confirm("delConfirm".tr(),{
+												cancel:function(){
+												},ok:function(){
+												//删除明信片
+												//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
+												//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
+												//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
+												
+													var postcard = new LeduiPostCard();
+													postcard.del(window.__lid);
+													console.log(window.__lid);
+													//window.__p.slideUp("fast",function(){window.__p.remove();});
+													window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
+												}
+											}
+										);
+								});
+								
+							}, (postcards.length-1-i) * 20);
+						})(i);
+						
+					}
+							
 		}
 }
 //{{{
