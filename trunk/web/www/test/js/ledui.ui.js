@@ -1,8 +1,8 @@
 $(document).ready(function(){
-	Adapta.init();
-	Page.init(1);	
 	Touch.init();
 	UI.redefine();
+	Adapta.init();
+	Page.init(1);
 });
 
 //UI系统
@@ -11,6 +11,9 @@ var UI = {
 	redefine: function(){
 		window.alert = function(msg){
 			Overlay.show('alert', msg);	
+		}
+		window.confirm = function(msg, callback){
+			Overlay.show('confirm', msg, callback);	
 		}	
 	}
 } 
@@ -26,7 +29,7 @@ var Page = {
 		if(!this.total){ return; }
 		this.show(n);
 	},
-	show: function(n){
+	show: function(n, callback){
 		var n = parseInt(n, 10);
 		if(this.lock){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
@@ -38,19 +41,25 @@ var Page = {
 			,_this = this;
 		if(page_current){
 			this.lock = true;
-			//this.screen.css('overflow', 'hidden');
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
 				page_current.hide().removeClass('hidefrom' + hide_direction);
-			}, 600);
+			}, 350);
 			page.addClass('showfrom'+ show_direction).show();
 			window.setTimeout(function(){
 				_this.lock = false;
-				//_this.screen.css('overflow', '');
 				page.removeClass('showfrom' + show_direction); 
-			}, 600);
+				if(typeof(callback) == 'function'){
+					callback();
+					_this.chkscroll(page);	
+				}				
+			}, 350);
 		}else{			
-			page.show();	
+			page.show();
+			if(typeof(callback) == 'function'){
+				callback();
+				this.chkscroll(page);	
+			}	
 		}
 		
 		this.current_prev = this.current;
@@ -239,7 +248,7 @@ var Overlay = {
 		if(overlay_mask.length){ this.mask = overlay_mask; }
 		this.isinit = true;
 	},
-	show: function(name, message){
+	show: function(name, message, callback){
 		if(!this.isinit){ this.init(); }
 		if(name == this.curname){ return; }
 		var o = this.layers[name];
@@ -252,21 +261,48 @@ var Overlay = {
 			var btnok = o.find('.button').eq(0);
 			btnok.bind('tapone', function(){ _this.hide(); });
 			info.html(message);	
+		}else if(name == 'confirm'){
+			var info = o.find('.info');
+			var btnok = o.find('.button').eq(0);
+			var btncancle = o.find('.button').eq(1);
+			btnok.bind('tapone', function(){ 
+				_this.hide(function(){
+					if(callback){ 
+						if(typeof(callback.ok) == 'function'){
+							callback.ok();	
+						}
+					}
+				});
+			});
+			btncancle.bind('tapone', function(){ 
+				_this.hide(function(){
+					if(callback){ 
+						if(typeof(callback.cancle) == 'function'){
+							callback.cancle();	
+						}
+					}
+				});
+			});
+			info.html(message);
 		}
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.stop().animate({opacity: 0.5}, 500).show();
-		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 500);			
+		this.mask.stop().animate({opacity: 0.5}, 350).show();
+		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 350);			
 	},
-	hide: function(name){
+	hide: function(callback){
 		var o = this.layers[name ? name : this.curname]
 			,_this = this;
 		if(!o){ return; }			
 		o.addClass('hidefromtop');
-		this.curname = '';	
-		this.mask.stop().animate({opacity: 0}, 500, '', function(){ _this.mask.hide(); });
-		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 500);
+		this.curname = '';
+		this.mask.stop().animate({opacity: 0}, 350, '', function(){ _this.mask.hide();
+			if(typeof(callback) == 'function'){
+				callback();	
+			}
+		});
+		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 350);
 	}	
 }
 
