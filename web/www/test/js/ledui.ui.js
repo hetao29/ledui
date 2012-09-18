@@ -180,7 +180,13 @@ var Adapta = {
 					_this.layout();
 				}
 			}
-		});	
+		});
+		if(UI.istouch){
+			$(window).bind('orientationchange', function(){
+				_this.scale();
+				_this.layout();
+			});	
+		}	
 	},
 	scale: function(){
 		var win_w = $(window).width()
