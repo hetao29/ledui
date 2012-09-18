@@ -165,7 +165,22 @@ var Adapta = {
 	},
 	bind: function(){
 		var _this = this;
-		$(window).bind('resize', function(){ _this.layout(); });	
+		$(window).bind('resize', function(){
+			var win_w = $(this).width();
+			var win_h = $(this).height();
+			if(UI.istouch){ 
+				if(win_w != _this.layoutinfo.width){
+					_this.scale();
+					if(win_h != _this.layoutinfo.height){
+						_this.layout();	
+					} 
+				}
+			}else{
+				if(win_h != _this.layoutinfo.height){
+					_this.layout();
+				}
+			}
+		});	
 	},
 	scale: function(){
 		var win_w = $(window).width()
