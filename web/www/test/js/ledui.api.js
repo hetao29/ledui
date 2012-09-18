@@ -730,8 +730,8 @@ var Control = {
 		$("#appnav .CPostCard").bind("tapone",function(e){					   
 				Page.show(9,function(){
 					var postcards = LocalData.listPostCard();
-					$("#maillist ul").html("");
-					var html="";
+					var ul = $("#maillist ul");
+					ul.html("");
 					for(var i=0;i<postcards.length;i++){
 						var photo=postcards[i].photo;
 						var to=[];
@@ -750,6 +750,7 @@ var Control = {
 						}
 						
 						var style = Photoinfo.tostyle(photo);
+						var html="";
 						html+='<li active="yes">'+
 						'<div class="cover">'+
 							'<div class="photo">'+
@@ -766,8 +767,8 @@ var Control = {
 							'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
 						'</div>'+
 						'</li>';
+						ul.append(html);
 					}
-					$("#maillist ul").html(html);
 				});
 
 		});
