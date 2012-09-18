@@ -267,7 +267,7 @@ background: -o-linear-gradient(top, #ff8e1a, #ff7300);
 -o-backface-visibility: hidden;
 backface-visibility: hidden;
 }
-.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:15px;padding:5px;
+.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:10px;padding:5px;
 background:#989898;
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
@@ -298,7 +298,7 @@ animation-fill-mode: both;
 transform: translateY(0);
 opacity:1;
 }
-.overlay_box{background:#fff;border-radius:10px;padding:10px 20px;}
+.overlay_box{background:#fff;border-radius:5px;padding:10px 20px;}
 .overlay .hd{position:relative;height:50px;padding-bottom:10px;border-bottom:4px solid #b5b5b5;}
 .overlay .bd{padding:0 0 20px 0;}
 .overlay .title{color:#ff4e00;font-size:36px;line-height:50px;}
@@ -343,9 +343,9 @@ backface-visibility: hidden;
 .ico_alipay{width:180px;height:54px;background-position:0 -150px;}
 .ico_paypal{width:180px;height:54px;background-position:-200px -150px;}
 .ico_agree{width:30px;height:30px;background-position:0 -700px;}
-.ico_album{width:50px;height:50px;background-position:0 0;}
-.ico_camera{width:50px;height:50px;background-position:-100px 0;}
-.ico_renren{width:88px;height:50px;background-position:-200px 0;}
+.ico_album{width:52px;height:52px;background-position:0 0;}
+.ico_camera{width:52px;height:52px;background-position:-100px 0;}
+.ico_renren{width:90px;height:52px;background-position:-200px 0;}
 
 /*welcome create*/
 .createcard{position:absolute;top:530px;left:50%;width:600px;height:200px;margin-left:-300px;text-align:center;}
