@@ -596,7 +596,13 @@ border-color:#555;
 .maillist .null{padding:200px 0;color:#999;text-align:center;font-size:30px;}
 .maillist .list{position:relative;margin:0 auto;}
 .maillist .list ul{border-top:1px solid #ddd;}
-.maillist .list li{position:relative;overflow:hidden;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;box-shadow:inset 0 -5px 10px #f7f7f7;}
+.maillist .list li{position:relative;overflow:hidden;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;box-shadow:inset 0 -5px 10px #f7f7f7;
+/*-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-ms-backface-visibility: hidden;
+-o-backface-visibility: hidden;
+backface-visibility: hidden;
+*/}
 .maillist .list .cardinfo{position:relative;min-height:160px;padding:20px 20px 20px 300px;}
 .maillist .list .checked{background:#fff;cursor:default;
 background: -webkit-linear-gradient(top, #777, #666);
@@ -615,13 +621,19 @@ border-bottom-color:#555;
 -ms-transform: scale(0.125);}
 
 .maillist .selc{z-index:2;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;}
-.maillist .fake{z-index:1;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;opacity:0.5;
+/*.maillist .fake{z-index:1;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;opacity:0.5;
 -webkit-transform: rotate(-5deg);
 -moz-transform: scale(0.125);
 -o-transform: scale(0.125);
 -ms-transform: scale(0.125);
+}*/
+.maillist .photo img{position:absolute;display:block;
+-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-ms-backface-visibility: hidden;
+-o-backface-visibility: hidden;
+backface-visibility: hidden;
 }
-.maillist .photo img{position:absolute;display:block;}
 .maillist .title{font-size:28px;}
 .maillist .title span{font-weight:bold;font-size:28px;}
 .maillist .status,
