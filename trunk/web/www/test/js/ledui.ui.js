@@ -137,13 +137,13 @@ var Page = {
 				vScrollbar: true,
 				zoom: false,
 				//解决浏览器里不能点击输入框的问题,hetal
-				onBeforeScrollStart: function (e) {
+				/*onBeforeScrollStart: function (e) {
 					var target = e.target;
 					while (target.nodeType != 1) target = target.parentNode;
 					if(target.tagName!='SELECT'&&target.tagName!='INPUT'&&target.tagName!='TEXTAREA'){
 						e.preventDefault();
 					}
-				}
+				}*/
 			};		
 		box.children().each(function(){ h += $(this).height(); })
 		box.css('height', h);
