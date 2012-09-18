@@ -443,8 +443,7 @@ var PhotoEditor = {
 		this.loading.show();
 		//img loaded bind event
 		var _this = this;
-		this.img = $('<img id="photoeditorimg" deg="0" src='+ img +' />')
-		.appendTo(this.box)
+		this.img = $('<img id="photoeditorimg" deg="0"/>')
 		.bind('load', function(){
 			var size = _this.getimgsize();
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
@@ -466,7 +465,9 @@ var PhotoEditor = {
 		})
 		.bind('error', function(){
 			this.loading.hide();				
-		}).trigger("change");		
+		}).appendTo(this.box).
+		attr("src",img).
+		trigger("change");		
 	},
 	bind: function(){
 		var _this = this;
