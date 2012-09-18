@@ -538,8 +538,6 @@ var LocalDataAddress={
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
-				Page.show(3);
-				setTimeout(function(){
 				$("#head_add .button_m").hide();
 				$("#head_add .title").html("editAddress".tr());
 				$("#delAddress").attr("LocalID",id).show();
@@ -549,7 +547,7 @@ var LocalDataAddress={
 						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
 					}
 				});
-				},300);
+				Page.show(3);
 
 			}
 			return false;
@@ -758,10 +756,8 @@ var Control = {
 					'</div>'+
 					'</li>';
 				}
+				$("#maillist ul").html(html);
 				Page.show(9);
-				setTimeout(function(){
-					$("#maillist ul").html(html);
-				},300);
 
 		});
 		//真不会用delegate,大师
