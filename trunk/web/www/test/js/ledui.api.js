@@ -580,7 +580,14 @@ var Interface = {
 	       	 return;
 	        }
 	        //如果，是第0页，按后退，就提示程序退出
-	        Overlay.show("quit");
+			confirm("您确定要退出吗?",{
+				ok: function(){
+					navigator.app.exitApp();	
+				},
+				cancle: function(){
+					Overlay.hide("confirm");	
+				}	
+			});
 	},
 	/**
 	 * 当设备准备好时
@@ -673,8 +680,6 @@ var Control = {
 		$("#choosePic2").bind("tapone", function(e){Overlay.show("chkphoto");});
 		//结束时，再重新创建时的按钮
 		$("#choosePic3").bind("tapone", function(e){Overlay.show("chkphoto");});
-		$("#quitOK").bind("tapone",function(e){navigator.app.exitApp();});
-		$("#quitCancel").bind("tapone",function(e){Overlay.hide("quit");});
 		
 		$("#choosePicFromCamera").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
