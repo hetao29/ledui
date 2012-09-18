@@ -423,9 +423,9 @@ var Control = {
 			}else if(ado.Address==""){
 				alert("收件人地址不能为空");
 			}else{
-				console.log(ado);
-				ado.add(ado);
 				Page.show(2,function(){
+					console.log(ado);
+					ado.add(ado);
 					Control.showAddress()
 				}, { y:0 });
 			}
@@ -447,26 +447,26 @@ var Control = {
 					alert("请选择图片");
 					return;
 				};
-				//选择了文件
-				var file = new LeduiFile;
-				file.FilePath = $("#photo img").attr("src");
-				
-				var f = file.add(file);
-				if(f && f.FileTmpID){
-					CurrentPostCard.FileTmpID = f.FileTmpID;
-					CurrentPostCard.ImageFileID= f.ImageFileID;
-				}
-
-				if(Interface.Latitude!=""){
-				CurrentPostCard.Latitude = Interface.Latitude;
-				CurrentPostCard.Longitude= Interface.Longitude;
-				CurrentPostCard.Device = Interface.Device;
-				}
-
-				var info=PhotoEditor.getinfo();
-				if(info){ CurrentPostCard.photo = info; }
 
 				Page.show(2,function(){
+					//选择了文件
+					var file = new LeduiFile;
+					file.FilePath = $("#photo img").attr("src");
+					
+					var f = file.add(file);
+					if(f && f.FileTmpID){
+						CurrentPostCard.FileTmpID = f.FileTmpID;
+						CurrentPostCard.ImageFileID= f.ImageFileID;
+					}
+	
+					if(Interface.Latitude!=""){
+					CurrentPostCard.Latitude = Interface.Latitude;
+					CurrentPostCard.Longitude= Interface.Longitude;
+					CurrentPostCard.Device = Interface.Device;
+					}
+	
+					var info=PhotoEditor.getinfo();
+					if(info){ CurrentPostCard.photo = info; }
 					Control.showAddress()
 				});
 		});
@@ -476,14 +476,6 @@ var Control = {
 					return;
 				};
 				Page.show(4,function(){
-					//地址信息
-					/*
-					var adr = $("#rcvlist li.checked");
-					CurrentPostCard.Address=[];
-					var ado = new LeduiAddress();
-					for(var i=0;i<adr.length;i++){
-						CurrentPostCard.Address.push(ado.get($(adr[i]).attr("LocalID")));
-					}*/
 				});
 		});
 		//预览，生成明信片数据,LocalDataPostCard
@@ -507,10 +499,10 @@ var Control = {
 						//修改登录，注册，返回页面为 0
 						API.postPostCard(LocalDataPostCard,function ok(){
 								Page.show(6,function(){
-								$("#titlebar_login .button_s_back").attr("_back",0);
-								$("#titlebar_register .button_s_back").attr("_back",0);
-								$("#titlebar_about .button_s_back").attr("_back",0);
-								$("#titlebar_postcard .button_s_back").attr("_back",0);
+									$("#titlebar_login .button_s_back").attr("_back",0);
+									$("#titlebar_register .button_s_back").attr("_back",0);
+									$("#titlebar_about .button_s_back").attr("_back",0);
+									$("#titlebar_postcard .button_s_back").attr("_back",0);
 								});
 							},function error(msg){
 								alert("错误，["+msg+"]请重试");
@@ -518,11 +510,11 @@ var Control = {
 					}else{
 						//指定到登录,BUG
 						Page.show(10,function(){
-						$("#titlebar_login .button_s_back").attr("_back",5);
-						$("#titlebar_register .button_s_back").attr("_back",5);
-						$("#titlebar_about .button_s_back").attr("_back",5);
-						$("#titlebar_postcard .button_s_back").attr("_back",5);
-						$("#login .errorbox").html("need2login".tr()).show();
+							$("#titlebar_login .button_s_back").attr("_back",5);
+							$("#titlebar_register .button_s_back").attr("_back",5);
+							$("#titlebar_about .button_s_back").attr("_back",5);
+							$("#titlebar_postcard .button_s_back").attr("_back",5);
+							$("#login .errorbox").html("need2login".tr()).show();
 						});
 						//修改登录，注册，返回页面为 6
 					}
@@ -626,10 +618,10 @@ var Control = {
 		});
 		//删除地址
 		$("#delAddress").bind("tapone", function(){
-			var ado = new LeduiAddress;
-			ado.del($(this).attr("LocalID"));
 			Page.show(2,function(){
-								 Control.showAddress();
+				var ado = new LeduiAddress;
+				ado.del($(this).attr("LocalID"));
+				 Control.showAddress();
 			});
 		});
 		//编辑地址
@@ -638,16 +630,18 @@ var Control = {
 			var ado = new LeduiAddress();
 			var adr = ado.get(id);
 			if(id && adr){
-				$("#head_add .adrchk").hide();
-				$("#head_add .title").html("editAddress".tr());
-				$("#delAddress").attr("LocalID",id).show();
-				$("#addAddress").text("edit".tr());
-				$("#rcvform").each(function(){
-					for(var i in adr){
-						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
-					}
+				Page.show(3,function(){
+					$("#head_add .adrchk").hide();
+					$("#head_add .title").html("editAddress".tr());
+					$("#delAddress").attr("LocalID",id).show();
+					$("#addAddress").text("edit".tr());
+					$("#rcvform").each(function(){
+						for(var i in adr){
+							$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
+						}
+					});
+									 
 				});
-				Page.show(3);
 
 			}
 			return false;
