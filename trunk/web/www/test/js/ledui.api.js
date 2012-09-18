@@ -216,6 +216,34 @@ var API = {
 		});
 		
 	},
+	//删除服务器的明信片(其实只是一个标记位)
+	delPostCard:function(PostCard,ok,error){
+		var param={};
+		param.Token= LocalData.getToken();
+		param.UserID= LocalData.getUID();
+		param.PostCard = JSON.stringify(PostCard);
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/postcard/del",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+			   	//console.log(msg.result);
+				//OrderID
+				//PayURL
+				//PostCard
+				//LocalID(postcard)
+				if(ok)ok(msg);
+			   }else{
+				   if(error && msg.error_msg)error(msg.error_msg);
+			   }
+		   },
+		   error:function(msg){
+		   	if(error)error(msg);
+		   }
+		});
+	},
 	upload:function(PostCardID,imageURI){
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		
@@ -339,6 +367,9 @@ var LocalData={
 		var postcards = LocalDB.get(this.postcards) || [];
 		for(var i in postcards){
 			if(postcards[i].LocalID==LocalID){
+				if(postcards[i].PostCardID!=""){
+					API.delPostCard(postcards[i]);
+				}
 				postcards.splice(i,1);
 			}
 		}
@@ -752,22 +783,21 @@ var Control = {
 						}
 						
 						var style = Photoinfo.tostyle(photo);
-						var html='<li active="yes">\
-							<div class="cover">\
-							<div class="photo">\
-								<img style="'+style+'" src="'+photo.o+'" />\
-							</div>\
-							<div class="selc"></div>\
-							<div class="fake"></div>\
-						</div>\
-						<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>\
-						<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>\
-						<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>\
-						<div class="actions">\
-							<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>\
-							<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>\
-						</div>\
-						</li>';
+						var html='<li active="yes">'+
+							'<div class="cover">'+
+							'<div class="photo">'+
+								'<img style="'+style+'" src="'+photo.o+'" />'+
+							'</div>'+
+							'<div class="selc"></div>'+
+							'<div class="fake"></div>'+
+						'</div>'+
+						'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
+						'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
+						'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
+						'<div class="actions">'+
+							'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
+							'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
+						'</div></li>';
 						ul.append(html);
 					}
 					$("#maillist .ico_view").bind("tapone",function(){
@@ -783,19 +813,19 @@ var Control = {
 
 							});
 					$("#maillist .ico_delete").bind("tapone",function(){
+							var _this=this;
 							confirm("delConfirm".tr(),{
 									cancel:function(){
 									},ok:function(){
-										alert("YES");
+									//删除明信片
+									//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
+									//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
+									//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
+										LocalData.delPostCard($(_this).attr("localid"));
+										$(_this).parents("li").remove();
 									}
 								}
 							);
-							//删除明信片
-							//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
-							//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
-							//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
-							console.log($(this));
-							console.log($(this).attr("localid"));
 					});
 				});
 
