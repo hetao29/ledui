@@ -29,7 +29,7 @@ var Page = {
 		if(!this.total){ return; }
 		this.show(n);
 	},
-	show: function(n, callback){
+	show: function(n, callback, scrollpos){
 		var n = parseInt(n, 10);
 		if(this.lock){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
@@ -52,7 +52,7 @@ var Page = {
 				if(typeof(callback) == 'function'){
 					callback();
 				}				
-				_this.chkscroll(page);	
+				_this.chkscroll(page, scrollpos);	
 			}, 400);
 		}else{			
 			//first page load
@@ -60,7 +60,7 @@ var Page = {
 			if(typeof(callback) == 'function'){
 				callback();
 			}	
-			this.chkscroll(page);	
+			this.chkscroll(page, scrollpos);	
 		}
 		
 		this.current_prev = this.current;
@@ -124,7 +124,7 @@ var Page = {
 	gettotal: function(){ return this.total; },
 	getcurrent: function(){ return this.current; },
 	getcurrentpage: function(){ return this.getpage(this.current); },
-	chkscroll: function(page){
+	chkscroll: function(page, scrollpos){
 		var pg = page
 			,bd = pg.find('.panel_body')
 			,box = bd.find('.panel_body_box')
@@ -148,17 +148,28 @@ var Page = {
 		box.children().each(function(){ h += $(this).height(); })
 		box.css('height', h);
 		
-		$('[scrollinstall]').each(function(){
-			var sindex = $(this).attr('scrollindex');
-			$(this).removeAttr('scrollinstall').removeAttr('scrollindex');
-			_this.scrollers[sindex].destroy();
-			delete(_this.scrollers[sindex]);
-		});
-		this.sindex = -1;
 		if(bd.height() < h){
-			this.sindex ++;
-			this.scrollers[this.sindex]= new iScroll(bd.get(0), config);
-			bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
+			var sindex = -1;
+			if(!bd.attr('scrollinstall')){
+				this.sindex ++;
+				sindex = this.sindex;
+				this.scrollers[sindex] = new iScroll(bd.get(0), config);
+				bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
+			}
+			if(scrollpos){
+				sindex = bd.attr('scrollindex');
+				this.scrollers[sindex].refresh();
+				var x = scrollpos.x ? scrollpos.x : 0;
+				var y = scrollpos.y ? scrollpos.y : 0;
+				this.scrollers[sindex].scrollTo(x, y, 200);
+			}
+		}else{
+			var sindex = bd.attr('scrollindex');
+			if(sindex){
+				bd.removeAttr('scrollinstall').removeAttr('scrollindex');
+				_this.scrollers[sindex].destroy();
+				delete(_this.scrollers[sindex]);
+			}
 		}
 	}
 }
@@ -344,13 +355,14 @@ var Touch = {
 
 var Photoinfo = {
 	tostyle: function(info){
+		if(!info){ return ''; }
 		var prefix = ($.browser.webkit)  ? '-webkit-' : 
 				 ($.browser.mozilla) ? '-moz-' :
 				 ($.browser.ms)      ? '-o-' :
 				 ($.browser.opera)   ? '-ms-' : '';
 		
 		var style = '';
-		var rotate = prefix + 'transform:rotate('+ info.r +'deg);';
+		var rotate = prefix + 'transform:rotate('+ info.r ? info.r : info.rotate +'deg);';
 		style += 'width:' + info.w + 'px;'
 			  +  'height:' + info.h + 'px;'
 			  +  'left:' + info.x + 'px;'

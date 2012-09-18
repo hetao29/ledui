@@ -62,11 +62,12 @@ var Test = {
 		$('<br>').appendTo($(testpanel));
 		*/
 		var ps = ['testimg/test.jpg', 'testimg/test2.jpg', 'testimg/test3.jpg'];
-		var sel = $('<select></select>')
+		var sel = $('<select><option>选择图片</option></select>')
 		.appendTo($(testpanel))
 		.bind('change', function(){
-			console.log($(this).val())
-			PhotoEditor.init($(this).val());	 
+			if($(this).val()){					 
+				PhotoEditor.init($(this).val());	 
+			}
 		});	
 		for(var i=0; i<ps.length; i++){
 			var src = ps[i];
