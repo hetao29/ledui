@@ -699,7 +699,7 @@ var Control = {
 						
 						var style = Photoinfo.tostyle(photo);
 						var html='<li active="yes">'+
-							'<div class="cover">'+
+							'<div class="cardinfo"><div class="cover">'+
 							'<div class="photo">'+
 								'<img style="'+style+'" src="'+photo.o+'" />'+
 							'</div>'+
@@ -712,7 +712,7 @@ var Control = {
 						'<div class="actions">'+
 							'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
 							'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
-						'</div></li>';
+						'</div></div></li>';
 						ul.append(html);
 					}
 					$("#maillist .ico_view").bind("tapone",function(){
@@ -744,7 +744,7 @@ var Control = {
 										var postcard = new LeduiPostCard();
 										postcard.del(window.__lid);
 										console.log(window.__lid);
-										window.__p.slideUp("normal",function(){window.__p.remove();});
+										window.__p.slideUp("fast",function(){window.__p.remove();});
 									}
 								}
 							);
