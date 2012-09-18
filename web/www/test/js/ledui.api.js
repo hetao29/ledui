@@ -505,7 +505,7 @@ var LocalDataAddress={
 			//显示各地址
 			var address = LocalDataAddress.list();
 			for(var i =0;i<address.length;i++){
-				var html='<li localid="'+address[i].LocalID+'">'+
+				var html='<li active="yes" localid="'+address[i].LocalID+'">'+
 					'<div class="edit" LocalID="'+address[i].LocalID+
 						'"active="yes"><div class="icon"></div></div>'+
 					'<div class="info">'+
@@ -610,7 +610,7 @@ var Interface = {
 	onPhotoURISuccess:function(imageURI){
 		Page.init(1);
 		setTimeout(function(){PhotoEditor.init(imageURI);},300);
-		setTimeout(function(){API.upload(122,imageURI);},2000);
+		//setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	onFail:function (message) {
 	       LocalDataPostCard.init();
@@ -744,10 +744,12 @@ var Control = {
 						case 4:st="等待邮寄";break;
 						case 5:st="已经寄出";break;
 					}
-					html+='<li>'+
+					
+				    var style = Photoinfo.tostyle(photo);
+					html+='<li active="yes">'+
 					'<div class="cover">'+
 						'<div class="photo">'+
-							'<img style="width:'+photo.w+'px;height:'+photo.h+'px;left:'+photo.x+'px;top:'+photo.y+'px;-webkit-transform:rotate('+photo.r+'deg);" src="'+photo.o+'" />'+
+							'<img style="'+style+'" src="'+photo.o+'" />'+
 						'</div>'+
 						'<div class="selc"></div>'+
 						'<div class="fake"></div>'+
@@ -761,8 +763,9 @@ var Control = {
 					'</div>'+
 					'</li>';
 				}
-				$("#maillist ul").html(html);
-				Page.show(9);
+				Page.show(9,function(){
+					$("#maillist ul").html(html);
+				});
 
 		});
 		//真不会用delegate,大师
