@@ -571,7 +571,7 @@ var LocalDataAddress={
 			var id = $(this).attr("LocalID");
 			var adr = LocalDataAddress.get(id);
 			if(id && adr){
-				$("#head_add .button_m").hide();
+				$("#head_add .adrchk").hide();
 				$("#head_add .title").html("editAddress".tr());
 				$("#delAddress").attr("LocalID",id).show();
 				$("#addAddress").text("edit".tr());
@@ -746,7 +746,7 @@ var Control = {
 		$("#rcvcreate").bind("tapone",function(e){
 			Page.show(3,function(){
 				$("#delAddress").attr("LocalID","").hide();
-				$("#head_add .button_m").show();
+				$("#head_add .adrchk").show();
 				$("#head_add .title").html("addAddress".tr());
 				$("#addAddress").text("add".tr());
 				$("#rcvform").each(function(){this.reset();});
