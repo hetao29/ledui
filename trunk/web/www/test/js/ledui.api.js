@@ -913,8 +913,9 @@ var Control = {
 				alert("收件人地址不能为空");
 			}else{
 				LocalDataAddress.add(r);
-				LocalDataAddress.show();
-				Page.show(2);
+				Page.show(2, function(){
+					LocalDataAddress.show();				  
+				}, { y:0 });
 			}
 		});
 		$("#rcvform #privince").bind("change",function(e){
@@ -950,7 +951,7 @@ var Control = {
 				var info=PhotoEditor.getinfo();
 				if(info){ LocalDataPostCard.photo = info; }
 
-				Page.show(2,function(){
+				Page.show(2,function(){			 
 					LocalDataAddress.show();
 				});
 		});
