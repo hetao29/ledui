@@ -922,8 +922,8 @@ var Control = {
 		
 
 		$("#IDLogin").bind("tapone",function(e){
-				var sid=$("#login .sid").val();
-				var pwd=$("#login .pwd").val();
+				var sid=$(".sid","#login").val();
+				var pwd=$(".pwd","#login").val();
 				API.login({email:sid,passwd:pwd},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
 					$("#login .errorbox").fadeOut();
