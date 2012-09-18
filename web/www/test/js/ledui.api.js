@@ -499,9 +499,12 @@ var LocalDataAddress={
 		return all;
 	},upload:function(){
 	},show:function(){
+		var list=$("#rcvlist .list");
+		var ul = list.find("ul");
+		var div = list.find("div");
 		if(LocalDataAddress.list().length>0){
-			$("#rcvlist .list div").hide();
-			$("#rcvlist .list ul").show().html("");
+			div.hide();
+			ul.show().html("");
 			//显示各地址
 			var address = LocalDataAddress.list();
 			for(var i =0;i<address.length;i++){
@@ -514,13 +517,12 @@ var LocalDataAddress={
 					'<span class="phone">'+(address[i].Mobile||"")+'</span>'+
 					'<span class="address">'+(address[i].Country||"")+" "+
 						(address[i].Privince||"")+" " +(address[i].City||"")+" "+address[i].Address+'</span>'+
-					'</div>'+
-					'</li>';
-				$("#rcvlist .list ul").append(html);
+					'</div></li>';
+				ul.append(html);
 			}
 		}else{
-			$("#rcvlist .list div").show();
-			$("#rcvlist .list ul").hide();
+			div.show();
+			ul.hide();
 		}
 		
 		//选择地址
@@ -584,7 +586,7 @@ var Interface = {
 				ok: function(){
 					navigator.app.exitApp();	
 				},
-				cancle: function(){
+				cancel: function(){
 					Overlay.hide("confirm");	
 				}	
 			});
@@ -703,7 +705,7 @@ var Control = {
 		
 		//go
 		$("div[_to]").bind("tapone", function(e){
-			Page.show($(this).attr("_to"));					  
+			Page.show($(this).attr("_to"));
 		});
 		//back
 		$("div.button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
@@ -750,48 +752,53 @@ var Control = {
 						}
 						
 						var style = Photoinfo.tostyle(photo);
-						var html="";
-						html+='<li active="yes">'+
-						'<div class="cover">'+
-							'<div class="photo">'+
-								'<img style="'+style+'" src="'+photo.o+'" />'+
-							'</div>'+
-							'<div class="selc"></div>'+
-							'<div class="fake"></div>'+
-						'</div>'+
-						'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
-						'<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>'+
-						'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
-						'<div class="actions">'+
-							'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
-							'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
-						'</div>'+
-						'</li>';
+						var html='<li active="yes">\
+							<div class="cover">\
+							<div class="photo">\
+								<img style="'+style+'" src="'+photo.o+'" />\
+							</div>\
+							<div class="selc"></div>\
+							<div class="fake"></div>\
+						</div>\
+						<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>\
+						<div class="status"><label>状态</label>：<span class="pass">'+st+'</span></div>\
+						<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>\
+						<div class="actions">\
+							<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>\
+							<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>\
+						</div>\
+						</li>';
 						ul.append(html);
 					}
+					$("#maillist .ico_view").bind("tapone",function(){
+							console.log(this);
+							console.log($(this));
+							//回到管理邮箱
+							$("#titlebar_preview .button_s_back").attr("_back",9);
+							var lid=$(this).attr("LocalID");
+							LocalDataPostCard = LocalData.getPostCard(lid);
+							console.log(LocalDataPostCard);
+							//正常新加，预览的返回为评论
+							Control.showPreview();
+
+							});
+					$("#maillist .ico_delete").bind("tapone",function(){
+							confirm("delConfirm".tr(),{
+									cancel:function(){
+									},ok:function(){
+										alert("YES");
+									}
+								}
+							);
+							//删除明信片
+							//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
+							//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
+							//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
+							console.log($(this));
+							console.log($(this).attr("localid"));
+					});
 				});
 
-		});
-		//真不会用delegate,大师
-		//$("#maillist").delegate($(".ico_delete"),"click",function(){});
-		$("#maillist .ico_view").live("click touchend",function(e){
-				//回到管理邮箱
-				$("#titlebar_preview .button_s_back").attr("_back",9);
-				var lid=$(this).attr("LocalID");
-				LocalDataPostCard = LocalData.getPostCard(lid);
-				console.log(LocalDataPostCard);
-				//正常新加，预览的返回为评论
-				Control.showPreview();
-				
-		});
-		$("#maillist .ico_delete").live("click touchend",function(){
-				alert("删除确认框,todo");
-				//删除明信片
-				//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
-				//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
-				//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
-				console.log($(this));
-				console.log($(this).attr("localid"));
 		});
 		
 		$("#appnav .CLogout").bind("tapone",function(e){

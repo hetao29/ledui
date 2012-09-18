@@ -5,7 +5,8 @@ var LOCALE = {
 		addAddress:"输入新地址",
 		editAddress:"修改地址",
     		edit:"编辑",
-		need2login:"需要登录后才能继续..."
+		need2login:"需要登录后才能继续...",
+		delConfirm:"确认删除"
 	},
 	zh_tw:{
 		create:"创建一张明信片(zh_tw)"
