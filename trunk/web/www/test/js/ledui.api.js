@@ -979,6 +979,7 @@ var Control = {
 		
 
 		$("#IDLogin").bind("tapone",function(e){
+				$("#login .errorbox").html("");
 				var sid=$(".sid","#login").val();
 				var pwd=$(".pwd","#login").val();
 				API.login({email:sid,passwd:pwd},function ok(result){
