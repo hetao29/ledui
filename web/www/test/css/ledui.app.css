@@ -617,16 +617,19 @@ border-bottom-color:#555;
 -ms-transform: scale(0.125);
 }
 .maillist .photo img{position:absolute;display:block;}
-.maillist .title{font-weight:bold;font-size:28px;}
-.maillist .status,.maillist .time{margin-top:10px;}
+.maillist .title{font-size:28px;}
+.maillist .title span{font-weight:bold;font-size:28px;}
+.maillist .status,
+.maillist .time{margin-top:10px;font-size:24px;color:#909090}
 .maillist .pass{color:#090;}
 .maillist .wait{color:#f00;}
-.maillist label,.maillist span{font-size:24px;}
+.maillist label{font-size:24px;color:#909090;}
+.maillist span{font-size:24px;}
 .maillist .actions{height:80px;}
-.maillist .act{float:left;margin-right:20px;width:52px;height:60px;padding:10px 0;text-align:center;}
-.maillist .list .mark{background:#eee;
-box-shadow:inset 0 -5px 10px #e5e5e5;
-}
+.maillist .act{float:left;margin-right:30px;width:52px;height:60px;padding:10px 0;text-align:center;}
+.maillist .act:active,
+.maillist .act.active{opacity:0.5;}
+.maillist .list .mark{background:#eee;box-shadow:inset 0 -5px 10px #e5e5e5;}
 
 /*animate*/
 @-webkit-keyframes showfromright { 
