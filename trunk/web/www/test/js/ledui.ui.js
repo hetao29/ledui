@@ -51,15 +51,16 @@ var Page = {
 				page.removeClass('showfrom' + show_direction); 
 				if(typeof(callback) == 'function'){
 					callback();
-					_this.chkscroll(page);	
 				}				
-			}, 350);
+				_this.chkscroll(page);	
+			}, 400);
 		}else{			
+			//first page load
 			page.show();
 			if(typeof(callback) == 'function'){
 				callback();
-				this.chkscroll(page);	
 			}	
+			this.chkscroll(page);	
 		}
 		
 		this.current_prev = this.current;
@@ -69,8 +70,6 @@ var Page = {
 			|| page.attr('layout_height') != Adapta.layoutinfo.height){
 			Adapta.layout();
 		}
-		
-		this.chkscroll(page);
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
@@ -141,9 +140,9 @@ var Page = {
 				onBeforeScrollStart: function (e) {
 					var target = e.target;
 					while (target.nodeType != 1) target = target.parentNode;
-					if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA'){
+					if(target.tagName!='SELECT'&&target.tagName!='INPUT'&&target.tagName!='TEXTAREA'){
 						e.preventDefault();
-					}	
+					}
 				}
 			};		
 		box.children().each(function(){ h += $(this).height(); })
@@ -263,8 +262,8 @@ var Overlay = {
 			info.html(message);	
 		}else if(name == 'confirm'){
 			var info = o.find('.info');
-			var btnok = o.find('.button').eq(0);
-			var btncancle = o.find('.button').eq(1);
+			var btnok = o.find('.button').eq(1);
+			var btncancel = o.find('.button').eq(0);
 			btnok.bind('tapone', function(){ 
 				_this.hide(function(){
 					if(callback){ 
@@ -274,11 +273,11 @@ var Overlay = {
 					}
 				});
 			});
-			btncancle.bind('tapone', function(){ 
+			btncancel.bind('tapone', function(){ 
 				_this.hide(function(){
 					if(callback){ 
-						if(typeof(callback.cancle) == 'function'){
-							callback.cancle();	
+						if(typeof(callback.cancel) == 'function'){
+							callback.cancel();	
 						}
 					}
 				});
