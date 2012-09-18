@@ -449,10 +449,8 @@ var PhotoEditor = {
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
-			_this.center();
-			setTimeout(function(){
 			_this.loading.hide();
-			}, 200);
+			_this.center();
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
 			/*Filtrr2('#photoeditorimg', function() {
