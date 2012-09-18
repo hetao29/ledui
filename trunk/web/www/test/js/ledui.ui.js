@@ -54,7 +54,7 @@ var Page = {
 					callback();
 				}				
 				_this.chkscroll(page, scrollpos);	
-			}, 400);
+			}, 450);
 		}else{			
 			//first page load
 			page.show();
