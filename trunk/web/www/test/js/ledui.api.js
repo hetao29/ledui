@@ -539,7 +539,15 @@ var LocalDataAddress={
 			//显示各地址
 			var address = LocalDataAddress.list();
 			for(var i =0;i<address.length;i++){
-				var html='<li active="yes" localid="'+address[i].LocalID+'">'+
+				var check="";
+				if(LocalDataPostCard.Address){
+					for(var j=0;j<LocalDataPostCard.Address.length;j++){
+						if(address[i].LocalID == LocalDataPostCard.Address[j].LocalID){
+							check='class="checked"';
+						}
+					}
+				}
+				var html='<li active="yes" '+check+'localid="'+address[i].LocalID+'">'+
 					'<div class="edit" LocalID="'+address[i].LocalID+
 						'"active="yes"><div class="icon"></div></div>'+
 					'<div class="info">'+
