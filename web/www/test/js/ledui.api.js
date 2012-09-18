@@ -365,7 +365,7 @@ var Control = {
 		$("#appnav .CPostCard").bind("tapone",function(e){					   
 				Page.show(9,function(){
 									 Control.showPostCard();
-				});
+				}, { y:0 });
 
 		});
 		
@@ -679,7 +679,7 @@ var Control = {
 					var postcards = postcard.list();
 					var ul = $("#maillist ul");
 					ul.html("");
-					for(var i=0;i<postcards.length;i++){
+					for(var i=postcards.length-1;i>=0;i--){
 						var photo=postcards[i].photo;
 						var to=[];
 						for(var j=0;j<postcards[i].Address.length;j++){
