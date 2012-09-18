@@ -845,13 +845,13 @@ var Control = {
 				//console.log($(this).find("option:selected").text());
 				//console.log($(this).val());
 				if($(this).val()=="中国"){
-					$("#privince").html('<option value="">选择</option>').slideDown();
+					$("#privince").html('<option value="">选择</option>').slideDown("fast");
 					for(var i =0;i<City.all.length;i++){
 						var n = City.all[i].n;
 						$("#privince").append('<option value="'+n+'">'+n+'</option>');
 					}
 				}else{
-					$("#privince").html('').slideUp();
+					$("#privince").html('').slideUp("fast");
 					$("#city").html('').hide();
 				}
 		}).trigger("change");
@@ -876,13 +876,13 @@ var Control = {
 		$("#rcvform #privince").bind("change",function(e){
 				var city = City.listCity($(this).val());
 				if(city.length>0){
-					$("#city").html('<option value="">选择</option>').slideDown();
+					$("#city").html('<option value="">选择</option>').slideDown("fast");
 					for(var i =0;i<city.length;i++){
 						var n = city[i];
 						$("#city").append('<option value="'+n+'">'+n+'</option>');
 					}
 				}else{
-					$("#city").html('').slideUp();
+					$("#city").html('').slideUp("fast");
 				}
 		});
 		$("#toAddress").bind("tapone",function(e){
