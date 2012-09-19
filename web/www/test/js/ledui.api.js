@@ -172,6 +172,7 @@ var API = {
 				//OrderID
 				//PayURL
 				//PostCard
+				//UserID
 				//LocalID(postcard)
 				if(ok)ok(msg);
 			   }else{

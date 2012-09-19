@@ -51,6 +51,7 @@ var LeduiPostCard=function(){
 	//{{明信片信息，和服务器保存的结果对应
 	this.PostCardID="";//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
 	this.PayURL="";
+	this.UserID="";
 	this.OrderID="";
 	this.ImageFileID="";
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
