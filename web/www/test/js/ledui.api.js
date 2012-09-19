@@ -44,8 +44,9 @@ var API = {
 	islogin:function(callback){
 		var token = DB.getToken();
 		var uid = DB.getUID();
+		var uuid = DB.getUUID();
 		if(token && token !=""){
-			var param={token:token,uid:uid};
+			var param={token:token,uid:uid,uuid:uuid};
 			$.ajax({
 				type: "POST",
 				url: API.host+"/user/islogin",
@@ -118,8 +119,9 @@ var API = {
 	//把用户当前的地址上传，然后服务器下发在服务器merge后的地址数据
 	synAddress: function(ok,error){
 		var param={};
-		param.Token= DB.getToken();
-		param.UserID= DB.getUID();
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.uuid= DB.getUUID();
 		var addr = new LeduiAddress;
 		param.AddressData = JSON.stringify(addr.list());
 		AjaxSetup.showLoading=false;
@@ -155,8 +157,9 @@ var API = {
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
 	postPostCard:function(PostCard,ok,error){
 		var param={};
-		param.Token= DB.getToken();
-		param.UserID= DB.getUID();
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.uuid= DB.getUUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 		   type: "POST",
@@ -184,8 +187,9 @@ var API = {
 	//删除服务器的明信片(其实只是一个标记位)
 	delPostCard:function(PostCard,ok,error){
 		var param={};
-		param.Token= DB.getToken();
-		param.UserID= DB.getUID();
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.uuid= DB.getUUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 		   type: "POST",
@@ -296,6 +300,9 @@ var Interface = {
 	       CurrentPostCard.Latitude = Interface.Latitude;
 	       CurrentPostCard.Longitude= Interface.Longitude;
 	       CurrentPostCard.Device = Interface.Device;
+	       if(Interface.Device.uuid){
+		       _DB.uuid=Interface.Device.uuid;
+	       }
 	//       alert('Latitude: '           + position.coords.latitude              + '\n' +
 	//		       'Longitude: '          + position.coords.longitude             + '\n' +
 	//		       'Altitude: '           + position.coords.altitude              + '\n' +
