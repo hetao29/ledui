@@ -97,12 +97,12 @@ class api_user{
 		$dbu = new user_db;
 		$dbm = new money_db;
 		$data = new stdclass;
-		$userID = $_REQUEST['UserID'];
-		$token = $_REQUEST['Token'];
+		$token = $_POST['token'];
+		$uid = $_POST['uid'];
 		
-		if(user_api::isLoginMobile($userID,$token) == true){
-			$data->UserProfile =  user_api::getUserByID($userID);
-			$data->ScoerCurrent = money_api::getScoreByID($UserID);
+		if(user_api::isLoginMobile($uid,$token) == true){
+			$data->UserProfile =  user_api::getUserByID($uid);
+			$data->ScoerCurrent = money_api::getScoreByID($uid);
 			$money = money_api::getMoneyByID($UserID);
 			$data->MoneyCurrent = $money['MoneyCurrent'];
 			$data->MoneyCurrency = $money['MoneyCurrency'];
@@ -116,24 +116,37 @@ class api_user{
 	/**
 	  * 同步用户地址
 	  */
-	public function PagesynAddress($inPath){
+	public function PageSynAddress($inPath){
 		$result = new api_result;
-		$userID = $_REQUEST['UserID'];
-		$token = $_REQUEST['Token'];
+		$token = $_POST['token'];
+		$uid = $_POST['uid'];
 		$r = SJson::decode($_REQUEST['AddressData']);
-		if(user_api::isLoginMobile($userID,$token) != true){
+		if(user_api::isLoginMobile($uid,$token) != true){
 			$result->error_code = -1;
 			return SJson::encode($result);
 		}
 		$db = new user_db;
-		//print_r($_REQUEST['AddressData']);
 		if(count($r)>0){
 			//更新用户所有的Address为删除状态
+			$db->updateAddressDelByUserID($uid,1);
+		}else{
+			$result->error_code = 0;
+			exit;
 		}
 		foreach($r as &$t){
 			//TODO
 			//更新记录，或者新增记录
-			$t->AddressID=999;//for test
+			$t=(array)$t;
+			$addID = $t['AddressID'];
+			$addr=array();;
+			if(isset($addID)){
+				if(user_api::isAddressExist($addID))
+					$db->updateAddressDelByAddID($addID,0);
+				else
+					$db->addAddress($t);
+			}else{
+				$db->addAddress($t);
+			}
 			//更新当前记录为正常记录
 		}
 		$result->result = $r; 
