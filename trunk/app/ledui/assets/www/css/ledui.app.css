@@ -267,7 +267,7 @@ background: -o-linear-gradient(top, #ff8e1a, #ff7300);
 -o-backface-visibility: hidden;
 backface-visibility: hidden;
 }
-.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:15px;padding:5px;
+.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:10px;padding:5px;
 background:#989898;
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
@@ -275,30 +275,34 @@ background:#989898;
 -o-backface-visibility: hidden;
 backface-visibility: hidden;
 
--webkit-animation-duration: 0.4s;
+-webkit-animation-duration: 0.3s;
 -webkit-animation-delay: 0s;
 -webkit-animation-timing-function: fadein;
 -webkit-animation-fill-mode: both;
--moz-animation-duration: 0.4s;
+-moz-animation-duration: 0.3s;
 -moz-animation-delay: 0s;
 -moz-animation-timing-function: fadein;
 -moz-animation-fill-mode: both;
--ms-animation-duration: 0.4s;
+-ms-animation-duration: 0.3s;
 -ms-animation-delay: 0s;
 -ms-animation-timing-function: fadein;
 -ms-animation-fill-mode: both;
--o-animation-duration: 0.4s;
+-o-animation-duration: 0.3s;
 -o-animation-delay: 0s;
 -o-animation-timing-function: fadein;
 -o-animation-fill-mode: both;
-animation-duration: 0.4s;
+animation-duration: 0.3s;
 animation-delay: 0s;
 animation-timing-function: fadein;
 animation-fill-mode: both;
+-webkit-transform: translateY(0);
+-moz-transform: translateY(0);
+-o-transform: translateY(0);
+-ms-transform: translateY(0);
 transform: translateY(0);
 opacity:1;
 }
-.overlay_box{background:#fff;border-radius:10px;padding:10px 20px;}
+.overlay_box{background:#fff;border-radius:5px;padding:10px 20px;}
 .overlay .hd{position:relative;height:50px;padding-bottom:10px;border-bottom:4px solid #b5b5b5;}
 .overlay .bd{padding:0 0 20px 0;}
 .overlay .title{color:#ff4e00;font-size:36px;line-height:50px;}
@@ -343,9 +347,9 @@ backface-visibility: hidden;
 .ico_alipay{width:180px;height:54px;background-position:0 -150px;}
 .ico_paypal{width:180px;height:54px;background-position:-200px -150px;}
 .ico_agree{width:30px;height:30px;background-position:0 -700px;}
-.ico_album{width:50px;height:50px;background-position:0 0;}
-.ico_camera{width:50px;height:50px;background-position:-100px 0;}
-.ico_renren{width:88px;height:50px;background-position:-200px 0;}
+.ico_album{width:52px;height:52px;background-position:0 0;}
+.ico_camera{width:52px;height:52px;background-position:-100px 0;}
+.ico_renren{width:90px;height:52px;background-position:-200px 0;}
 
 /*welcome create*/
 .createcard{position:absolute;top:530px;left:50%;width:600px;height:200px;margin-left:-300px;text-align:center;}
@@ -592,7 +596,14 @@ border-color:#555;
 .maillist .null{padding:200px 0;color:#999;text-align:center;font-size:30px;}
 .maillist .list{position:relative;margin:0 auto;}
 .maillist .list ul{border-top:1px solid #ddd;}
-.maillist .list li{position:relative;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;box-shadow:inset 0 -5px 10px #f7f7f7;min-height:160px;padding:20px 20px 20px 300px;}
+.maillist .list li{position:relative;overflow:hidden;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;box-shadow:inset 0 -5px 10px #f7f7f7;
+/*-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-ms-backface-visibility: hidden;
+-o-backface-visibility: hidden;
+backface-visibility: hidden;
+*/}
+.maillist .list .cardinfo{position:relative;min-height:160px;padding:20px 20px 20px 300px;}
 .maillist .list .checked{background:#fff;cursor:default;
 background: -webkit-linear-gradient(top, #777, #666);
 background: -moz-linear-gradient(top, #777, #666);
@@ -610,23 +621,32 @@ border-bottom-color:#555;
 -ms-transform: scale(0.125);}
 
 .maillist .selc{z-index:2;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;}
-.maillist .fake{z-index:1;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;opacity:0.5;
+/*.maillist .fake{z-index:1;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;opacity:0.5;
 -webkit-transform: rotate(-5deg);
 -moz-transform: scale(0.125);
 -o-transform: scale(0.125);
 -ms-transform: scale(0.125);
+}*/
+.maillist .photo img{position:absolute;display:block;
+-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-ms-backface-visibility: hidden;
+-o-backface-visibility: hidden;
+backface-visibility: hidden;
 }
-.maillist .photo img{position:absolute;display:block;}
-.maillist .title{font-weight:bold;font-size:28px;}
-.maillist .status,.maillist .time{margin-top:10px;}
+.maillist .title{font-size:28px;}
+.maillist .title span{font-weight:bold;font-size:28px;}
+.maillist .status,
+.maillist .time{margin-top:10px;font-size:24px;color:#909090}
 .maillist .pass{color:#090;}
 .maillist .wait{color:#f00;}
-.maillist label,.maillist span{font-size:24px;}
+.maillist label{font-size:24px;color:#909090;}
+.maillist span{font-size:24px;}
 .maillist .actions{height:80px;}
-.maillist .act{float:left;margin-right:20px;width:52px;height:60px;padding:10px 0;text-align:center;}
-.maillist .list .mark{background:#eee;
-box-shadow:inset 0 -5px 10px #e5e5e5;
-}
+.maillist .act{float:left;margin-right:30px;width:52px;height:60px;padding:10px 0;text-align:center;}
+.maillist .act:active,
+.maillist .act.active{opacity:0.5;}
+.maillist .list .mark{background:#eee;box-shadow:inset 0 -5px 10px #e5e5e5;}
 
 /*animate*/
 @-webkit-keyframes showfromright { 
