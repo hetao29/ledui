@@ -2,7 +2,7 @@ $(document).ready(function(){
 	Touch.init();
 	UI.redefine();
 	Adapta.init();
-	Page.init(5);
+	Page.init(1);
 });
 
 //UI系统
