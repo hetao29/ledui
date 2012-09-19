@@ -5,7 +5,7 @@ var Test = {
 	},
 	testpage: function(){
 		
-		var testpanel = $('<div style="position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
+		var testpanel = $('<div style="zoom:2;position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
 		testpanel.css('zoom', Adapta.ratio);
 		$('<button>reload</button>')
 		.appendTo($(testpanel))
@@ -13,7 +13,7 @@ var Test = {
 			window.location.reload();				
 		});
 		
-		$('<br>').appendTo($(testpanel));
+		$('<br><br>').appendTo($(testpanel));
 		
 		var total = Page.gettotal();
 		var current = Page.getcurrent();
@@ -47,7 +47,7 @@ var Test = {
 			sel.val(Page.getcurrent());
 		});
 		*/
-		$('<br>').appendTo($(testpanel));
+		$('<br><br>').appendTo($(testpanel));
 		/*
 		for(var key in Overlay.layers){
 			(function(key){	
