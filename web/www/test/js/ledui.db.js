@@ -34,6 +34,9 @@ var DB={
 	getUUID:function(){
 		return _DB.uuid;
 	},
+	setUUID:function(uuid){
+		_DB.uuid=uuid;
+	},
 	clear : function(){
 		for(var i in window.localStorage){
 			if(i.indexOf(_DB.Version)==-1)window.localStorage.removeItem(i);;
