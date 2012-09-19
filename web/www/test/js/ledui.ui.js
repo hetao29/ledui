@@ -380,7 +380,7 @@ var Photoinfo = {
 }
 
 var Preview = {
-	side: '',
+	side: 'unknow',
 	isinit: false,
 	init: function(){
 		this.handles = $('#chardchoice li');
@@ -399,8 +399,10 @@ var Preview = {
 	},
 	show: function(side){
 		if(!this.isinit){ this.init(); }
-		var side = arguments[0] ? arguments[0] : (this.side ? this.side : 'back'); 		
+		var side = arguments[0];
 		if(side == this.side){ return this; }
+		side = side ? side : (this.side ? this.side : 'back'); 		
+		
 		var _this = this;
 		
 		if(side == 'front'){
