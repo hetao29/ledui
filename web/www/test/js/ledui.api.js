@@ -515,7 +515,7 @@ var Control = {
 									$("#titlebar_login .button_s_back").attr("_back",0);
 									$("#titlebar_register .button_s_back").attr("_back",0);
 									$("#titlebar_about .button_s_back").attr("_back",0);
-									$("#titlebar_postcard .button_s_back").attr("_back",0);
+									//$("#titlebar_postcard .button_s_back").attr("_back",0);
 								});
 							},function error(msg){
 								alert("错误，["+msg+"]请重试");
@@ -526,7 +526,7 @@ var Control = {
 							$("#titlebar_login .button_s_back").attr("_back",5);
 							$("#titlebar_register .button_s_back").attr("_back",5);
 							$("#titlebar_about .button_s_back").attr("_back",5);
-							$("#titlebar_postcard .button_s_back").attr("_back",5);
+							//$("#titlebar_postcard .button_s_back").attr("_back",5);
 							$("#login .errorbox").html("need2login".tr()).show();
 						});
 						//修改登录，注册，返回页面为 6
