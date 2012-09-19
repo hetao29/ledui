@@ -425,8 +425,8 @@ var Preview = {
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
 			if(this.side == ''){
-				this.panel_front.addClass('toback');
-				this.panel_back.addClass('tofront');
+				this.panel_front.addClass('atback');
+				this.panel_back.addClass('atfront');
 			}else{
 				this.panel_front
 				.removeClass('atfront')
