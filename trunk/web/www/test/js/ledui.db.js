@@ -1,15 +1,16 @@
 //记录本地状态信息
 var _DB={
 	Version:"_V1",
+	uuid:"",
 	set:function(k,v){
 		this.del(k);
-		return window.localStorage.setItem(k+this.Version,JSON.stringify(v));
+		return window.localStorage.setItem(k+":"+this.uuid+":"+this.Version,JSON.stringify(v));
     	},
 	del:function(k){
-		return window.localStorage.removeItem(k+this.Version);
+		return window.localStorage.removeItem(k+":"+this.uuid+":"+this.Version);
 	},
 	get:function(k){
-		return JSON.parse(window.localStorage.getItem(k+this.Version));
+		return JSON.parse(window.localStorage.getItem(k+":"+this.uuid+":"+this.Version));
 	}
 }
 
@@ -29,6 +30,9 @@ var DB={
 	},
 	getUID : function(){
 		return _DB.get(this.uid);
+	},
+	getUUID:function(){
+		return _DB.uuid;
 	},
 	clear : function(){
 		for(var i in window.localStorage){
