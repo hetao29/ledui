@@ -40,20 +40,23 @@ var Page = {
 		var show_direction = n > n0 ? 'right' : 'left'
 			,hide_direction = n > n0 ? 'left' :  'right'
 			,_this = this;
+		
 		if(page_current){
 			this.lock = true;
 			page_current.addClass('hidefrom'+ hide_direction);
+			page.addClass('showfrom'+ show_direction).show();
+			
 			setTimeout(function(){					
 				page_current.hide().removeClass('hidefrom' + hide_direction);
-			}, 350);
-			page.addClass('showfrom'+ show_direction).show();
-			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
-			setTimeout(function(){
+				page.removeClass('showfrom' + show_direction);
 				_this.lock = false;
-				page.removeClass('showfrom' + show_direction); 
+			}, 500);
+			
+			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
+			setTimeout(function(){				 
 				if(typeof(callback) == 'function'){ callback(); }				
 				_this.chkscroll(page, scrollpos);	
-			}, 400);
+			}, 350);
 		}else{			
 			//first page load
 			page.show();
@@ -69,7 +72,7 @@ var Page = {
 		if( page.attr('layout_width') != Adapta.layoutinfo.width 
 			|| page.attr('layout_height') != Adapta.layoutinfo.height){
 			Adapta.layout();
-		}
+		}	
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
