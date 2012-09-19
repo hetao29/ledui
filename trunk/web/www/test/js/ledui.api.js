@@ -276,6 +276,12 @@ var Interface = {
 		for(var i in device){
 			Interface.Device[i]=device[i];
 		}
+		
+	   CurrentPostCard.Device = device;
+	   if(device.uuid){
+		   DB.setUUID(device.uuid);
+		   //_DB.uuid=Interface.Device.uuid;
+	   }
 		      //test
 		      /*
 			 var options = new ContactFindOptions();
@@ -299,10 +305,6 @@ var Interface = {
 	       this.Latitude= position.coords.latitude;
 	       CurrentPostCard.Latitude = Interface.Latitude;
 	       CurrentPostCard.Longitude= Interface.Longitude;
-	       CurrentPostCard.Device = Interface.Device;
-	       if(Interface.Device.uuid){
-		       _DB.uuid=Interface.Device.uuid;
-	       }
 	//       alert('Latitude: '           + position.coords.latitude              + '\n' +
 	//		       'Longitude: '          + position.coords.longitude             + '\n' +
 	//		       'Altitude: '           + position.coords.altitude              + '\n' +
@@ -541,7 +543,7 @@ var Control = {
 				var pwd=$(".pwd","#login").val();
 				var uuid = DB.getUUID();
 				var device=Interface.Device;
-				API.login({email:sid,passwd:pwd,uuid:uuid,device:device},function ok(result){
+				API.login({email:sid,passwd:pwd,uuid:uuid,device:JSON.stringify(device)},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
 					$("#login .errorbox").fadeOut();
 					$("#isnotlogin").fadeOut();
