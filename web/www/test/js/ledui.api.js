@@ -376,12 +376,11 @@ var Control = {
 		$("#appnav .CLogin").bind("tapone",function(e){Page.show(10);});		
 		$("#appnav .CRegister").bind("tapone",function(e){Page.show(11);});
 		$("#appnav .CPostCard").bind("tapone",function(e){					   
-					var ul = $("#maillist ul");
-					ul.hide();
-				Page.show(9,function(){
-									 Control.showPostCard();
-				}, { y:0 });
-
+			var ul = $("#maillist ul");
+			//ul.hide();
+			Page.show(9,function(){
+				Control.showPostCard();
+			}, { y:0 });
 		});
 		
 		$("#appnav .CLogout").bind("tapone",function(e){
@@ -665,7 +664,8 @@ var Control = {
 		});
 		
 	
-	},showPreview:function(){
+	},
+	showPreview:function(){
 		Page.show(5,function(){
 			    //显示预览页面
 			    $("#postinfo [name='Name']").html(CurrentPostCard.Address[0].Name);
@@ -690,7 +690,8 @@ var Control = {
 			    }
 			    Preview.showside('back');
 		});
-	    },showPostCard:function(){
+	},
+	showPostCard:function(){
 				var postcard = new LeduiPostCard;
 				var postcards = postcard.list();
 				//{{{ check change
@@ -707,7 +708,7 @@ var Control = {
 					console.log("OLD");
 					var ul = $("#maillist ul");
 					ul.show();
-	    			}else{
+	    		}else{
 					console.log("NEW");
 					var ul = $("#maillist ul");
 					ul.html("").show();;
