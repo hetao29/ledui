@@ -132,7 +132,6 @@ var API = {
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
-			   console.log(msg.result);
 			   	if(msg.result.length>0) addr.clear();
 				for(var i=0;i<msg.result.length;i++){
 					addr.add(msg.result[i]);
@@ -422,8 +421,6 @@ var Control = {
 		
 		$("#addAddress").bind("tapone",function(e){
 			var ado = new LeduiAddress();
-			console.log("XXXX");
-			console.log(ado);
 			var a =  $("#rcvform").serializeArray();
 			for(var i in a){
 				var k = a[i].name;
@@ -438,7 +435,6 @@ var Control = {
 				alert("收件人地址不能为空");
 			}else{
 				Page.show(2,function(){
-					console.log(ado);
 					ado.add(ado);
 					Control.showAddress()
 				}, { y:0 });
@@ -494,7 +490,6 @@ var Control = {
 		});
 		//预览，生成明信片数据,LocalDataPostCard
 		$("#comments").bind("change",function(e){
-				console.log($(this).val());
 				//评论信息
 				CurrentPostCard.Comments=$(this).val();
 		});
@@ -590,7 +585,6 @@ var Control = {
 		var div = list.find("div");
 		var adr = new LeduiAddress();
 		var adds = adr.list();
-		console.log(adds);
 		if(adds.length>0){
 			div.hide();
 			ul.show().html("");
@@ -705,11 +699,9 @@ var Control = {
 				};
 				//}}}
 				if(isNew==false){
-					console.log("OLD");
 					var ul = $("#maillist ul");
 					ul.show();
 	    		}else{
-					console.log("NEW");
 					var ul = $("#maillist ul");
 					ul.html("").show();;
 					for(var i=postcards.length-1;i>=0;i--){
@@ -765,7 +757,6 @@ var Control = {
 							var lid=$(this).attr("LocalID");
 							var postcard = new LeduiPostCard();
 							CurrentPostCard = postcard.get(lid);
-							console.log(CurrentPostCard);
 							//正常新加，预览的返回为评论
 							Control.showPreview();
 
@@ -774,7 +765,6 @@ var Control = {
 							//用全局变量，解决在confirm后，lid的值变会的问题
 							window.__lid =$(this).attr("LocalID");
 							window.__p = $(this).parents("li");
-							console.log(window.lid);
 							confirm("delConfirm".tr(),{
 									cancel:function(){
 									},ok:function(){
@@ -785,7 +775,6 @@ var Control = {
 									
 										var postcard = new LeduiPostCard();
 										postcard.del(window.__lid);
-										console.log(window.__lid);
 										//window.__p.slideUp("fast",function(){window.__p.remove();});
 										window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
 									}

@@ -429,7 +429,7 @@ box-shadow:inset 0 5px 10px #f5f5f5,inset 0 -5px 10px #f5f5f5;
 }
 .rcvlist .list .checked{background:#666;cursor:default;
 box-shadow:inset 0 10px 10px #555;
-border-top-color:#666;
+border-top-color:#4e4e4e;
 border-bottom-color:#444;
 }
 .rcvlist .list .info{padding:15px 0;padding-left:65px;}
@@ -502,23 +502,23 @@ color:#fff;
 .preview .card{display:none;position:absolute;top:0;left:0;width:100%;height:100%;
 overflow:hidden;box-shadow:0 0 10px #555;
 
--webkit-animation-duration: 0.3s;
+-webkit-animation-duration: 0.4s;
 -webkit-animation-delay: 0s;
 -webkit-animation-timing-function: ease;
 -webkit-animation-fill-mode: both;
--moz-animation-duration: 0.3s;
+-moz-animation-duration: 0.4s;
 -moz-animation-delay: 0s;
 -moz-animation-timing-function: ease;
 -moz-animation-fill-mode: both;
--ms-animation-duration: 0.3s;
+-ms-animation-duration: 0.4s;
 -ms-animation-delay: 0s;
 -ms-animation-timing-function: ease;
 -ms-animation-fill-mode: both;
--o-animation-duration: 0.3s;
+-o-animation-duration: 0.4s;
 -o-animation-delay: 0s;
 -o-animation-timing-function: ease;
 -o-animation-fill-mode: both;
-animation-duration: 0.3s;
+animation-duration: 0.4s;
 animation-delay: 0s;
 animation-timing-function: ease;
 animation-fill-mode: both;
@@ -620,6 +620,12 @@ border-color:#555;
 .maillist .list li{position:relative;overflow:hidden;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;box-shadow:inset 0 -5px 10px #f7f7f7;
 opacity:1;
 -webkit-transform: translateX(0);
+-webkit-transform-style: translate3d(0,0,0);
+-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-ms-backface-visibility: hidden;
+-o-backface-visibility: hidden;
+backface-visibility: hidden;
 }
 .maillist .list .cardinfo{position:relative;min-height:160px;padding:20px 20px 20px 300px;}
 .maillist .list .checked{background:#fff;cursor:default;
