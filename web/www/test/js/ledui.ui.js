@@ -414,7 +414,6 @@ var Preview = {
 		var side = arguments[0];
 		if(side == this.side){ return this; }
 		
-		console.log('enter:'+this.side)
 		side = side ? side : (this.side != 'unknown' ? this.side : 'back');
 		if(side == this.side){ 
 			this.clear();
