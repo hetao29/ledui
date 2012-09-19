@@ -23,7 +23,7 @@ var DB={
 	setToken : function(uid,token){
 		_DB.set(this.uid,uid);
 		_DB.set(this.token,token);
-    },
+    	},
 	getToken : function(){
 		return _DB.get(this.token);
 	},
@@ -189,8 +189,8 @@ var LeduiAddress=function(){
 			}
 		}
 		_DB.set(this._key,all);
-     }
-	 this.del=function(LocalID){
+	}
+	this.del=function(LocalID){
 		var all = _DB.get(this._key) || [];
 		for(var i=0;i<all.length;i++){
 			if(all[i].LocalID== LocalID){
@@ -206,4 +206,3 @@ var LeduiAddress=function(){
 	this.upload=function(){
 	}
 }
-
