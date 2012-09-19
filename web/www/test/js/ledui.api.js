@@ -666,28 +666,28 @@ var Control = {
 	
 	},
 	showPreview:function(){
+		$("#postinfo [name='Name']").html(CurrentPostCard.Address[0].Name);
+		$("#postinfo [name='Address']").html(
+				CurrentPostCard.Address[0].Country+" "+
+				CurrentPostCard.Address[0].Privince +" "+
+				CurrentPostCard.Address[0].City+" "+
+				CurrentPostCard.Address[0].Address+" "
+				);
+		$("#postinfo [name='PostCode']").html(CurrentPostCard.Address[0].PostCode);
+		$("#msginfo [name='Name']").html(CurrentPostCard.Address[0].Name);
+		$("#msginfo [name='Comments']").html(CurrentPostCard.Comments);
+		var postcard = new LeduiPostCard();
+		postcard.add(CurrentPostCard);
+		//获取登录者的名字
+		//$("#msginfo [name='FromName']").html();
+		if(CurrentPostCard.photo){
+			var photoinfo = CurrentPostCard.photo;
+			var style = Photoinfo.tostyle(photoinfo);
+			var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
+			$('.card_front .photo').html('').append(img);
+		}
 		Page.show(5,function(){
 			    //显示预览页面
-			    $("#postinfo [name='Name']").html(CurrentPostCard.Address[0].Name);
-			    $("#postinfo [name='Address']").html(
-					    CurrentPostCard.Address[0].Country+" "+
-					    CurrentPostCard.Address[0].Privince +" "+
-					    CurrentPostCard.Address[0].City+" "+
-					    CurrentPostCard.Address[0].Address+" "
-					    );
-			    $("#postinfo [name='PostCode']").html(CurrentPostCard.Address[0].PostCode);
-			    $("#msginfo [name='Name']").html(CurrentPostCard.Address[0].Name);
-			    $("#msginfo [name='Comments']").html(CurrentPostCard.Comments);
-				var postcard = new LeduiPostCard();
-			    postcard.add(CurrentPostCard);
-			    //获取登录者的名字
-			    //$("#msginfo [name='FromName']").html();
-			    if(CurrentPostCard.photo){
-				    var photoinfo = CurrentPostCard.photo;
-				    var style = Photoinfo.tostyle(photoinfo);
-				    var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
-				    $('.card_front .photo').html('').append(img);
-			    }
 			    Preview.show();
 		});
 	},
