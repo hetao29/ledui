@@ -15,7 +15,7 @@ a:hover{}
 
 .screen{position:relative;width:600px;height:100%;margin:0 auto;overflow:hidden;background:#f1f1f2;}
 .pages{width:100%;height:100%;}
-.page{z-index:1;position:absolute;top:0;left:0;width:100%;height:100%;display:none;background:#f1f1f2;
+.page{z-index:2;position:absolute;top:0;left:0;width:100%;height:100%;display:none;background:#f1f1f2;
 
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
@@ -25,24 +25,24 @@ backface-visibility: hidden;
 
 -webkit-animation-duration: 0.3s;
 -webkit-animation-delay: 0s;
--webkit-animation-timing-function: ease;
--webkit-animation-fill-mode: both;
+-webkit-animation-timing-function: fadein;
+-webkit-animation-fill-mode: forwards;
 -moz-animation-duration: 0.3s;
 -moz-animation-delay: 0s;
--moz-animation-timing-function: ease;
--moz-animation-fill-mode: both;
+-moz-animation-timing-function: fadein;
+-moz-animation-fill-mode: forwards;
 -ms-animation-duration: 0.3s;
 -ms-animation-delay: 0s;
--ms-animation-timing-function: ease;
+-ms-animation-timing-function: fadein;
 -ms-animation-fill-mode: both;
 -o-animation-duration: 0.3s;
 -o-animation-delay: 0s;
--o-animation-timing-function: ease;
--o-animation-fill-mode: both;
+-o-animation-timing-function: fadein;
+-o-animation-fill-mode: forwards;
 animation-duration: 0.3s;
 animation-delay: 0s;
-animation-timing-function: ease;
-animation-fill-mode: both;
+animation-timing-function: fadein;
+animation-fill-mode: forwards;
 opacity: 1; 
 -webkit-transform: translateX(0);
 -moz-transform: translateX(0);
@@ -101,7 +101,7 @@ background: -moz-linear-gradient(top, #ffaa00, #ff8000);
 background: -o-linear-gradient(top, #ffaa00, #ff8000);
 background: -ms-linear-gradient(top, #ffaa00, #ff8000);
 }
-.apptitlebar{display:none;z-index:0;position:absolute;top:0;left:0;width:100%;}
+.apptitlebar{display:none;z-index:1;position:absolute;top:0;left:0;width:100%;}
 .titlebar .title{height:80px;color:#fff;font-size:40px;line-height:80px;text-align:center;font-weight:bold;}
 .titlebar .action{position:absolute;top:0;left:0;width:100%;height:100%;}
 .titlebar .action .l{position:absolute;top:12px;left:15px;}
