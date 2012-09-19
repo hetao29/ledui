@@ -397,13 +397,38 @@ var Preview = {
 		this.handle_front.bind('tapone', function(){ _this.show('front'); });
 		this.handle_back.bind('tapone', function(){ _this.show('back'); });
 	},
+	clear: function(){
+		this.panel_front
+		.removeClass('tofront')
+		.removeClass('toback')
+		.removeClass('atfront')
+		.removeClass('atback');
+		this.panel_back
+		.removeClass('tofront')
+		.removeClass('toback')
+		.removeClass('atfront')
+		.removeClass('atback');
+	},
 	show: function(side){
 		if(!this.isinit){ this.init(); }
 		var side = arguments[0];
 		if(side == this.side){ return this; }
-		side = side ? side : (this.side != 'unknown' ? this.side : 'back');
-		if(side == this.side){ return this; }
 		
+		console.log('enter:'+this.side)
+		side = side ? side : (this.side != 'unknown' ? this.side : 'back');
+		if(side == this.side){ 
+			this.clear();
+			if(side == 'front'){
+				this.panel_front.addClass('atfront').show();
+				this.panel_back.addClass('atback').show();
+			}else{
+				
+				this.panel_front.addClass('atback').show();
+				this.panel_back.addClass('atfront').show();
+			}
+			return this;
+		}
+		this.clear();
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
@@ -411,16 +436,8 @@ var Preview = {
 				this.panel_front.addClass('atfront').show();
 				this.panel_back.addClass('atback').show();
 			}else{
-				this.panel_front
-				.removeClass('atfront')
-				.removeClass('atback')
-				.removeClass('toback')
-				.addClass('tofront');
-				this.panel_back
-				.removeClass('atfront')
-				.removeClass('atback')
-				.removeClass('tofront')
-				.addClass('toback');
+				this.panel_front.addClass('tofront');
+				this.panel_back.addClass('toback');
 			}
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
@@ -429,16 +446,8 @@ var Preview = {
 				this.panel_front.addClass('atback').show();
 				this.panel_back.addClass('atfront').show();
 			}else{
-				this.panel_front
-				.removeClass('atfront')
-				.removeClass('atback')
-				.removeClass('tofront')
-				.addClass('toback');
-				this.panel_back
-				.removeClass('atfront')
-				.removeClass('atback')
-				.removeClass('toback')
-				.addClass('tofront');
+				this.panel_front.addClass('toback');
+				this.panel_back.addClass('tofront');
 			}
 		}
 		this.side = side;
