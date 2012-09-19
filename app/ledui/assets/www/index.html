@@ -104,7 +104,7 @@
 	<div class="panel_body_box">
 		<div class="rcvlist" id="rcvlist">
 			<div class="list">
-				<div class="null">没有可选地址，请添加</div>
+				<div class="null hide">没有可选地址，请添加</div>
 				<ul class="hide">
 					<li>
 						<div class="edit" active="yes"><div class="icon"></div></div>						
@@ -399,6 +399,7 @@
 		<div class="maillist" id="maillist">
 			<div class="list">
 			<ul>
+				<!--
 				<li>
 					<div class="cover">
 						<div class="photo">
@@ -415,7 +416,6 @@
 						<div class="act" active="yes"><span class="ico ico_delete"><em></em></span></div>
 					</div>
 				</li>
-				<!--
 				<li>
 					<div class="cover">
 						<div class="photo">
@@ -584,33 +584,17 @@
 		<div class="ft"></div>
 	</div>
 </div>
-<div class="overlay confirm" _name="delmail">
+<div class="overlay confirm" _name="confirm">
 	<div class="overlay_box">
 		<div class="hd">
 			<div class="title">注意</div>
 			<div class="close" active="yes"><div class="handle">X</div></div>
 		</div>
 		<div class="bd">
-			<div class="info"> 确认删除已保存的明信片? </div>
+			<div class="info"></div>
 			<div class="action">
-				<div class="button button_o" active="yes">确认</div>
 				<div class="button button_o" active="yes">取消</div>
-			</div>
-		</div>
-		<div class="ft"></div>
-	</div>
-</div>
-<div class="overlay confirm" _name="quit">
-	<div class="overlay_box">
-		<div class="hd">
-			<div class="title">注意</div>
-			<div class="close" active="yes"><div class="handle">X</div></div>
-		</div>
-		<div class="bd">
-			<div class="info">你确定要退出吗?</div>
-			<div class="action">
-				<div class="button button_o" id="quitOK" active="yes">确认</div>
-				<div class="button button_o" id="quitCancel" active="yes">取消</div>
+				<div class="button button_o" active="yes">确认</div>
 			</div>
 		</div>
 		<div class="ft"></div>
@@ -652,8 +636,8 @@
 	<ul id="islogin">
 		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
 		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱(0)</li>
-		<li active="yes" class="CAccount" tr="login"  mark="10">账号</li>
-		<li active="yes" class="CLogout" tr="signup" mark="11">退出</li>
+		<li active="yes" class="CAccount" tr="account"  mark="10">账号</li>
+		<li active="yes" class="CLogout" tr="logout" mark="11">退出</li>
 	</ul>
 </div>
 
@@ -670,6 +654,7 @@
 <script src="js/filtrr.js"></script> 
 <script src="js/ledui.ui.js"></script> 
 <script src="js/ledui.test.js"></script>
+<script src="js/ledui.db.js"></script>
 <script src="js/ledui.api.js"></script>
 <script src="js/tr.js"></script>
 <script src="js/city.js"></script>

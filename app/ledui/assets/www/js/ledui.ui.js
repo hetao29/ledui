@@ -1,8 +1,8 @@
 $(document).ready(function(){
-	Adapta.init();
-	Page.init(1);	
 	Touch.init();
 	UI.redefine();
+	Adapta.init();
+	Page.init(1);
 });
 
 //UI系统
@@ -11,6 +11,9 @@ var UI = {
 	redefine: function(){
 		window.alert = function(msg){
 			Overlay.show('alert', msg);	
+		}
+		window.confirm = function(msg, callback){
+			Overlay.show('confirm', msg, callback);	
 		}	
 	}
 } 
@@ -26,31 +29,39 @@ var Page = {
 		if(!this.total){ return; }
 		this.show(n);
 	},
-	show: function(n){
+	show: function(n, callback, scrollpos){
 		var n = parseInt(n, 10);
 		if(this.lock){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
 		var page_current = this.getpage(this.current), page = this.getpage(n);
 		if(!page){ return; }
 		
-		var show_direction = n > this.current ? 'right' : 'left'
-			,hide_direction = n > this.current ? 'left' :  'right'
+		var n0 = this.current;
+		var show_direction = n > n0 ? 'right' : 'left'
+			,hide_direction = n > n0 ? 'left' :  'right'
 			,_this = this;
 		if(page_current){
 			this.lock = true;
-			//this.screen.css('overflow', 'hidden');
 			page_current.addClass('hidefrom'+ hide_direction);
 			window.setTimeout(function(){					
 				page_current.hide().removeClass('hidefrom' + hide_direction);
-			}, 600);
+			}, 350);
 			page.addClass('showfrom'+ show_direction).show();
 			window.setTimeout(function(){
 				_this.lock = false;
-				//_this.screen.css('overflow', '');
 				page.removeClass('showfrom' + show_direction); 
-			}, 600);
+				if(typeof(callback) == 'function'){
+					callback();
+				}				
+				_this.chkscroll(page, scrollpos);	
+			}, 450);
 		}else{			
-			page.show();	
+			//first page load
+			page.show();
+			if(typeof(callback) == 'function'){
+				callback();
+			}	
+			this.chkscroll(page, scrollpos);	
 		}
 		
 		this.current_prev = this.current;
@@ -61,11 +72,9 @@ var Page = {
 			Adapta.layout();
 		}
 		
-		this.chkscroll(page);
-		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
-			appnav.show(); 
+			appnav.slideDown(); 
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){
@@ -116,7 +125,7 @@ var Page = {
 	gettotal: function(){ return this.total; },
 	getcurrent: function(){ return this.current; },
 	getcurrentpage: function(){ return this.getpage(this.current); },
-	chkscroll: function(page){
+	chkscroll: function(page, scrollpos){
 		var pg = page
 			,bd = pg.find('.panel_body')
 			,box = bd.find('.panel_body_box')
@@ -128,29 +137,43 @@ var Page = {
 				hScrollbar: false,
 				vScrollbar: true,
 				zoom: false,
+				bounce: true,
+				bounceLock: true, 
+				momentum: true, 
 				//解决浏览器里不能点击输入框的问题,hetal
 				onBeforeScrollStart: function (e) {
 					var target = e.target;
 					while (target.nodeType != 1) target = target.parentNode;
-					if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA'){
+					if(target.tagName!='SELECT'&&target.tagName!='INPUT'&&target.tagName!='TEXTAREA'){
 						e.preventDefault();
-					}	
+					}
 				}
 			};		
 		box.children().each(function(){ h += $(this).height(); })
 		box.css('height', h);
 		
-		$('[scrollinstall]').each(function(){
-			var sindex = $(this).attr('scrollindex');
-			$(this).removeAttr('scrollinstall').removeAttr('scrollindex');
-			_this.scrollers[sindex].destroy();
-			delete(_this.scrollers[sindex]);
-		});
-		this.sindex = -1;
 		if(bd.height() < h){
-			this.sindex ++;
-			this.scrollers[this.sindex]= new iScroll(bd.get(0), config);
-			bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
+			var sindex = -1;
+			if(!bd.attr('scrollinstall')){
+				this.sindex ++;
+				sindex = this.sindex;
+				this.scrollers[sindex] = new iScroll(bd.get(0), config);
+				bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
+			}
+			if(scrollpos){
+				sindex = bd.attr('scrollindex');
+				this.scrollers[sindex].refresh();
+				var x = scrollpos.x ? scrollpos.x : 0;
+				var y = scrollpos.y ? scrollpos.y : 0;
+				this.scrollers[sindex].scrollTo(x, y, 200);
+			}
+		}else{
+			var sindex = bd.attr('scrollindex');
+			if(sindex){
+				bd.removeAttr('scrollinstall').removeAttr('scrollindex');
+				_this.scrollers[sindex].destroy();
+				delete(_this.scrollers[sindex]);
+			}
 		}
 	}
 }
@@ -239,7 +262,7 @@ var Overlay = {
 		if(overlay_mask.length){ this.mask = overlay_mask; }
 		this.isinit = true;
 	},
-	show: function(name, message){
+	show: function(name, message, callback){
 		if(!this.isinit){ this.init(); }
 		if(name == this.curname){ return; }
 		var o = this.layers[name];
@@ -252,21 +275,48 @@ var Overlay = {
 			var btnok = o.find('.button').eq(0);
 			btnok.bind('tapone', function(){ _this.hide(); });
 			info.html(message);	
+		}else if(name == 'confirm'){
+			var info = o.find('.info');
+			var btnok = o.find('.button').eq(1);
+			var btncancel = o.find('.button').eq(0);
+			btnok.bind('tapone', function(){ 
+				_this.hide(function(){
+					if(callback){ 
+						if(typeof(callback.ok) == 'function'){
+							callback.ok();	
+						}
+					}
+				});
+			});
+			btncancel.bind('tapone', function(){ 
+				_this.hide(function(){
+					if(callback){ 
+						if(typeof(callback.cancel) == 'function'){
+							callback.cancel();	
+						}
+					}
+				});
+			});
+			info.html(message);
 		}
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.stop().animate({opacity: 0.5}, 500).show();
-		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 500);			
+		this.mask.stop().animate({opacity: 0.5}, 350).show();
+		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 350);			
 	},
-	hide: function(name){
+	hide: function(callback){
 		var o = this.layers[name ? name : this.curname]
 			,_this = this;
 		if(!o){ return; }			
 		o.addClass('hidefromtop');
-		this.curname = '';	
-		this.mask.stop().animate({opacity: 0}, 500, '', function(){ _this.mask.hide(); });
-		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 500);
+		this.curname = '';
+		this.mask.stop().animate({opacity: 0}, 350, '', function(){ _this.mask.hide();
+			if(typeof(callback) == 'function'){
+				callback();	
+			}
+		});
+		setTimeout(function(){ o.removeClass('hidefromtop').hide(); if(!_this.curname){ $('.overlays').hide(); } }, 350);
 	}	
 }
 
@@ -309,6 +359,7 @@ var Touch = {
 
 var Photoinfo = {
 	tostyle: function(info){
+		if(!info){ return ''; }
 		var prefix = ($.browser.webkit)  ? '-webkit-' : 
 				 ($.browser.mozilla) ? '-moz-' :
 				 ($.browser.ms)      ? '-o-' :
@@ -408,17 +459,14 @@ var PhotoEditor = {
 		this.loading.show();
 		//img loaded bind event
 		var _this = this;
-		this.img = $('<img id="photoeditorimg" deg="0" src='+ img +' />')
-		.appendTo(this.box)
+		this.img = $('<img id="photoeditorimg" deg="0"/>')
 		.bind('load', function(){
 			var size = _this.getimgsize();
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
-			_this.center();
-			setTimeout(function(){
 			_this.loading.hide();
-			}, 200);
+			_this.center();
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
 			/*Filtrr2('#photoeditorimg', function() {
@@ -430,8 +478,10 @@ var PhotoEditor = {
 			});*/
 		})
 		.bind('error', function(){
-			this.loading.hide();				
-		}).trigger("change");		
+			_this.loading.hide();				
+		}).appendTo(this.box).
+		attr("src",img).
+		trigger("change");		
 	},
 	bind: function(){
 		var _this = this;

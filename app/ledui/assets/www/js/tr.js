@@ -5,7 +5,14 @@ var LOCALE = {
 		addAddress:"输入新地址",
 		editAddress:"修改地址",
     		edit:"编辑",
-		need2login:"需要登录后才能继续..."
+		need2login:"需要登录后才能继续...",
+		delConfirm:"确认删除",
+		//明信片状态
+		st_unpay:"未支付",
+		st_uploading:"上传中",
+		st_printing:"等到打印",
+		st_posting:"等到邮寄",
+		st_posted:"已经寄出"
 	},
 	zh_tw:{
 		create:"创建一张明信片(zh_tw)"
