@@ -688,7 +688,7 @@ var Control = {
 				    var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
 				    $('.card_front .photo').html('').append(img);
 			    }
-			    Preview.showside('back');
+			    Preview.show();
 		});
 	},
 	showPostCard:function(){
