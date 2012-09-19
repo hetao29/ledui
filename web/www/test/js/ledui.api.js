@@ -680,10 +680,8 @@ var Control = {
 			var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
 			$('.card_front .photo').html('').append(img);
 		}
-		Page.show(5,function(){
-			    //显示预览页面
-			    Preview.show();
-		});
+		Preview.show();
+		Page.show(5);
 	},
 	showPostCard:function(){
 				var postcard = new LeduiPostCard;
