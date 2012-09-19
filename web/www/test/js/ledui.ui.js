@@ -14,6 +14,9 @@ var UI = {
 		}
 		window.confirm = function(msg, callback){
 			Overlay.show('confirm', msg, callback);	
+		}
+		window.onbeforeunload = function(){
+			$('body').html();	
 		}	
 	}
 } 
