@@ -395,8 +395,8 @@ var Preview = {
 	},
 	bind: function(){
 		var _this = this;
-		this.handle_front.bind('tapone', function(){ _this.showside('front', true); });
-		this.handle_back.bind('tapone', function(){ _this.showside('back', true); });
+		this.handle_front.bind('tapone', function(){ _this.show('front'); });
+		this.handle_back.bind('tapone', function(){ _this.show('back'); });
 	},
 	show: function(side){
 		if(!this.isinit){ this.init(); }
