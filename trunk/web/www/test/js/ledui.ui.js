@@ -16,6 +16,7 @@ var UI = {
 			Overlay.show('confirm', msg, callback);	
 		}
 		window.onbeforeunload = function(){
+			prompt('卸载!');
 			$('body').html();	
 		}	
 	}

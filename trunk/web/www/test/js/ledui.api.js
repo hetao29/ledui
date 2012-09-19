@@ -380,7 +380,7 @@ var Control = {
 			//ul.hide();
 			Page.show(9,function(){
 				Control.showPostCard();
-			}, { y:0 });
+			});
 		});
 		
 		$("#appnav .CLogout").bind("tapone",function(e){
