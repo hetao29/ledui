@@ -43,6 +43,8 @@ var Page = {
 		
 		if(page_current){
 			this.lock = true;
+			page_current.find('.panel_body').hide();
+			page.find('.panel_body').show();
 			page_current.addClass('hidefrom'+ hide_direction);
 			page.addClass('showfrom'+ show_direction).show();
 			
