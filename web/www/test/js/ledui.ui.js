@@ -27,7 +27,6 @@ var Page = {
 		this.pages = this.seri();
 		this.total = this.pages.length;
 		if(!this.total){ return; }
-		this.bind();
 		this.show(n);
 	},
 	show: function(n, callback, scrollpos){
