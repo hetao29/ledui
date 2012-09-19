@@ -403,12 +403,13 @@ var Preview = {
 		var side = arguments[0] ? arguments[0] : (this.side ? this.side : 'back'); 		
 		if(side == this.side){ return this; }
 		var _this = this;
+		
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
 			if(this.side == ''){
-				this.panel_front.addClass('atfront');
-				this.panel_back.addClass('atback');
+				this.panel_front.addClass('atfront').show();
+				this.panel_back.addClass('atback').show();
 			}else{
 				this.panel_front
 				.removeClass('atfront')
@@ -425,8 +426,8 @@ var Preview = {
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
 			if(this.side == ''){
-				this.panel_front.addClass('atback');
-				this.panel_back.addClass('atfront');
+				this.panel_front.addClass('atback').show();
+				this.panel_back.addClass('atfront').show();
 			}else{
 				this.panel_front
 				.removeClass('atfront')
