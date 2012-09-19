@@ -15,10 +15,6 @@ var UI = {
 		window.confirm = function(msg, callback){
 			Overlay.show('confirm', msg, callback);	
 		}
-		window.onbeforeunload = function(){
-			prompt('卸载!');
-			$('body').html();	
-		}	
 	}
 } 
 //页面显示控制
@@ -33,9 +29,6 @@ var Page = {
 		if(!this.total){ return; }
 		this.bind();
 		this.show(n);
-	},
-	bind: function(){
-		
 	},
 	show: function(n, callback, scrollpos){
 		var n = parseInt(n, 10);
@@ -66,7 +59,7 @@ var Page = {
 			//first page load
 			page.show();
 			//fake title bar delay show
-			setTimeout(function(){ $('.apptitlebar').show(); }, 200);
+			setTimeout(function(){ $('.apptitlebar').show(); }, 2000);
 			if(typeof(callback) == 'function'){ callback(); }	
 			this.chkscroll(page, scrollpos);	
 		}
