@@ -539,7 +539,8 @@ var Control = {
 				$("#login .errorbox").html("");
 				var sid=$(".sid","#login").val();
 				var pwd=$(".pwd","#login").val();
-				API.login({email:sid,passwd:pwd},function ok(result){
+				var uuid = DB.getUUID();
+				API.login({email:sid,passwd:pwd,uuid:uuid},function ok(result){
 					//登录成功,更新登录状态,跳到登录前的一页
 					$("#login .errorbox").fadeOut();
 					$("#isnotlogin").fadeOut();
