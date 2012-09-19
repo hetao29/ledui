@@ -380,7 +380,7 @@ var Photoinfo = {
 }
 
 var Preview = {
-	side: 'unknow',
+	side: 'unknown',
 	isinit: false,
 	init: function(){
 		this.handles = $('#chardchoice li');
@@ -401,14 +401,13 @@ var Preview = {
 		if(!this.isinit){ this.init(); }
 		var side = arguments[0];
 		if(side == this.side){ return this; }
-		side = side ? side : (this.side ? this.side : 'back'); 		
-		
-		var _this = this;
+		side = side ? side : (this.side != 'unknown' ? this.side : 'back');
+		if(side == this.side){ return this; }
 		
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
-			if(this.side == ''){
+			if(this.side == 'unknown'){
 				this.panel_front.addClass('atfront').show();
 				this.panel_back.addClass('atback').show();
 			}else{
@@ -426,7 +425,7 @@ var Preview = {
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
-			if(this.side == ''){
+			if(this.side == 'unknown'){
 				this.panel_front.addClass('atback').show();
 				this.panel_back.addClass('atfront').show();
 			}else{
