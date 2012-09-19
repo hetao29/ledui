@@ -628,11 +628,13 @@ border-bottom-color:#555;
 -ms-transform: scale(0.125);
 }*/
 .maillist .photo img{position:absolute;display:block;
+/*
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
 -ms-backface-visibility: hidden;
 -o-backface-visibility: hidden;
 backface-visibility: hidden;
+*/
 }
 .maillist .title{font-size:28px;}
 .maillist .title span{font-weight:bold;font-size:28px;}
