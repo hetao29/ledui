@@ -375,7 +375,8 @@ var Control = {
 		$("#appnav .CLogin").bind("tapone",function(e){Page.show(10);});		
 		$("#appnav .CRegister").bind("tapone",function(e){Page.show(11);});
 		$("#appnav .CPostCard").bind("tapone",function(e){					   
-				$("#maillist ul").html('');
+					var ul = $("#maillist ul");
+					ul.hide();
 				Page.show(9,function(){
 									 Control.showPostCard();
 				}, { y:0 });
@@ -603,7 +604,7 @@ var Control = {
 						}
 					}
 				}
-				var html='<li active="yes" '+check+'localid="'+adds[i].LocalID+'">'+
+				var html='<li active="yes" '+check+' LocalID="'+adds[i].LocalID+'">'+
 					'<div class="edit" LocalID="'+adds[i].LocalID+
 						'"active="yes"><div class="icon"></div></div>'+
 					'<div class="info">'+
@@ -689,11 +690,26 @@ var Control = {
 			    Preview.showside('back');
 		});
 	    },showPostCard:function(){
-	
-					var postcard = new LeduiPostCard;
-					var postcards = postcard.list();
+				var postcard = new LeduiPostCard;
+				var postcards = postcard.list();
+				//{{{ check change
+				var li = $("#maillist ul li");
+				var isNew = false;
+				if(li.size()==0)isNew=true;
+				for(var i=postcards.length-1,j=0;i>=0,j<li.size();i--,j++){
+					var localid1 = postcards[i].LocalID;
+					var localid2 = li.eq(j).attr("LocalID");
+					if(localid1 != localid2){ isNew=true;}
+				};
+				//}}}
+				if(isNew==false){
+					console.log("OLD");
 					var ul = $("#maillist ul");
-					ul.html("");
+					ul.show();
+	    			}else{
+					console.log("NEW");
+					var ul = $("#maillist ul");
+					ul.html("").show();;
 					for(var i=postcards.length-1;i>=0;i--){
 						(function(i){
 							setTimeout(function(){	  
@@ -715,7 +731,7 @@ var Control = {
 								}
 								
 								var style = Photoinfo.tostyle(photo);
-								var html='<li active="yes">'+
+								var html='<li active="yes" LocalID="'+postcards[i].LocalID+'">'+
 									'<div class="cardinfo"><div class="cover">'+
 									'<div class="photo">'+
 										'<img style="'+style+'" src="'+photo.o+'" />'+
@@ -727,8 +743,8 @@ var Control = {
 								'<div class="status"><label>状态</label>：<span class="'+st_css+'">'+st+'</span></div>'+
 								'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
 								'<div class="actions">'+
-									'<div class="act" active="yes"><span class="ico ico_view" localid="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
-									'<div class="act" active="yes"><span class="ico ico_delete" localid="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
+									'<div class="act" active="yes"><span class="ico ico_view" LocalID="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
+									'<div class="act" active="yes"><span class="ico ico_delete" LocalID="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
 								'</div></div></li>';
 								var li = $(html);
 								
@@ -772,6 +788,7 @@ var Control = {
 						})(i);
 						
 					}
+				}
 							
 		}
 }
