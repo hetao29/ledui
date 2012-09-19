@@ -27,7 +27,11 @@ var Page = {
 		this.pages = this.seri();
 		this.total = this.pages.length;
 		if(!this.total){ return; }
+		this.bind();
 		this.show(n);
+	},
+	bind: function(){
+		
 	},
 	show: function(n, callback, scrollpos){
 		var n = parseInt(n, 10);
@@ -43,24 +47,23 @@ var Page = {
 		if(page_current){
 			this.lock = true;
 			page_current.addClass('hidefrom'+ hide_direction);
-			window.setTimeout(function(){					
+			setTimeout(function(){					
 				page_current.hide().removeClass('hidefrom' + hide_direction);
 			}, 350);
 			page.addClass('showfrom'+ show_direction).show();
-			window.setTimeout(function(){
+			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
+			setTimeout(function(){
 				_this.lock = false;
 				page.removeClass('showfrom' + show_direction); 
-				if(typeof(callback) == 'function'){
-					callback();
-				}				
+				if(typeof(callback) == 'function'){ callback(); }				
 				_this.chkscroll(page, scrollpos);	
-			}, 450);
+			}, 400);
 		}else{			
 			//first page load
 			page.show();
-			if(typeof(callback) == 'function'){
-				callback();
-			}	
+			//fake title bar delay show
+			setTimeout(function(){ $('.apptitlebar').show(); }, 200);
+			if(typeof(callback) == 'function'){ callback(); }	
 			this.chkscroll(page, scrollpos);	
 		}
 		
@@ -74,7 +77,8 @@ var Page = {
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
-			appnav.slideDown(); 
+			//appnav.slideDown(); 
+			appnav.show();
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){
