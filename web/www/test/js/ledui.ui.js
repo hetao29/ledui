@@ -407,8 +407,8 @@ var Preview = {
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
 			if(this.side == ''){
-				this.panel_front.addClass('tofront');
-				this.panel_back.addClass('toback');
+				this.panel_front.addClass('atfront');
+				this.panel_back.addClass('atback');
 			}else{
 				this.panel_front
 				.removeClass('atfront')
