@@ -398,35 +398,22 @@ var Preview = {
 		this.handle_front.bind('tapone', function(){ _this.showside('front', true); });
 		this.handle_back.bind('tapone', function(){ _this.showside('back', true); });
 	},
-	showside: function(side, animate){
+	showside: function(side){
 		if(!this.isinit){ this.init(); }
 		if(side == this.side){ return this; }
 		var _this = this;
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
-			if(animate){				
-				this.panel_front.removeClass('toback').addClass('tofront');
-				this.panel_back.removeClass('tofront').addClass('toback');
-				this.panel.removeClass('atback').removeClass('atfront');
-			}else{
-				this.panel.removeClass('atback').addClass('atfront');
-			}
-			
+			this.panel_front.removeClass('toback').addClass('tofront');
+			this.panel_back.removeClass('tofront').addClass('toback');
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
-			if(animate){
-				this.panel_front.removeClass('tofront').addClass('toback');
-				this.panel_back.removeClass('toback').addClass('tofront');
-				this.panel.removeClass('atback').removeClass('atfront');
-			}else{
-				this.panel.removeClass('atfront').addClass('atback');
-			}
+			this.panel_front.removeClass('tofront').addClass('toback');
+			this.panel_back.removeClass('toback').addClass('tofront');
 		}
-		
 		this.side = side;
-		
 		return this;
 	}
 }
