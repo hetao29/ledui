@@ -471,8 +471,11 @@ var PhotoEditor = {
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
+			setTimeout(function(){
 			_this.loading.hide();
 			_this.center();
+			_this.img.stop().animate({opacity: 1}, 300);
+			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
 			/*Filtrr2('#photoeditorimg', function() {
@@ -484,10 +487,12 @@ var PhotoEditor = {
 			});*/
 		})
 		.bind('error', function(){
-			_this.loading.hide();				
-		}).appendTo(this.box).
-		attr("src",img).
-		trigger("change");		
+			_this.loading.hide();
+		})
+		.appendTo(this.box)
+		.css('opacity', 0.5)
+		.attr('src', img)
+		.trigger("change");		
 	},
 	bind: function(){
 		var _this = this;
