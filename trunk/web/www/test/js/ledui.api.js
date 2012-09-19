@@ -10,7 +10,8 @@ var CurrentPostCard = new LeduiPostCard;
 //{{{
 var AjaxSetup={
 	stat:0, //0,1 start, 2 complete
-	msg:""
+	msg:"",
+	showLoading:true
 }
 $.ajaxSetup({
   global: false,
@@ -21,7 +22,8 @@ $.ajaxSetup({
 	AjaxSetup.stat=1;
 	setTimeout(function(){
 		if(AjaxSetup.stat==1){
-			Loading.show(AjaxSetup.msg);
+			if(AjaxSetup.showLoading)Loading.show(AjaxSetup.msg);
+			AjaxSetup.showLoading=true;
 			AjaxSetup.stat=0;
 		}
 	},600);
@@ -120,6 +122,7 @@ var API = {
 		param.UserID= DB.getUID();
 		var addr = new LeduiAddress;
 		param.AddressData = JSON.stringify(addr.list());
+		AjaxSetup.showLoading=false;
 		$.ajax({
 		   type: "POST",
 		   url: API.host+"/user/synAddress",
