@@ -406,13 +406,39 @@ var Preview = {
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
-			this.panel_front.removeClass('toback').addClass('tofront');
-			this.panel_back.removeClass('tofront').addClass('toback');
+			if(this.side == ''){
+				this.panel_front.addClass('tofront');
+				this.panel_back.addClass('toback');
+			}else{
+				this.panel_front
+				.removeClass('atfront')
+				.removeClass('atback')
+				.removeClass('toback')
+				.addClass('tofront');
+				this.panel_back
+				.removeClass('atfront')
+				.removeClass('atback')
+				.removeClass('tofront')
+				.addClass('toback');
+			}
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
-			this.panel_front.removeClass('tofront').addClass('toback');
-			this.panel_back.removeClass('toback').addClass('tofront');
+			if(this.side == ''){
+				this.panel_front.addClass('toback');
+				this.panel_back.addClass('tofront');
+			}else{
+				this.panel_front
+				.removeClass('atfront')
+				.removeClass('atback')
+				.removeClass('tofront')
+				.addClass('toback');
+				this.panel_back
+				.removeClass('atfront')
+				.removeClass('atback')
+				.removeClass('toback')
+				.addClass('tofront');
+			}
 		}
 		this.side = side;
 		return this;

@@ -796,6 +796,9 @@ opacity:1;
 	animation-name: hidefromtop;
 }
 
+.atback{-moz-transform: rotateY(180deg);}
+.atfront{-moz-transform: rotateY(0);}
+
 @-webkit-keyframes toback { 
 0% { -webkit-transform: rotateY(0deg); }
 100% { -webkit-transform: rotateY(180deg); }
@@ -818,12 +821,6 @@ opacity:1;
 	-o-animation-name: toback;
 	animation-name: toback;
 }
-
-.preview .atfront .card_front{visibility:visible;}
-.preview .atfront .card_back{visibility:hidden;}
-.preview .atback .card_front{visibility:hidden;}
-.preview .atback .card_back{visibility:visible;}
-
 
 @-webkit-keyframes tofront { 
 0% { -webkit-transform: rotateY(180deg); }
