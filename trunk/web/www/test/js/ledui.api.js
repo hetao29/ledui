@@ -617,6 +617,37 @@ var Control = {
 		
 		
 			
+		//选择地址
+		$('#rcvlist li .info').live('click', function(){
+			$(this).parent().toggleClass('checked');
+			
+			var adr = $("#rcvlist li.checked");
+			CurrentPostCard.Address=[];
+			CurrentPostCard.AddressID=[];
+			var ado = new LeduiAddress();
+			for(var i=0;i<adr.length;i++){
+				CurrentPostCard.AddressID.push($(adr[i]).attr("LocalID"));
+			}
+		});		
+		//编辑地址
+		$('#rcvlist li .edit').live('click', function(){
+			var id = $(this).attr("LocalID");
+			var ado = new LeduiAddress();
+			var adr = ado.get(id);
+			if(id && adr){
+				$("#head_add .adrchk").hide();
+				$("#head_add .title").html("editAddress".tr());
+				$("#delAddress").attr("LocalID",id).show();
+				$("#addAddress").text("edit".tr());
+				$("#rcvform").each(function(){
+					for(var i in adr){
+						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
+					}
+				});
+				Page.show(3);
+			}
+			return false;
+		});		
 		$('#maillist .ico_view').live('click', function(){
 				//回到管理邮箱
 				$("#titlebar_preview .button_s_back").attr("_back",9);
@@ -732,38 +763,6 @@ var Control = {
 			ul.hide();
 		}
 		
-		//选择地址
-		$('#rcvlist li .info').bind('tapone', function(){
-			$(this).parent().toggleClass('checked');
-			
-			var adr = $("#rcvlist li.checked");
-			CurrentPostCard.Address=[];
-			CurrentPostCard.AddressID=[];
-			var ado = new LeduiAddress();
-			for(var i=0;i<adr.length;i++){
-				CurrentPostCard.AddressID.push($(adr[i]).attr("LocalID"));
-			}
-		});		
-		//编辑地址
-		$('#rcvlist li .edit').bind('tapone', function(){
-			var id = $(this).attr("LocalID");
-			var ado = new LeduiAddress();
-			var adr = ado.get(id);
-			if(id && adr){
-				$("#head_add .adrchk").hide();
-				$("#head_add .title").html("editAddress".tr());
-				$("#delAddress").attr("LocalID",id).show();
-				$("#addAddress").text("edit".tr());
-				$("#rcvform").each(function(){
-					for(var i in adr){
-						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
-					}
-				});
-				Page.show(3);
-
-			}
-			return false;
-		});		
 	
 	},
 	showPreview:function(){		
