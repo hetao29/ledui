@@ -9,6 +9,7 @@ class api_user{
 		$email = $_POST['email'];
 		$passwd = $_POST['passwd'];
 		$passwd2 = $_POST['passwd2'];
+		$device = $_POST['device'];
 		if(empty($email) || !SUtil::validEmail($email)){
 			$result->error_msg=SLanguage::tr("error_10001","error");
 			$result->error_code=-10001;
@@ -31,6 +32,9 @@ class api_user{
 				$user['UserSID'] = $email;
 				$user['UserPassword'] = $passwd;
 				$db->addUser($user);
+				$user = $db->getUserByEmail($email);
+				$device['UserID'] = $user['UserID'];
+				$db->addDevice($device);
 				user_api::loginMobile($user);
 				$result->error_code = 0;
 				$data->UserID = $user['UserID'];
@@ -114,8 +118,9 @@ class api_user{
 		return SJson::encode($result);
 	}
 	/**
-	  * 同步用户地址
+	  * 同步用户地址 @废弃
 	  */
+	/*
 	public function PageSynAddress($inPath){
 		$result = new api_result;
 		$token = $_POST['token'];
@@ -130,15 +135,25 @@ class api_user{
 			//更新用户所有的Address为删除状态
 			$db->updateAddressDelByUserID($uid,1);
 		}else{
-			$result->error_code = 0;
-			exit;
+			$adds = $db->getAddressListByUserID($uid,0);
+			if(count($adds)>0){
+				$result->error_code = 0;
+				$result->result = $adds;
+				exit;
+			}else{
+				$result->error_code = -1;
+				exit;
+			}	
 		}
 		foreach($r as &$t){
 			//TODO
 			//更新记录，或者新增记录
 			$t=(array)$t;
 			$addID = $t['AddressID'];
-			$addr=array();;
+			$addr=array();
+			$addr['AddressID'] = $t['AddressID'];
+			$addr['UserID'] = $t['AddressID'];
+
 			if(isset($addID)){
 				if(user_api::isAddressExist($addID))
 					$db->updateAddressDelByAddID($addID,0);
@@ -149,31 +164,9 @@ class api_user{
 			}
 			//更新当前记录为正常记录
 		}
-		$result->result = $r; 
+		$result->result = $db->getAddressListByUserID($uid,0); 
 		$result->error_code = 0;
 		return SJson::encode($result);
-		exit;
-		/*
-		$Address=array();
-		if(empty($_REQUEST['Name'])){	$result->error_code = -1;	};
-		if(empty($_REQUEST['Country'])){	$result->error_code = -1;	};
-		if(empty($_REQUEST['Address'])){	$result->error_code = -1;	};
-		$Address['Name']=$_REQUEST['Name'];
-		$Address['Address']=$_REQUEST['Address'];
-		$Address['Country']=$_REQUEST['Country'];
-		if(isset($_REQUEST['Mobile']))$Address['Mobile']=$_REQUEST['Mobile'];
-		if(isset($_REQUEST['Phone']))$Address['Phone']=$_REQUEST['Phone'];
-		if(isset($_REQUEST['Email']))$Address['Email']=$_REQUEST['Email'];
-		if(isset($_REQUEST['PostCode']))$Address['PostCode']=$_REQUEST['PostCode'];
-		
-		if(user_api::isLoginMobile($userID,$token) == true){
-			$id =  $db->addAddress($Address);
-			$result->result =  $db->getAddress($id);
-			$result->error_code = 0;
-		}else{
-			$result->error_code = -1;
-		}
-		return SJson::encode($result);
-		*/
 	}
+	*/
 }
