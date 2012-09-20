@@ -108,8 +108,6 @@ $(document).ready(function(){
 		var e = $(this)
 			,k = $(e).attr("tr_placeholder")
 			,v = tr(k)
-			console.log($(this));
-			console.log($(this));
 		if(v){ e.attr("placeholder", v); }
 	});
 	
