@@ -465,6 +465,10 @@ var Control = {
 					alert("请选择图片");
 					return;
 				};
+				if(PhotoEditor.isready==false){
+					alert("图片加载中，请稍后");
+					return;
+				}
 				//选择了文件
 				var file = new LeduiFile;
 				file.FilePath = src;
