@@ -29,6 +29,11 @@ var Page = {
 		if(!this.total){ return; }
 		this.show(n);
 	},
+	setst: function(page, stclass){
+		page
+		.removeClass('page_atleft page_atcenter page_atright showfromleft showfromright hidefromleft hidefromright')
+		.addClass(stclass)
+	},
 	show: function(n, callback, scrollpos){
 		var n = parseInt(n, 10);
 		if(this.lock){ return; }
@@ -40,33 +45,6 @@ var Page = {
 		var show_direction = n > n0 ? 'right' : 'left'
 			,hide_direction = n > n0 ? 'left' :  'right'
 			,_this = this;
-		
-		if(page_current){
-			this.lock = true;
-			page_current.find('.panel_body').hide();
-			page.find('.panel_body').show();
-			page_current.addClass('hidefrom'+ hide_direction);
-			page.addClass('showfrom'+ show_direction).show();
-			
-			setTimeout(function(){					
-				page_current.hide().removeClass('hidefrom' + hide_direction);
-				page.removeClass('showfrom' + show_direction);
-				_this.lock = false;
-			}, 500);
-			
-			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
-			setTimeout(function(){				 
-				if(typeof(callback) == 'function'){ callback(); }				
-				_this.chkscroll(page, scrollpos);	
-			}, 350);
-		}else{			
-			//first page load
-			page.show();
-			//fake title bar delay show
-			setTimeout(function(){ $('.apptitlebar').show(); }, 2000);
-			if(typeof(callback) == 'function'){ callback(); }	
-			this.chkscroll(page, scrollpos);	
-		}
 		
 		this.current_prev = this.current;
 		this.current = n;
@@ -90,6 +68,32 @@ var Page = {
 			});
 		}
 		else{ appnav.hide(); }
+		
+		
+		if(page_current){
+			this.lock = true;
+			this.setst(page_current, 'hidefrom'+ hide_direction);
+			this.setst(page, 'page_at'+ show_direction + ' ' + 'showfrom'+ show_direction);
+			
+			setTimeout(function(){
+				_this.setst(page_current, 'page_at' + hide_direction);					
+				_this.setst(page, 'page_atcenter');
+				_this.lock = false;
+			}, 400);
+			
+			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
+			setTimeout(function(){				 
+				if(typeof(callback) == 'function'){ callback(); }				
+				_this.chkscroll(page, scrollpos);	
+			}, 350);
+		}else{			
+			//first page load
+			this.setst(page, 'page_atcenter');
+			//fake title bar display delay
+			setTimeout(function(){ $('.apptitlebar').show(); }, 1000);
+			if(typeof(callback) == 'function'){ callback(); }	
+			this.chkscroll(page, scrollpos);	
+		}
 		
 		return this;
 	},
