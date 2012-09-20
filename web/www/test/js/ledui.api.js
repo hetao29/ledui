@@ -617,67 +617,6 @@ var Control = {
 		
 		
 			
-		//选择地址
-		$('#rcvlist li .info').live('click', function(){
-			$(this).parent().toggleClass('checked');
-			
-			var adr = $("#rcvlist li.checked");
-			CurrentPostCard.Address=[];
-			CurrentPostCard.AddressID=[];
-			var ado = new LeduiAddress();
-			for(var i=0;i<adr.length;i++){
-				CurrentPostCard.AddressID.push($(adr[i]).attr("LocalID"));
-			}
-		});		
-		//编辑地址
-		$('#rcvlist li .edit').live('click', function(){
-			var id = $(this).attr("LocalID");
-			var ado = new LeduiAddress();
-			var adr = ado.get(id);
-			if(id && adr){
-				$("#head_add .adrchk").hide();
-				$("#head_add .title").html("editAddress".tr());
-				$("#delAddress").attr("LocalID",id).show();
-				$("#addAddress").text("edit".tr());
-				$("#rcvform").each(function(){
-					for(var i in adr){
-						$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
-					}
-				});
-				Page.show(3);
-			}
-			return false;
-		});		
-		$('#maillist .ico_view').live('click', function(){
-				//回到管理邮箱
-				$("#titlebar_preview .button_s_back").attr("_back",9);
-				var lid=$(this).attr("LocalID");
-				var postcard = new LeduiPostCard();
-				CurrentPostCard = postcard.get(lid);
-				//正常新加，预览的返回为评论
-				Control.showPreview();
-
-		});
-		$('#maillist .ico_delete').live('click', function(){
-				//用全局变量，解决在confirm后，lid的值变会的问题
-				window.__lid =$(this).attr("LocalID");
-				window.__p = $(this).parents("li");
-				confirm("delConfirm".tr(),{
-						cancel:function(){
-						},ok:function(){
-						//删除明信片
-						//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
-						//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
-						//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
-						
-							var postcard = new LeduiPostCard();
-							postcard.del(window.__lid);
-							//window.__p.slideUp("fast",function(){window.__p.remove();});
-							window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
-						}
-					}
-				);
-		});			
 
 		$("#IDLogin").bind("tapone", function(e){
 				$("#login .errorbox").html("");
@@ -756,7 +695,39 @@ var Control = {
 					'<span class="phone">'+(adds[i].Mobile||"")+'</span>'+
 					'<span class="address">'+(adds[i].Country||"")+" "+(adds[i].Privince||"")+" " +(adds[i].City||"")+" "+adds[i].Address+'</span>'+
 					'</div></li>';
-				ul.append(html);
+				var li=$(html);
+				//选择地址
+				li.find('.info').bind('tapone', function(){
+					$(this).parent().toggleClass('checked');
+
+					var adr = $("#rcvlist li.checked");
+					CurrentPostCard.Address=[];
+					CurrentPostCard.AddressID=[];
+					var ado = new LeduiAddress();
+					for(var i=0;i<adr.length;i++){
+						CurrentPostCard.AddressID.push($(adr[i]).attr("LocalID"));
+					}
+				});		
+				//编辑地址
+				li.find('.edit').bind('tapone', function(){
+					var id = $(this).attr("LocalID");
+					var ado = new LeduiAddress();
+					var adr = ado.get(id);
+					if(id && adr){
+						$("#head_add .adrchk").hide();
+						$("#head_add .title").html("editAddress".tr());
+						$("#delAddress").attr("LocalID",id).show();
+						$("#addAddress").text("edit".tr());
+						$("#rcvform").each(function(){
+							for(var i in adr){
+							$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
+							}
+							});
+						Page.show(3);
+					}
+					return false;
+				});		
+				ul.append(li);
 			}
 		}else{
 			div.show();
@@ -849,7 +820,35 @@ var Control = {
 					'<div class="act" active="yes"><span class="ico ico_delete" LocalID="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+
 				'</div></div></li>';
 				var li = $(html);
-				
+				li.find(".ico_view").bind("tapone",function(e){
+					//回到管理邮箱
+					$("#titlebar_preview .button_s_back").attr("_back",9);
+					var lid=$(this).attr("LocalID");
+					var postcard = new LeduiPostCard();
+					CurrentPostCard = postcard.get(lid);
+					//正常新加，预览的返回为评论
+					Control.showPreview();
+				});
+				li.find(".ico_delete").bind("tapone",function(e){
+					//用全局变量，解决在confirm后，lid的值变会的问题
+					window.__lid =$(this).attr("LocalID");
+					window.__p = $(this).parents("li");
+					confirm("delConfirm".tr(),{
+						cancel:function(){
+						},ok:function(){
+						//删除明信片
+						//取消订单，从服务端删除PostCardID(不实际删除，只用标记出来)
+						//如果已经支付，但是还没有上传成功图片的订单，这里需要退款到用户账户
+						//如果其它状态，直接标志就可以了，然后删除本地的记录，但是服务器还保留
+						
+							var postcard = new LeduiPostCard();
+							postcard.del(window.__lid);
+							//window.__p.slideUp("fast",function(){window.__p.remove();});
+							window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
+						}
+						}
+					);
+				});			
 				ul.append(li);
 			}
 			//console.log(+new Date());
