@@ -61,7 +61,6 @@ class api_postcard{
 		//{{{ * 2.判定是不是已经有PostCardID，如果有值，且数据库里的值，且是本人的话，就是修改，没有就是新增
 		$isNewPostCard=true;
 		if(empty($postcard_tmp->PostCardID)){
-			$isNewPostCard=true;
 		}else{
 			$newPostCard = $db->getPostCard($postcard_tmp->PostCardID,$this->uid);
 			if(!empty($newPostCard)){
@@ -74,7 +73,7 @@ class api_postcard{
 			$newPostCard['UserID']		=$this->uid;
 			$newPostCard['Latitude']	=$postcard_tmp->Latitude;
 			$newPostCard['Longitude']	=$postcard_tmp->Longitude;
-			$newPostCard['IP']		=SUtil::getIP();
+			$newPostCard['IP']		=SUtil::getIP(true);
 			$newPostCard['Comment']		=$postcard_tmp->Comments;
 			$newPostCard['ImageFileID']	=$postcard_tmp->ImageFileID;
 			if(!empty($postcard_tmp->photo)){
@@ -89,9 +88,9 @@ class api_postcard{
 			$user_db = new user_db;
 			$data->Address=array();
 			foreach($postcard_tmp->Address as &$adr_tmp){
+					$adr_tmp=(object)$adr_tmp;
 				$isnew=true;
 				if(empty($adr_tmp->AddressID)){
-					$isnew=true;
 				}else{
 					$adr= $user_db->getAddress($adr_tmp->AddressID,$this->uid);
 					if(empty($adr)){
@@ -100,9 +99,11 @@ class api_postcard{
 					}else{
 						//老地址，更新
 						foreach($adr as $k=>$v){
+							if(isset($adr_tmp->$k))
 							$adr[$k]=$adr_tmp->$k;
 						}
 						$user_db->updateAddress($adr_tmp->AddressID,$adr);
+						$isnew=false;
 					}
 				}
 				if($isnew){

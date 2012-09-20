@@ -584,8 +584,10 @@ var Control = {
 				if(isLogin){
 					//开始掉用接口
 					//修改登录，注册，返回页面为 0
+					var postobj  = new LeduiPostCard;
+					var postcard = postobj.get(CurrentPostCard.LocalID);
 					API.postPostCard(
-						CurrentPostCard,function ok(){
+						postcard,function ok(){
 							$("#titlebar_login .button_s_back").attr("_back",0);
 							$("#titlebar_register .button_s_back").attr("_back",0);
 							$("#titlebar_about .button_s_back").attr("_back",0);
