@@ -679,9 +679,9 @@ var Control = {
 			//显示各地址
 			for(var i =0;i<adds.length;i++){
 				var check="";
-				if(CurrentPostCard.Address){
-					for(var j=0;j<CurrentPostCard.Address.length;j++){
-						if(adds[i].LocalID == CurrentPostCard.Address[j].LocalID){
+				if(CurrentPostCard.AddressID){
+					for(var j=0;j<CurrentPostCard.AddressID.length;j++){
+						if(adds[i].LocalID == CurrentPostCard.AddressID[j]){
 							check='class="checked"';
 						}
 					}
