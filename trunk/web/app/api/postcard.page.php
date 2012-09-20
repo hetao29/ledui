@@ -28,7 +28,35 @@ class api_postcard{
 	 */
 	public function pagePost($inPath){
 		$result = new api_result;
-		$PostCard = SJson::decode($_REQUEST['PostCard']);
+		$postcard_tmp = SJson::decode($_REQUEST['PostCard']);
+		$postcard = array();
+		$db = new postcard_db;
+		//{{{
+		$fileid = new image_fileid;
+		$width=0;$height=0;
+		if(!empty($postcard_tmp->photo->width)){
+			$width = $postcard_tmp->photo->width;
+		}
+		if(!empty($postcard_tmp->photo->height)){
+			$width = $postcard_tmp->photo->height;
+		}
+
+		$imagefileid = $fileid->gen($width,$height);
+		$imagedb = new image_db;
+		if(empty($postcard_tmp->ImageFileID)){
+			$postcard_tmp->ImageFileID = $imagefileid;
+		}else{
+			$image = $imagedb->getImage($postcard_tmp->ImageFileID,$this->uid);
+			if(empty($image)){
+				$postcard_tmp->ImageFileID = $imagefileid;
+			}
+		}
+		print_r($postcard_tmp);exit;
+		//}}}
+		if(empty($postcard['PostCardID'])){
+			$id = $postcard['PostCardID'];
+			$p = $db->getPostCard($id,$this->uid);
+		}
 
 		$data=new stdclass;
 		$data->PostCardID="TO GEN";
@@ -46,7 +74,7 @@ class api_postcard{
 	 * 列出明信片
 	 * 只列出状态标记为未删除的明信片
 	 */
-	public function pageDel($inPath){
+	public function pageList($inPath){
 	}
 	/**
 	 * 删除明信片
