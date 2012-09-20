@@ -176,6 +176,80 @@ var API = {
 		   }
 		});
 	},
+	//删除地址
+	delAddress:function(id,ok,error){
+		var param={};
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.id= id;
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/address/del",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+				if(ok)ok(msg);
+			   }else{
+				   if(error && msg.error_msg)error(msg.error_msg);
+			   }
+		   },
+		   error:function(msg){
+		   	if(error)error(msg);
+		   }
+		});
+		
+	},
+	//删除地址
+	listAddress:function(ok,error){
+		var param={};
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		$.ajax({
+		   type: "POST",
+		   url: API.host+"/address/list",
+		   data: param,
+		   dataType: "JSON",
+		   success: function(msg){
+			   if(msg && msg.result && msg.error_code==0){
+			   	if(msg.result.items && msg.result.items.length>0){
+					var adr = new LeduiAddress;
+					var localAddr=adr.list(DB.getUID());
+					console.log(localAddr)
+					for(var i=0;i<msg.result.items.length;i++){
+						var item=msg.result.items[i];
+						var adr2 = new LeduiAddress;
+						for(var x in item){
+							adr2[x]=item[x];
+						}
+						//var isnew=true;
+						for(var j=0;j<localAddr.length;j++){
+						console.log(localAddr[j]);
+						console.log(item);
+							if(localAddr[j].AddressID==item.AddressID){
+								console.log("EXISTS");
+								adr2.LocalID = localAddr[j].LocalID;
+								//isnew=false;
+							};
+						}
+						//if(isnew){
+							adr.add(adr2);
+						//}
+
+						console.log(item);
+					}
+				}
+				if(ok)ok(msg);
+			   }else{
+				   if(error && msg.error_msg)error(msg.error_msg);
+			   }
+		   },
+		   error:function(msg){
+		   	if(error)error(msg);
+		   }
+		});
+		
+	},
 	upload:function(PostCardID,imageURI){
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		
@@ -538,7 +612,7 @@ var Control = {
 		var ul = list.find("ul");
 		var div = list.find("div");
 		var adr = new LeduiAddress();
-		var adds = adr.list();
+		var adds = adr.list(DB.getUID());
 		if(adds.length>0){
 			div.hide();
 			ul.show().html("");
