@@ -128,12 +128,26 @@ var API = {
 			dataType: "JSON",
 			success: function(msg){
 				if(msg && msg.result && msg.error_code==0){
+					//update address
+					if(msg.result.PostCardID && msg.result.LocalID){
+						var pst = new LeduiPostCard;
+						pst.add(msg.result);
+					}
+					if(msg.result.Address){
+						var adr = new LeduiAddress;
+						//var localAddr=adr.list(DB.getUID());
+						//console.log(localAddr)
+						for(var i=0;i<msg.result.Address.length;i++){
+							console.log(msg.result.Address[i]);
+							adr.add(msg.result.Address[i]);
+						}
+
+					}
 					//console.log(msg.result);
 					//OrderID
 					//PayURL
 					//PostCard
 					//UserID
-					//LocalID(postcard)
 					if(ok){ ok(msg); }
 				}else{
 					if(error && msg.error_msg){ error(msg.error_msg); }

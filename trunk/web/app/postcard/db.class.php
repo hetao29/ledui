@@ -26,4 +26,9 @@ class postcard_db{
 			return $this->_db->selectOne("t_postcard",array("PostCardID"=>$PostCardID));
 		}
 	}
+	function addPostCard($PostCard){
+		if(isset($PostCard['PostCardID']))
+			unset($PostCard['PostCardID']);
+		return $this->_db->insert("t_postcard",$PostCard);
+	}
 }
