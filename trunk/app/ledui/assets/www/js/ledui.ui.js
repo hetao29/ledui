@@ -14,7 +14,7 @@ var UI = {
 		}
 		window.confirm = function(msg, callback){
 			Overlay.show('confirm', msg, callback);	
-		}	
+		}
 	}
 } 
 //页面显示控制
@@ -40,27 +40,31 @@ var Page = {
 		var show_direction = n > n0 ? 'right' : 'left'
 			,hide_direction = n > n0 ? 'left' :  'right'
 			,_this = this;
+		
 		if(page_current){
 			this.lock = true;
+			//page_current.find('.panel_body').hide();
+			//page.find('.panel_body').show();
 			page_current.addClass('hidefrom'+ hide_direction);
-			window.setTimeout(function(){					
-				page_current.hide().removeClass('hidefrom' + hide_direction);
-			}, 350);
 			page.addClass('showfrom'+ show_direction).show();
-			window.setTimeout(function(){
+			
+			setTimeout(function(){					
+				page_current.hide().removeClass('hidefrom' + hide_direction);
+				page.removeClass('showfrom' + show_direction);
 				_this.lock = false;
-				page.removeClass('showfrom' + show_direction); 
-				if(typeof(callback) == 'function'){
-					callback();
-				}				
+			}, 500);
+			
+			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
+			setTimeout(function(){				 
+				if(typeof(callback) == 'function'){ callback(); }				
 				_this.chkscroll(page, scrollpos);	
-			}, 450);
+			}, 350);
 		}else{			
 			//first page load
 			page.show();
-			if(typeof(callback) == 'function'){
-				callback();
-			}	
+			//fake title bar delay show
+			setTimeout(function(){ $('.apptitlebar').show(); }, 2000);
+			if(typeof(callback) == 'function'){ callback(); }	
 			this.chkscroll(page, scrollpos);	
 		}
 		
@@ -70,11 +74,12 @@ var Page = {
 		if( page.attr('layout_width') != Adapta.layoutinfo.width 
 			|| page.attr('layout_height') != Adapta.layoutinfo.height){
 			Adapta.layout();
-		}
+		}	
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
-			appnav.slideDown(); 
+			//appnav.slideDown(); 
+			appnav.show();
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){
@@ -377,12 +382,13 @@ var Photoinfo = {
 }
 
 var Preview = {
-	side: '',
+	side: 'unknown',
 	isinit: false,
 	init: function(){
 		this.handles = $('#chardchoice li');
 		this.handle_front = this.handles.eq(0);
 		this.handle_back = this.handles.eq(1);
+		this.panel = $('.preview .view');
 		this.panel_front = $('.preview .card_front');
 		this.panel_back = $('.preview .card_back');
 		this.bind();
@@ -390,49 +396,63 @@ var Preview = {
 	},
 	bind: function(){
 		var _this = this;
-		this.handle_front.bind('tapone', function(){ _this.showside('front', true); });
-		this.handle_back.bind('tapone', function(){ _this.showside('back', true); });
+		this.handle_front.bind('tapone', function(){ _this.show('front'); });
+		this.handle_back.bind('tapone', function(){ _this.show('back'); });
 	},
-	showside: function(side, animate){
+	clear: function(){
+		this.panel_front
+		.removeClass('tofront')
+		.removeClass('toback')
+		.removeClass('atfront')
+		.removeClass('atback');
+		this.panel_back
+		.removeClass('tofront')
+		.removeClass('toback')
+		.removeClass('atfront')
+		.removeClass('atback');
+	},
+	show: function(side){
 		if(!this.isinit){ this.init(); }
+		var side = arguments[0];
 		if(side == this.side){ return this; }
-		var _this = this;
+		
+		side = side ? side : (this.side != 'unknown' ? this.side : 'back');
+		if(side == this.side){ 
+			this.clear();
+			if(side == 'front'){
+				this.panel_front.addClass('atfront').show();
+				this.panel_back.addClass('atback').show();
+			}else{
+				
+				this.panel_front.addClass('atback').show();
+				this.panel_back.addClass('atfront').show();
+			}
+			return this;
+		}
+		this.clear();
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
-			if(animate){				
-				this.panel_back.addClass('unflipx').show();
-				setTimeout(function(){
-					_this.panel_back.hide().removeClass('unflipx');				
-					_this.panel_front.addClass('flipx').show();
-					setTimeout(function(){
-						_this.panel_front.removeClass('flipx');				
-					}, 350);
-				}, 350);
+			if(this.side == 'unknown'){
+				this.panel_front.addClass('atfront').show();
+				this.panel_back.addClass('atback').show();
 			}else{
-				this.panel_front.show();
-				this.panel_back.hide();	
+				this.panel_front.addClass('tofront');
+				this.panel_back.addClass('toback');
 			}
-			
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
 			this.handle_back.addClass('current');
-			if(animate){
-				this.panel_front.addClass('unflipx').show();
-				setTimeout(function(){
-					_this.panel_front.hide().removeClass('unflipx');				
-					_this.panel_back.addClass('flipx').show();
-					setTimeout(function(){
-						_this.panel_back.removeClass('flipx');				
-					}, 350);
-				}, 350);
+			if(this.side == 'unknown'){
+				this.panel_front.addClass('atback').show();
+				this.panel_back.addClass('atfront').show();
 			}else{
-				this.panel_front.hide();
-				this.panel_back.show();
+				this.panel_front.addClass('toback');
+				this.panel_back.addClass('tofront');
 			}
 		}
-		
 		this.side = side;
+		return this;
 	}
 }
 
@@ -465,8 +485,11 @@ var PhotoEditor = {
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
 			$(this).css({ 'width': size.width, 'height': size.height });
 			_this.ratio_img = size.width/size.height;
+			setTimeout(function(){
 			_this.loading.hide();
 			_this.center();
+			_this.img.stop().animate({opacity: 1}, 300);
+			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
 			/*Filtrr2('#photoeditorimg', function() {
@@ -478,10 +501,12 @@ var PhotoEditor = {
 			});*/
 		})
 		.bind('error', function(){
-			_this.loading.hide();				
-		}).appendTo(this.box).
-		attr("src",img).
-		trigger("change");		
+			_this.loading.hide();
+		})
+		.appendTo(this.box)
+		.css('opacity', 0.5)
+		.attr('src', img)
+		.trigger("change");		
 	},
 	bind: function(){
 		var _this = this;

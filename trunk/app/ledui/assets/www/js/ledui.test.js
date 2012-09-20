@@ -5,7 +5,7 @@ var Test = {
 	},
 	testpage: function(){
 		
-		var testpanel = $('<div style="position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
+		var testpanel = $('<div style="zoom:2;position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
 		testpanel.css('zoom', Adapta.ratio);
 		$('<button>reload</button>')
 		.appendTo($(testpanel))
@@ -13,7 +13,7 @@ var Test = {
 			window.location.reload();				
 		});
 		
-		$('<br>').appendTo($(testpanel));
+		$('<br><br>').appendTo($(testpanel));
 		
 		var total = Page.gettotal();
 		var current = Page.getcurrent();
@@ -47,7 +47,7 @@ var Test = {
 			sel.val(Page.getcurrent());
 		});
 		*/
-		$('<br>').appendTo($(testpanel));
+		$('<br><br>').appendTo($(testpanel));
 		/*
 		for(var key in Overlay.layers){
 			(function(key){	
@@ -61,7 +61,6 @@ var Test = {
 		
 		$('<br>').appendTo($(testpanel));
 		*/
-		var ps = ['testimg/test.jpg', 'testimg/test2.jpg', 'testimg/test3.jpg'];
 		var sel = $('<select><option>选择图片</option></select>')
 		.appendTo($(testpanel))
 		.bind('change', function(){
@@ -69,9 +68,8 @@ var Test = {
 				PhotoEditor.init($(this).val());	 
 			}
 		});	
-		for(var i=0; i<ps.length; i++){
-			var src = ps[i];
-			var op = $('<option value="'+ src +'">photo'+ i +'</option>');
+		for(var i=1; i<=20; i++){
+			var op = $('<option value="testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
 		}
 		//PhotoEditor.init(ps[0]);
