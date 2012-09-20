@@ -237,11 +237,6 @@
 				</ul>
 			</div>
 			<div class="view">
-				<!--正面-->
-				<div class="card card_front">
-					<div class="photo">
-					</div>
-				</div>
 				<!--背面--->
 				<div class="card card_back">
 					<div class="postinfo" id="postinfo">
@@ -255,6 +250,11 @@
 						<div class="t3" name="FromName">您的朋友</div>
 					</div>
 				</div>
+				<!--正面-->
+				<div class="card card_front">
+					<div class="photo">
+					</div>
+				</div>				
 			</div>
 			<div class="agreement">
 				<span class="ico ico_agree"></span>我已接受 <a href="#">条款</a>
@@ -279,7 +279,7 @@
 			<div class="title">支付邮费</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" _back="5" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -299,7 +299,7 @@
 	</div>
 	</div>
 	<div class="panel_foot">
-		<div class="payaction">
+		<div class="payaction" id="payaction">
 			<div class="dtext">前往支付</div>
 			<div class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
 			<div class="button button_pay" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
@@ -625,6 +625,8 @@
 	</div>
 	<div class="mask"></div>
 </div>
+
+<div class="apptitlebar"></div>
 
 <div class="appnav" id="appnav">
 	<ul id="isnotlogin">
