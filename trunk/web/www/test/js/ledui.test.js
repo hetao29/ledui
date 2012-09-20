@@ -69,7 +69,7 @@ var Test = {
 			}
 		});	
 		for(var i=1; i<=20; i++){
-			var op = $('<option value="http://42.121.85.21/testimg/test'+ i +'.jpg">photo'+ i +'</option>');
+			var op = $('<option value="http://42.121.85.21/test/testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
 		}
 		//PhotoEditor.init(ps[0]);
