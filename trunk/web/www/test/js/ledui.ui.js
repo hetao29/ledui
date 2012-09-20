@@ -9,9 +9,11 @@ $(document).ready(function(){
 var UI = {
 	istouch: ('createTouch' in document),
 	redefine: function(){
+		window.alert_old=window.alert;
 		window.alert = function(msg){
 			Overlay.show('alert', msg);	
 		}
+		window.confirm_old=window.confirm;
 		window.confirm = function(msg, callback){
 			Overlay.show('confirm', msg, callback);	
 		}
