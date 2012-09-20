@@ -54,8 +54,6 @@ var API = {
 				dataType: "JSON",
 				success: function(msg){
 					if(msg){
-						//同步本地地址数据
-						API.synAddress();
 						if(callback)callback(true);
 					}else{
 						if(callback)callback(false);
@@ -81,8 +79,6 @@ var API = {
 			   if(msg && msg.result && msg.error_code==0){
 			   	DB.setToken(msg.result.UserID,msg.result.UserAccessToken);
 				if(ok)ok(msg);
-				//同步本地地址数据
-				API.synAddress();
 				return true;
 			   }else{
 				   if(error)error(msg);
@@ -103,39 +99,6 @@ var API = {
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
 			   	DB.setToken(msg.result.UserID,msg.result.UserAccessToken);
-				if(ok)ok(msg);
-				return true;
-			   }else{
-				   if(error)error(msg);
-			   }
-		   },
-		   error:function(msg){
-		   		if(error)error(msg);
-				return false;
-		   }
-		});
-	},
-	//同步地址信息，当用户登录后，或者登录后，第一次启动时
-	//把用户当前的地址上传，然后服务器下发在服务器merge后的地址数据
-	synAddress: function(ok,error){
-		var param={};
-		param.token= DB.getToken();
-		param.uid= DB.getUID();
-		param.uuid= DB.getUUID();
-		var addr = new LeduiAddress;
-		param.AddressData = JSON.stringify(addr.list());
-		AjaxSetup.showLoading=false;
-		$.ajax({
-		   type: "POST",
-		   url: API.host+"/user/synAddress",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   if(msg && msg.result && msg.error_code==0){
-			   	if(msg.result.length>0) addr.clear();
-				for(var i=0;i<msg.result.length;i++){
-					addr.add(msg.result[i]);
-				}
 				if(ok)ok(msg);
 				return true;
 			   }else{
