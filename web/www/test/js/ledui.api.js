@@ -269,7 +269,8 @@ var API = {
 		});
 		
 	},
-	upload:function(PostCardID,imageURI){
+	upload:function(LeduiPostCard){
+		var imageURI	= LeduiPostCard.photo.o;
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		var options = new FileUploadOptions();
 		options.fileKey="file";
@@ -277,16 +278,18 @@ var API = {
 		options.mimeType="image/jpeg";
 		options.chunkedMode=true;
 
-		var params = new Object();
-		params.value1 = "test";
-		params.value2 = "param";
+		var param={};
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.PostCardID = LeduiPostCard.PostCardID;
+		param.src = LeduiPostCard.photo.o;
 		
 		options.params = params;
 		
 		var ft = new FileTransfer();
 		ft.upload(
 			imageURI,
-			"http://www.ledui.com/test.php",
+			"/image/upload",
 			function ok(r){
 				alert(r.response);									 
 			},
