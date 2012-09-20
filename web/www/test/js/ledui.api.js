@@ -146,6 +146,9 @@ var API = {
 					//console.log(msg.result);
 					//OrderID
 					//PayURL
+					if(msg.result.PayURL){
+						$("#payaction .button_pay").attr("src",msg.result.PayURL);
+					}
 					//PostCard
 					//UserID
 					if(ok){ ok(msg); }
@@ -565,6 +568,9 @@ var Control = {
 				return;
 			};
 			Page.show(4);
+		});
+		$("#payaction .button_pay").bind("tapone",function(e){
+			window.location.href = $(this).attr("src");
 		});
 		//预览，生成明信片数据
 		$("#comments").bind("change", function(e){
