@@ -26,7 +26,7 @@ var DB={
 	setToken : function(uid,token){
 		_DB.set(this.uid,uid);
 		_DB.set(this.token,token);
-    	},
+    },
 	getToken : function(){
 		return _DB.get(this.token);
 	},
@@ -68,9 +68,10 @@ var LeduiPostCard=function(){
 	this.photo={}; //width:"", //height:"", //x:"", //y:"", //rotate:"",
 	this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
 	
-	this._key="PostCard";
-	
-	this.add = function(LeduiPostCardObject){
+	this._key="PostCard";	
+}
+LeduiPostCard.prototype = {
+	add: function(LeduiPostCardObject){
 		var postcards = _DB.get(this._key) || [];
 		var isnew=true;
 		for(var i=0;i<postcards.length;i++){
@@ -81,17 +82,17 @@ var LeduiPostCard=function(){
 		}
 		if(isnew)postcards.push(LeduiPostCardObject);
 		_DB.set(this._key,postcards);
-	};
-	this.get = function(LocalID){
+	},
+	get: function(LocalID){
 		var postcards = _DB.get(this._key) || [];
 		for(var i=0;i<postcards.length;i++){
 			if(postcards[i].LocalID == LocalID){
 				return postcards[i];
 			}
 		}
-	};
+	},
 	//删除本地状态，当取消，或者成功时
-	this.del = function(LocalID){
+	del: function(LocalID){
 		var postcards = _DB.get(this._key) || [];
 		for(var i in postcards){
 			if(postcards[i].LocalID==LocalID){
@@ -99,10 +100,10 @@ var LeduiPostCard=function(){
 			}
 		}
 		_DB.set(this._key,postcards);
-	};
-	this.list = function(){
+	},
+	list: function(){
 		return _DB.get(this._key) ||[];
-	};
+	}
 }
 //待上传的文件类，这样能实现同一图片，做多张明信片时的秒传
 var LeduiFile=function(){
@@ -120,8 +121,9 @@ var LeduiFile=function(){
 	this._key = "File";
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
 	this.Status = 1;
-	
-	this.add=function(LeduiFileObject){
+}
+LeduiFile.prototype = {
+	add: function(LeduiFileObject){
 		var files = _DB.get(this._key) || [];
 		var isnew=true;
 		var r=LeduiFileObject;
@@ -135,16 +137,16 @@ var LeduiFile=function(){
 		if(isnew)files.push(LeduiFileObject);
 		_DB.set(this._key,files);
 		return r;
-	};
-	this.get=function(imageURI){
+	},
+	get: function(imageURI){
 		var files = _DB.get(this._key) || [];
 		for(var i=0;i<files.length;i++){
 			if(files[i].FilePath == imageURI){
 				return files[i];
 			}
 		}
-	};
-	this.del=function(imageURI){
+	},
+	del: function(imageURI){
 		var files = _DB.get(this._key) || [];
 		for(var i=0;i<files.length;i++){
 			if(files[i].FilePath == imageURI){
@@ -168,19 +170,20 @@ var LeduiAddress=function(){
 	this.Mobile = "";
 	this.Phone = "";
 	this._key = "Address";
-	
-	this.clear=function(){
+}
+LeduiAddress.prototype = {
+	clear: function(){
 		_DB.del(this._key);
-	};
-	this.get=function(LocalID){
+	},
+	get: function(LocalID){
 		var all = _DB.get(this._key) || [];
 		for(var i=0;i<all.length;i++){
 			if(all[i].LocalID== LocalID){
 				return all[i];
 			}
 		}
-	}
-	this.add=function(LeduiAddressObject){
+	},
+	add: function(LeduiAddressObject){
 		var all = _DB.get(this._key) || [];
 		var isnew=true;
 		for(var i=0;i<all.length;i++){
@@ -191,8 +194,8 @@ var LeduiAddress=function(){
 		}
 		if(isnew)all.unshift(LeduiAddressObject);
 		_DB.set(this._key,all);
-	}
-	this.edit=function(LeduiAddressObject){
+	},
+	edit: function(LeduiAddressObject){
 		var all = _DB.get(this._key) || [];
 		for(var i=0;i<all.length;i++){
 			if(all[i].LocalID== LeduiAddressObject.LocalID){
@@ -200,8 +203,8 @@ var LeduiAddress=function(){
 			}
 		}
 		_DB.set(this._key,all);
-	}
-	this.del=function(LocalID){
+	},
+	del: function(LocalID){
 		var all = _DB.get(this._key) || [];
 		for(var i=0;i<all.length;i++){
 			if(all[i].LocalID== LocalID){
@@ -209,8 +212,8 @@ var LeduiAddress=function(){
 			}
 		}
 		_DB.set(this._key,all);
-	}
-	this.list=function(uid){
+	},
+	list: function(uid){
 		var all = _DB.get(this._key) || [];
 		var r=[];
 		for(var i=0;i<all.length;i++){
@@ -219,7 +222,7 @@ var LeduiAddress=function(){
 			}
 		}
 		return r;
-	}
-	this.upload=function(){
+	},
+	upload: function(){
 	}
 }

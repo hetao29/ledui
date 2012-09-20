@@ -34,16 +34,20 @@ var City=  {
 	{"n":"台湾省","c":["台北市","高雄市","基隆市","新竹市","台中市","嘉义市","台南市","台北县","桃园县","新竹县","苗栗县","台中县","彰化县","南投县","云林县","嘉义县","台南县","高雄县","屏东县","宜兰县","花莲县","台东县","澎湖县","金门县","连江县"]},
 	{"n":"香港特别行政区","c":["中西区","东区","南区","湾仔区","九龙城区","观塘区","深水埗区","黄大仙区","油尖旺区","离岛区","葵青区","北区","西贡区","沙田区","大埔区","荃湾区","屯门区","元朗区"]},
 	{"n":"澳门特别行政区","c":["澳门市花地玛堂区","澳门市圣安多尼堂区","澳门市大堂区","澳门市望德堂区","澳门市风顺堂区","海岛市嘉模堂区","海岛市圣方济各堂区"]}
-	],listPrivince:function(){
+	],
+	listPrivince:function(){
 		var r=[];
-		for(var i =0;i<this.all.length;i++){
+		for(var i=0, len=this.all.length; i<len;i++){
 			r.push(this.all[i].n);
 		}
 		return r;
-	},listCity:function(privince){
+	},
+	listCity:function(privince){
 		var r=[];
-		for(var i =0;i<this.all.length;i++){
-			if(this.all[i].n == privince)return this.all[i].c;
+		for(var i=0, len=this.all.length; i<len; i++){
+			if(this.all[i].n == privince){
+				return this.all[i].c;
+			}
 		}
 		return r;
 	}
