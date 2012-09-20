@@ -1,36 +1,34 @@
 //test
-
-
 //复杂的数据要进行JSON编码，不过有可能程序会FC
 //{{{全局变量
 var CurrentPostCard = new LeduiPostCard;
-	
 //}}}
 
 //{{{
 var AjaxSetup={
-	stat:0, //0,1 start, 2 complete
-	msg:"",
-	showLoading:true
+	stat: 0, //0,1 start, 2 complete
+	msg: '',
+	showLoading: true
 }
 $.ajaxSetup({
-  global: false,
-  type: "POST",
-  timeout:8000,
-  beforeSend:function(e){
+	global: false,
+	type: 'POST',
+	timeout: 8000,
+	beforeSend: function(e){
 	//600毫米如果还没有反应，就显示进度条
 	AjaxSetup.stat=1;
-	setTimeout(function(){
-		if(AjaxSetup.stat==1){
-			if(AjaxSetup.showLoading)Loading.show(AjaxSetup.msg);
-			AjaxSetup.showLoading=true;
-			AjaxSetup.stat=0;
-		}
-	},600);
-  },complete:function(e){
-	AjaxSetup.stat=2;
-	Loading.hide();
-  }
+		setTimeout(function(){
+			if(AjaxSetup.stat==1){
+				if(AjaxSetup.showLoading){ Loading.show(AjaxSetup.msg); }
+				AjaxSetup.showLoading = true;
+				AjaxSetup.stat = 0;
+			}
+		},600);
+	}
+	,complete:function(e){
+		AjaxSetup.stat = 2;
+		Loading.hide();
+	}
 });
 //}}}
 
@@ -54,13 +52,13 @@ var API = {
 				dataType: "JSON",
 				success: function(msg){
 					if(msg){
-						if(callback)callback(true);
+						if(callback){ callback(true); }
 					}else{
-						if(callback)callback(false);
+						if(callback){ callback(false); }
 					}
 				},
 				error:function(msg){
-					if(callback)callback(false);
+					if(callback){ callback(false); }
 					return false;
 				}
 			});
@@ -71,50 +69,51 @@ var API = {
 	login: function(param,ok,error){
 		DB.setToken("","");
 		$.ajax({
-		   type: "POST",
-		   url: API.host+"/user/login",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   if(msg && msg.result && msg.error_code==0){
-			   	DB.setToken(msg.result.UserID,msg.result.UserAccessToken);
-				if(ok)ok(msg);
-				return true;
-			   }else{
-				   if(error)error(msg);
-			   }
-		   },
-		   error:function(msg){
-		   		if(error)error(msg);
+			type: "POST",
+			url: API.host+"/user/login",
+			data: param,
+			dataType: "JSON",
+			success: function(msg){
+				if(msg && msg.result && msg.error_code==0){
+					DB.setToken(msg.result.UserID,msg.result.UserAccessToken);
+					if(ok){ ok(msg); }
+					return true;
+				}else{
+					if(error){ error(msg); }
+				}
+			},
+			error:function(msg){
+				if(error){ error(msg); }
 				return false;
-		   }
+			}
 		});
 	},
 	register: function(param,ok,error){
 		$.ajax({
-		   type: "POST",
-		   url: API.host+"/user/register",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   if(msg && msg.result && msg.error_code==0){
-			   	DB.setToken(msg.result.UserID,msg.result.UserAccessToken);
-				if(ok)ok(msg);
-				return true;
-			   }else{
-				   if(error)error(msg);
-			   }
-		   },
-		   error:function(msg){
-		   		if(error)error(msg);
+			type: "POST",
+			url: API.host+"/user/register",
+			data: param,
+			dataType: "JSON",
+			success: function(msg){
+				if(msg && msg.result && msg.error_code==0){
+					DB.setToken(msg.result.UserID,msg.result.UserAccessToken);
+					if(ok){ ok(msg); }
+					return true;
+				}else{
+					if(error){ error(msg); }
+				}
+			},
+			error:function(msg){
+				if(error){ error(msg); }
 				return false;
-		   }
+			}
 		});
 	},
 	//登出
 	logout: function(param,ok,error){
 		DB.setToken("","");
-		if(ok)ok();return;
+		if(ok){ ok(); }
+		return;
 	},
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
 	postPostCard:function(PostCard,ok,error){
@@ -124,26 +123,26 @@ var API = {
 		param.uuid= DB.getUUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
-		   type: "POST",
-		   url: API.host+"/postcard/post",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   if(msg && msg.result && msg.error_code==0){
-			   	//console.log(msg.result);
-				//OrderID
-				//PayURL
-				//PostCard
-				//UserID
-				//LocalID(postcard)
-				if(ok)ok(msg);
-			   }else{
-				   if(error && msg.error_msg)error(msg.error_msg);
-			   }
-		   },
-		   error:function(msg){
-		   	if(error)error(msg);
-		   }
+			type: "POST",
+			url: API.host+"/postcard/post",
+			data: param,
+			dataType: "JSON",
+			success: function(msg){
+				if(msg && msg.result && msg.error_code==0){
+					//console.log(msg.result);
+					//OrderID
+					//PayURL
+					//PostCard
+					//UserID
+					//LocalID(postcard)
+					if(ok){ ok(msg); }
+				}else{
+					if(error && msg.error_msg){ error(msg.error_msg); }
+				}
+			},
+			error:function(msg){
+				if(error){ error(msg); }
+			}
 		});
 		
 	},
@@ -155,25 +154,25 @@ var API = {
 		param.uuid= DB.getUUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
-		   type: "POST",
-		   url: API.host+"/postcard/del",
-		   data: param,
-		   dataType: "JSON",
-		   success: function(msg){
-			   if(msg && msg.result && msg.error_code==0){
-			   	//console.log(msg.result);
-				//OrderID
-				//PayURL
-				//PostCard
-				//LocalID(postcard)
-				if(ok)ok(msg);
-			   }else{
-				   if(error && msg.error_msg)error(msg.error_msg);
-			   }
-		   },
-		   error:function(msg){
-		   	if(error)error(msg);
-		   }
+			type: "POST",
+			url: API.host+"/postcard/del",
+			data: param,
+			dataType: "JSON",
+			success: function(msg){
+				if(msg && msg.result && msg.error_code==0){
+					//console.log(msg.result);
+					//OrderID
+					//PayURL
+					//PostCard
+					//LocalID(postcard)
+					if(ok){ ok(msg); }
+				}else{
+					if(error && msg.error_msg){ error(msg.error_msg); }
+				}
+			},
+			error:function(msg){
+				if(error){ error(msg); }
+			}
 		});
 	},
 	//删除地址
@@ -260,27 +259,32 @@ var API = {
 	},
 	upload:function(PostCardID,imageURI){
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
-		
-	 	var options = new FileUploadOptions();
-  		options.fileKey="file";
+		var options = new FileUploadOptions();
+		options.fileKey="file";
 		options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
 		options.mimeType="image/jpeg";
-           	options.chunkedMode=true;
+		options.chunkedMode=true;
 
-       var params = new Object();
-       params.value1 = "test";
-       params.value2 = "param";
-
-       options.params = params;
-
-       var ft = new FileTransfer();
-       ft.upload(imageURI, "http://www.ledui.com/test.php", function ok(r){
-					alert(r.response);
-																			 
-				}, function fail(){
-				}, options);
+		var params = new Object();
+		params.value1 = "test";
+		params.value2 = "param";
+		
+		options.params = params;
+		
+		var ft = new FileTransfer();
+		ft.upload(
+			imageURI,
+			"http://www.ledui.com/test.php",
+			function ok(r){
+				alert(r.response);									 
+			},
+			function fail(){
 			
-			return;
+			}, 
+			options
+		);
+		
+		return;
 	}
 }
 //Interface方法
@@ -293,24 +297,24 @@ var Interface = {
 	 * 返回按钮事件
 	 */
 	onBackbutton:function (){
-	        if(Overlay.curname!=""){
-	       	 Overlay.hide(Overlay.curname);
-	       	 return;
-	        }
-	        var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
-	        if(p){
-	       	 Page.show(p);
-	       	 return;
-	        }
-	        //如果，是第0页，按后退，就提示程序退出
-			confirm("您确定要退出吗?",{
-				ok: function(){
-					navigator.app.exitApp();	
-				},
-				cancel: function(){
-					Overlay.hide("confirm");	
-				}	
-			});
+		if(Overlay.curname!=""){
+			 Overlay.hide(Overlay.curname);
+			 return;
+		}
+		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
+		if(p){
+			Page.show(p);
+			return;
+		}
+		//如果，是第0页，按后退，就提示程序退出
+		confirm("您确定要退出吗?", {
+			ok: function(){
+				navigator.app.exitApp();	
+			},
+			cancel: function(){
+				Overlay.hide("confirm");	
+			}	
+		});
 	},
 	/**
 	 * 当设备准备好时
@@ -320,24 +324,23 @@ var Interface = {
 		navigator.geolocation.getCurrentPosition(Interface.onGEOSuccess, Interface.onGEOError);
 		for(var i in device){
 			Interface.Device[i]=device[i];
-		}
-		
-	   CurrentPostCard.Device = device;
-	   if(device.uuid){
-		   DB.setUUID(device.uuid);
+		}		
+		CurrentPostCard.Device = device;
+		if(device.uuid){
+			DB.setUUID(device.uuid);
 		   //_DB.uuid=Interface.Device.uuid;
-	   }
-		      //test
-		      /*
-			 var options = new ContactFindOptions();
-			 options.filter=""; 
-			 options.multiple=true;
-			 var fields  = ["displayName","addresses","phoneNumbers","emails"];
-			 navigator.contacts.find(fields , onSuccess, onError, options);
-		       */
+		}
+		//test
+		/*
+		var options = new ContactFindOptions();
+		options.filter=""; 
+		options.multiple=true;
+		var fields  = ["displayName","addresses","phoneNumbers","emails"];
+		navigator.contacts.find(fields , onSuccess, onError, options);
+		*/
 	},
 	onPhotoURISuccess:function(imageURI){
-		Page.show(1,function(){
+		Page.show(1, function(){
 			PhotoEditor.init(imageURI);
 		});
 		//setTimeout(function(){API.upload(122,imageURI);},2000);
@@ -345,163 +348,119 @@ var Interface = {
 	onFail:function (message) {
 	       LocalDataPostCard.init();
 	       //alert('Failed because: ' + message);
-       },onGEOSuccess:function(position) {
-	       this.Longitude = position.coords.longitude;
-	       this.Latitude= position.coords.latitude;
-	       CurrentPostCard.Latitude = Interface.Latitude;
-	       CurrentPostCard.Longitude= Interface.Longitude;
-	//       alert('Latitude: '           + position.coords.latitude              + '\n' +
-	//		       'Longitude: '          + position.coords.longitude             + '\n' +
-	//		       'Altitude: '           + position.coords.altitude              + '\n' +
-	//		       'Accuracy: '           + position.coords.accuracy              + '\n' +
-	//		       'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
-	//		       'Heading: '            + position.coords.heading               + '\n' +
-	//		       'Speed: '              + position.coords.speed                 + '\n' +
-	//		       'Timestamp: '          +                                   position.timestamp          + '\n');
-       },onGEOError:function(error) {
-       }
+	},
+	onGEOSuccess:function(position) {
+		this.Longitude = position.coords.longitude;
+		this.Latitude= position.coords.latitude;
+		CurrentPostCard.Latitude = Interface.Latitude;
+		CurrentPostCard.Longitude= Interface.Longitude;
+		//		alert('Latitude: '    + position.coords.latitude              + '\n' +
+		//		Longitude: '          + position.coords.longitude             + '\n' +
+		//		Altitude: '           + position.coords.altitude              + '\n' +
+		//		Accuracy: '           + position.coords.accuracy              + '\n' +
+		//		Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '\n' +
+		//		Heading: '            + position.coords.heading               + '\n' +
+		//		Speed: '              + position.coords.speed                 + '\n' +
+		//		Timestamp: '          + position.timestamp          + '\n');
+	},
+	onGEOError:function(error) {
+	
+	}
 }
 //界面操作
 var Control = {
 
 	init: function(n){
-		/*初始化*/
-		//1.数据初始化
-		//a.登录状态
+		
+		//页面跳转
+		$("[_to]").bind("tapone", function(e){ Page.show($(this).attr("_to")); });
+		$(".button_s_back").bind("tapone", function(e){ Interface.onBackbutton(); });
+		
+		//导航
+		var appnav = $("#appnav") 
+			,applogin = $("#islogin")
+			,appnotlogin = $("#isnotlogin");
 		API.islogin(function(r){
 		  	if(r){
-		  		$("#login .errorbox").fadeOut();
-		  		$("#isnotlogin").fadeOut();
-		  		$("#islogin").fadeIn();
+		  		applogin.find(".errorbox").fadeOut();
+		  		appnotlogin.fadeOut();
+		  		applogin.fadeIn();
 		  	}
 		});
-		//b.明信片状态查询
-		//2.界面接口
-		$("#choosePic").bind("tapone", function(e){Overlay.show("chkphoto");});
+		appnav.find(".CAbout").bind("tapone", function(e){ Page.show(8); });
+		appnav.find(".CLogin").bind("tapone", function(e){ Page.show(10); });		
+		appnav.find(".CRegister").bind("tapone", function(e){ Page.show(11); });
+		appnav.find(".CPostCard").bind("tapone", function(e){					   
+			Control.showPostCard();
+			Page.show(9);
+		});
+		appnav.find(".CLogout").bind("tapone", function(e){
+			API.logout(
+				{},
+				function ok(result){
+					applogin.fadeOut();
+					appnotlogin.fadeIn();
+				},
+				function error(result){
+				}
+			);
+		});
+		
+		//明信片状态查询
 		$('#photo').delegate($('img'), 'change', function(){
 			//选择照片成功后，初始化明信片
 			CurrentPostCard = new LeduiPostCard;
 		});
-		//重选按钮
-		$("#choosePic2").bind("tapone", function(e){Overlay.show("chkphoto");});
-		//结束时，再重新创建时的按钮
-		$("#choosePic3").bind("tapone", function(e){Overlay.show("chkphoto");});
 		
+		//选择图片
+		//check
+		$("#choosePic").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+		//repick
+		$("#choosePic2").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+		//createnext
+		$("#choosePic3").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+		//camera
 		$("#choosePicFromCamera").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-				{quality: 100, 
-				 allowEdit: true,
-				 destinationType: navigator.camera.DestinationType.FILE_URI 
+				{
+					quality: 100, 
+					allowEdit: true,
+					destinationType: navigator.camera.DestinationType.FILE_URI 
 				}
 			);
 			Overlay.hide("chkphoto");
 		});
+		//album
 		$("#choosePicFromAlbum").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
-				{quality: 100, 
-				 sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY   ,
-				 destinationType: navigator.camera.DestinationType.FILE_URI 
-				});
+				{
+					quality: 100, 
+					sourceType:navigator.camera.PictureSourceType.PHOTOLIBRARY,
+					destinationType: navigator.camera.DestinationType.FILE_URI 
+				}
+			);
 			Overlay.hide("chkphoto");
 		});
 		
-		//go
-		$("div[_to]").bind("tapone", function(e){
-			Page.show($(this).attr("_to"));
-		});
-		//back
-		$("div.button_s_back").bind("tapone",function(e){Interface.onBackbutton();});
+		//联系人地址添加编辑
+		var rcvform = $("#rcvform") 
+			,btntoaddress = $("#toAddress")
+			,btnrcvcreate = $("#rcvcreate")
+			,btnrcvadd = $("#addAddress")
+			,btnrcvdel = $("#delAddress")
+			,country = rcvform.find("#country") 
+			,privince = rcvform.find("#privince")
+			,city = rcvform.find("#city")
 		
-		
-
-		
-		
-		$("#appnav .CAbout").bind("tapone",function(e){Page.show(8);});
-		$("#appnav .CLogin").bind("tapone",function(e){Page.show(10);});		
-		$("#appnav .CRegister").bind("tapone",function(e){Page.show(11);});
-		$("#appnav .CPostCard").bind("tapone",function(e){					   
-			var ul = $("#maillist ul");
-			//ul.hide();
-			Control.showPostCard();
-			Page.show(9);
-		});
-		
-		$("#appnav .CLogout").bind("tapone",function(e){
-			API.logout({},function ok(result){
-				$("#islogin").fadeOut();
-				$("#isnotlogin").fadeIn();
-				},function error(result){
-			});
-		});
-		
-		
-
-		$("#rcvform #country").bind("change",function(e){
-				//console.log($(this).find("option:selected").text());
-				//console.log($(this).val());
-				if($(this).val()=="中国"){
-					$("#privince").html('<option value="">选择</option>').slideDown("fast");
-					for(var i =0;i<City.all.length;i++){
-						var n = City.all[i].n;
-						$("#privince").append('<option value="'+n+'">'+n+'</option>');
-					}
-				}else{
-					$("#privince").html('').slideUp("fast");
-					$("#city").html('').hide();
-				}
-		}).trigger("change");
-		//添加新地址的时候，进行重置
-		$("#rcvcreate").bind("tapone",function(e){			
-			$("#delAddress").attr("LocalID","").hide();
-			$("#head_add .adrchk").show();
-			$("#head_add .title").html("addAddress".tr());
-			$("#addAddress").text("add".tr());
-			$("#rcvform").each(function(){this.reset();});
-			$("#rcvform #country").trigger("change");
-			$("#rcvform [name=LocalID]").val("");
-			Page.show(3);
-		});
-		
-		$("#addAddress").bind("tapone",function(e){
-			var ado = new LeduiAddress();
-			var a =  $("#rcvform").serializeArray();
-			for(var i in a){
-				var k = a[i].name;
-				var v = a[i].value;
-				if(v!=""){
-					ado[k]=v;
-				}
-			}
-			if(ado.Name==""){
-				alert("收件人名字不能为空");
-			}else if(ado.Address==""){
-				alert("收件人地址不能为空");
-			}else{
-				ado.add(ado);
-				Control.showAddress()
-				Page.show(2, null, { y:0 });
-			}
-		});
-		$("#rcvform #privince").bind("change",function(e){
-				var city = City.listCity($(this).val());
-				if(city.length>0){
-					$("#city").html('<option value="">选择</option>').slideDown("fast");
-					for(var i =0;i<city.length;i++){
-						var n = city[i];
-						$("#city").append('<option value="'+n+'">'+n+'</option>');
-					}
-				}else{
-					$("#city").html('').slideUp("fast");
-				}
-		});
-		$("#toAddress").bind("tapone",function(e){
-				if(!$("#photo img").attr("src") || $("#photo img").attr("src")==""){
+		btntoaddress.bind("tapone",function(e){
+				var src = $("#photo img").attr("src");
+				if(!src){
 					alert("请选择图片");
 					return;
 				};
 				//选择了文件
 				var file = new LeduiFile;
-				file.FilePath = $("#photo img").attr("src");
+				file.FilePath = src;
 				
 				var f = file.add(file);
 				if(f && f.FileTmpID){
@@ -519,95 +478,169 @@ var Control = {
 				if(info){ CurrentPostCard.photo = info; }
 				Control.showAddress()
 				Page.show(2);
+		});				
+		
+		//添加新地址的时候，进行重置
+		btnrcvcreate.bind("tapone",function(e){			
+			btnrcvdel.attr("LocalID","").hide();
+			$("#head_add .adrchk").show();
+			$("#head_add .title").html("addAddress".tr());
+			btnrcvadd.text("add".tr());
+			rcvform.each(function(){ this.reset();} );
+			country.trigger("change");
+			rcvform.find("[name=LocalID]").val("");
+			Page.show(3);
 		});
-		$("#toComments").bind("tapone",function(e){
-				if($("#rcvlist li.checked").length==0){
-					alert("请选择收件人");
-					return;
-				};
-				Page.show(4);
+		//删除地址
+		btnrcvdel.bind("tapone", function(){
+			var ado = new LeduiAddress;
+			var adr = ado.get($(this).attr("LocalID"));
+			if(adr['AddressID']!=""){
+				API.delAddress(adr['AddressID']);
+			}
+			ado.del($(this).attr("LocalID"));
+			Control.showAddress();
+			Page.show(2);
+		});
+		btnrcvadd.bind("tapone",function(e){
+			var ado = new LeduiAddress();
+			var a =  rcvform.serializeArray();
+			for(var i in a){
+				var k = a[i].name;
+				var v = a[i].value;
+				if(v!=""){
+					ado[k]=v;
+				}
+			}
+			if(ado.Name==""){
+				alert("收件人名字不能为空");
+			}else if(ado.Address==""){
+				alert("收件人地址不能为空");
+			}else{
+				ado.add(ado);
+				Control.showAddress()
+				Page.show(2, null, { y:0 });
+			}
+		});
+		country.bind("change",function(e){			
+			if($(this).val() == "中国"){
+				privince.html('<option value="">选择</option>').slideDown("fast");
+				for(var i =0, len=City.all.length;i<len;i++){
+					var n = City.all[i].n;
+					privince.append('<option value="'+n+'">'+n+'</option>');
+				}
+			}else{
+				privince.html('').slideUp("fast");
+				city.html('').hide();
+			}
+		}).trigger("change");
+		privince.bind("change",function(e){
+			var citys = City.listCity($(this).val());
+			if(citys.length>0){
+				city.html('<option value="">选择</option>').slideDown("fast");
+				for(var i =0, len=citys.length;i<len;i++){
+					var n = citys[i];
+					city.append('<option value="'+n+'">'+n+'</option>');
+				}
+			}else{
+				city.html('').slideUp("fast");
+			}
+		});
+		
+		//留言
+		$("#toComments").bind("tapone", function(e){
+			if($("#rcvlist li.checked").length==0){
+				alert("请选择收件人");
+				return;
+			};
+			Page.show(4);
 		});
 		//预览，生成明信片数据,LocalDataPostCard
-		$("#comments").bind("change",function(e){
-				//评论信息
-				CurrentPostCard.Comments=$(this).val();
+		$("#comments").bind("change", function(e){
+			//评论信息
+			CurrentPostCard.Comments = $(this).val();
 		});
-		$("#toPreview").bind("tapone",function(e){
-				$("#titlebar_preview .button_s_back").attr("_back",4);
-				//正常新加，预览的返回为评论
-				Control.showPreview();
-				
+		$("#toPreview").bind("tapone", function(e){
+			$("#titlebar_preview .button_s_back").attr("_back",4);
+			//正常新加，预览的返回为评论
+			Control.showPreview();
 		});
 		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
 		//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
-		$("#toSend").bind("tapone",function(e){
-				API.islogin(function(isLogin){
-					if(isLogin){
-						//开始掉用接口
-						//修改登录，注册，返回页面为 0
-						API.postPostCard(LocalDataPostCard,function ok(){
-								$("#titlebar_login .button_s_back").attr("_back",0);
-								$("#titlebar_register .button_s_back").attr("_back",0);
-								$("#titlebar_about .button_s_back").attr("_back",0);
-								Page.show(6);
-							},function error(msg){
-								alert("错误，["+msg+"]请重试");
-							});
-					}else{
-						//指定到登录,BUG
-						$("#titlebar_login .button_s_back").attr("_back",5);
-						$("#titlebar_register .button_s_back").attr("_back",5);
-						$("#titlebar_about .button_s_back").attr("_back",5);
-						//$("#titlebar_postcard .button_s_back").attr("_back",5);
-						$("#login .errorbox").html("need2login".tr()).show();
-						Page.show(10);
-						//修改登录，注册，返回页面为 6
-					}
-				});
-				//
+		$("#toSend").bind("tapone", function(e){
+			API.islogin(function(isLogin){
+				if(isLogin){
+					//开始掉用接口
+					//修改登录，注册，返回页面为 0
+					API.postPostCard(
+						LocalDataPostCard,function ok(){
+							$("#titlebar_login .button_s_back").attr("_back",0);
+							$("#titlebar_register .button_s_back").attr("_back",0);
+							$("#titlebar_about .button_s_back").attr("_back",0);
+							Page.show(6);
+						},
+						function error(msg){
+							alert("错误，["+msg+"]请重试");
+						}
+					);
+				}else{
+					//指定到登录,BUG
+					$("#titlebar_login .button_s_back").attr("_back",5);
+					$("#titlebar_register .button_s_back").attr("_back",5);
+					$("#titlebar_about .button_s_back").attr("_back",5);
+					//$("#titlebar_postcard .button_s_back").attr("_back",5);
+					$("#login .errorbox").html("need2login".tr()).show();
+					Page.show(10);
+					//修改登录，注册，返回页面为 6
+				}
+			});
 		});
 		
 		
 
-		$("#IDLogin").bind("tapone",function(e){
+		$("#IDLogin").bind("tapone", function(e){
 				$("#login .errorbox").html("");
 				var sid=$(".sid","#login").val();
 				var pwd=$(".pwd","#login").val();
 				var uuid = DB.getUUID();
 				var device=Interface.Device;
-				API.login({email:sid,passwd:pwd,uuid:uuid,device:JSON.stringify(device)},function ok(result){
-					//登录成功,更新登录状态,跳到登录前的一页
-					$("#login .errorbox").fadeOut();
-					$("#isnotlogin").fadeOut();
-					$("#islogin").fadeIn();
-					Interface.onBackbutton();
-					},function error(result){
+				API.login({email:sid,passwd:pwd,uuid:uuid,device:JSON.stringify(device)},
+					function ok(result){
+						//登录成功,更新登录状态,跳到登录前的一页
+						$("#login .errorbox").fadeOut();
+						$("#isnotlogin").fadeOut();
+						$("#islogin").fadeIn();
+						Interface.onBackbutton();
+					},
+					function error(result){
 						//登录失败，提示错误信息
 						if(result.error_msg) $("#login .errorbox").html(result.error_msg);
 						$("#login .errorbox").slideDown("fast",function(){
 								setTimeout(function(){
 									$("#login .errorbox").slideUp();
 								},5000);
-						});
+					});
 				});
 		});
-		$("#IDRegister").bind("tapone",function(e){
+		$("#IDRegister").bind("tapone", function(e){
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
 				var pwd2=$("#register .pwd2").val();
-				API.register({email:sid,passwd:pwd,passwd2:pwd2,device:Interface.Device},function ok(result){
-					//注册成功，自动登录,更新登录状态,跳到登录前的一页
-					$("#register .errorbox").fadeOut();
-					$("#isnotlogin").fadeOut();
-					$("#islogin").fadeIn();
-					Interface.onBackbutton();
-					},function error(result){
-					//登录失败，提示错误信息
+				API.register({email:sid,passwd:pwd,passwd2:pwd2,device:Interface.Device},
+					function ok(result){
+						//注册成功，自动登录,更新登录状态,跳到登录前的一页
+						$("#register .errorbox").fadeOut();
+						$("#isnotlogin").fadeOut();
+						$("#islogin").fadeIn();
+						Interface.onBackbutton();
+					},
+					function error(result){
+						//登录失败，提示错误信息
 						if(result.error_msg) $("#register .errorbox").html(result.error_msg);
 						$("#register .errorbox").slideDown("fast",function(){
-								setTimeout(function(){
-									$("#register .errorbox").slideUp();
-								},5000);
+							setTimeout(function(){
+								$("#register .errorbox").slideUp();
+							},5000);
 						});
 				});
 		});
@@ -616,7 +649,7 @@ var Control = {
 	},
 	showAddress:function(){
 		
-		var list=$("#rcvlist .list");
+		var list = $("#rcvlist").find(".list");
 		var ul = list.find("ul");
 		var div = list.find("div");
 		var adr = new LeduiAddress();
@@ -635,14 +668,12 @@ var Control = {
 					}
 				}
 				var html='<li active="yes" '+check+' LocalID="'+adds[i].LocalID+'">'+
-					'<div class="edit" LocalID="'+adds[i].LocalID+
-						'"active="yes"><div class="icon"></div></div>'+
+					'<div class="edit" LocalID="'+adds[i].LocalID+'"active="yes"><div class="icon"></div></div>'+
 					'<div class="info">'+
 					'<div class="checkbox"><div class="icon"></div></div>'+
 					'<span class="name">'+adds[i].Name+'</span>'+
 					'<span class="phone">'+(adds[i].Mobile||"")+'</span>'+
-					'<span class="address">'+(adds[i].Country||"")+" "+
-						(adds[i].Privince||"")+" " +(adds[i].City||"")+" "+adds[i].Address+'</span>'+
+					'<span class="address">'+(adds[i].Country||"")+" "+(adds[i].Privince||"")+" " +(adds[i].City||"")+" "+adds[i].Address+'</span>'+
 					'</div></li>';
 				ul.append(html);
 			}
@@ -661,20 +692,9 @@ var Control = {
 			for(var i=0;i<adr.length;i++){
 				CurrentPostCard.Address.push(ado.get($(adr[i]).attr("LocalID")));
 			}
-		});
-		//删除地址
-		$("#delAddress").bind("tapone", function(){
-			var ado = new LeduiAddress;
-			var adr = ado.get($(this).attr("LocalID"));
-			if(adr['AddressID']!=""){
-				API.delAddress(adr['AddressID']);
-			}
-			ado.del($(this).attr("LocalID"));
-			Control.showAddress();
-			Page.show(2);
-		});
+		});		
 		//编辑地址
-		$('#rcvlist .edit').bind('tapone', function(){
+		$('#rcvlist li .edit').bind('tapone', function(){
 			var id = $(this).attr("LocalID");
 			var ado = new LeduiAddress();
 			var adr = ado.get(id);
@@ -692,8 +712,7 @@ var Control = {
 
 			}
 			return false;
-		});
-		
+		});		
 	
 	},
 	showPreview:function(){
