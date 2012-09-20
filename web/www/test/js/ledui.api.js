@@ -189,6 +189,14 @@ var API = {
 		   dataType: "JSON",
 		   success: function(msg){
 			   if(msg && msg.result && msg.error_code==0){
+			   	var AddressID=msg.result;
+				var adr = new LeduiAddress;
+				var localAddr=adr.list(DB.getUID());
+				for(var i=0;i<localAddr.length;i++){
+					if(localAddr[i].AddressID==AddressID){
+						adr.del(localAddr[i].LocalID);
+					}
+				}
 				if(ok)ok(msg);
 			   }else{
 				   if(error && msg.error_msg)error(msg.error_msg);
@@ -200,7 +208,7 @@ var API = {
 		});
 		
 	},
-	//删除地址
+	//列表地址
 	listAddress:function(ok,error){
 		var param={};
 		param.token= DB.getToken();
@@ -657,6 +665,10 @@ var Control = {
 		//删除地址
 		$("#delAddress").bind("tapone", function(){
 			var ado = new LeduiAddress;
+			var adr = ado.get($(this).attr("LocalID"));
+			if(adr['AddressID']!=""){
+				API.delAddress(adr['AddressID']);
+			}
 			ado.del($(this).attr("LocalID"));
 			Control.showAddress();
 			Page.show(2);
