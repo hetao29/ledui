@@ -76,7 +76,13 @@ LeduiPostCard.prototype = {
 		var isnew=true;
 		for(var i=0;i<postcards.length;i++){
 			if(postcards[i].LocalID == LeduiPostCardObject.LocalID){
-				postcards.splice(i,1,LeduiPostCardObject);
+				//VERY GOOD MODE(MERGE,NOT REPLACE)
+				console.log(LeduiPostCardObject);
+				for(var j in LeduiPostCardObject){
+					postcards[i][j]=LeduiPostCardObject[j];
+				}
+				console.log(postcards[i]);
+				postcards.splice(i,1,postcards[i]);
 				isnew = false;
 			}
 		}
