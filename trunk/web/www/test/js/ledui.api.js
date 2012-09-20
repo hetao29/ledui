@@ -120,7 +120,6 @@ var API = {
 		var param={};
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
-		param.uuid= DB.getUUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 			type: "POST",
@@ -151,7 +150,6 @@ var API = {
 		var param={};
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
-		param.uuid= DB.getUUID();
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 			type: "POST",
@@ -341,13 +339,13 @@ var Interface = {
 	},
 	onPhotoURISuccess:function(imageURI){
 		Page.show(1, function(){
+			CurrentPostCard = new LeduiPostCard;
 			PhotoEditor.init(imageURI);
 		});
 		//setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	onFail:function (message) {
-	       LocalDataPostCard.init();
-	       //alert('Failed because: ' + message);
+	       CurrentPostCard = new LeduiPostCard;
 	},
 	onGEOSuccess:function(position) {
 		this.Longitude = position.coords.longitude;
@@ -555,7 +553,7 @@ var Control = {
 			};
 			Page.show(4);
 		});
-		//预览，生成明信片数据,LocalDataPostCard
+		//预览，生成明信片数据
 		$("#comments").bind("change", function(e){
 			//评论信息
 			CurrentPostCard.Comments = $(this).val();
@@ -573,7 +571,7 @@ var Control = {
 					//开始掉用接口
 					//修改登录，注册，返回页面为 0
 					API.postPostCard(
-						LocalDataPostCard,function ok(){
+						CurrentPostCard,function ok(){
 							$("#titlebar_login .button_s_back").attr("_back",0);
 							$("#titlebar_register .button_s_back").attr("_back",0);
 							$("#titlebar_about .button_s_back").attr("_back",0);
