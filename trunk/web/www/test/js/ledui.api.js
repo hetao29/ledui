@@ -852,8 +852,7 @@ var Control = {
 				
 				ul.append(li);
 			}
-
-			console.log(+new Date());
+			//console.log(+new Date());
 			
 		}
 							
@@ -861,7 +860,7 @@ var Control = {
 }
 //{{{
 $(document).ready(function(){
-	DB.clear();
+	//DB.clear();
 	Control.init();
 });
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
