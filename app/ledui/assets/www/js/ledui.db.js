@@ -1,7 +1,7 @@
 //记录本地状态信息
 //static object
 var _DB={
-	Version:"_V1",
+	Version:"_V2",
 	uuid:"",
 	set:function(k,v){
 		this.del(k);
