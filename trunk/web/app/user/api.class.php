@@ -61,6 +61,14 @@ class user_api{
 		$db = new user_db;
 		return $db->getUserByID( $userID );
 	}
+	static public function isAddressExist($AddressID){
+		$db = new user_db;
+		$Address = $db->getAddress($AddressID);
+		if(isset($Address['AddressID']))
+			return true;
+		else
+			return false;
+	}
 	static public function setCookie($k,$v,$t){
 		header( 'p3p:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 		setcookie($k,$v,$t,"/");

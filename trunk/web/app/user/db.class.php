@@ -34,6 +34,9 @@ class user_db{
 			unset($User['UserID']);
 		return $this->_db->insert("t_user",$User);
 	}
+	function addDevice($device){
+		return $this->_db->insert("t_user_device",$device);
+	}
 	function addUserProfile($UserP){
 		return $this->_db->insert("t_user_profile",$UserP);
 	}
@@ -51,8 +54,15 @@ class user_db{
 			unset($Add['AddressID']);
 		return $this->_db->insert("t_user_address",$Add);
 	}
-	function getAddress($AddressID){
-		return $this->_db->selectOne("t_user_address",array("AddressID"=>$AddressID));
+	function getAddress($AddressID,$UserID=0){
+		if($UserID){
+			return $this->_db->selectOne("t_user_address",array("AddressID"=>$AddressID,"UserID"=>$UserID));
+		}else{
+			return $this->_db->selectOne("t_user_address",array("AddressID"=>$AddressID));
+		}
+	}
+	function listAddress($UserID){
+		return $this->_db->select("t_user_address",array("UserID"=>$UserID),"","",$orderby=array("_order"=>"ASC"));
 	}
 	function updateAddress($AddID,$Add){
 		return $this->_db->update("t_user_address",array("AddressID"=>$AddID),$Add);
@@ -60,11 +70,17 @@ class user_db{
 	function delAddress($AddID){
 		return $this->_db->delete("t_user_address",array("AddressID"=>$AddID));
 	}
-	function updateAddressDef($AddID,$Def){
-		return $this->_db->update("t_user_address",array("AddressID"=>$AddID),array("Def"=>$Def));
+	function updateAddressDef($AddID,$IsDef){
+		return $this->_db->update("t_user_address",array("AddressID"=>$AddID),array("_isDef"=>$IsDef));
 	}
-	function getAddressListByUserID($UserID){
-		return $this->_db->select("t_user_address",array("UserID"=>$UserID,"*"),"",array("Def"=>"desc","AddressID"=>"asc"));
+	function updateAddressDelByAddID($AddID,$IsDel){
+		return $this->_db->update("t_user_address",array("AddressID"=>$AddID),array("_isDel"=>$IsDel));
+	}
+	function updateAddressDelByUserID($UserID,$IsDel){
+		return $this->_db->update("t_user_address",array("UserID"=>$UserID),array("_isDel"=>$IsDel));
+	}
+	function getAddressListByUserID($UserID,$IsDel){
+		return $this->_db->select("t_user_address",array("UserID"=>$UserID,"_isDel"=>$IsDel),"",array("_isDef"=>"desc","AddressID"=>"asc"));
 	}
 
 }

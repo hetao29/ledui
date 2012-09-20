@@ -1,5 +1,5 @@
 <?php
-class order_api{
+class money_api{
 	/**
 	  */
 	static public function getCurrentScoreByID($UserID){
