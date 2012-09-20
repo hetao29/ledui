@@ -2,7 +2,7 @@ $(document).ready(function(){
 	Touch.init();
 	UI.redefine();
 	Adapta.init();
-	Page.init(1);
+	PageMgr.init(1);
 });
 
 //UI系统
@@ -20,7 +20,7 @@ var UI = {
 	}
 } 
 //页面显示控制
-var Page = {	
+var PageMgr = {	
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
 	scrollers: {},
 	sindex: -1,
@@ -229,7 +229,7 @@ var Adapta = {
 		return this;
 	},
 	layout: function(){		
-		var  pg = Page.getcurrentpage()	
+		var  pg = PageMgr.getcurrentpage()	
 			,hd = pg.find('.panel_head')
 			,bd = pg.find('.panel_body')
 			,ft = pg.find('.panel_foot')
@@ -245,7 +245,7 @@ var Adapta = {
 		this.layoutinfo = {width: win_w,  height: win_h};
 		pg.attr('layout_width', win_w).attr('layout_height', win_h);
 		
-		Page.chkscroll(pg);
+		PageMgr.chkscroll(pg);
 		return this;
 	}
 }

@@ -311,9 +311,9 @@ var Interface = {
 			 Overlay.hide(Overlay.curname);
 			 return;
 		}
-		var p = Page.getcurrentpage().find(".button_s_back").attr("_back");
+		var p = PageMgr.getcurrentpage().find(".button_s_back").attr("_back");
 		if(p){
-			Page.show(p);
+			PageMgr.show(p);
 			return;
 		}
 		//如果，是第0页，按后退，就提示程序退出
@@ -350,7 +350,7 @@ var Interface = {
 		*/
 	},
 	onPhotoURISuccess:function(imageURI){
-		Page.show(1, function(){
+		PageMgr.show(1, function(){
 			CurrentPostCard = new LeduiPostCard;
 			PhotoEditor.init(imageURI);
 		});
@@ -383,7 +383,7 @@ var Control = {
 	init: function(n){
 		
 		//页面跳转
-		$("[_to]").bind("tapone", function(e){ Page.show($(this).attr("_to")); });
+		$("[_to]").bind("tapone", function(e){ PageMgr.show($(this).attr("_to")); });
 		$(".button_s_back").bind("tapone", function(e){ Interface.onBackbutton(); });
 		
 		//导航
@@ -397,12 +397,12 @@ var Control = {
 		  		applogin.fadeIn();
 		  	}
 		});
-		appnav.find(".CAbout").bind("tapone", function(e){ Page.show(8); });
-		appnav.find(".CLogin").bind("tapone", function(e){ Page.show(10); });		
-		appnav.find(".CRegister").bind("tapone", function(e){ Page.show(11); });
+		appnav.find(".CAbout").bind("tapone", function(e){ PageMgr.show(8); });
+		appnav.find(".CLogin").bind("tapone", function(e){ PageMgr.show(10); });		
+		appnav.find(".CRegister").bind("tapone", function(e){ PageMgr.show(11); });
 		appnav.find(".CPostCard").bind("tapone", function(e){					   
 			Control.showPostCard();
-			Page.show(9);
+			PageMgr.show(9);
 		});
 		appnav.find(".CLogout").bind("tapone", function(e){
 			API.logout(
@@ -491,19 +491,19 @@ var Control = {
 				var info=PhotoEditor.getinfo();
 				if(info){ CurrentPostCard.photo = info; }
 				Control.showAddress()
-				Page.show(2);
+				PageMgr.show(2);
 		});				
 		
 		//添加新地址的时候，进行重置
 		btnrcvcreate.bind("tapone",function(e){			
 			btnrcvdel.attr("LocalID","").hide();
-			$("#head_add .adrchk").show();
-			$("#head_add .title").html("addAddress".tr());
+			$("#adrchk").show();
+			$("#adrtitle").html("addAddress".tr());
 			btnrcvadd.text("add".tr());
 			rcvform.each(function(){ this.reset();} );
 			country.trigger("change");
 			rcvform.find("[name=LocalID]").val("");
-			Page.show(3);
+			PageMgr.show(3);
 		});
 		//删除地址
 		btnrcvdel.bind("tapone", function(){
@@ -514,7 +514,7 @@ var Control = {
 			}
 			ado.del($(this).attr("LocalID"));
 			Control.showAddress();
-			Page.show(2);
+			PageMgr.show(2);
 		});
 		btnrcvadd.bind("tapone",function(e){
 			var ado = new LeduiAddress();
@@ -533,7 +533,7 @@ var Control = {
 			}else{
 				ado.add(ado);
 				Control.showAddress()
-				Page.show(2, null, { y:0 });
+				PageMgr.show(2, null, { y:0 });
 			}
 		});
 		country.bind("change",function(e){			
@@ -567,7 +567,7 @@ var Control = {
 				alert("请选择收件人");
 				return;
 			};
-			Page.show(4);
+			PageMgr.show(4);
 		});
 		$("#payaction .button_pay").bind("tapone",function(e){
 			window.location.href = $(this).attr("src");
@@ -596,7 +596,7 @@ var Control = {
 							$("#titlebar_login .button_s_back").attr("_back",0);
 							$("#titlebar_register .button_s_back").attr("_back",0);
 							$("#titlebar_about .button_s_back").attr("_back",0);
-							Page.show(6);
+							PageMgr.show(6);
 						},
 						function error(msg){
 							alert("错误，["+msg+"]请重试");
@@ -609,7 +609,7 @@ var Control = {
 					$("#titlebar_about .button_s_back").attr("_back",5);
 					//$("#titlebar_postcard .button_s_back").attr("_back",5);
 					$("#login .errorbox").html("need2login".tr()).show();
-					Page.show(10);
+					PageMgr.show(10);
 					//修改登录，注册，返回页面为 6
 				}
 			});
@@ -714,8 +714,8 @@ var Control = {
 					var ado = new LeduiAddress();
 					var adr = ado.get(id);
 					if(id && adr){
-						$("#head_add .adrchk").hide();
-						$("#head_add .title").html("editAddress".tr());
+						$("#adrchk").hide();
+						$("#adrtitle").html("editAddress".tr());
 						$("#delAddress").attr("LocalID",id).show();
 						$("#addAddress").text("edit".tr());
 						$("#rcvform").each(function(){
@@ -723,7 +723,7 @@ var Control = {
 							$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
 							}
 							});
-						Page.show(3);
+						PageMgr.show(3);
 					}
 					return false;
 				});		
@@ -760,7 +760,7 @@ var Control = {
 			$('.card_front .photo').html('').append(img);
 		}
 		Preview.show();
-		Page.show(5);
+		PageMgr.show(5);
 	},
 	showPostCard:function(){
 		var postcard = new LeduiPostCard;
