@@ -138,7 +138,6 @@ var API = {
 						//var localAddr=adr.list(DB.getUID());
 						//console.log(localAddr)
 						for(var i=0;i<msg.result.Address.length;i++){
-							console.log(msg.result.Address[i]);
 							adr.add(msg.result.Address[i]);
 						}
 
@@ -249,8 +248,6 @@ var API = {
 							};
 						}
 						adr.add(adr2);
-
-						console.log(item);
 					}
 				}
 				if(ok)ok(msg);
@@ -781,7 +778,6 @@ var Control = {
 		}else{
 			var ul = $("#maillist ul");
 			ul.html("").show();;
-			console.log(+new Date());
 			for(var i=postcards.length-1;i>=0;i--){
 				var photo=postcards[i].photo;
 				var to=[];
@@ -851,7 +847,6 @@ var Control = {
 				});			
 				ul.append(li);
 			}
-			//console.log(+new Date());
 			
 		}
 							

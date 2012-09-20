@@ -185,6 +185,36 @@ var PageMgr = {
 	}
 }
 
+var Page = function(params){
+	this.index = params.index ? params.index : null;
+	this.title = params.title ? params.title : '';
+	this.name = params.name ? params.name : '';
+	this.titlebar = params.titlebar ? params.titlebar : null; 
+	this.appview = params.appview ? params.appview : null;
+	this.apphead = params.apphead ? params.apphead : null;
+	this.appbody = params.appbody ? params.appbody : null;
+	this.appfoot = params.appfoot ? params.appfoot : null;
+	this.appnav = params.appnav ? params.appnav : false;
+}
+Page.prototype = {
+	show: function(){
+		
+	},
+	hide: function(){
+			
+	},
+	chkscroll: function(){
+		
+	},
+	f5scroll: function(){
+		
+	},
+	adpta: function(){
+		
+	}
+}
+
+
 //屏幕适配器
 var Adapta = {
 	ratio: 1,
