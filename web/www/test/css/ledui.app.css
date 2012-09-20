@@ -828,12 +828,12 @@ opacity:1;
 100% { -moz-transform: rotateY(180deg); opacity:0;}
 }
 @-o-keyframes toback {
-0% { -o-transform: rotateY(0deg);opacity:1; } 
+0% { -o-transform: rotateY(0deg); opacity:1; } 
 100% { -o-transform: rotateY(180deg); opacity:0;}
 }
 @-ms-keyframes toback { 
-0% { -ms-transform: rotateY(0deg);opacity:1; }
-100% { -ms-transform: rotateY(180deg);opacity:0; }
+0% { -ms-transform: rotateY(0deg); opacity:1; }
+100% { -ms-transform: rotateY(180deg); opacity:0; }
 }
 .toback{
 	-webkit-animation-name: toback;
@@ -843,7 +843,7 @@ opacity:1;
 }
 
 @-webkit-keyframes tofront { 
-0% { -webkit-transform: rotateY(180deg);opacity:0; }
+0% { -webkit-transform: rotateY(180deg); opacity:0; }
 100% { -webkit-transform: rotateY(0deg); opacity:1;}
 }
 @-moz-keyframes tofront {

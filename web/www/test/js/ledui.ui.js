@@ -80,8 +80,8 @@ var Page = {
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
-			//appnav.slideDown(); 
-			appnav.show();
+			appnav.slideDown(); 
+			//appnav.show();
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){
@@ -494,13 +494,6 @@ var PhotoEditor = {
 			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
-			/*Filtrr2('#photoeditorimg', function() {
-
-				this.brighten(40)
-					.saturate(50)
-					.render();
-					  
-			});*/
 		})
 		.bind('error', function(){
 			_this.loading.hide();
