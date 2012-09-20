@@ -425,13 +425,13 @@ var Preview = {
 				this.panel_front.addClass('atfront').show();
 				this.panel_back.addClass('atback').show();
 			}else{
-				
 				this.panel_front.addClass('atback').show();
 				this.panel_back.addClass('atfront').show();
 			}
 			return this;
 		}
 		this.clear();
+		var _this = this;
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
@@ -441,6 +441,10 @@ var Preview = {
 			}else{
 				this.panel_front.addClass('tofront');
 				this.panel_back.addClass('toback');
+				setTimeout(function(){
+					_this.panel_front.removeClass('tofront').addClass('atfront');
+					_this.panel_back.removeClass('toback').addClass('atback');
+				}, 300)
 			}
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
@@ -451,6 +455,10 @@ var Preview = {
 			}else{
 				this.panel_front.addClass('toback');
 				this.panel_back.addClass('tofront');
+				setTimeout(function(){
+					_this.panel_front.removeClass('toback').addClass('atback');
+					_this.panel_back.removeClass('tofront').addClass('atfront');
+				}, 300)
 			}
 		}
 		this.side = side;
