@@ -234,26 +234,18 @@ var API = {
 			   	if(msg.result.items && msg.result.items.length>0){
 					var adr = new LeduiAddress;
 					var localAddr=adr.list(DB.getUID());
-					console.log(localAddr)
 					for(var i=0;i<msg.result.items.length;i++){
 						var item=msg.result.items[i];
 						var adr2 = new LeduiAddress;
 						for(var x in item){
 							adr2[x]=item[x];
 						}
-						//var isnew=true;
 						for(var j=0;j<localAddr.length;j++){
-						console.log(localAddr[j]);
-						console.log(item);
 							if(localAddr[j].AddressID==item.AddressID){
-								console.log("EXISTS");
 								adr2.LocalID = localAddr[j].LocalID;
-								//isnew=false;
 							};
 						}
-						//if(isnew){
-							adr.add(adr2);
-						//}
+						adr.add(adr2);
 
 						console.log(item);
 					}
@@ -705,9 +697,10 @@ var Control = {
 			
 			var adr = $("#rcvlist li.checked");
 			CurrentPostCard.Address=[];
+			CurrentPostCard.AddressID=[];
 			var ado = new LeduiAddress();
 			for(var i=0;i<adr.length;i++){
-				CurrentPostCard.Address.push(ado.get($(adr[i]).attr("LocalID")));
+				CurrentPostCard.AddressID.push($(adr[i]).attr("LocalID"));
 			}
 		});		
 		//编辑地址
@@ -732,16 +725,18 @@ var Control = {
 		});		
 	
 	},
-	showPreview:function(){
-		$("#postinfo [name='Name']").html(CurrentPostCard.Address[0].Name);
+	showPreview:function(){		
+		var adr = new LeduiAddress;
+		var add = adr.get(CurrentPostCard.AddressID[0]);
+		$("#postinfo [name='Name']").html(add.Name);
 		$("#postinfo [name='Address']").html(
-				CurrentPostCard.Address[0].Country+" "+
-				CurrentPostCard.Address[0].Privince +" "+
-				CurrentPostCard.Address[0].City+" "+
-				CurrentPostCard.Address[0].Address+" "
+				add.Country+" "+
+				add.Privince +" "+
+				add.City+" "+
+				add.Address+" "
 				);
-		$("#postinfo [name='PostCode']").html(CurrentPostCard.Address[0].PostCode);
-		$("#msginfo [name='Name']").html(CurrentPostCard.Address[0].Name);
+		$("#postinfo [name='PostCode']").html(add.PostCode);
+		$("#msginfo [name='Name']").html(add.Name);
 		$("#msginfo [name='Comments']").html(CurrentPostCard.Comments);
 		var postcard = new LeduiPostCard();
 		postcard.add(CurrentPostCard);
@@ -779,8 +774,10 @@ var Control = {
 			for(var i=postcards.length-1;i>=0;i--){
 				var photo=postcards[i].photo;
 				var to=[];
-				for(var j=0;j<postcards[i].Address.length;j++){
-					to.push(postcards[i].Address[j].Name);
+				var adr = new LeduiAddress;
+				for(var j=0;j<postcards[i].AddressID.length;j++){
+					var add = adr.get(postcards[i].AddressID[j]);
+					to.push(add.Name);
 				}
 
 				var st="";

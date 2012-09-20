@@ -63,7 +63,8 @@ var LeduiPostCard=function(){
 	this.FileTmpID="";
 	this.Latitude="";
 	this.Longitude="";
-	this.Address=[];//发送地址
+	this.Address=[];//发送地址,[LeduiAddress]
+	this.AddressID=[];//发送地址,[LeduiAddress.LocalID]
 	this.Comments="";
 	this.photo={}; //width:"", //height:"", //x:"", //y:"", //rotate:"",
 	this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
@@ -93,6 +94,13 @@ LeduiPostCard.prototype = {
 		var postcards = _DB.get(this._key) || [];
 		for(var i=0;i<postcards.length;i++){
 			if(postcards[i].LocalID == LocalID){
+				if(postcards[i].AddressID.length>0){
+					postcards[i].Address=[];
+					var adr = new LeduiAddress;
+					for(var j=0;j<postcards[i].AddressID.length;j++){
+						postcards[i].Address.push(adr.get(postcards[i].AddressID[j]));
+					}
+				}
 				return postcards[i];
 			}
 		}
