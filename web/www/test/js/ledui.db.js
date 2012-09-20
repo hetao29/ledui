@@ -1,4 +1,5 @@
 //记录本地状态信息
+//static object
 var _DB={
 	Version:"_V1",
 	uuid:"",
@@ -14,6 +15,7 @@ var _DB={
 	}
 }
 
+//static object
 var DB={
 	postcards:"postcards",
 	token:"token",
@@ -51,7 +53,7 @@ var LeduiPostCard=function(){
 	//{{明信片信息，和服务器保存的结果对应
 	this.PostCardID="";//当调用增加明信片后，更新此参数，如果有这参数，说明服务端已经生成了
 	this.PayURL="";
-	this.UserID="";
+	this.UserID="";//UserID必须不能为空，这个值由服务器在创建后返回
 	this.OrderID="";
 	this.ImageFileID="";
 	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
@@ -157,6 +159,7 @@ var LeduiAddress=function(){
 	this.LocalID = (new Date()).getTime() +":"+Math.floor(Math.random()*10000);//本地生成的临时地址ID
 	this.Name = "";
 	this.Mobile = "";
+	this.UserID= "";//UserID为空的，表示，本机账号共用,不为空的，表示登录用户才有
 	this.Country = "";
 	this.Privince = "";
 	this.City = "";
@@ -207,9 +210,15 @@ var LeduiAddress=function(){
 		}
 		_DB.set(this._key,all);
 	}
-	this.list=function(){
+	this.list=function(uid){
 		var all = _DB.get(this._key) || [];
-		return all;
+		var r=[];
+		for(var i=0;i<all.length;i++){
+			if(!all[i].UserID || all[i].UserID=="" || all[i].UserID==uid){
+				r.push(all[i]);
+			}
+		}
+		return r;
 	}
 	this.upload=function(){
 	}
