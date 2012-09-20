@@ -69,8 +69,7 @@ var Test = {
 			}
 		});	
 		for(var i=1; i<=20; i++){
-			var src = ps[i];
-			var op = $('<option value="testimg/'+ i +'.jpg">photo'+ i +'</option>');
+			var op = $('<option value="testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
 		}
 		//PhotoEditor.init(ps[0]);
