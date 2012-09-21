@@ -31,4 +31,7 @@ class postcard_db{
 			unset($PostCard['PostCardID']);
 		return $this->_db->insert("t_postcard",$PostCard);
 	}
+	function updatePostCardStatus($PostCardID,$PostCardStatus){
+		return $this->_db->update("t_postcard",array("PostCardID"=>$PostCardID),array("PostCardStatus"=>$PostCardStatus));
+	}
 }

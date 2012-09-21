@@ -15,12 +15,21 @@ class image_db{
 			return $this->_db->selectOne("t_image",array("ImageFileID"=>$ImageFileID));
 		}
 	}
-	/*
-	function addMoney($Money){
-		if(isset($Money['UserID']))
-			unset($Money['UserID']);
-		return $this->_db->insert("t_money",$Money);
+	function addImage($Image){
+		if(empty($Image['ImageFileID']))return false;
+		if(empty($Image['UserID']))return false;
+		$Image['_insertTime']=date("Y-m-d H:i:s");
+		return $this->_db->insert("t_image",$Image);
 	}
+	function addExif($Exif){
+		if(empty($Exif['ImageFileID']))return false;
+		$Exif['_insertTime']=date("Y-m-d H:i:s");
+		return $this->_db->insert("t_exif",$Exif,true);
+	}
+	function delImage($ImageFileID,$UserID){
+		return $this->_db->delete("t_image",array("ImageFileID"=>$ImageFileID,"UserID"=>$UserID));
+	}
+	/*
 	function updateMoneyByID($UserID,$Money){
 		return $this->_db->update("t_money",array("UserID"=>$userID),$Money);
 	}
