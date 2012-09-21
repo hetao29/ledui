@@ -594,7 +594,7 @@ var Control = {
 				}
 			});
 			try{
-				navigator.app.loadUrl($(this).attr("src"));
+				navigator.app.loadUrl($(this).attr("src"),{openExternal:true});
 			}catch(e){
 				window.open($(this).attr("src"));
 			}
