@@ -15,36 +15,36 @@ var Test = {
 		
 		$('<br><br>').appendTo($(testpanel));
 		
-		var total = Page.gettotal();
-		var current = Page.getcurrent();
+		var total = PageMgr.gettotal();
+		var current = PageMgr.getcurrent();
 		var ops = '';
-		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + Page.getpage(i).attr('_name') +'</option>'; }
+		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + PageMgr.getpage(i).attr('_name') +'</option>'; }
 		var sel = $('<select>'+ ops +'</select>')
 		.appendTo(testpanel)
 		.change(function(){
-			Page.show($(this).val())				 
+			PageMgr.show($(this).val())				 
 		});
 		
 		/*
 		$('<button>prev</button>')
 		.appendTo($(testpanel))
 		.click(function(){
-			Page.prev();			
-			sel.val(Page.getcurrent());
+			PageMgr.prev();			
+			sel.val(PageMgr.getcurrent());
 		});
 		
 		$('<button>next</button>')
 		.appendTo($(testpanel))
 		.click(function(){
-			Page.next();
-			sel.val(Page.getcurrent());
+			PageMgr.next();
+			sel.val(PageMgr.getcurrent());
 		});
 		
 		$('<button>back</button>')
 		.appendTo($(testpanel))
 		.click(function(){
-			Page.back();
-			sel.val(Page.getcurrent());
+			PageMgr.back();
+			sel.val(PageMgr.getcurrent());
 		});
 		*/
 		$('<br><br>').appendTo($(testpanel));
@@ -69,7 +69,7 @@ var Test = {
 			}
 		});	
 		for(var i=1; i<=20; i++){
-			var op = $('<option value="testimg/test'+ i +'.jpg">photo'+ i +'</option>');
+			var op = $('<option value="http://42.121.85.21/test/testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
 		}
 		//PhotoEditor.init(ps[0]);

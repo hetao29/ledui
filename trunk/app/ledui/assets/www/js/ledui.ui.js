@@ -2,7 +2,7 @@ $(document).ready(function(){
 	Touch.init();
 	UI.redefine();
 	Adapta.init();
-	Page.init(1);
+	PageMgr.init(1);
 });
 
 //UI系统
@@ -20,7 +20,7 @@ var UI = {
 	}
 } 
 //页面显示控制
-var Page = {	
+var PageMgr = {	
 	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
 	scrollers: {},
 	sindex: -1,
@@ -80,8 +80,8 @@ var Page = {
 		
 		var appnav = $('#appnav'); 
 		if(page.attr('_hasnav')){ 
-			//appnav.slideDown(); 
-			appnav.show();
+			appnav.slideDown(); 
+			//appnav.show();
 			$.each(appnav.find('li'), function(){
 				var li = $(this);
 				if(parseInt(li.attr('mark'), 10) ==  n){
@@ -185,6 +185,36 @@ var Page = {
 	}
 }
 
+var Page = function(params){
+	this.index = params.index ? params.index : null;
+	this.title = params.title ? params.title : '';
+	this.name = params.name ? params.name : '';
+	this.titlebar = params.titlebar ? params.titlebar : null; 
+	this.appview = params.appview ? params.appview : null;
+	this.apphead = params.apphead ? params.apphead : null;
+	this.appbody = params.appbody ? params.appbody : null;
+	this.appfoot = params.appfoot ? params.appfoot : null;
+	this.appnav = params.appnav ? params.appnav : false;
+}
+Page.prototype = {
+	show: function(){
+		
+	},
+	hide: function(){
+			
+	},
+	chkscroll: function(){
+		
+	},
+	f5scroll: function(){
+		
+	},
+	adpta: function(){
+		
+	}
+}
+
+
 //屏幕适配器
 var Adapta = {
 	ratio: 1,
@@ -229,7 +259,7 @@ var Adapta = {
 		return this;
 	},
 	layout: function(){		
-		var  pg = Page.getcurrentpage()	
+		var  pg = PageMgr.getcurrentpage()	
 			,hd = pg.find('.panel_head')
 			,bd = pg.find('.panel_body')
 			,ft = pg.find('.panel_foot')
@@ -245,7 +275,7 @@ var Adapta = {
 		this.layoutinfo = {width: win_w,  height: win_h};
 		pg.attr('layout_width', win_w).attr('layout_height', win_h);
 		
-		Page.chkscroll(pg);
+		PageMgr.chkscroll(pg);
 		return this;
 	}
 }
@@ -425,13 +455,13 @@ var Preview = {
 				this.panel_front.addClass('atfront').show();
 				this.panel_back.addClass('atback').show();
 			}else{
-				
 				this.panel_front.addClass('atback').show();
 				this.panel_back.addClass('atfront').show();
 			}
 			return this;
 		}
 		this.clear();
+		var _this = this;
 		if(side == 'front'){
 			this.handle_front.addClass('current');
 			this.handle_back.removeClass('current');
@@ -441,6 +471,10 @@ var Preview = {
 			}else{
 				this.panel_front.addClass('tofront');
 				this.panel_back.addClass('toback');
+				setTimeout(function(){
+					_this.panel_front.removeClass('tofront').addClass('atfront');
+					_this.panel_back.removeClass('toback').addClass('atback');
+				}, 300)
 			}
 		}else if(side == 'back'){
 			this.handle_front.removeClass('current');
@@ -451,6 +485,10 @@ var Preview = {
 			}else{
 				this.panel_front.addClass('toback');
 				this.panel_back.addClass('tofront');
+				setTimeout(function(){
+					_this.panel_front.removeClass('toback').addClass('atback');
+					_this.panel_back.removeClass('tofront').addClass('atfront');
+				}, 300)
 			}
 		}
 		this.side = side;
@@ -494,13 +532,6 @@ var PhotoEditor = {
 			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
-			/*Filtrr2('#photoeditorimg', function() {
-
-				this.brighten(40)
-					.saturate(50)
-					.render();
-					  
-			});*/
 		})
 		.bind('error', function(){
 			_this.loading.hide();
