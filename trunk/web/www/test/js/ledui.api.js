@@ -261,7 +261,13 @@ var API = {
 		});
 		
 	},
+    	//,移到worker里去，实现多进程隐藏上传
 	upload:function(LeduiPostCard){
+		var worker = new Worker('js/ledui.upload.js');
+		worker.onmessage = function(evt){     //接收worker传过来的数据函数
+			alert("XXX");
+		}
+		worker.postMessage("xxx");
 		var imageURI	= LeduiPostCard.photo.o;
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		var options = new FileUploadOptions();
@@ -351,7 +357,6 @@ var Interface = {
 			CurrentPostCard = new LeduiPostCard;
 			PhotoEditor.init(imageURI);
 		});
-		//setTimeout(function(){API.upload(122,imageURI);},2000);
 	},
 	onFail:function (message) {
 	       CurrentPostCard = new LeduiPostCard;
