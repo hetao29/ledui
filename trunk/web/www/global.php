@@ -36,3 +36,5 @@ if(!empty($_COOKIE['language'])){
     SLanguage::setLocale($_COOKIE['language']);
 }
 //}}}
+//for test
+//SLanguage::setLocale("en");
