@@ -262,13 +262,18 @@ var API = {
 		
 	},
     	//,移到worker里去，实现多进程隐藏上传
-	upload:function(LeduiPostCard){
+	upload:function(LeduiPostCardObject){
 		var worker = new Worker('js/ledui.upload.js');
 		worker.onmessage = function(evt){     //接收worker传过来的数据函数
 			alert("XXX");
 		}
 		worker.postMessage("xxx");
-		var imageURI	= LeduiPostCard.photo.o;
+		//更新当前明信片状态为上传(TODO)
+		LeduiPostCardObject.Status = 2;
+		var postcard = new LeduiPostCard;
+		postcard.add(LeduiPostCardObject);
+
+		var imageURI	= LeduiPostCardObject.photo.o;
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		var options = new FileUploadOptions();
 		options.fileKey="file";
@@ -279,8 +284,8 @@ var API = {
 		var param={};
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
-		param.PostCardID = LeduiPostCard.PostCardID;
-		param.src = LeduiPostCard.photo.o;
+		param.PostCardID = LeduiPostCardObject.PostCardID;
+		param.src = LeduiPostCardObject.photo.o;
 		
 		options.params = params;
 		
@@ -289,9 +294,17 @@ var API = {
 			imageURI,
 			"/image/upload",
 			function ok(r){
+				//更新当前明信片状态为上传成功(TODO)
+				LeduiPostCardObject.Status = 3;
+				var postcard = new LeduiPostCard;
+				postcard.add(LeduiPostCardObject);
 				alert(r.response);									 
 			},
 			function fail(){
+				//更新当前明信片状态为上传失败(TODO)
+				LeduiPostCardObject.Status = -1;
+				var postcard = new LeduiPostCard;
+				postcard.add(LeduiPostCardObject);
 			
 			}, 
 			options
@@ -572,7 +585,19 @@ var Control = {
 			PageMgr.show(4);
 		});
 		$("#payaction .button_pay").bind("tapone",function(e){
-			window.location.href = $(this).attr("src");
+			confirm("payedConfirm".tr(),{
+				cancel:function(){
+				},ok:function(){
+					//检测是不是真的已经支付
+					//如果已经支付，修改支付状态PayStatus为2
+					API.upload(CurrentPostCard);
+				}
+			});
+			try{
+				navigator.app.loadUrl($(this).attr("src"));
+			}catch(e){
+				window.open($(this).attr("src"));
+			}
 		});
 		//预览，生成明信片数据
 		$("#comments").bind("change", function(e){
@@ -797,7 +822,8 @@ var Control = {
 
 				var st="";
 				var st_css="pass";
-				//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
+				//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
+				//支付状态	1,没有支付，2,已经支付
 				switch(postcards[i].Status){
 					case 1:st="st_unpay".tr();st_css="wait";break;
 					case 2:st="st_uploading".tr();break;
