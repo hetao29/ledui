@@ -142,7 +142,7 @@ class api_postcard{
 		}else{
 		}
 		$data->OrderID		= "XX";
-		$data->PayURL		= "PayURL";
+		$data->PayURL		= "http://www.ledui.com/";
 		//}}}
 		return $result;
 	}
