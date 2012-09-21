@@ -605,7 +605,10 @@ var Control = {
 					$("#titlebar_register .button_s_back").attr("_back",5);
 					$("#titlebar_about .button_s_back").attr("_back",5);
 					//$("#titlebar_postcard .button_s_back").attr("_back",5);
-					$("#login .errorbox").html("need2login".tr()).show();
+					$("#login .errorbox").html("need2login".tr()).slideDown("fast",function(){
+							setTimeout(function(){
+								$("#login .errorbox").slideUp();
+							},5000);});
 					PageMgr.show(10);
 					//修改登录，注册，返回页面为 6
 				}
