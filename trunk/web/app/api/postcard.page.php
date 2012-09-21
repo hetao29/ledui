@@ -1,4 +1,7 @@
 <?php
+error_log("\n\n",3,"/tmp/postcard.log");
+error_log(var_export($_REQUEST,true),3,"/tmp/postcard.log");
+error_log(var_export($_FILES,true),3,"/tmp/postcard.log");
 class api_postcard{
 	var $result;
 	var $token;
