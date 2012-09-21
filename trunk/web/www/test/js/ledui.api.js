@@ -34,7 +34,8 @@ $.ajaxSetup({
 
 //接口
 var API = {
-	host: "http://www.ledui.com/api.php/api/",
+	host: "http://www.ledui.com/api.php/api",
+	uploadHost:"http://www.ledui.com/image/upload",
 	//登录
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
@@ -131,7 +132,12 @@ var API = {
 					//update address
 					if(msg.result.PostCardID && msg.result.LocalID){
 						var pst = new LeduiPostCard;
-						pst.add(msg.result);
+						var postcard = pst.get(msg.result.LocalID);
+						postcard.PostCardID = msg.result.PostCardID;
+						postcard.ImageFileID = msg.result.ImageFileID;
+						postcard.OrderID = msg.result.OrderID;
+						postcard.PayURL = msg.result.PayURL;
+						pst.add(postcard);
 					}
 					if(msg.result.Address){
 						var adr = new LeduiAddress;
@@ -263,53 +269,54 @@ var API = {
 	},
     	//,移到worker里去，实现多进程隐藏上传
 	upload:function(LeduiPostCardObject){
-		var worker = new Worker('js/ledui.upload.js');
-		worker.onmessage = function(evt){     //接收worker传过来的数据函数
-			alert("XXX");
-		}
-		worker.postMessage("xxx");
 		//更新当前明信片状态为上传(TODO)
-		LeduiPostCardObject.Status = 2;
+		
 		var postcard = new LeduiPostCard;
-		postcard.add(LeduiPostCardObject);
+		var realObject = postcard.get(LeduiPostCardObject.LocalID);
+		realObject.Status = 2;
+		postcard.add(realObject);
+		
+		
 
-		var imageURI	= LeduiPostCardObject.photo.o;
+		var imageURI	= realObject.photo.o;
 		//考虑到当前版本没有slice的方法，对大文件的读取，会导致crash，所以，暂时不支持断点续传
 		var options = new FileUploadOptions();
-		options.fileKey="file";
-		options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+		options.fileKey="fileKey";
+		options.fileName="fileName";
 		options.mimeType="image/jpeg";
 		options.chunkedMode=true;
-
 		var param={};
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
-		param.PostCardID = LeduiPostCardObject.PostCardID;
-		param.FileURL = LeduiPostCardObject.photo.o;
-		
-		options.params = params;
+		param.PostCardID = realObject.PostCardID;
+		param.ImageFileID = realObject.ImageFileID;
+		param.FileURL = realObject.photo.o;
+		param.data_src = JSON.stringify(LeduiPostCardObject);
+		param.data = JSON.stringify(realObject);
+		options.params = param;
 		
 		var ft = new FileTransfer();
 		ft.upload(
-			imageURI,
-			"/image/upload",
+			realObject.photo.o,
+			API.uploadHost,
 			function ok(r){
 				//更新当前明信片状态为上传成功(TODO)
-				LeduiPostCardObject.Status = 3;
+				alert_old(11);
+				realObject.Status = 3;
 				var postcard = new LeduiPostCard;
-				postcard.add(LeduiPostCardObject);
+				postcard.add(realObject);
 				alert(r.response);									 
 			},
 			function fail(){
+				alert_old(12);
 				//更新当前明信片状态为上传失败(TODO)
-				LeduiPostCardObject.Status = -1;
+				realObject.Status = -1;
 				var postcard = new LeduiPostCard;
-				postcard.add(LeduiPostCardObject);
+				postcard.add(realObject);
 			
 			}, 
 			options
 		);
-		
 		return;
 	}
 }
@@ -588,15 +595,19 @@ var Control = {
 			confirm("payedConfirm".tr(),{
 				cancel:function(){
 				},ok:function(){
+					alert_old(1);
 					//检测是不是真的已经支付
 					//如果已经支付，修改支付状态PayStatus为2
 					API.upload(CurrentPostCard);
+					alert_old(2);
 					//定位到，我的信箱，显示上传状态
 				}
 			});
 			try{
+				alert_old(3);
 				navigator.app.loadUrl($(this).attr("src"),{openExternal:true});
 			}catch(e){
+				alert_old(4);
 				window.open($(this).attr("src"));
 			}
 		});
