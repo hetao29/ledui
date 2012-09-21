@@ -56,8 +56,9 @@ var LeduiPostCard=function(){
 	this.UserID="";//UserID必须不能为空，这个值由服务器在创建后返回
 	this.OrderID="";
 	this.ImageFileID="";
-	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败，-2：未支付
+	//状态 1：未开始，2，上传中，还没有成功，3：成功，-1：失败
 	this.Status=1;
+	this.PayStatus=1;//1.未支付 2.已经支付
 	//}}
 	this.LocalID=(new Date()).getTime() +":"+Math.floor(Math.random()*10000);
 	this.FileTmpID="";
