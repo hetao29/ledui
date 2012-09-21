@@ -285,7 +285,7 @@ var API = {
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
 		param.PostCardID = LeduiPostCardObject.PostCardID;
-		param.src = LeduiPostCardObject.photo.o;
+		param.FileURL = LeduiPostCardObject.photo.o;
 		
 		options.params = params;
 		
@@ -591,6 +591,7 @@ var Control = {
 					//检测是不是真的已经支付
 					//如果已经支付，修改支付状态PayStatus为2
 					API.upload(CurrentPostCard);
+					//定位到，我的信箱，显示上传状态
 				}
 			});
 			try{
