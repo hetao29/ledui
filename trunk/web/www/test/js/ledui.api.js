@@ -334,9 +334,9 @@ var Interface = {
 			 Overlay.hide(Overlay.curname);
 			 return;
 		}
-		var p = PageMgr.getcurrentpage().find(".button_s_back").attr("_back");
+		var p = PageMgr.getcurrentpage().appview.find(".button_s_back").attr("_back");
 		if(p){
-			PageMgr.show(p);
+			PageMgr.back(p);
 			return;
 		}
 		//如果，是第0页，按后退，就提示程序退出
@@ -373,9 +373,12 @@ var Interface = {
 		*/
 	},
 	onPhotoURISuccess:function(imageURI){
-		PageMgr.show(1, function(){
-			CurrentPostCard = new LeduiPostCard;
-			PhotoEditor.init(imageURI);
+		PageMgr.go(1, {
+			callback:function(){
+				CurrentPostCard = new LeduiPostCard;
+				PhotoEditor.init(imageURI);
+			
+			}
 		});
 	},
 	onFail:function (message) {
@@ -405,7 +408,7 @@ var Control = {
 	init: function(n){
 		
 		//页面跳转
-		$("[_to]").bind("tapone", function(e){ PageMgr.show($(this).attr("_to")); });
+		$("[_to]").bind("tapone", function(e){ PageMgr.go($(this).attr("_to")); });
 		$(".button_s_back").bind("tapone", function(e){ Interface.onBackbutton(); });
 		
 		//导航
@@ -513,7 +516,7 @@ var Control = {
 				var info=PhotoEditor.getinfo();
 				if(info){ CurrentPostCard.photo = info; }
 				Control.showAddress()
-				PageMgr.show(2);
+				PageMgr.go(2);
 		});				
 		
 		//添加新地址的时候，进行重置
@@ -525,7 +528,7 @@ var Control = {
 			rcvform.each(function(){ this.reset();} );
 			country.trigger("change");
 			rcvform.find("[name=LocalID]").val("");
-			PageMgr.show(3);
+			PageMgr.go(3);
 		});
 		//删除地址
 		btnrcvdel.bind("tapone", function(){
@@ -536,7 +539,7 @@ var Control = {
 			}
 			ado.del($(this).attr("LocalID"));
 			Control.showAddress();
-			PageMgr.show(2);
+			PageMgr.back(2);
 		});
 		btnrcvadd.bind("tapone",function(e){
 			var ado = new LeduiAddress();
@@ -555,7 +558,7 @@ var Control = {
 			}else{
 				ado.add(ado);
 				Control.showAddress()
-				PageMgr.show(2, null, { y:0 });
+				PageMgr.back(2, null, { y:0 });
 			}
 		});
 		country.bind("change",function(e){			
@@ -589,7 +592,7 @@ var Control = {
 				alert("请选择收件人");
 				return;
 			};
-			PageMgr.show(4);
+			PageMgr.go(4);
 		});
 		$("#payaction .button_pay").bind("tapone",function(e){
 			confirm("payedConfirm".tr(),{
@@ -635,7 +638,7 @@ var Control = {
 							$("#titlebar_login .button_s_back").attr("_back",0);
 							$("#titlebar_register .button_s_back").attr("_back",0);
 							$("#titlebar_about .button_s_back").attr("_back",0);
-							PageMgr.show(6);
+							PageMgr.go(6);
 						},
 						function error(msg){
 							alert("错误，["+msg+"]请重试");
@@ -651,8 +654,7 @@ var Control = {
 							setTimeout(function(){
 								$("#login .errorbox").slideUp();
 							},5000);});
-					PageMgr.show(10);
-					//修改登录，注册，返回页面为 6
+					PageMgr.go(10);
 				}
 			});
 		});
@@ -765,7 +767,7 @@ var Control = {
 							$(this).find("[name='"+i+"']").val(adr[i]).trigger("change");
 							}
 							});
-						PageMgr.show(3);
+						PageMgr.go(3);
 					}
 					return false;
 				});		
@@ -802,7 +804,7 @@ var Control = {
 			$('.card_front .photo').html('').append(img);
 		}
 		Preview.show();
-		PageMgr.show(5);
+		PageMgr.go(5);
 	},
 	showPostCard:function(){
 		var postcard = new LeduiPostCard;

@@ -18,7 +18,7 @@ var Test = {
 		var total = PageMgr.gettotal();
 		var current = PageMgr.getcurrent();
 		var ops = '';
-		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + PageMgr.getpage(i).attr('_name') +'</option>'; }
+		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + PageMgr.getpage(i).name +'</option>'; }
 		var sel = $('<select>'+ ops +'</select>')
 		.appendTo(testpanel)
 		.change(function(){
