@@ -25,7 +25,7 @@ var PageMgr = {
 		this.isinit = true;
 	},
 	show: function(n, params, type){
-		if(!this.isinit){ this.init(); }
+		if(!this.isinit){ this.init(); setTimeout(function(){ $('.apptitlebar').show();}, 300); }
 		var n = parseInt(n, 10);
 		if(this.lock || !this.total){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
