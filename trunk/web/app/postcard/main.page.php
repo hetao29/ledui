@@ -1,5 +1,30 @@
 <?php
-class postcard_main{
+class postcard_main extends STpl{
+	/**
+	 * 明信片预览
+	 */
+	public function pagePreView($inPath){
+		$PostCardID=$_REQUEST['id'];
+		$AddressID=$_REQUEST['aid'];
+		$db = new postcard_db;
+		$user_db = new user_db;
+		if(($postcard=$db->getPostcard($PostCardID))!=false){
+			$adds = $postcard['Address'];
+			$adds_array = split(",",$adds);
+			if(!in_array($AddressID,$adds_array)){
+				//地址错误
+				$AddressID = $adds_array[0];
+			}
+			if($postcard['PostCardStatus']){
+
+			}
+			$addr = $user_db->getAddress($AddressID);
+			print_r($addr);
+			print_r($postcard);
+			return $this->render("postcard/preview.html");
+
+		}
+	}
 	/**
 	 * 支付接口
 	 * http://www.ledui.com/order.main.pay/OrderID
