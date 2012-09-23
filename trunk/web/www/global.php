@@ -27,7 +27,7 @@ SlightPHP::setSplitFlag("-_.");
 
 //{{{db config
 SDb::setConfigFile(ROOT_CONFIG. "/db.ini");
-//SRoute::setConfigFile(ROOT_CONFIG."/route.ini");
+SRoute::setConfigFile(ROOT_CONFIG."/route.ini");
 //}}}
 //{{{language
 SLanguage::setLanguageDir(SlightPHP::$appDir."/../locale");
