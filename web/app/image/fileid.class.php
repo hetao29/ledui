@@ -45,6 +45,7 @@ class image_fileid{
 		return $this;
 	}
 	public function width(){ return $this->_width; }
+	public function timestamp(){ return $this->_timestamp; }
 	public function height(){ return $this->_height; }
 	public function type(){ return $this->_type; }
 	public function version(){ return $this->_version; }
