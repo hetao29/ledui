@@ -2,6 +2,7 @@
 //复杂的数据要进行JSON编码，不过有可能程序会FC
 //{{{全局变量
 var CurrentPostCard = new LeduiPostCard;
+var AvaliableCurrency={};
 //}}}
 
 //{{{
@@ -136,8 +137,10 @@ var API = {
 						postcard.PostCardID = msg.result.PostCardID;
 						postcard.ImageFileID = msg.result.ImageFileID;
 						postcard.OrderID = msg.result.OrderID;
-						postcard.PayURL = msg.result.PayURL;
 						pst.add(postcard);
+					}
+					if(msg.result.AvaliableCurrency){
+						AvaliableCurrency = msg.result.AvaliableCurrency;
 					}
 					if(msg.result.Address){
 						var adr = new LeduiAddress;
@@ -156,7 +159,7 @@ var API = {
 					}
 					//PostCard
 					//UserID
-					if(ok){ ok(msg); }
+					if(ok){ ok(msg.result); }
 				}else{
 					if(error && msg.error_msg){ error(msg.error_msg); }
 				}
@@ -521,7 +524,7 @@ var Control = {
 				PhotoEditor.getimage(0.125);
 				
 				
-				//PageMgr.go(2);
+				PageMgr.go(2);
 		});				
 		
 		//添加新地址的时候，进行重置
@@ -651,11 +654,11 @@ var Control = {
 					var postobj  = new LeduiPostCard;
 					var postcard = postobj.get(CurrentPostCard.LocalID);
 					API.postPostCard(
-						postcard,function ok(){
+						postcard,function ok(r){
 							$("#titlebar_login .button_s_back").attr("_back",0);
 							$("#titlebar_register .button_s_back").attr("_back",0);
 							$("#titlebar_about .button_s_back").attr("_back",0);
-							PageMgr.go(6);
+							Control.showPay(r);
 						},
 						function error(msg){
 							alert("错误，["+msg+"]请重试");
@@ -796,6 +799,16 @@ var Control = {
 		}
 		
 	
+	},
+	showPay:function(msg){
+		$("#Price").html(msg.Price/100);
+		$("#MoneyCurrent").html(msg.MoneyCurrent/100);
+		$("#OrderAmount").html("&yen;"+msg.OrderAmount/100);
+		$("#ScoreCurrent").html(msg.ScoreCurrent);
+		$("#PostCardCount").html(msg.PostCardCount);
+		$("#OrderTotalPrice").html("&yen;"+msg.OrderTotalPrice);
+		$("#PostCardCount").html(msg.PostCardCount);
+		PageMgr.go(6);
 	},
 	showPreview:function(){		
 		var adr = new LeduiAddress;
