@@ -80,18 +80,18 @@ class api_postcard{
 			$newPostCard['Comment']		=$postcard_tmp->Comments;
 			$newPostCard['ImageFileID']	=$postcard_tmp->ImageFileID;
 			if(!empty($postcard_tmp->photo)){
-			$newPostCard['ImageWidth']	=$postcard_tmp->photo->w;
-			$newPostCard['ImageHeight']	=$postcard_tmp->photo->h;
-			$newPostCard['ImageX']		=$postcard_tmp->photo->x;
-			$newPostCard['ImageY']		=$postcard_tmp->photo->y;
-			$newPostCard['ImageRotate']	=$postcard_tmp->photo->r;
+				$newPostCard['ImageWidth']	=$postcard_tmp->photo->w;
+				$newPostCard['ImageHeight']	=$postcard_tmp->photo->h;
+				$newPostCard['ImageX']		=$postcard_tmp->photo->x;
+				$newPostCard['ImageY']		=$postcard_tmp->photo->y;
+				$newPostCard['ImageRotate']	=$postcard_tmp->photo->r;
 			}
 			//{{{地址处理
 			$address=array();
 			$user_db = new user_db;
 			$data->Address=array();
 			foreach($postcard_tmp->Address as &$adr_tmp){
-					$adr_tmp=(object)$adr_tmp;
+				$adr_tmp=(object)$adr_tmp;
 				$isnew=true;
 				if(empty($adr_tmp->AddressID)){
 				}else{
@@ -141,11 +141,42 @@ class api_postcard{
 		//{{{
 	 	//* 3.判定有没有订单，如果没有，生成订单(根据接收人数据，国家，判定价格)
 	 	//*   如果有订单了的话，就修改/调整订单，然后返回
+		$order_db = new order_db;
 		if(!empty($postcard_tmp->OrderID)){
+			$order = $order_db->getOrder($postcard_tmp->OrderID,$this->uid);
+		}
+		if(empty($order)){
+			$order=array();
+			$order['UserID']=$this->uid;
+			$order['TradeNo']=md5(time().rand(0,10000));
+			$order['OrderTotalPrice']=count($postcard_tmp->Address)*money_config::$postcardPrice;
+			$order['ShippingCost']=count($postcard_tmp->Address)*0;
+			$order['Score']=0;
+			$order['OrderAmount']=$order['OrderTotalPrice']-$order['ShippingCost']-floor($order['Score']*money_config::$scoreRate);
+			$curreny="CNY";
+			$order['ActualMoneyCurrency']=$curreny;
+			$moneys=money_config::currency();
+			$order['ActualMoneyExchangeRate']=$moneys[$currency]['rate'];
+			$order['ActualMoneyAmount']=$order['OrderAmount']*$order['ActualMoneyExchangeRate'];
+			$id = $order_db->addOrder($order);
+			if(!empty($id)){
+				$order['OrderID'] = $id;
+			}else{
+			}
 		}else{
 		}
-		$data->OrderID		= "XX";
-		$data->PayURL		= "http://www.ledui.com/";
+		$data->OrderID=$order['OrderID'];
+		$data->OrderAmount=$order['OrderAmount'];
+		$data->Price=money_config::$postcardPrice;
+		$data->OrderTotalPrice=$order['OrderTotalPrice'];
+		$data->ShippingCost=$order['ShippingCost'];
+		$data->ScoreRate=money_config::$scoreRate;
+		$data->ScoreCurrent=0;//TODO
+		$data->MoneyCurrent=0;//TODO
+		$data->_insertTime=date("Y-m-d H:i:s");
+		$data->AvaliableCurrency=money_config::currency();//TODO
+
+		//$data->PayURL		= "http://www.ledui.com/order.main.pay/";
 		//}}}
 		return $result;
 	}

@@ -8,10 +8,14 @@ class order_db{
 		$this->_db = new SDb("pdo_mysql");
 		$this->_db->init($this->_dbConfig);
 	}
-/*
-	function getUser($UserName){
-		return $this->_db->selectOne("t_user",array("UserName"=>$UserName));
+	function getOrder($OrderID,$UserID=0){
+		if(empty($UserID)){
+			return $this->_db->selectOne("t_order",array("OrderID"=>$OrderID));
+		}else{
+			return $this->_db->selectOne("t_order",array("OrderID"=>$OrderID,"UserID"=>$UserID));
+		}
 	}
+/*
 	function getUserByEmail($useremail,$PartnerID=1){
 		return $this->_db->selectOne("t_user",array("UserSID"=>$useremail,"PartnerID"=>$PartnerID));
 	}
