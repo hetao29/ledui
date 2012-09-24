@@ -69,6 +69,7 @@ var LeduiPostCard=function(){
 	this.Comments="";
 	this.photo={}; //width:"", //height:"", //x:"", //y:"", //rotate:"",
 	this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
+	this.ThumbnailData="";//截图内容，base64后的内容
 	
 	this._key="PostCard";	
 }

@@ -497,6 +497,19 @@ var Control = {
 					alert("图片加载中，请稍后");
 					return;
 				}
+				var c=document.getElementById("thumbnail");
+				var ctx=c.getContext("2d");
+				var img=document.getElementById("photoeditorimg");
+				console.log(CurrentPostCard);
+				ctx.drawImage(img,0-CurrentPostCard.photo.x,0-CurrentPostCard.photo.y,CurrentPostCard.photo.w,CurrentPostCard.photo.h,0,0,240,150);
+				//ctx.drawImage(img,0,0,CurrentPostCard.photo.w,CurrentPostCard.photo.h,0,0,240,150);
+
+				//var canvas = document.getElementById("thumbnail").getContext("2d");
+				//var img = new Image();
+				//img.src=CurrentPostCard.photo.o;
+				//img.onload=function(){
+				//canvas.drawImage(img,0,0,CurrentPostCard.photo.w,CurrentPostCard.photo.h,0,0, 240,150);
+				//}
 				//选择了文件
 				var file = new LeduiFile;
 				file.FilePath = src;
