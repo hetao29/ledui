@@ -289,25 +289,36 @@
 	<div class="panel_body">
 	<div class="panel_body_box">	
 		<div class="payinfo">
-			<div class="info"> 每张明信片需支付 <span class="m">&yen;15</span> 或 <span class="m">$2</span><br />
-				帐户可抵用积分为: <span class="m">128</span>分<br />
-				目前可使用
-				<select>
-					<option>50</option>
-				</select>
-				积分抵用 <span class="m">&yen;0.5</span> </div>
-			<div class="sum">合计: <span class="m">&yen;14.5</span></div>
+			<div class="info"> 
+				每张明信片需支付 &yen;5.9 <br />
+				你共寄出1张，共<span class="m">&yen;4</span>元<br />
+				
+				帐户剩余0元，可用128积分<br />
+				可使用<input  max="128" min="0" style="width:50px" type="number" />
+				积分抵用 <span class="m">&yen;0.5</span> <br/>
+				可使用余额共 &yen;5.9元，使用<input max="5.9" min="0" style="width:50px" type="number" />
+				<br/>
+				</div>
+			<div class="sum">总支付: <span class="m" id="OrderAmount">¥14.5</span></div>
 		</div>
 	</div>
 	</div>
 	<div class="panel_foot">
 		<div class="payaction" id="payaction">
 			<div class="dtext">前往支付</div>
-			<div class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
-			<div class="button button_pay" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
+			<div id="payaction_alipal" class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
+			<div id="payaction_paypal" class=" button button_pay" style="display:none" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
 		</div>
-		<div class="paytip"> 如您通过美元账户支付, 请选择PayPal支付<br />
-			本次合计 <span>$1.49</span><br />
+		<div class="paytip">
+		选择其它货币支付
+			
+				<select id="currency">
+					<option value="RMB" selected="true">选择货币</option>
+					<option value="RMB">RMB</option>
+					<option value="USD">美元USD</option>
+				</select><!--
+			 如您通过美元账户支付, 请选择PayPal支付<br />
+			本次合计 <span>$1.49</span><br />-->
 		</div>
 	</div>
 </div>
