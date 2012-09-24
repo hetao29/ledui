@@ -497,19 +497,7 @@ var Control = {
 					alert("图片加载中，请稍后");
 					return;
 				}
-				var c=document.getElementById("thumbnail");
-				var ctx=c.getContext("2d");
-				var img=document.getElementById("photoeditorimg");
-				console.log(CurrentPostCard);
-				ctx.drawImage(img,0-CurrentPostCard.photo.x,0-CurrentPostCard.photo.y,CurrentPostCard.photo.w,CurrentPostCard.photo.h,0,0,240,150);
-				//ctx.drawImage(img,0,0,CurrentPostCard.photo.w,CurrentPostCard.photo.h,0,0,240,150);
-
-				//var canvas = document.getElementById("thumbnail").getContext("2d");
-				//var img = new Image();
-				//img.src=CurrentPostCard.photo.o;
-				//img.onload=function(){
-				//canvas.drawImage(img,0,0,CurrentPostCard.photo.w,CurrentPostCard.photo.h,0,0, 240,150);
-				//}
+				
 				//选择了文件
 				var file = new LeduiFile;
 				file.FilePath = src;
@@ -528,8 +516,33 @@ var Control = {
 
 				var info=PhotoEditor.getinfo();
 				if(info){ CurrentPostCard.photo = info; }
-				Control.showAddress()
-				PageMgr.go(2);
+				Control.showAddress();
+				
+				
+				var canvas = document.getElementById("thumbnail");
+				var ctx = canvas.getContext("2d");
+				ctx.save();
+				var img = $('<img />');
+				img
+				.bind('load', function(){
+					var width = 1920, height = 1200; 
+					ctx.clearRect(0, 0, width, height);
+					var o = $(this).get(0)
+						,w = CurrentPostCard.photo.w
+						,h = CurrentPostCard.photo.h
+						,r = CurrentPostCard.photo.r*Math.PI/180
+						
+					ctx.save();
+					ctx.translate(width/2, height/2);
+					ctx.rotate(r);
+					ctx.translate(-w/2, -h/2);
+					ctx.drawImage(o, 0, 0, w, h);
+					ctx.restore();
+						
+				})
+				.attr('src', CurrentPostCard.photo.o);
+				
+				//PageMgr.go(2);
 		});				
 		
 		//添加新地址的时候，进行重置
