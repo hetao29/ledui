@@ -518,29 +518,8 @@ var Control = {
 				if(info){ CurrentPostCard.photo = info; }
 				Control.showAddress();
 				
+				PhotoEditor.getimage(0.125);
 				
-				var canvas = document.getElementById("thumbnail");
-				var ctx = canvas.getContext("2d");
-				ctx.save();
-				var img = $('<img />');
-				img
-				.bind('load', function(){
-					var width = 1920, height = 1200; 
-					ctx.clearRect(0, 0, width, height);
-					var o = $(this).get(0)
-						,w = CurrentPostCard.photo.w
-						,h = CurrentPostCard.photo.h
-						,r = CurrentPostCard.photo.r*Math.PI/180
-						
-					ctx.save();
-					ctx.translate(width/2, height/2);
-					ctx.rotate(r);
-					ctx.translate(-w/2, -h/2);
-					ctx.drawImage(o, 0, 0, w, h);
-					ctx.restore();
-						
-				})
-				.attr('src', CurrentPostCard.photo.o);
 				
 				//PageMgr.go(2);
 		});				

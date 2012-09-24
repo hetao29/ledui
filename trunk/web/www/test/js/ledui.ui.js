@@ -775,5 +775,33 @@ var PhotoEditor = {
 	},
 	getinfo: function(){
 		return this.info;
+	},
+	
+	getimage: function(scale){
+		if(!this.isready){ return ''; }
+		var scale = arguments[0] ? arguments[0] : 1  
+			,canvas = document.getElementById("thumbnail")
+			,ctx = canvas.getContext("2d")
+			,width = this.w_target*scale
+			,height = this.h_target*scale
+			,o = $(this.img).get(0)
+			,x = CurrentPostCard.photo.x*scale
+			,y = CurrentPostCard.photo.y*scale
+			,w = CurrentPostCard.photo.w*scale
+			,h = CurrentPostCard.photo.h*scale
+			,r = CurrentPostCard.photo.r*Math.PI/180
+		
+		canvas.width = width;
+		canvas.height = height;
+		ctx.save();
+		ctx.clearRect(0, 0, width, height);
+		ctx.translate(width/2+x, height/2+y);
+		ctx.rotate(r);
+		ctx.translate(-w/2, -h/2)
+		
+		ctx.drawImage(o, 0, 0, w, h);
+		ctx.restore();
+		
 	}
+	
 }
