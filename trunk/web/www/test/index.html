@@ -12,6 +12,8 @@
 <link href="icon.png" rel="apple-touch-icon-precomposed" />
 </head>
 <body>
+<canvas id="thumbnail" width="1920" height="1200" style="zoom:0.125;position:absolute;top:0;left:0;z-index:100;background:#f00;"></canvas>
+				
 <div class="screen">
 <div class="pages"> 
 <!--
@@ -57,7 +59,6 @@
 		<div class="photoeditor">
 			<div class="loading" id="photoloading"><div class="ico"></div><div class="lay"></div></div>
 			<div class="view">
-				<canvas id="thumbnail" width="240" height="150" style="position:absolute"></canvas>
 				<div class="selection" id="photoselection"></div>
 				<div class="photo" id="photo"></div>
 				<div class="mask"><div class="l"></div><div class="r"></div><div class="t"></div><div class="b"></div></div>
