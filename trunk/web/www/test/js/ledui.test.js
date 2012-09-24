@@ -17,7 +17,7 @@ var Test = {
 		
 		var total = PageMgr.gettotal();
 		var current = PageMgr.getcurrent();
-		var ops = '';
+		var ops="";
 		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + PageMgr.getpage(i).name +'</option>'; }
 		var sel = $('<select>'+ ops +'</select>')
 		.appendTo(testpanel)
@@ -68,6 +68,8 @@ var Test = {
 				PhotoEditor.init($(this).val());	 
 			}
 		});	
+		var op = '<option value="http://www.ledui.com/image/010000000003505BF15F0159"></option>';
+			sel.append(op);
 		for(var i=1; i<=20; i++){
 			var op = $('<option value="http://42.121.85.21/test/testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
