@@ -620,6 +620,18 @@ var Control = {
 			};
 			PageMgr.go(4);
 		});
+		$("#currency").bind("change",function(e){
+			if($(this).val()!="RMB"){
+				$("#OrderAmount").html("$5");
+				//重新计算货币值与显示值
+				$("#payaction_alipal").hide();
+				$("#payaction_paypal").show();
+			}else{
+				$("#OrderAmount").html("&yen;14.5");
+				$("#payaction_alipal").show();
+				$("#payaction_paypal").hide();
+			}
+		});
 		$("#payaction .button_pay").bind("tapone",function(e){
 			confirm("payedConfirm".tr(),{
 				cancel:function(){
