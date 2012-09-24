@@ -1,11 +1,14 @@
 <?php
-class order_main{
+class order_main extends STpl{
 	/**
 	 * 支付接口
 	 * http://www.ledui.com/order.main.pay/OrderID
 	 */
 	public function PagePayWap($inPath){
 		return $this->pagePay($inPath);
+	}
+	public function pagePayPal($inPath){
+		return $this->render("pay/paypal.tpl");
 	}
 	public function PagePay($inPath){
 		$OrderID=@$inPath[3];
