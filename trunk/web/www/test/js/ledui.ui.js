@@ -785,22 +785,28 @@ var PhotoEditor = {
 			,width = this.w_target*scale
 			,height = this.h_target*scale
 			,o = $(this.img).get(0)
-			,x = CurrentPostCard.photo.x*scale
-			,y = CurrentPostCard.photo.y*scale
 			,w = CurrentPostCard.photo.w*scale
 			,h = CurrentPostCard.photo.h*scale
+			,x = CurrentPostCard.photo.x*scale
+			,y = CurrentPostCard.photo.y*scale
 			,r = CurrentPostCard.photo.r*Math.PI/180
 		
 		canvas.width = width;
 		canvas.height = height;
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
-		ctx.translate(width/2+x, height/2+y);
+		ctx.translate(width/2, height/2);
 		ctx.rotate(r);
-		ctx.translate(-w/2, -h/2)
-		
+		ctx.translate(-w/2, -h/2);		
 		ctx.drawImage(o, 0, 0, w, h);
 		ctx.restore();
+		
+		var dataURL = canvas.toDataURL('data:base64;');
+		window.viewimg = $('<img style="position:fixed;bottom:0;right:0;" src='+ dataURL +' />')
+		.bind('load', function(){
+			ctx.clearRect(0, 0, width, height);
+			ctx.drawImage($(this).get(0), x, y, width, height);											  
+		}).appendTo($('body'));
 		
 	}
 	

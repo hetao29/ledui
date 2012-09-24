@@ -145,16 +145,26 @@ class api_postcard{
 		if(!empty($postcard_tmp->OrderID)){
 			$order = $order_db->getOrder($postcard_tmp->OrderID,$this->uid);
 		}
+		$data->PostCardCount=count($postcard_tmp->Address);
 		if(empty($order)){
 			$order=array();
 			$order['UserID']=$this->uid;
 			$order['TradeNo']=md5(time().rand(0,10000));
-			$order['OrderTotalPrice']=count($postcard_tmp->Address)*money_config::$postcardPrice;
+			$totalprice=0;
+			foreach($postcard_tmp->Address as $adr){
+				if($adr['Country']=="CN"){
+					$totalprice+=money_config::$postcardPrice;
+				}else{
+					$totalprice+=money_config::$postcardPriceOther;
+				}
+			}
+			$order['OrderTotalPrice']=$totalprice;
 			$order['ShippingCost']=count($postcard_tmp->Address)*0;
 			$order['Score']=0;
 			$order['OrderAmount']=$order['OrderTotalPrice']-$order['ShippingCost']-floor($order['Score']*money_config::$scoreRate);
 			$curreny="CNY";
 			$order['ActualMoneyCurrency']=$curreny;
+			$order['Address']=SJson::encode($postcard_tmp->Address);
 			$moneys=money_config::currency();
 			$order['ActualMoneyExchangeRate']=$moneys[$currency]['rate'];
 			$order['ActualMoneyAmount']=$order['OrderAmount']*$order['ActualMoneyExchangeRate'];
