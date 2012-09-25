@@ -164,6 +164,7 @@ class api_postcard{
 					$shippingcost +=money_config::$postcardShippingCostOther;
 				}
 			}
+			//生成资本支付数据
 			$order['OrderTotalPrice']=$totalprice+$shippingcost;
 			$order['ShippingCost']=$shippingcost;
 			$order['Score']=0;
