@@ -117,16 +117,31 @@ class order_main extends STpl{
 	}
 
 	public function PagePaypalReturn($inPath){
+		$r = order_api::paypalReturn();
+		if($r){
+			echo "OK";
+		}else{
+			echo "NO";
+		}
 		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
 		error_log(var_export($_REQUEST,true),3,"/tmp/pay.log");
 		print_r($inPath);
 		print_r($_GET);
 	}
 	public function PagePaypalCancel($inPath){
-		header("location:/");
+		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
+		error_log(var_export($_REQUEST,true),3,"/tmp/pay.log");
+		print_r($inPath);
+		print_r($_GET);
 		return;
 	}
 	public function PagePaypalNotify($inPath){
+		$r = order_api::paypalNotify();
+		if($r){
+			echo "success";
+		}else{
+			echo "fail";
+		}
 		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
 		error_log(var_export($_REQUEST,true),3,"/tmp/pay.log");
 		print_r($inPath);
