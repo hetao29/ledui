@@ -2,7 +2,9 @@
 class money_config{
 	public static $scoreRate=0.01;			//1积分兑换1分
 	public static $postcardPrice=590;		//明信片单价590分
-	public static $postcardPriceOther=1790;	//明信片单价(国外)590分
+	public static $postcardPriceOther=1790;		//明信片单价(国外)590分
+	public static $postcardShippingCost=0;		//明信片单价运费
+	public static $postcardShippingCostOther=0;	//明信片单价运费(国外)
 	public static $defaultCurrency="CNY";
 	private static $Currency=array(
 			"CNY"=>array("name"=>"CNY","code"=>"CNY","symbol"=>"¥","rate"=>1),		//人民币
