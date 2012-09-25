@@ -52,8 +52,7 @@ class order_main extends STpl{
 		}else{
 			$Currency=$_REQUEST['Currency'];
 		}
-		//修改支付方式 
-		//根据货币，与汇率，算出实际支付
+		//根据货币，与汇率，动态算出实际支付
 		$rate = $currS[$Currency]['rate'];
 		$Order['ActualMoneyAmount'] = ceil($Order['OrderAmount']/$rate);
 		$Order['ActualMoneyExchangeRate'] = $rate;
@@ -62,11 +61,17 @@ class order_main extends STpl{
 
 		//TODO version判定
 		$Order['_version'] = $Order['_version']+1;
-		//TODO 积分
+		/**
+		  * TODO 积分，当用积分支付时
+		  * 1.判定积分数量是不是足够 
+		  * 2.减少当前可用积分，锁定这订单积分数，当支付成功时，再实际扣除,订单取消或者超时时返还
+		  */
+		if(!empty($_REQUEST['Score'])){
+		}
+
 		//TODO 余额支付
-		define("DEBUG",true);
-		//print_r($Currency);
-		//print_r($Order);
+		if(!empty($_REQUEST['Money'])){
+		}
 		$order_db->updateOrder($Order);
 		//开始支付
 		if($Currency==money_config::$defaultCurrency){
