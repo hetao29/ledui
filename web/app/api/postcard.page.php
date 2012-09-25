@@ -153,18 +153,21 @@ class api_postcard{
 			$order['UserID']=$this->uid;
 			$order['TradeNo']=time().rand(0,10000);
 			$totalprice=0;
+			$shippingcost=0;
 			foreach($postcard_tmp->Address as $adr_tmp){
 				$adr_tmp=(object)$adr_tmp;
 				if($adr_tmp->Country=="CN"){
-					$totalprice+=money_config::$postcardPrice;
+					$totalprice += money_config::$postcardPrice ;
+					$shippingcost +=money_config::$postcardShippingCost;
 				}else{
-					$totalprice+=money_config::$postcardPriceOther;
+					$totalprice += money_config::$postcardPriceOther;
+					$shippingcost +=money_config::$postcardShippingCostOther;
 				}
 			}
-			$order['OrderTotalPrice']=$totalprice;
-			$order['ShippingCost']=count($postcard_tmp->Address)*0;
+			$order['OrderTotalPrice']=$totalprice+$shippingcost;
+			$order['ShippingCost']=$shippingcost;
 			$order['Score']=0;
-			$order['OrderAmount']=$order['OrderTotalPrice']-$order['ShippingCost']-floor($order['Score']*money_config::$scoreRate);
+			$order['OrderAmount']=$order['OrderTotalPrice']-floor($order['Score']*money_config::$scoreRate);
 			$curreny="CNY";
 			$order['ActualMoneyCurrency']=$curreny;
 			$order['_insertTime']=date("Y-m-d H:i:s");
