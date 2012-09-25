@@ -72,7 +72,7 @@ class order_api{
 					SLog::write("Success");
 				}
 				//更新订单
-				$Order['OrderStatus']=$order_status::OrderPaid;
+				$Order['OrderStatus']=order_status::OrderPaid;
 				$order_db->updateOrder($Order);
 				//to成功页面,支付成功，提示关闭
 				return true;
@@ -85,18 +85,19 @@ class order_api{
 			SLog::write($verify_result);
 		}
 		//更新订单
-		$Order['OrderStatus']=$order_status::OrderFailed;
+		$Order['OrderStatus']=order_status::OrderFailed;
 		$order_db->updateOrder($Order);
 		//to失败页面,支付失败，提示重新支付
 		return false;
 	}
 	public static function alipayNotify(){
 		SLog::write("AlipayNotify:");
-		SLog::write($_GET);
+		SLog::write($_REQUEST);
 		include_once(ROOT."/libs/pay/alipay_wap/alipay_config.php");
 		include_once(ROOT."/libs/pay/alipay_wap/class/alipay_notify.php");
 		$alipay = new alipay_notify ( $partner, $key, $sec_id, $_input_charset );
 		$verify_result = $alipay->return_verify ();
+		Slog::write("Result:$verify_result");
 		if($verify_result){
 			$status = getDataForXML ( $_POST ['notify_data'], '/notify/trade_status' );
 			if ($status == 'TRADE_FINISHED'){
