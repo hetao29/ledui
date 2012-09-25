@@ -76,9 +76,11 @@ class api_postcard{
 			$newPostCard['UserID']		=$this->uid;
 			$newPostCard['Latitude']	=$postcard_tmp->Latitude;
 			$newPostCard['Longitude']	=$postcard_tmp->Longitude;
+			$newPostCard['Sender']		=$postcard_tmp->Sender;
 			$newPostCard['IP']		=SUtil::getIP(true);
 			$newPostCard['Comment']		=$postcard_tmp->Comments;
 			$newPostCard['ImageFileID']	=$postcard_tmp->ImageFileID;
+			$newPostCard['_insertTime']	=date("Y-m-d H:i:s");
 			if(!empty($postcard_tmp->photo)){
 				$newPostCard['ImageWidth']	=$postcard_tmp->photo->w;
 				$newPostCard['ImageHeight']	=$postcard_tmp->photo->h;
@@ -151,8 +153,9 @@ class api_postcard{
 			$order['UserID']=$this->uid;
 			$order['TradeNo']=time().rand(0,10000);
 			$totalprice=0;
-			foreach($postcard_tmp->Address as $adr){
-				if($adr['Country']=="CN"){
+			foreach($postcard_tmp->Address as $adr_tmp){
+				$adr_tmp=(object)$adr_tmp;
+				if($adr_tmp->Country=="CN"){
 					$totalprice+=money_config::$postcardPrice;
 				}else{
 					$totalprice+=money_config::$postcardPriceOther;
@@ -164,6 +167,8 @@ class api_postcard{
 			$order['OrderAmount']=$order['OrderTotalPrice']-$order['ShippingCost']-floor($order['Score']*money_config::$scoreRate);
 			$curreny="CNY";
 			$order['ActualMoneyCurrency']=$curreny;
+			$order['_insertTime']=date("Y-m-d H:i:s");
+			$order['_version']=1;
 			$order['Address']=SJson::encode($postcard_tmp->Address);
 			$moneys=money_config::currency();
 			$order['ActualMoneyExchangeRate']=$moneys[$currency]['rate'];
