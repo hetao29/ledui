@@ -55,21 +55,19 @@ class order_main extends STpl{
 		//修改支付方式 
 		//根据货币，与汇率，算出实际支付
 		$rate = $currS[$Currency]['rate'];
-		$updateOrder=array();
-		$updateOrder['OrderID']	= $Order['OrderID'];
-		$updateOrder['ActualMoneyAmount'] = ceil($Order['OrderAmount']/$rate*100)/100;
-		$updateOrder['ActualMoneyExchangeRate'] = $rate;
-		$updateOrder['ActualMoneyCurrency'] = $Currency;
-		$updateOrder['OrderStatus'] = order_status::OrderPaying;
+		$Order['ActualMoneyAmount'] = ceil($Order['OrderAmount']/$rate*100)/100;
+		$Order['ActualMoneyExchangeRate'] = $rate;
+		$Order['ActualMoneyCurrency'] = $Currency;
+		$Order['OrderStatus'] = order_status::OrderPaying;
 
 		//TODO version判定
-		$updateOrder['_version'] = $Order['_version']+1;
+		$Order['_version'] = $Order['_version']+1;
 		//TODO 积分
 		//TODO 余额支付
 		define("DEBUG",true);
 		//print_r($Currency);
 		//print_r($Order);
-		$order_db->updateOrder($updateOrder);
+		$order_db->updateOrder($Order);
 		//开始支付
 		if($Currency==money_config::$defaultCurrency){
 			order_api::alipay($Order);
