@@ -149,7 +149,7 @@ class api_postcard{
 		if(empty($order)){
 			$order=array();
 			$order['UserID']=$this->uid;
-			$order['TradeNo']=md5(time().rand(0,10000));
+			$order['TradeNo']=time().rand(0,10000);
 			$totalprice=0;
 			foreach($postcard_tmp->Address as $adr){
 				if($adr['Country']=="CN"){
