@@ -15,6 +15,9 @@ class order_db{
 			return $this->_db->selectOne("t_order",array("OrderID"=>$OrderID,"UserID"=>$UserID));
 		}
 	}
+	function getOrderByTradeNo($TradeNo){
+		return $this->_db->selectOne("t_order",array("TradeNo"=>$TradeNo));
+	}
 /*
 	function getUserByEmail($useremail,$PartnerID=1){
 		return $this->_db->selectOne("t_user",array("UserSID"=>$useremail,"PartnerID"=>$PartnerID));
