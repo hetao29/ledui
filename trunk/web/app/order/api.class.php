@@ -96,7 +96,7 @@ class order_api{
 		include_once(ROOT."/libs/pay/alipay_wap/alipay_config.php");
 		include_once(ROOT."/libs/pay/alipay_wap/class/alipay_notify.php");
 		$alipay = new alipay_notify ( $partner, $key, $sec_id, $_input_charset );
-		$verify_result = $alipay->return_verify ();
+		$verify_result = $alipay->notify_verify();
 		Slog::write("Result:$verify_result");
 		if($verify_result){
 			$status = getDataForXML ( $_POST ['notify_data'], '/notify/trade_status' );
