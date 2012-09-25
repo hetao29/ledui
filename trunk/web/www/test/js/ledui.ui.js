@@ -524,6 +524,7 @@ var PhotoEditor = {
 		this.box = $('#photo');
 		this.panel = $('#photopanel');
 		this.loading = $('#photoloading');
+		this.canvas = $('#photoeditorcanvas').get(0);
 		this.box.html('');
 		this.loading.show();
 		//img loaded bind event
@@ -780,33 +781,49 @@ var PhotoEditor = {
 	getimage: function(scale){
 		if(!this.isready){ return ''; }
 		var scale = arguments[0] ? arguments[0] : 1  
-			,canvas = document.getElementById("thumbnail")
+			,canvas = this.canvas
 			,ctx = canvas.getContext("2d")
 			,width = this.w_target*scale
 			,height = this.h_target*scale
 			,o = $(this.img).get(0)
-			,w = CurrentPostCard.photo.w*scale
-			,h = CurrentPostCard.photo.h*scale
-			,x = CurrentPostCard.photo.x*scale
-			,y = CurrentPostCard.photo.y*scale
-			,r = CurrentPostCard.photo.r*Math.PI/180
-		
+			,w = this.info.w*scale
+			,h = this.info.h*scale
+			,x = this.info.x*scale
+			,y = this.info.y*scale
+			,r = this.info.r*Math.PI/180
+			
 		canvas.width = width;
 		canvas.height = height;
+		
+		/*
+		var stage = new Stage(ctx);
+		stage.setFrameRate(0);
+		
+		var box = new Sprite();
+		box.x = 0;
+		box.y = 0;
+		box.width = w;
+		box.height = h;
+		stage.addChild(box);
+		
+		var image = new Bitmap(o);
+		image.x = x;
+		image.y = y;
+		image.width = w;
+		image.height = h;
+		image.regX = w/2;
+		image.regY = h/2;
+		image.rotation = this.info.r;
+		stage.addChild(image);
+		*/
+		
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
 		ctx.translate(width/2, height/2);
 		ctx.rotate(r);
-		ctx.translate(-w/2, -h/2);		
+		ctx.translate(-w/2, -h/2);
 		ctx.drawImage(o, 0, 0, w, h);
 		ctx.restore();
-		
-		var dataURL = canvas.toDataURL('data:base64;');
-		window.viewimg = $('<img style="position:fixed;bottom:0;right:0;" src='+ dataURL +' />')
-		.bind('load', function(){
-			ctx.clearRect(0, 0, width, height);
-			ctx.drawImage($(this).get(0), x, y, width, height);											  
-		}).appendTo($('body'));
 		
 	}
 	
