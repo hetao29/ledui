@@ -55,7 +55,7 @@ class order_main extends STpl{
 		//修改支付方式 
 		//根据货币，与汇率，算出实际支付
 		$rate = $currS[$Currency]['rate'];
-		$Order['ActualMoneyAmount'] = ceil($Order['OrderAmount']/$rate*100)/100;
+		$Order['ActualMoneyAmount'] = ceil($Order['OrderAmount']/$rate);
 		$Order['ActualMoneyExchangeRate'] = $rate;
 		$Order['ActualMoneyCurrency'] = $Currency;
 		$Order['OrderStatus'] = order_status::OrderPaying;
