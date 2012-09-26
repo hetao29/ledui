@@ -687,10 +687,14 @@ var PhotoEditor = {
 		var w = this.info.w;
 		var h = this.info.h;
 		var x = (this.w_target - this.info.w)/2;
-		var y = (this.h_target - this.info.h)/2;		
-		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y }, 300);		
+		var y = (this.h_target - this.info.h)/2;
+		var cx = this.w_target/2;
+		var cy = -this.h_target/2;		
+		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y }).attr({'cx': cx, 'cy': cy});		
 		this.info.x = x;
 		this.info.y = y;
+		this.info.cx = cx;
+		this.info.cy = cy;
 		return this;
 	},
 	reset: function(){
@@ -714,30 +718,11 @@ var PhotoEditor = {
 			deg = this.info.r + deg;
 		}
 		
-		var cw = deg>this.info.r ? true : false;
-		var acw = deg<this.info.r ? true : false;
-		
 		//吸附正角度
 		var deg_ajust = Math.round(deg/90)*90;
 		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust; }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
-		
-		var cx = this.info.cx;
-		var cy = this.info.cy;
-		
-		if(deg%90 == 0 && cw){
-			cx = cy;
-			cy = -cx;
-		}else if(deg%90 == 0 && acw){
-			cx = -cy;
-			cy = cx;
-		}
-		
-		this.info.cx = cx;
-		this.info.cy = cy;
-		
-		this.img.attr({'cx': cx, 'cy': cy});
 		
 		if(deg != this.info.r){
 			this.setrotate(deg);		
@@ -760,21 +745,8 @@ var PhotoEditor = {
 		var dy = offset.y*this.zoom_ui;
 		var x = Math.round(this.info.x + dx);
 		var y = Math.round(this.info.y + dy);
-		var cx = 0;
-		var cy = 0;
-		if(this.info.r<90){
-			cx = Math.round(this.info.cx + dx);
-			cy = Math.round(this.info.cy + dy);
-		}else if(this.info.r<180){
-			cx = Math.round(this.info.cx + dy);
-			cy = Math.round(this.info.cy - dx);
-		}else if(this.info.r<270){
-			cx = Math.round(this.info.cx - dx);
-			cy = Math.round(this.info.cy - dy);
-		}else if(this.info.r<360){
-			cx = Math.round(this.info.cx - dy);
-			cy = Math.round(this.info.cy + dx);
-		}
+		var cx = Math.round(this.info.cx + dx);
+		var cy = Math.round(this.info.cy + dy);		
 		var w = this.info.w; 
 		var h = this.info.h;		
 		if(this.check(x, y, w, h)){
@@ -836,19 +808,28 @@ var PhotoEditor = {
 			,o = $(this.img).get(0)
 			,w = this.info.w*scale
 			,h = this.info.h*scale
+			,x = this.info.x*scale
+			,y = this.info.y*scale
 			,cx = this.info.cx*scale
 			,cy = this.info.cy*scale
 			,r = this.info.r*Math.PI/180
 
 		canvas.width = width;
 		canvas.height = height;
-
+		
+		var R = Math.sqrt(w*w + h*h)/2;
+		
+		console.log(x, y, cx, cy);
+		console.log(Math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy)))
+		
+		
+		console.log(R);	
+			
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
-		
-		ctx.translate(width/2, height/2);
+		//ctx.translate(-w/2+xx, -h/2+yy);
 		ctx.rotate(r);
-		ctx.translate(-w/2+cx, -h/2+cy);
+		//ctx.translate(-w/2+xx, -h/2+yy);
 		
 		ctx.drawImage(o, 0, 0, w, h);
 		ctx.restore();
