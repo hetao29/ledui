@@ -523,7 +523,7 @@ var Control = {
 				
 				CurrentPostCard.ThumbnailData = PhotoEditor.getimage(0.125);
 				
-				PageMgr.go(2);
+				//PageMgr.go(2);
 		});				
 		
 		//添加新地址的时候，进行重置
