@@ -817,17 +817,13 @@ var PhotoEditor = {
 		canvas.width = width;
 		canvas.height = height;
 		
-		var R = Math.sqrt(w*w + h*h)/2;
+		var xx = (x - cx) * Math.cos(r) + (y - cy) * Math.sin(r) + cx;
+		var yy = -(x- cx) * Math.sin(r) + (y - cy) * Math.cos(r) + cy;
 		
-		console.log(x, y, cx, cy);
-		console.log(Math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy)))
-		
-		
-		console.log(R);	
 			
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
-		//ctx.translate(-w/2+xx, -h/2+yy);
+		ctx.translate(xx, yy);
 		ctx.rotate(r);
 		//ctx.translate(-w/2+xx, -h/2+yy);
 		
