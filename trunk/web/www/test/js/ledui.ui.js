@@ -520,7 +520,7 @@ var PhotoEditor = {
 		if(!img){ return; }
 		this.zoom_ui = this._getzoom();
 		this.isready = false;
-		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0 };
+		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0, cx: 0, cy: 0 };
 		this.box = $('#photo');
 		this.panel = $('#photopanel');
 		this.loading = $('#photoloading');
@@ -529,7 +529,7 @@ var PhotoEditor = {
 		this.loading.show();
 		//img loaded bind event
 		var _this = this;
-		this.img = $('<img id="photoeditorimg" deg="0"/>')
+		this.img = $('<img id="photoeditorimg" cx="0" cy="0" deg="0"/>')
 		.bind('load', function(){
 			var size = _this.getimgsize();
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
@@ -696,10 +696,14 @@ var PhotoEditor = {
 	reset: function(){
 		this.info.w = this.w_target;
 		this.info.h = this.info.w / this.ratio_img;
+		this.info.cx = 0;
+		this.info.cy = 0;
+		this.img.attr({'cx': 0, 'cy': 0});
 		this.center().setrotate(0);
 		return this;
 	},
-	rotate: function(deg, frombuttom){
+	rotate: function(deg, frombutton){
+		
 		if(arguments[1]){ //按钮点击向下去整， 附加整角度
 			if(deg<0){
 				deg = Math.ceil(this.info.r/90)*90 + deg;	
@@ -709,12 +713,35 @@ var PhotoEditor = {
 		}else{		
 			deg = this.info.r + deg;
 		}
+		
+		var cw = deg>this.info.r ? true : false;
+		var acw = deg<this.info.r ? true : false;
+		
 		//吸附正角度
 		var deg_ajust = Math.round(deg/90)*90;
-		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust }
+		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust; }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
-		this.setrotate(deg);
+		this.setrotate(deg);		
+		
+		if(deg != this.info.r){
+			var cx = this.info.cx;
+			var cy = this.info.cy;
+			
+			if(deg%90 == 0 && cw){
+				cx = this.info.cy;
+				cy = -this.info.cx;
+			}else if(deg%90 == 0 && acw){
+				cx = -this.info.cy;
+				cy = this.info.cx;
+			}
+		}
+		
+		this.info.cx = cx;
+		this.info.cy = cy;
+		this.img.attr({'cx': cx, 'cy': cy});
+
+		
 		return this;
 	},
 	setrotate: function(deg){
@@ -731,15 +758,32 @@ var PhotoEditor = {
 		var dy = offset.y*this.zoom_ui;
 		var x = Math.round(this.info.x + dx);
 		var y = Math.round(this.info.y + dy);
+		var cx = 0;
+		var cy = 0;
+		if(this.info.r<90){
+			cx = Math.round(this.info.cx + dx);
+			cy = Math.round(this.info.cy + dy);
+		}else if(this.info.r<180){
+			cx = Math.round(this.info.cx + dy);
+			cy = Math.round(this.info.cy - dx);
+		}else if(this.info.r<270){
+			cx = Math.round(this.info.cx - dx);
+			cy = Math.round(this.info.cy - dy);
+		}else if(this.info.r<360){
+			cx = Math.round(this.info.cx - dy);
+			cy = Math.round(this.info.cy + dx);
+		}
 		var w = this.info.w; 
 		var h = this.info.h;		
 		if(this.check(x, y, w, h)){
 			//吸附边缘
 			//if(Math.abs(x)<10){ x = 0; }//else if(Math.abs(this.w_target-x) < 10){ x = this.w_target -w; }
 			//if(Math.abs(y)<10){ y = 0; }//else if(Math.abs(this.h_target-h) < 10){ y = this.h_target -h; }
-			this.img.css({'left': x, 'top': y });
+			this.img.css({'left': x, 'top': y }).attr({'cx': cx, 'cy': cy});
 			this.info.x = x;
 			this.info.y = y;
+			this.info.cx = cx;
+			this.info.cy = cy;
 		}
 		return this;
 	},
@@ -766,11 +810,13 @@ var PhotoEditor = {
 	},
 	saveinfo: function(){
 		this.setinfo({
-			'w': parseFloat(this.img.css('width')),
-			'h': parseFloat(this.img.css('height')),
-			'x': parseFloat(this.img.css('left')),
-			'y': parseFloat(this.img.css('top')),
-			'r': parseFloat(this.img.attr('deg'))
+			'w': Math.round(parseFloat(this.img.css('width'))),
+			'h': Math.round(parseFloat(this.img.css('height'))),
+			'x': Math.round(parseFloat(this.img.css('left'))),
+			'y': Math.round(parseFloat(this.img.css('top'))),
+			'cx': Math.round(parseFloat(this.img.attr('cx'))),
+			'cy': Math.round(parseFloat(this.img.attr('cy'))),
+			'r': Math.round(parseFloat(this.img.attr('deg')))
 		});		
 		return this;
 	},
@@ -779,7 +825,7 @@ var PhotoEditor = {
 	},
 	
 	getimage: function(scale){
-		if(!this.isready){ return ''; }
+		if(!this.isready){ return ''; }	
 		var scale = arguments[0] ? arguments[0] : 1  
 			,canvas = this.canvas
 			,ctx = canvas.getContext("2d")
@@ -788,10 +834,10 @@ var PhotoEditor = {
 			,o = $(this.img).get(0)
 			,w = this.info.w*scale
 			,h = this.info.h*scale
-			,x = this.info.x*scale
-			,y = this.info.y*scale
+			,cx = this.info.cx*scale
+			,cy = this.info.cy*scale
 			,r = this.info.r*Math.PI/180
-			
+
 		canvas.width = width;
 		canvas.height = height;
 		
@@ -816,14 +862,19 @@ var PhotoEditor = {
 		image.rotation = this.info.r;
 		stage.addChild(image);
 		*/
-		
+
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
+		
 		ctx.translate(width/2, height/2);
 		ctx.rotate(r);
-		ctx.translate(-w/2, -h/2);
+		ctx.translate(-w/2+cx, -h/2+cy);
+		
 		ctx.drawImage(o, 0, 0, w, h);
 		ctx.restore();
+		console.log(canvas.toDataURL());
+		
+		return canvas.toDataURL();
 		
 	}
 	

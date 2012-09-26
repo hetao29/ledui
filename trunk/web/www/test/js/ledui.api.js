@@ -521,10 +521,9 @@ var Control = {
 				if(info){ CurrentPostCard.photo = info; }
 				Control.showAddress();
 				
-				PhotoEditor.getimage(0.125);
+				CurrentPostCard.ThumbnailData = PhotoEditor.getimage(0.125);
 				
-				
-				//PageMgr.go(2);
+				PageMgr.go(2);
 		});				
 		
 		//添加新地址的时候，进行重置
@@ -880,7 +879,7 @@ var Control = {
 				var html='<li active="yes" LocalID="'+postcards[i].LocalID+'">'+
 					'<div class="cardinfo"><div class="cover">'+
 					'<div class="photo">'+
-						'<img style="'+style+'" src="'+photo.o+'" />'+
+						'<img src="'+postcards[i].ThumbnailData+'" />'+
 						//'<img src="'+photo.o+'" />'+
 					'</div>'+
 					'<div class="selc"></div>'+
