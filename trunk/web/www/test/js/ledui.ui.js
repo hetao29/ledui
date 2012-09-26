@@ -722,25 +722,26 @@ var PhotoEditor = {
 		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust; }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
-		this.setrotate(deg);		
 		
-		if(deg != this.info.r){
-			var cx = this.info.cx;
-			var cy = this.info.cy;
-			
-			if(deg%90 == 0 && cw){
-				cx = this.info.cy;
-				cy = -this.info.cx;
-			}else if(deg%90 == 0 && acw){
-				cx = -this.info.cy;
-				cy = this.info.cx;
-			}
+		var cx = this.info.cx;
+		var cy = this.info.cy;
+		
+		if(deg%90 == 0 && cw){
+			cx = cy;
+			cy = -cx;
+		}else if(deg%90 == 0 && acw){
+			cx = -cy;
+			cy = cx;
 		}
 		
 		this.info.cx = cx;
 		this.info.cy = cy;
+		
 		this.img.attr({'cx': cx, 'cy': cy});
-
+		
+		if(deg != this.info.r){
+			this.setrotate(deg);		
+		}
 		
 		return this;
 	},
@@ -749,8 +750,9 @@ var PhotoEditor = {
 				 ($.browser.mozilla) ? '-moz-' :
 				 ($.browser.ms)      ? '-o-' :
 				 ($.browser.opera)   ? '-ms-' : '';
-		this.img.css(prefix + 'transform', 'rotate('+ deg +'deg)');
-		this.img.attr('deg', deg);
+
+		this.img.css(prefix + 'transform', 'rotate('+ deg +'deg)').attr({'deg': deg});
+
 		return this;
 	},
 	move: function(offset){
@@ -840,28 +842,6 @@ var PhotoEditor = {
 
 		canvas.width = width;
 		canvas.height = height;
-		
-		/*
-		var stage = new Stage(ctx);
-		stage.setFrameRate(0);
-		
-		var box = new Sprite();
-		box.x = 0;
-		box.y = 0;
-		box.width = w;
-		box.height = h;
-		stage.addChild(box);
-		
-		var image = new Bitmap(o);
-		image.x = x;
-		image.y = y;
-		image.width = w;
-		image.height = h;
-		image.regX = w/2;
-		image.regY = h/2;
-		image.rotation = this.info.r;
-		stage.addChild(image);
-		*/
 
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
