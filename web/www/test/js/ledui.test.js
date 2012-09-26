@@ -71,7 +71,7 @@ var Test = {
 		var op = '<option value="http://www.ledui.com/image/010000000003505BF15F0159"></option>';
 			sel.append(op);
 		for(var i=1; i<=20; i++){
-			var op = $('<option value="http://42.121.85.21/test/testimg/test'+ i +'.jpg">photo'+ i +'</option>');
+			var op = $('<option value="testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
 		}
 		//PhotoEditor.init(ps[0]);
