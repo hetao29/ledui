@@ -280,8 +280,8 @@ background: -o-linear-gradient(top, #0c0, #090);
 -o-backface-visibility: hidden;
 backface-visibility: hidden;
 }
-.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:10px;padding:5px;
-background:#989898;
+.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:470px;margin-left:-245px;border-radius:10px;padding:10px;
+background:rgba(0, 0, 0, 0.4);
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
 -ms-backface-visibility: hidden;
@@ -313,7 +313,7 @@ animation-fill-mode: both;
 -o-transform: translateY(0);
 -ms-transform: translateY(0);
 transform: translateY(0);
-opacity:1;
+
 }
 .overlay_box{background:#fff;border-radius:5px;padding:10px 20px;}
 .overlay .hd{position:relative;height:50px;padding-bottom:10px;border-bottom:4px solid #b5b5b5;}
@@ -826,19 +826,19 @@ border-bottom-color:#555;
 
 @-webkit-keyframes hidefromtop { 
 0% { -webkit-transform: translateY(0); opacity: 1;}
-100% { -webkit-transform: translateY(-1000px); opacity: 0;}
+100% { -webkit-transform: translateY(-600px); opacity: 0;}
 }
 @-moz-keyframes hidefromtop {
 0% { -moz-transform: translateY(0); opacity: 1;}
-100% { -moz-transform: translateY(-1000px); opacity: 0;}
+100% { -moz-transform: translateY(-600px); opacity: 0;}
 }
 @-o-keyframes hidefromtop {
 0% { -o-transform: translateY(0); opacity: 1;}
-100% { -o-transform: translateY(-1000px); opacity: 0;}
+100% { -o-transform: translateY(-600px); opacity: 0;}
 }
 @keyframes hidefromtop {
 0% { transform: translateY(0); opacity: 1;}
-100% { transform: translateY(-1000px); opacity: 0;}
+100% { transform: translateY(-600px); opacity: 0;}
 }
 .hidefromtop {
 	-webkit-animation-timing-function: fadeout;
