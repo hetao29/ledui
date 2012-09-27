@@ -2,7 +2,7 @@ $(document).ready(function(){
 	Touch.init();
 	UI.redefine();
 	Adapta.init();
-	PageMgr.show(1);
+	PageMgr.init();
 });
 
 //UI系统
@@ -129,14 +129,31 @@ var Page = function(params){
 	for(var key in params){ this[key] = params[key];	}
 	this.scroller = null;
 	this.layoutinfo = { width:0, height:0 };
+	this.firstuse = true;
+	this.callback_show = [];
+	this.callback_hide = [];
+	this.callback_use = [];
 }
 Page.prototype = {
+	exec: function(eventname){
+		var eventhandlers = this['callback_' + eventname];
+		if(eventhandlers && eventhandlers.length){
+			for(var i=0; i<eventhandlers.length; i++){
+				eventhandlers[i]();	
+			}	
+		}
+	},
+	bind: function(eventname, func){
+		if(typeof(func) == 'function' && this['callback_' + eventname]){
+			this['callback_' + eventname].push(func);
+		}
+		return this;	
+	},
 	show: function(type){
 		this.appview.removeClass('showfromleft showfromright hidefromleft hidefromright');		
 		if(type == 'left'){ this.appview.addClass('showfromleft').show(); }
 		else if(type == 'right'){ this.appview.addClass('showfromright').show(); }
 		else{ this.appview.show(); }
-		this.layout();
 		var appnav = $('#appnav'); 
 		if(this.hasnav){ 
 			appnav.slideDown(); 
@@ -149,6 +166,12 @@ Page.prototype = {
 			});
 		}
 		else{ appnav.hide(); }
+		if(this.firstuse){
+			this.firstuse = false;
+			this.exec('use');	
+		}
+		this.exec('show');
+		this.layout();
 		
 		return this;
 	},
@@ -157,6 +180,8 @@ Page.prototype = {
 		if(type == 'left'){ this.appview.addClass('hidefromleft'); }
 		else if(type == 'right'){ this.appview.addClass('hidefromright'); }
 		else{ this.appview.hide(); }
+		this.exec('hide');
+		
 		return this;
 	},
 	settitle: function(){
@@ -538,7 +563,7 @@ var PhotoEditor = {
 			setTimeout(function(){
 			_this.loading.hide();
 			_this.center();
-			_this.img.stop().animate({opacity: 1}, 300);
+			_this.img.animate({opacity: 1}, 300);
 			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
@@ -775,6 +800,7 @@ var PhotoEditor = {
 		var y = Math.round(this.info.y + dy);
 		var cx = this.info.cx;
 		var cy = this.info.cy;
+		var r = this.info.r*Math.PI/180;
 		if(this.info.r<90){
 			cx = Math.round(this.info.cx + dx);
 			cy = Math.round(this.info.cy + dy);
