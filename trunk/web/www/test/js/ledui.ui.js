@@ -688,13 +688,9 @@ var PhotoEditor = {
 		var h = this.info.h;
 		var x = (this.w_target - this.info.w)/2;
 		var y = (this.h_target - this.info.h)/2;
-		var cx = this.w_target/2;
-		var cy = -this.h_target/2;		
-		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y }).attr({'cx': cx, 'cy': cy});		
+		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y });		
 		this.info.x = x;
 		this.info.y = y;
-		this.info.cx = cx;
-		this.info.cy = cy;
 		return this;
 	},
 	reset: function(){
@@ -718,13 +714,45 @@ var PhotoEditor = {
 			deg = this.info.r + deg;
 		}
 		
+		var cw = deg>this.info.r ? true : false;
+		var acw = deg<this.info.r ? true : false;
+		
 		//吸附正角度
 		var deg_ajust = Math.round(deg/90)*90;
 		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust; }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
 		
+		var cx = this.info.cx;
+		var cy = this.info.cy;
+		var R = this.info.r*Math.PI/180;
 		if(deg != this.info.r){
+			var offset = deg-this.info.r;
+			//顺时针
+			if(offset>=90 && offset<180){
+				cx = this.info.cy;
+				cy = -this.info.cx;
+			}else if(offset>=180 && offset<270){
+				cx = -this.info.cx;
+				cy = -this.info.cy;
+			}else if(offset>=270 && offset<360){
+				cx = -this.info.cy;
+				cy = this.info.cx;
+			}
+			//逆时针
+			else if(offset<=-90 && offset>-180){
+				cx = -this.info.cy;
+				cy = this.info.cx;	
+			}else if(offset>=-180 && offset>-270){
+				cx = -this.info.cx;
+				cy = -this.info.cy;
+			}else if(offset>=-270 && offset>-360){
+				cx = this.info.cy;
+				cy = -this.info.cx;
+			}
+			
+			this.img.attr({'cx': cx, 'cy': cy});
+			
 			this.setrotate(deg);		
 		}
 		
@@ -745,8 +773,21 @@ var PhotoEditor = {
 		var dy = offset.y*this.zoom_ui;
 		var x = Math.round(this.info.x + dx);
 		var y = Math.round(this.info.y + dy);
-		var cx = Math.round(this.info.cx + dx);
-		var cy = Math.round(this.info.cy + dy);		
+		var cx = this.info.cx;
+		var cy = this.info.cy;
+		if(this.info.r<90){
+			cx = Math.round(this.info.cx + dx);
+			cy = Math.round(this.info.cy + dy);
+		}else if(this.info.r<180){
+			cx = Math.round(this.info.cx + dy);
+			cy = Math.round(this.info.cy - dx);
+		}else if(this.info.r<270){
+			cx = Math.round(this.info.cx - dx);
+			cy = Math.round(this.info.cy - dy);
+		}else if(this.info.r<360){
+			cx = Math.round(this.info.cx - dy);
+			cy = Math.round(this.info.cy + dx);
+		}		
 		var w = this.info.w; 
 		var h = this.info.h;		
 		if(this.check(x, y, w, h)){
@@ -816,20 +857,15 @@ var PhotoEditor = {
 
 		canvas.width = width;
 		canvas.height = height;
-		
-		var xx = (x - cx) * Math.cos(r) + (y - cy) * Math.sin(r) + cx;
-		var yy = -(x- cx) * Math.sin(r) + (y - cy) * Math.cos(r) + cy;
-		
 			
 		ctx.save();
 		ctx.clearRect(0, 0, width, height);
-		ctx.translate(xx, yy);
+		ctx.translate(width/2, height/2);
 		ctx.rotate(r);
-		//ctx.translate(-w/2+xx, -h/2+yy);
+		ctx.translate(-w/2+cx, -h/2+cy);
 		
 		ctx.drawImage(o, 0, 0, w, h);
 		ctx.restore();
-		console.log(canvas.toDataURL());
 		
 		return canvas.toDataURL();
 		
