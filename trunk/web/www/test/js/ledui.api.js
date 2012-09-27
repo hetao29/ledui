@@ -407,56 +407,29 @@ var Interface = {
 }
 //界面操作
 var Control = {
+	init: function(){
+		this.bind();		
+		PageMgr.show(9);
+		Control.autoLogin();
+	},
+	bind: function(){
 
-	init: function(n){
-		
-		//页面跳转
+/****************************/
+/* -1: 通用					*/
+/****************************/
+		//页面按钮
 		$("[_to]").bind("tapone", function(e){ PageMgr.go($(this).attr("_to")); });
 		$(".button_s_back").bind("tapone", function(e){ Interface.onBackbutton(); });
 		
 		//导航
-		var appnav = $("#appnav") 
-			,applogin = $("#islogin")
-			,appnotlogin = $("#isnotlogin");
-		API.islogin(function(r){
-		  	if(r){
-		  		applogin.find(".errorbox").fadeOut();
-		  		appnotlogin.fadeOut();
-		  		applogin.fadeIn();
-		  	}
-		});
+		var appnav = $("#appnav"); 
 		appnav.find(".CAbout").bind("tapone", function(e){ PageMgr.show(8); });
 		appnav.find(".CLogin").bind("tapone", function(e){ PageMgr.show(10); });		
 		appnav.find(".CRegister").bind("tapone", function(e){ PageMgr.show(11); });
-		appnav.find(".CPostCard").bind("tapone", function(e){					   
-			Control.showPostCard();
-			PageMgr.show(9);
-		});
-		appnav.find(".CLogout").bind("tapone", function(e){
-			API.logout(
-				{},
-				function ok(result){
-					applogin.fadeOut();
-					appnotlogin.fadeIn();
-				},
-				function error(result){
-				}
-			);
-		});
+		appnav.find(".CPostCard").bind("tapone", function(e){ PageMgr.show(9); });
+		appnav.find(".CLogout").bind("tapone", function(e){ Control.logout(); });
 		
-		//明信片状态查询
-		$('#photo').delegate($('img'), 'change', function(){
-			//选择照片成功后，初始化明信片
-			CurrentPostCard = new LeduiPostCard;
-		});
-		
-		//选择图片
-		//check
-		$("#choosePic").bind("tapone", function(e){ Overlay.show("chkphoto"); });
-		//repick
-		$("#choosePic2").bind("tapone", function(e){ Overlay.show("chkphoto"); });
-		//createnext
-		$("#choosePic3").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+		//照片选择器
 		//camera
 		$("#choosePicFromCamera").bind("tapone", function(e){
 			navigator.camera.getPicture(Interface.onPhotoURISuccess, Interface.onFail, 
@@ -479,27 +452,34 @@ var Control = {
 			);
 			Overlay.hide("chkphoto");
 		});
+	
 		
-		//联系人地址添加编辑
-		var rcvform = $("#rcvform") 
-			,btntoaddress = $("#toAddress")
-			,btnrcvcreate = $("#rcvcreate")
-			,btnrcvadd = $("#addAddress")
-			,btnrcvdel = $("#delAddress")
-			,country = rcvform.find("#country") 
-			,privince = rcvform.find("#privince")
-			,city = rcvform.find("#city")
+/****************************/
+/* 0: 首页					*/
+/****************************/
 		
-		btntoaddress.bind("tapone",function(e){
+		PageMgr.getpage(0).bind('use', function(){
+			//选择图片
+			$("#choosePic").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+		});
+		
+/****************************/
+/* 1: 编辑图片				*/	
+/****************************/
+
+		PageMgr.getpage(1).bind('use', function(){
+			//明信片状态查询
+			$('#photo').delegate($('img'), 'change', function(){
+				//选择照片成功后，初始化明信片
+				CurrentPostCard = new LeduiPostCard;
+			});
+			//重选
+			$("#choosePic2").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+			//跳转收件人选择
+			$("#toAddress").bind("tapone", function(e){
 				var src = $("#photo img").attr("src");
-				if(!src){
-					alert("请选择图片");
-					return;
-				};
-				if(PhotoEditor.isready==false){
-					alert("图片加载中，请稍后");
-					return;
-				}
+				if(!src){ alert("请选择图片"); return; };
+				if(PhotoEditor.isready==false){ alert("图片加载中，请稍后"); return;}
 				
 				//选择了文件
 				var file = new LeduiFile;
@@ -510,178 +490,239 @@ var Control = {
 					CurrentPostCard.FileTmpID = f.FileTmpID;
 					CurrentPostCard.ImageFileID= f.ImageFileID;
 				}
-
 				if(Interface.Latitude!=""){
-				CurrentPostCard.Latitude = Interface.Latitude;
-				CurrentPostCard.Longitude= Interface.Longitude;
-				CurrentPostCard.Device = Interface.Device;
+					CurrentPostCard.Latitude = Interface.Latitude;
+					CurrentPostCard.Longitude= Interface.Longitude;
+					CurrentPostCard.Device = Interface.Device;
 				}
-
 				var info=PhotoEditor.getinfo();
 				if(info){ CurrentPostCard.photo = info; }
-				Control.showAddress();
-				
-				CurrentPostCard.ThumbnailData = PhotoEditor.getimage(0.125);
-				
-				//PageMgr.go(2);
-		});				
-		
-		//添加新地址的时候，进行重置
-		btnrcvcreate.bind("tapone",function(e){			
-			btnrcvdel.attr("LocalID","").hide();
-			$("#adrchk").show();
-			$("#adrtitle").html("addAddress".tr());
-			btnrcvadd.text("add".tr());
-			rcvform.each(function(){ this.reset();} );
-			country.trigger("change");
-			rcvform.find("[name=LocalID]").val("");
-			PageMgr.go(3);
+				//CurrentPostCard.ThumbnailData = PhotoEditor.getimage(0.125);
+				PageMgr.go(2);
+			});	
 		});
-		//删除地址
-		btnrcvdel.bind("tapone", function(){
-			var ado = new LeduiAddress;
-			var adr = ado.get($(this).attr("LocalID"));
-			if(adr['AddressID']!=""){
-				API.delAddress(adr['AddressID']);
-			}
-			ado.del($(this).attr("LocalID"));
+		
+/****************************/
+/* 2: 收件人信息			*/
+/****************************/
+
+		PageMgr.getpage(2).bind('use', function(){
+			//添加新地址的时候，进行重置
+			$("#rcvcreate").bind("tapone",function(e){			
+				$("#delAddress").attr("LocalID","").hide();
+				$("#adrchk").show();
+				$("#adrtitle").html("addAddress".tr());
+				$("#addAddress").text("add".tr());
+				$("#rcvform").each(function(){ this.reset();} );
+				$("#country").trigger("change");
+				$("#rcvform").find("[name=LocalID]").val("");
+				PageMgr.go(3);
+			});
+			//跳转留言
+			$("#toComments").bind("tapone", function(e){
+				if($("#rcvlist li.checked").length==0){
+					alert("请选择收件人");
+					return;
+				};
+				PageMgr.go(4);
+			});	
+		}).bind('show', function(){
 			Control.showAddress();
-			PageMgr.back(2);
-		});
-		btnrcvadd.bind("tapone",function(e){
-			var ado = new LeduiAddress();
-			var a =  rcvform.serializeArray();
-			for(var i in a){
-				var k = a[i].name;
-				var v = a[i].value;
-				if(v!=""){
-					ado[k]=v;
-				}
-			}
-			if(ado.Name==""){
-				alert("收件人名字不能为空");
-			}else if(ado.Address==""){
-				alert("收件人地址不能为空");
-			}else{
-				ado.add(ado);
-				Control.showAddress()
-				PageMgr.back(2, null, { y:0 });
-			}
-		});
-		country.bind("change",function(e){			
-			if($(this).val() == "中国"){
-				privince.html('<option value="">选择</option>').slideDown("fast");
-				for(var i =0, len=City.all.length;i<len;i++){
-					var n = City.all[i].n;
-					privince.append('<option value="'+n+'">'+n+'</option>');
-				}
-			}else{
-				privince.html('').slideUp("fast");
-				city.html('').hide();
-			}
-		}).trigger("change");
-		privince.bind("change",function(e){
-			var citys = City.listCity($(this).val());
-			if(citys.length>0){
-				city.html('<option value="">选择</option>').slideDown("fast");
-				for(var i =0, len=citys.length;i<len;i++){
-					var n = citys[i];
-					city.append('<option value="'+n+'">'+n+'</option>');
-				}
-			}else{
-				city.html('').slideUp("fast");
-			}
 		});
 		
-		//留言
-		$("#toComments").bind("tapone", function(e){
-			if($("#rcvlist li.checked").length==0){
-				alert("请选择收件人");
-				return;
-			};
-			PageMgr.go(4);
-		});
-		$("#currency").bind("change",function(e){
-			if($(this).val()!="RMB"){
-				$("#OrderAmount").html("$5");
-				//重新计算货币值与显示值
-				$("#payaction_alipal").hide();
-				$("#payaction_paypal").show();
-			}else{
-				$("#OrderAmount").html("&yen;14.5");
-				$("#payaction_alipal").show();
-				$("#payaction_paypal").hide();
-			}
-		});
-		$("#payaction .button_pay").bind("tapone",function(e){
-			confirm("payedConfirm".tr(),{
-				cancel:function(){
-				},ok:function(){
-					alert_old(1);
-					//检测是不是真的已经支付
-					//如果已经支付，修改支付状态PayStatus为2
-					API.upload(CurrentPostCard);
-					alert_old(2);
-					//定位到，我的信箱，显示上传状态
+/****************************/
+/* 3: 添加收件人信息		*/	
+/****************************/
+		PageMgr.getpage(3).bind('use', function(){
+			//联系人地址添加编辑
+			var rcvform = $("#rcvform")
+				,btnrcvadd = $("#addAddress")
+				,btnrcvdel = $("#delAddress")
+				,country = rcvform.find("#country") 
+				,privince = rcvform.find("#privince")
+				,city = rcvform.find("#city")
+			
+			//删除地址
+			btnrcvdel.bind("tapone", function(){
+				var ado = new LeduiAddress;
+				var adr = ado.get($(this).attr("LocalID"));
+				if(adr['AddressID']!=""){
+					API.delAddress(adr['AddressID']);
+				}
+				ado.del($(this).attr("LocalID"));
+				
+				PageMgr.back(2);
+			});
+			btnrcvadd.bind("tapone",function(e){
+				var ado = new LeduiAddress();
+				var a =  rcvform.serializeArray();
+				for(var i in a){
+					var k = a[i].name;
+					var v = a[i].value;
+					if(v!=""){
+						ado[k]=v;
+					}
+				}
+				if(ado.Name==""){
+					alert("收件人名字不能为空");
+				}else if(ado.Address==""){
+					alert("收件人地址不能为空");
+				}else{
+					ado.add(ado);
+					PageMgr.back(2, null, { y:0 });
 				}
 			});
-			try{
-				alert_old(3);
-				navigator.app.loadUrl($(this).attr("src"),{openExternal:true});
-			}catch(e){
-				alert_old(4);
-				window.open($(this).attr("src"));
-			}
+			country.bind("change",function(e){			
+				if($(this).val() == "中国"){
+					privince.html('<option value="">选择</option>').slideDown("fast");
+					for(var i =0, len=City.all.length;i<len;i++){
+						var n = City.all[i].n;
+						privince.append('<option value="'+n+'">'+n+'</option>');
+					}
+				}else{
+					privince.html('').slideUp("fast");
+					city.html('').hide();
+				}
+			}).trigger("change");
+			privince.bind("change",function(e){
+				var citys = City.listCity($(this).val());
+				if(citys.length>0){
+					city.html('<option value="">选择</option>').slideDown("fast");
+					for(var i =0, len=citys.length;i<len;i++){
+						var n = citys[i];
+						city.append('<option value="'+n+'">'+n+'</option>');
+					}
+				}else{
+					city.html('').slideUp("fast");
+				}
+			});
 		});
-		//预览，生成明信片数据
-		$("#comments").bind("change", function(e){
-			//评论信息
-			CurrentPostCard.Comments = $(this).val();
+
+/****************************/
+/* 4: 输入留言信息			*/	
+/****************************/
+
+		PageMgr.getpage(4).bind('use', function(){
+			//预览，生成明信片数据
+			$("#comments").bind("change", function(e){
+				//评论信息
+				CurrentPostCard.Comments = $(this).val();
+			});
+			$("#toPreview").bind("tapone", function(e){
+				$("#titlebar_preview .button_s_back").attr("_back",4);
+				PageMgr.go(5);
+			});
 		});
-		$("#toPreview").bind("tapone", function(e){
-			$("#titlebar_preview .button_s_back").attr("_back",4);
-			//正常新加，预览的返回为评论
+
+/****************************/
+/* 5: 预览					*/	
+/****************************/
+		PageMgr.getpage(5).bind('use', function(){
+			//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
+			//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
+			$("#toSend").bind("tapone", function(e){
+				API.islogin(function(isLogin){
+					if(isLogin){
+						//开始掉用接口
+						//修改登录，注册，返回页面为 0
+						var postobj  = new LeduiPostCard;
+						var postcard = postobj.get(CurrentPostCard.LocalID);
+						API.postPostCard(
+							postcard,function ok(r){
+								$("#titlebar_login .button_s_back").attr("_back",0);
+								$("#titlebar_register .button_s_back").attr("_back",0);
+								$("#titlebar_about .button_s_back").attr("_back",0);
+								Control.showPay(r);
+							},
+							function error(msg){
+								alert("错误，["+msg+"]请重试");
+							}
+						);
+					}else{
+						//指定到登录,BUG
+						$("#titlebar_login .button_s_back").attr("_back",5);
+						$("#titlebar_register .button_s_back").attr("_back",5);
+						$("#titlebar_about .button_s_back").attr("_back",5);
+						//$("#titlebar_postcard .button_s_back").attr("_back",5);
+						$("#login .errorbox").html("need2login".tr()).slideDown("fast",function(){
+								setTimeout(function(){
+									$("#login .errorbox").slideUp();
+								},5000);});
+						PageMgr.go(10);
+					}
+				});
+			});
+		}).bind('show', function(){
 			Control.showPreview();
 		});
-		//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
-		//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
-		$("#toSend").bind("tapone", function(e){
-			API.islogin(function(isLogin){
-				if(isLogin){
-					//开始掉用接口
-					//修改登录，注册，返回页面为 0
-					var postobj  = new LeduiPostCard;
-					var postcard = postobj.get(CurrentPostCard.LocalID);
-					API.postPostCard(
-						postcard,function ok(r){
-							$("#titlebar_login .button_s_back").attr("_back",0);
-							$("#titlebar_register .button_s_back").attr("_back",0);
-							$("#titlebar_about .button_s_back").attr("_back",0);
-							Control.showPay(r);
-						},
-						function error(msg){
-							alert("错误，["+msg+"]请重试");
-						}
-					);
+
+/****************************/
+/* 6: 支付邮费				*/	
+/****************************/
+		
+		PageMgr.getpage(6).bind('use', function(){
+			$("#currency").bind("change",function(e){
+				if($(this).val()!="RMB"){
+					$("#OrderAmount").html("$5");
+					//重新计算货币值与显示值
+					$("#payaction_alipal").hide();
+					$("#payaction_paypal").show();
 				}else{
-					//指定到登录,BUG
-					$("#titlebar_login .button_s_back").attr("_back",5);
-					$("#titlebar_register .button_s_back").attr("_back",5);
-					$("#titlebar_about .button_s_back").attr("_back",5);
-					//$("#titlebar_postcard .button_s_back").attr("_back",5);
-					$("#login .errorbox").html("need2login".tr()).slideDown("fast",function(){
-							setTimeout(function(){
-								$("#login .errorbox").slideUp();
-							},5000);});
-					PageMgr.go(10);
+					$("#OrderAmount").html("&yen;14.5");
+					$("#payaction_alipal").show();
+					$("#payaction_paypal").hide();
+				}
+			});			
+			$("#payaction .button_pay").bind("tapone",function(e){
+				confirm("payedConfirm".tr(),{
+					cancel:function(){
+					},ok:function(){
+						alert_old(1);
+						//检测是不是真的已经支付
+						//如果已经支付，修改支付状态PayStatus为2
+						API.upload(CurrentPostCard);
+						alert_old(2);
+						//定位到，我的信箱，显示上传状态
+					}
+				});
+				try{
+					alert_old(3);
+					navigator.app.loadUrl($(this).attr("src"),{openExternal:true});
+				}catch(e){
+					alert_old(4);
+					window.open($(this).attr("src"));
 				}
 			});
-		});
-		
-		
-			
+		});	
 
-		$("#IDLogin").bind("tapone", function(e){
+/****************************/
+/* 7: 支付完成				*/	
+/****************************/
+
+		PageMgr.getpage(7).bind('use', function(){
+			//继续创建一张
+			$("#choosePic3").bind("tapone", function(e){ Overlay.show("chkphoto"); });
+		});
+
+/****************************/
+/* 8: 关于					*/	
+/****************************/
+		
+
+/****************************/
+/* 9: 我的信箱				*/	
+/****************************/
+
+		PageMgr.getpage(9).bind('show', function(){
+			Control.showPostCard();
+		});
+
+/****************************/
+/* 10: 登录					*/	
+/****************************/
+		
+		PageMgr.getpage(10).bind('use', function(){
+			$("#IDLogin").bind("tapone", function(e){
 				$("#login .errorbox").html("");
 				var sid=$(".sid","#login").val();
 				var pwd=$(".pwd","#login").val();
@@ -704,8 +745,14 @@ var Control = {
 								},5000);
 					});
 				});
+			});
 		});
-		$("#IDRegister").bind("tapone", function(e){
+
+/****************************/
+/* 11: 注册					*/	
+/****************************/
+		PageMgr.getpage(10).bind('use', function(){
+			$("#IDRegister").bind("tapone", function(e){
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
 				var pwd2=$("#register .pwd2").val();
@@ -726,10 +773,33 @@ var Control = {
 							},5000);
 						});
 				});
+			});
+		});
+				
+	},
+	
+	autoLogin: function(){
+		API.islogin(function(r){
+		  	if(r){
+		  		$("#login").find(".errorbox").fadeOut();
+		  		$("#isnotlogin").fadeOut();
+		  		$("#islogin").fadeIn();
+		  	}
 		});
 	},
-	choosePic: function(n){
+	
+	logout: function(){
+		API.logout(
+			{},
+			function ok(result){
+				$("#islogin").fadeOut();
+				$("#isnotlogin").fadeIn();
+			},
+			function error(result){
+			}
+		);
 	},
+	
 	showAddress:function(){
 		
 		var list = $("#rcvlist").find(".list");
@@ -795,9 +865,7 @@ var Control = {
 		}else{
 			div.show();
 			ul.hide();
-		}
-		
-	
+		}	
 	},
 	showPay:function(msg){
 		$("#Price").html(msg.Price/100);
@@ -812,6 +880,7 @@ var Control = {
 	showPreview:function(){		
 		var adr = new LeduiAddress;
 		var add = adr.get(CurrentPostCard.AddressID[0]);
+		if(!add){ return; }
 		$("#postinfo [name='Name']").html(add.Name);
 		$("#postinfo [name='Address']").html(
 				add.Country+" "+
@@ -885,9 +954,9 @@ var Control = {
 					'<div class="selc"></div>'+
 					'<div class="fake"></div>'+
 				'</div>'+
-				'<div class="title">送给 <span>'+(to.join(", "))+'</span> 的明信片</div>'+
-				'<div class="status"><label>状态</label>：<span class="'+st_css+'">'+st+'</span></div>'+
-				'<div class="time"><label>创建时间</label>：<span>'+postcards[i].date+'</span></div>'+
+				'<div class="title">给 <span>'+(to.join(", "))+'</span></div>'+
+				'<div class="status"><span class="'+st_css+'">'+st+'</span></div>'+
+				'<div class="time"><label>时间</label>: <span>'+postcards[i].date+'</span></div>'+
 				'<div class="actions">'+
 					'<div class="act" active="yes"><span class="ico ico_view" LocalID="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
 					'<div class="act" active="yes"><span class="ico ico_delete" LocalID="'+postcards[i].LocalID+'"><em>删除</em></span></div>'+

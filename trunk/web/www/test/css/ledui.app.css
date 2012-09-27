@@ -173,7 +173,7 @@ background: -moz-linear-gradient(top, #f97100, #cc5b00);
 background: -ms-linear-gradient(top, #f97100, #cc5b00);
 background: -o-linear-gradient(top, #f97100, #cc5b00);
 }
-.button_s_back{border-radius:1px 10px 10px 1px;border-left:none;margin-left:30px;padding-left:5px;}
+.button_s_back{border-radius:1px 10px 10px 1px;border-left:none;margin-left:25px;padding-left:5px;}
 .button_s_back .arrow{display:block;position:absolute;top:0;left:-35px;width:36px;height:55px;overflow:hidden;}
 .button_s_back .arrow em{display:block;position:absolute;left:16px;top:2px;
 width:45px;height:45px;border-radius:8px;
@@ -251,19 +251,19 @@ box-shadow:inset 2px 2px 10px #cc5502;
 .select{}
 .checkbox{display:inline-block;*display:inline;*zoom:1;width:30px;height:30px;background:#eee;border:2px solid #ccc;border-radius:17px;
 background: -webkit-linear-gradient(top, #ddd, #fff);
-background: -moz-linear-gradient(top, #ff8e1a, #ff7300);
-background: -ms-linear-gradient(top, #ff8e1a, #ff7300);
-background: -o-linear-gradient(top, #ff8e1a, #ff7300);
+background: -moz-linear-gradient(top, #ddd, #fff);
+background: -ms-linear-gradient(top, #ddd, #fff);
+background: -o-linear-gradient(top, #ddd, #fff);
 }
 .checkbox .icon{display:block;width:30px;height:30px;}
 .checked .checkbox{
-border-color:#964707;
-background: -webkit-linear-gradient(top, #ff8e1a, #ff7300);
-background: -moz-linear-gradient(top, #ff8e1a, #ff7300);
-background: -ms-linear-gradient(top, #ff8e1a, #ff7300);
-background: -o-linear-gradient(top, #ff8e1a, #ff7300);
+border-color:#060;
+background: -webkit-linear-gradient(top, #0c0, #090);
+background: -moz-linear-gradient(top, #0c0, #090);
+background: -ms-linear-gradient(top, #0c0, #090);
+background: -o-linear-gradient(top, #0c0, #090);
 }
-.checked .checkbox .icon{background:url(../img/app.png) no-repeat 4px -492px;}
+.checked .checkbox .icon{background:url(../img/app.png) no-repeat 6px -492px;}
 
 .radio{}
 
@@ -427,12 +427,8 @@ background: -o-linear-gradient(top, #eee, #ddd);
 .rcvlist .list li{position:relative;border-top:1px solid #fff;border-bottom:1px solid #ddd;cursor:pointer;padding-right:100px;background:#fff;
 box-shadow:inset 0 5px 10px #f5f5f5,inset 0 -5px 10px #f5f5f5;
 }
-.rcvlist .list .checked{background:#666;cursor:default;
-box-shadow:inset 0 10px 10px #555;
-border-top-color:#4e4e4e;
-border-bottom-color:#444;
-}
-.rcvlist .list .info{padding:15px 0;padding-left:65px;}
+.rcvlist .list .checked{background:#eee;cursor:default;box-shadow:none;}
+.rcvlist .list .info{padding:15px 0;padding-left:80px;}
 .rcvlist .list .edit{display:block;position:absolute;top:0;right:0;width:90px;height:100%;cursor:pointer;}
 .rcvlist .list .edit .icon{display:block;position:absolute;top:50%;left:50%;margin-top:-15px;margin-left:-15px;width:30px;height:30px;
 background:url(../img/app.png) no-repeat -50px -500px;
@@ -453,9 +449,9 @@ background: -moz-linear-gradient(top, #666, #444);
 background: -ms-linear-gradient(top, #666, #444);
 background: -o-linear-gradient(top, #666, #444);
 }
-.rcvlist .list .checked .address{color:#ccc;}
-.rcvlist .list .checked *{color:#fff;}
-.rcvlist .list .checkbox{position:absolute;top:50%;left:15px;margin-top:-16px;}
+.rcvlist .list .checked .address{}
+.rcvlist .list .checked *{}
+.rcvlist .list .checkbox{position:absolute;top:50%;left:25px;margin-top:-16px;}
 .rcvlist .list .name{font-size:30px;font-weight:bold;margin-right:10px;}
 .rcvlist .list .phone{font-size:24px;}
 .rcvlist .list .address{display:block;font-size:24px;color:#666;}
@@ -619,7 +615,8 @@ border-color:#555;
 .maillist .null{padding:200px 0;color:#999;text-align:center;font-size:30px;}
 .maillist .list{position:relative;margin:0 auto;}
 .maillist .list ul{border-top:1px solid #ddd;}
-.maillist .list li{position:relative;overflow:hidden;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;box-shadow:inset 0 -5px 10px #f7f7f7;
+.maillist .list li{position:relative;width:100%;overflow:hidden;border-top:1px solid #fff;border-bottom:1px solid #ddd;background:#fff;
+box-shadow:inset 0 5px 10px #f5f5f5,inset 0 -5px 10px #f5f5f5;
 /*opacity:1;
 -webkit-transform: translateX(0);
 -webkit-transform-style: translate3d(0,0,0);
@@ -642,20 +639,26 @@ border-bottom-color:#555;
 }
 .maillist .cover{position:absolute;top:35px;left:20px;width:240px;height:150px;}
 .maillist .photo{z-index:3;position:absolute;top:0;left:0;width:240px;height:150px;}
-.maillist .selc{z-index:2;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;}
-/*.maillist .fake{z-index:1;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;opacity:0.5;
+.maillist .selc{z-index:2;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 8px #555;background:#fff;}
+.maillist .fake{z-index:1;position:absolute;top:0;left:0;width:240px;height:150px;box-shadow:0 0 5px #555;background:#fff;opacity:0.5;
 -webkit-transform: rotate(-5deg);
--moz-transform: scale(0.125);
--o-transform: scale(0.125);
--ms-transform: scale(0.125);
-}*/
+-moz-transform: rotate(-5deg);
+-o-transform: rotate(-5deg);
+-ms-transform: rotate(-5deg);
+}
 .maillist .photo img{width:240px;height:150px;}
 .maillist .title{font-size:28px;}
 .maillist .title span{font-weight:bold;font-size:28px;}
-.maillist .status,
+.maillist .status{position:absolute;z-index:10;top:15px;left:-60px;width:200px;height:40px;font-size:20px;
+-webkit-transform: rotate(-45deg);
+-moz-transform: rotate(-45deg);
+-o-transform: rotate(-45deg);
+-ms-transform: rotate(-45deg);
+}
+.maillist .status span{display:block;width:100%;height:100%;text-align:center;color:#fff;padding-top:10px;}
 .maillist .time{margin-top:10px;font-size:24px;color:#909090}
-.maillist .pass{color:#090;}
-.maillist .wait{color:#f00;}
+.maillist .pass{background:#4bbd06;box-shadow:inset 5px 5px 5px #399005,inset -5px -5px 5px #399005;}
+.maillist .wait{background:#e95207;box-shadow:inset 5px 5px 5px #bd4206;}
 .maillist label{font-size:24px;color:#909090;}
 .maillist span{font-size:24px;}
 .maillist .actions{height:80px;}
