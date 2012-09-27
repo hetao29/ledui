@@ -5,7 +5,7 @@ var Test = {
 	},
 	testpage: function(){
 		
-		var testpanel = $('<div style="zoom:2;position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
+		var testpanel = $('<div style="zoom:2;position:fixed;top:100px;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
 		testpanel.css('zoom', Adapta.ratio);
 		$('<button>reload</button>')
 		.appendTo($(testpanel))
@@ -18,12 +18,22 @@ var Test = {
 		var total = PageMgr.gettotal();
 		var current = PageMgr.getcurrent();
 		var ops="";
-		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + PageMgr.getpage(i).name +'</option>'; }
-		var sel = $('<select>'+ ops +'</select>')
+		
+		var sel = $('<select id="selpage">'+ ops +'</select>')
 		.appendTo(testpanel)
-		.change(function(){
-			PageMgr.show($(this).val())				 
-		});
+		.change(function(){ PageMgr.show($(this).val()); });
+		for(var i=0; i<total; i++){ 
+			var op = $('<option value="'+ i +'">'+ i + ':' + PageMgr.getpage(i).name +'</option>');
+			op.appendTo(sel);
+			(function(i){
+				PageMgr.getpage(i).bind('show', function(){
+					$('#selpage').get(0).selectedIndex = i;									 
+				})  
+			})(i);
+		}
+		
+		
+		
 		
 		/*
 		$('<button>prev</button>')
