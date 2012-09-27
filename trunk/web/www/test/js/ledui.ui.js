@@ -36,7 +36,7 @@ var PageMgr = {
 		}
 		var execcallback = function(){
 			if(params){
-				if(params.callback){
+				if(typeof(params.callback) == 'function'){
 					params.callback();	
 				}	
 			}	

@@ -453,12 +453,25 @@ var Control = {
 			Overlay.hide("chkphoto");
 		});
 	
-		
+		var page0 = PageMgr.getpage(0)
+			,page1 = PageMgr.getpage(1)
+			,page2 = PageMgr.getpage(2)
+			,page3 = PageMgr.getpage(3)
+			,page4 = PageMgr.getpage(4)
+			,page5 = PageMgr.getpage(5)
+			,page6 = PageMgr.getpage(6)
+			,page7 = PageMgr.getpage(7)
+			,page8 = PageMgr.getpage(8)
+			,page9 = PageMgr.getpage(9)
+			,page10 = PageMgr.getpage(10)
+			,page11 = PageMgr.getpage(11)
+			,page12 = PageMgr.getpage(12);
+				
 /****************************/
 /* 0: 首页					*/
 /****************************/
 		
-		PageMgr.getpage(0).bind('use', function(){
+		page0.bind('use', function(){
 			//选择图片
 			$("#choosePic").bind("tapone", function(e){ Overlay.show("chkphoto"); });
 		});
@@ -467,7 +480,7 @@ var Control = {
 /* 1: 编辑图片				*/	
 /****************************/
 
-		PageMgr.getpage(1).bind('use', function(){
+		page1.bind('use', function(){
 			//明信片状态查询
 			$('#photo').delegate($('img'), 'change', function(){
 				//选择照片成功后，初始化明信片
@@ -506,7 +519,7 @@ var Control = {
 /* 2: 收件人信息			*/
 /****************************/
 
-		PageMgr.getpage(2).bind('use', function(){
+		page2.bind('use', function(){
 			//添加新地址的时候，进行重置
 			$("#rcvcreate").bind("tapone",function(e){			
 				$("#delAddress").attr("LocalID","").hide();
@@ -533,7 +546,7 @@ var Control = {
 /****************************/
 /* 3: 添加收件人信息		*/	
 /****************************/
-		PageMgr.getpage(3).bind('use', function(){
+		page3.bind('use', function(){
 			//联系人地址添加编辑
 			var rcvform = $("#rcvform")
 				,btnrcvadd = $("#addAddress")
@@ -551,7 +564,11 @@ var Control = {
 				}
 				ado.del($(this).attr("LocalID"));
 				
-				PageMgr.back(2);
+				PageMgr.back(2, { 
+					'callback': function(){
+						page2.f5scroll();
+					}
+				});
 			});
 			btnrcvadd.bind("tapone",function(e){
 				var ado = new LeduiAddress();
@@ -569,7 +586,11 @@ var Control = {
 					alert("收件人地址不能为空");
 				}else{
 					ado.add(ado);
-					PageMgr.back(2, null, { y:0 });
+					PageMgr.back(2, { 
+						'callback': function(){
+							page2.f5scroll().scrollto(0, 0);
+						}
+					});
 				}
 			});
 			country.bind("change",function(e){			
@@ -602,7 +623,7 @@ var Control = {
 /* 4: 输入留言信息			*/	
 /****************************/
 
-		PageMgr.getpage(4).bind('use', function(){
+		page4.bind('use', function(){
 			//预览，生成明信片数据
 			$("#comments").bind("change", function(e){
 				//评论信息
@@ -617,7 +638,7 @@ var Control = {
 /****************************/
 /* 5: 预览					*/	
 /****************************/
-		PageMgr.getpage(5).bind('use', function(){
+		page5.bind('use', function(){
 			//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
 			//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
 			$("#toSend").bind("tapone", function(e){
@@ -660,7 +681,7 @@ var Control = {
 /* 6: 支付邮费				*/	
 /****************************/
 		
-		PageMgr.getpage(6).bind('use', function(){
+		page6.bind('use', function(){
 			$("#currency").bind("change",function(e){
 				if($(this).val()!="RMB"){
 					$("#OrderAmount").html("$5");
@@ -699,7 +720,7 @@ var Control = {
 /* 7: 支付完成				*/	
 /****************************/
 
-		PageMgr.getpage(7).bind('use', function(){
+		page7.bind('use', function(){
 			//继续创建一张
 			$("#choosePic3").bind("tapone", function(e){ Overlay.show("chkphoto"); });
 		});
@@ -713,7 +734,7 @@ var Control = {
 /* 9: 我的信箱				*/	
 /****************************/
 
-		PageMgr.getpage(9).bind('show', function(){
+		page9.bind('show', function(){
 			Control.showPostCard();
 		});
 
@@ -721,7 +742,7 @@ var Control = {
 /* 10: 登录					*/	
 /****************************/
 		
-		PageMgr.getpage(10).bind('use', function(){
+		page10.bind('use', function(){
 			$("#IDLogin").bind("tapone", function(e){
 				$("#login .errorbox").html("");
 				var sid=$(".sid","#login").val();
@@ -751,7 +772,8 @@ var Control = {
 /****************************/
 /* 11: 注册					*/	
 /****************************/
-		PageMgr.getpage(10).bind('use', function(){
+		
+		page11.bind('use', function(){
 			$("#IDRegister").bind("tapone", function(e){
 				var sid=$("#register .sid").val();
 				var pwd=$("#register .pwd").val();
@@ -775,6 +797,12 @@ var Control = {
 				});
 			});
 		});
+		
+/****************************/
+/* 12: 账户					*/	
+/****************************/		
+
+
 				
 	},
 	
@@ -877,7 +905,7 @@ var Control = {
 		$("#PostCardCount").html(msg.PostCardCount);
 		PageMgr.go(6);
 	},
-	showPreview:function(){		
+	showPreview:function(){	
 		var adr = new LeduiAddress;
 		var add = adr.get(CurrentPostCard.AddressID[0]);
 		if(!add){ return; }
@@ -902,7 +930,6 @@ var Control = {
 			$('.card_front .photo').html('').append(img);
 		}
 		Preview.show();
-		PageMgr.go(5);
 	},
 	showPostCard:function(){
 		var postcard = new LeduiPostCard;
@@ -969,7 +996,7 @@ var Control = {
 					var postcard = new LeduiPostCard();
 					CurrentPostCard = postcard.get(lid);
 					//正常新加，预览的返回为评论
-					Control.showPreview();
+					PageMgr.go(5);
 				});
 				li.find(".ico_delete").bind("tapone",function(e){
 					//用全局变量，解决在confirm后，lid的值变会的问题
@@ -986,7 +1013,11 @@ var Control = {
 							var postcard = new LeduiPostCard();
 							postcard.del(window.__lid);
 							//window.__p.slideUp("fast",function(){window.__p.remove();});
-							window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove();});
+							window.__p.animate({height:0}, 300, '' ,function(){window.__p.remove(); 
+								
+								PageMgr.getpage(9).f5scroll(); 
+							
+							});
 						}
 						}
 					);
