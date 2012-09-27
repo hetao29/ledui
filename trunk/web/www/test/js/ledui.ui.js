@@ -25,7 +25,8 @@ var PageMgr = {
 		this.isinit = true;
 	},
 	show: function(n, params, type){
-		if(!this.isinit){ this.init(); setTimeout(function(){ $('.apptitlebar').show();}, 300); }
+		if(!this.isinit){ this.init(); }
+		if($('.apptitlebar').css('display') == 'none'){ $('.apptitlebar').show(); }
 		var n = parseInt(n, 10);
 		if(this.lock || !this.total){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
@@ -149,7 +150,12 @@ Page.prototype = {
 		}
 		return this;	
 	},
-	show: function(type){
+	show: function(type){		
+		if(this.firstuse){
+			this.firstuse = false;
+			this.exec('use');	
+		}
+		this.exec('show');
 		this.appview.removeClass('showfromleft showfromright hidefromleft hidefromright');		
 		if(type == 'left'){ this.appview.addClass('showfromleft').show(); }
 		else if(type == 'right'){ this.appview.addClass('showfromright').show(); }
@@ -166,11 +172,6 @@ Page.prototype = {
 			});
 		}
 		else{ appnav.hide(); }
-		if(this.firstuse){
-			this.firstuse = false;
-			this.exec('use');	
-		}
-		this.exec('show');
 		this.layout();
 		
 		return this;
