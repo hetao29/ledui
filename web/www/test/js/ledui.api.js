@@ -810,8 +810,8 @@ var Control = {
 		API.islogin(function(r){
 		  	if(r){
 		  		$("#login").find(".errorbox").fadeOut();
-		  		$("#isnotlogin").fadeOut();
-		  		$("#islogin").fadeIn();
+		  		$("#isnotlogin").hide();
+		  		$("#islogin").show();
 		  	}
 		});
 	},
