@@ -169,7 +169,6 @@ background: -o-linear-gradient(top, #ddd , #ddd 50%, #aaa 50% , #aaa );
 
 .button_s{
 position:relative;isplay:inline-block;*display:inline;*zoom:1;padding:0 15px;height:54px;color:#fff;text-align:center;font-size:26px;line-height:54px;
-box-shadow:inset 1px 1px 1px #994702;
 border:1px solid #994702;
 border-radius:10px;	
 background: #ff7300;
@@ -178,9 +177,9 @@ background: -moz-linear-gradient(top, #f97100, #cc5b00);
 background: -ms-linear-gradient(top, #f97100, #cc5b00);
 background: -o-linear-gradient(top, #f97100, #cc5b00);
 }
-.button_s_back{border-radius:1px 10px 10px 1px;border-left:none;margin-left:25px;padding-left:5px;box-shadow:inset 0 1px 1px #994702;}
+.button_s_back{border-radius:1px 10px 10px 1px;border-left:none;margin-left:25px;padding-left:5px;}
 .button_s_back .arrow{display:block;position:absolute;top:0;left:-34px;width:36px;height:55px;overflow:hidden;}
-.button_s_back .arrow em{display:block;position:absolute;left:17px;top:2px;box-shadow:inset 0 1px 1px #994702;
+.button_s_back .arrow em{display:block;position:absolute;left:17px;top:2px;
 width:45px;height:45px;border-radius:8px;
 border:1px solid #994702;
 border:1px solid #994702;
@@ -503,23 +502,23 @@ color:#fff;
 .preview .card{display:none;position:absolute;top:0;left:0;width:100%;height:100%;
 overflow:hidden;box-shadow:0 0 10px #555;
 
--webkit-animation-duration: 0.4s;
+-webkit-animation-duration: 0.3s;
 -webkit-animation-delay: 0s;
 -webkit-animation-timing-function: ease;
 -webkit-animation-fill-mode: both;
--moz-animation-duration: 0.4s;
+-moz-animation-duration: 0.3s;
 -moz-animation-delay: 0s;
 -moz-animation-timing-function: ease;
 -moz-animation-fill-mode: both;
--ms-animation-duration: 0.4s;
+-ms-animation-duration: 0.3s;
 -ms-animation-delay: 0s;
 -ms-animation-timing-function: ease;
 -ms-animation-fill-mode: both;
--o-animation-duration: 0.4s;
+-o-animation-duration: 0.3s;
 -o-animation-delay: 0s;
 -o-animation-timing-function: ease;
 -o-animation-fill-mode: both;
-animation-duration: 0.4s;
+animation-duration: 0.3s;
 animation-delay: 0s;
 animation-timing-function: ease;
 animation-fill-mode: both;
