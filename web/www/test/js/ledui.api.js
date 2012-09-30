@@ -409,7 +409,7 @@ var Interface = {
 var Control = {
 	init: function(){
 		this.bind();		
-		PageMgr.show(2);
+		PageMgr.show(9);
 		Control.autoLogin();
 	},
 	bind: function(){
@@ -510,7 +510,7 @@ var Control = {
 				}
 				var info=PhotoEditor.getinfo();
 				if(info){ CurrentPostCard.photo = info; }
-				//CurrentPostCard.ThumbnailData = PhotoEditor.getimage(0.125);
+				CurrentPostCard.ThumbnailData = PhotoEditor.getimage(0.125);
 				PageMgr.go(2);
 			});	
 		});
@@ -980,9 +980,9 @@ var Control = {
 					'</div>'+
 					'<div class="selc"></div>'+
 					'<div class="fake"></div>'+
+					'<div class="status"><span class="'+st_css+'">'+st+'</span></div>'+
 				'</div>'+
 				'<div class="title">给 <span>'+(to.join(", "))+'</span></div>'+
-				'<div class="status"><span class="'+st_css+'">'+st+'</span></div>'+
 				'<div class="time"><label>时间</label>: <span>'+postcards[i].date+'</span></div>'+
 				'<div class="actions">'+
 					'<div class="act" active="yes"><span class="ico ico_view" LocalID="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
