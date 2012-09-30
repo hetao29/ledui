@@ -28,6 +28,7 @@ var PageMgr = {
 		if(!this.isinit){ this.init(); }
 		if($('.apptitlebar').css('display') == 'none'){ $('.apptitlebar').show(); }
 		var n = parseInt(n, 10);
+		n = isNaN(n) ? 0 : n;
 		if(this.lock || !this.total){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
 		var page_current = this.getpage(this.current), page = this.getpage(n);
@@ -317,7 +318,7 @@ var Adapta = {
 
 //遮罩层
 var Overlay = {
-	isinit: false, curname: '', layers: {}, mask: null, lock:false,
+	isinit: false, curname: '', layers: {}, mask: null, lock:false, opacity:0.5,
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
@@ -374,7 +375,7 @@ var Overlay = {
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.stop().animate({opacity: 0.5}, 350).show();
+		this.mask.stop().animate({opacity: this.opacity}, 350).show();
 		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 350);			
 	},
 	hide: function(callback){

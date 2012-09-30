@@ -108,7 +108,7 @@ background: -o-linear-gradient(top, #ffaa00, #ff8000);
 background: -ms-linear-gradient(top, #ffaa00, #ff8000);
 }
 .apptitlebar{display:none;z-index:0;position:absolute;top:0;left:0;width:100%;}
-.titlebar .title{height:80px;color:#fff;font-size:40px;line-height:80px;text-align:center;font-weight:bold;}
+.titlebar .title{height:80px;color:#fff;font-size:40px;line-height:80px;text-align:center;font-weight:bold;text-shadow:-1px -2px 0 #000;}
 .titlebar .action{position:absolute;top:0;left:0;width:100%;height:100%;}
 .titlebar .action .l{position:absolute;top:12px;left:15px;}
 .titlebar .action .r{position:absolute;top:12px;right:15px;}
@@ -119,9 +119,9 @@ input[type="text"],
 input[type="password"],
 input[type="tel"],
 input[type="email"],
-.input{-webkit-appearance:none;border:1px solid #bbb;box-shadow:inset 2px 2px 8px #ccc;border-radius:5px;background:#fff;padding:15px 10px;height:30px;font-size:30px;resize:none;outline:none;}
+.input{-webkit-appearance:none;-webkit-tap-highlight-color:rgba(0, 0, 0, 0);border:1px solid #bbb;box-shadow:inset 2px 2px 8px #ccc;border-radius:5px;background:#fff;padding:15px 10px;height:30px;font-size:30px;resize:none;outline:none;}
 
-textarea,.textarea{-webkit-appearance:none;border:1px solid #bbb;border-radius:5px;background:#fff;box-shadow:inset 2px 2px 8px #ccc;padding:10px 20px;font-size:30px;line-height:40px;resize:none;outline:none;}
+textarea,.textarea{-webkit-appearance:none;-webkit-tap-highlight-color:rgba(0, 0, 0, 0);border:1px solid #bbb;border-radius:5px;background:#fff;box-shadow:inset 2px 2px 8px #ccc;padding:10px 20px;font-size:30px;line-height:40px;resize:none;outline:none;}
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="tel"]:focus,
@@ -255,7 +255,7 @@ box-shadow:inset 2px 2px 10px #cc5502;
 }
 
 .select{}
-.checkbox{display:inline-block;*display:inline;*zoom:1;width:30px;height:30px;background:#eee;border:2px solid #ccc;border-radius:17px;
+.checkbox{display:inline-block;*display:inline;*zoom:1;width:30px;height:30px;background:#eee;border:3px solid #fff;box-shadow:0 0 10px #666;border-radius:18px;
 background: -webkit-linear-gradient(top, #ddd, #fff);
 background: -moz-linear-gradient(top, #ddd, #fff);
 background: -ms-linear-gradient(top, #ddd, #fff);
@@ -263,7 +263,6 @@ background: -o-linear-gradient(top, #ddd, #fff);
 }
 .checkbox .icon{display:block;width:30px;height:30px;}
 .checked .checkbox{
-border-color:#060;
 background: -webkit-linear-gradient(top, #0c0, #090);
 background: -moz-linear-gradient(top, #0c0, #090);
 background: -ms-linear-gradient(top, #0c0, #090);
@@ -280,8 +279,8 @@ background: -o-linear-gradient(top, #0c0, #090);
 -o-backface-visibility: hidden;
 backface-visibility: hidden;
 }
-.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:470px;margin-left:-245px;border-radius:10px;padding:10px;
-background:rgba(0, 0, 0, 0.4);
+.overlay{display:none;z-index:2;position:absolute;top:50%;left:50%;width:480px;margin-left:-245px;border-radius:10px;padding:5px;
+background:#b5b5b5;
 -webkit-backface-visibility: hidden;
 -moz-backface-visibility: hidden;
 -ms-backface-visibility: hidden;
@@ -323,7 +322,7 @@ transform: translateY(0);
 .overlay .close .handle{width:40px;height:40px;margin:0 auto;margin-top:20px;border-radius:20px;background:#ff4e00;color:#fff;font-weight:bold;text-align:center;font-size:30px;line-height:40px;font-family:verdana;}
 .overlay .close:active .handle,
 .overlay .close.active .handle{background:#c00;}
-.overlay .info{text-align:center;padding:20px 0;font-size:30px;}
+.overlay .info{text-align:center;padding:30px 0;font-size:30px;}
 .overlay .action{text-align:center;}
 .overlay .action .button{margin:0 10px;}
 
@@ -431,9 +430,10 @@ background: -o-linear-gradient(top, #eee, #ddd);
 .rcvlist .list{position:relative;margin:0 auto;}
 .rcvlist .list ul{border-top:1px solid #ddd;}
 .rcvlist .list li{position:relative;border-top:1px solid #fff;border-bottom:1px solid #ddd;cursor:pointer;padding-right:100px;background:#fff;
+text-shadow:1px 2px 0 #fff;
 box-shadow:inset 0 5px 10px #f5f5f5,inset 0 -5px 10px #f5f5f5;
 }
-.rcvlist .list .checked{background:#eee;cursor:default;box-shadow:none;}
+.rcvlist .list .checked{box-shadow:inset 0 5px 15px #ccc, inset 0 -5px 15px #ccc;border-bottom-color:#bbb;border-top-color:transparent;background:#ddd;cursor:default;}
 .rcvlist .list .info{padding:15px 0;padding-left:80px;}
 .rcvlist .list .edit{display:block;position:absolute;top:0;right:0;width:90px;height:100%;cursor:pointer;}
 .rcvlist .list .edit .icon{display:block;position:absolute;top:50%;left:50%;margin-top:-15px;margin-left:-15px;width:30px;height:30px;
@@ -614,8 +614,8 @@ color:#fff;
 border-color:#555;
 }
 
-.confirm{margin-top:-120px;}
-.alert{margin-top:-120px;}
+.confirm{margin-top:-130px;}
+.alert{margin-top:-130px;}
 
 .maillist{position:relative;}
 .maillist .null{padding:200px 0;color:#999;text-align:center;font-size:30px;}
@@ -692,12 +692,6 @@ border-bottom-color:#555;
 }
 .showfromright {
 	z-index:2;
-	-webkit-animation-timing-function: fadein;
-	-moz-animation-timing-function: fadein;
-	-o-animation-timing-function: fadein;
-	-ms-animation-timing-function: fadein;
-	animation-timing-function: fadein;
-	-webkit-animation-timing-function: fadein;
 	-webkit-animation-name: showfromright;
 	-moz-animation-name: showfromright;
 	-o-animation-name: showfromright;
@@ -722,11 +716,6 @@ border-bottom-color:#555;
 }
 .showfromleft {
 	z-index:2;
-	-webkit-animation-timing-function: fadein;
-	-moz-animation-timing-function: fadein;
-	-o-animation-timing-function: fadein;
-	-ms-animation-timing-function: fadein;
-	animation-timing-function: fadein;
 	-webkit-animation-name: showfromleft;
 	-moz-animation-name: showfromleft;
 	-o-animation-name: showfromleft;
@@ -753,11 +742,6 @@ border-bottom-color:#555;
 }
 .hidefromleft {
 	z-index:1;
-	-webkit-animation-timing-function: fadeout;
-	-moz-animation-timing-function: fadeout;
-	-o-animation-timing-function: fadeout;
-	-ms-animation-timing-function: fadeout;
-	animation-timing-function: fadeout;
 	-webkit-animation-name: hidefromleft;
 	-moz-animation-name: hidefromleft;
 	-o-animation-name: hidefromleft;
@@ -783,11 +767,6 @@ border-bottom-color:#555;
 }
 .hidefromright {
 	z-index:1;
-	-webkit-animation-timing-function: fadeout;
-	-moz-animation-timing-function: fadeout;
-	-o-animation-timing-function: fadeout;
-	-ms-animation-timing-function: fadeout;
-	animation-timing-function: fadeout;
 	-webkit-animation-name: hidefromright;
 	-moz-animation-name: hidefromright;
 	-o-animation-name: hidefromright;
@@ -796,27 +775,22 @@ border-bottom-color:#555;
 
 
 @-webkit-keyframes showfromtop { 
-0% { -webkit-transform: translateY(-600px); opacity: 0;}
+0% { -webkit-transform: translateY(-1000px); opacity: 0;}
 100% {-webkit-transform: translateY(0); opacity: 1;}
 }
 @-moz-keyframes showfromtop {
-0% { -moz-transform: translateY(-600px); opacity: 0;}
+0% { -moz-transform: translateY(-1000px); opacity: 0;}
 100% { -moz-transform: translateY(0); opacity: 1;}
 }
 @-o-keyframes showfromtop {
-0% { -o-transform: translateY(-600px); opacity: 0;}
+0% { -o-transform: translateY(-1000px); opacity: 0;}
 100% { -o-transform: translateY(0); opacity: 1;}
 }
 @keyframes showfromtop {
-0% { transform: translateY(-600px); opacity: 0;}
+0% { transform: translateY(-1000px); opacity: 0;}
 100% { transform: translateY(0); opacity: 1;}
 }
 .showfromtop {
-	-webkit-animation-timing-function: fadein;
-	-moz-animation-timing-function: fadein;
-	-o-animation-timing-function: fadein;
-	-ms-animation-timing-function: fadein;
-	animation-timing-function: fadein;
 	-webkit-animation-name: showfromtop;
 	-moz-animation-name: showfromtop;
 	-o-animation-name: showfromtop;
@@ -826,26 +800,21 @@ border-bottom-color:#555;
 
 @-webkit-keyframes hidefromtop { 
 0% { -webkit-transform: translateY(0); opacity: 1;}
-100% { -webkit-transform: translateY(-600px); opacity: 0;}
+100% { -webkit-transform: translateY(-1000px); opacity: 0;}
 }
 @-moz-keyframes hidefromtop {
 0% { -moz-transform: translateY(0); opacity: 1;}
-100% { -moz-transform: translateY(-600px); opacity: 0;}
+100% { -moz-transform: translateY(-1000px); opacity: 0;}
 }
 @-o-keyframes hidefromtop {
 0% { -o-transform: translateY(0); opacity: 1;}
-100% { -o-transform: translateY(-600px); opacity: 0;}
+100% { -o-transform: translateY(-1000px); opacity: 0;}
 }
 @keyframes hidefromtop {
 0% { transform: translateY(0); opacity: 1;}
-100% { transform: translateY(-600px); opacity: 0;}
+100% { transform: translateY(-1000px); opacity: 0;}
 }
 .hidefromtop {
-	-webkit-animation-timing-function: fadeout;
-	-moz-animation-timing-function: fadeout;
-	-o-animation-timing-function: fadeout;
-	-ms-animation-timing-function: fadeout;
-	animation-timing-function: fadeout;
 	-webkit-animation-name: hidefromtop;
 	-moz-animation-name: hidefromtop;
 	-o-animation-name: hidefromtop;
