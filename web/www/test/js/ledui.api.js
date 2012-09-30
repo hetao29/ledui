@@ -409,7 +409,7 @@ var Interface = {
 var Control = {
 	init: function(){
 		this.bind();		
-		PageMgr.show(9);
+		PageMgr.show(2);
 		Control.autoLogin();
 	},
 	bind: function(){
