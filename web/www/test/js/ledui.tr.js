@@ -13,7 +13,10 @@ var LOCALE = {
 		st_uploading:"上传中",
 		st_printing:"等到打印",
 		st_posting:"等到邮寄",
-		st_posted:"已经寄出"
+		st_posted:"已经寄出",
+		CN:"中国(含港澳台)",
+		OTHER:"国外"
+		,choose:"选择"
 	},
 	zh_tw:{
 		aboutme_content:"樂兌明信片是一款可以在任何時候任何地點製作並投遞明信片的手機應用。我們不是給親人朋友發去E-Card，而是真正的投遞紙質明信片，不論您在什麼地方，再也不必為買明信片找郵箱這種事情發愁了，您只需要打開您的相冊，或者拍下當時的美景，然後選上您中意的郵戳郵票，填寫上您想寄去的地址，後面的事情請交給我們。如果您的照片帶有GPS信息，我們還會在明信片上印上您在世界地圖的哪個位置，讓收件人更切身的體驗到您來自遠方的祝福！把親人的牽掛寄回家，把自己的遊歷寄朋友，邀請您的朋友一起來玩轉樂兌明信片吧！",
@@ -41,6 +44,8 @@ var LOCALE = {
 		,title_newaddress: 'New address'//添加新地址
 		,title_inputmessage: 'Input message'//输入留言信息
 		,title_preview: 'Preview'//预览
+		,CN:"China"
+		,OTHER:"Other Country"
 		
 	},
 	//日语

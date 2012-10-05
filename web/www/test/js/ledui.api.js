@@ -304,14 +304,12 @@ var API = {
 			API.uploadHost,
 			function ok(r){
 				//更新当前明信片状态为上传成功(TODO)
-				alert_old(11);
 				realObject.Status = 3;
 				var postcard = new LeduiPostCard;
 				postcard.add(realObject);
 				alert(r.response);									 
 			},
 			function fail(){
-				alert_old(12);
 				//更新当前明信片状态为上传失败(TODO)
 				realObject.Status = -1;
 				var postcard = new LeduiPostCard;
@@ -594,7 +592,7 @@ var Control = {
 				}
 			});
 			country.bind("change",function(e){			
-				if($(this).val() == "中国"){
+				if($(this).val() == "CN"){
 					privince.html('<option value="">选择</option>').slideDown("fast");
 					for(var i =0, len=City.all.length;i<len;i++){
 						var n = City.all[i].n;
@@ -698,19 +696,15 @@ var Control = {
 				confirm("payedConfirm".tr(),{
 					cancel:function(){
 					},ok:function(){
-						alert_old(1);
 						//检测是不是真的已经支付
 						//如果已经支付，修改支付状态PayStatus为2
 						API.upload(CurrentPostCard);
-						alert_old(2);
 						//定位到，我的信箱，显示上传状态
 					}
 				});
 				try{
-					alert_old(3);
 					navigator.app.loadUrl($(this).attr("src"),{openExternal:true});
 				}catch(e){
-					alert_old(4);
 					window.open($(this).attr("src"));
 				}
 			});
@@ -854,7 +848,7 @@ var Control = {
 					'<div class="checkbox"><div class="icon"></div></div>'+
 					'<span class="name">'+adds[i].Name+'</span>'+
 					'<span class="phone">'+(adds[i].Mobile||"")+'</span>'+
-					'<span class="address">'+(adds[i].Country||"")+" "+(adds[i].Privince||"")+" " +(adds[i].City||"")+" "+adds[i].Address+'</span>'+
+					'<span class="address">'+(adds[i].Country.tr()||"")+" "+(adds[i].Privince||"")+" " +(adds[i].City||"")+" "+adds[i].Address+'</span>'+
 					'</div></li>';
 				var li=$(html);
 				//选择地址
