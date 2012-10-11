@@ -345,10 +345,10 @@ var API = {
 					realObject.Status = 3;
 				}else{
 					realObject.Status = -1;
+					alert(o.error_msg);
 				}
 				(new LeduiPostCard).add(realObject);
 				Control.updatePostCardStatus(realObject);
-				alert(o.error_msg);
 			},
 			function fail(){
 				//更新当前明信片状态为上传失败(TODO)
