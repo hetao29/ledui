@@ -35,7 +35,8 @@ $.ajaxSetup({
 
 //接口
 var API = {
-	host: "http://www.ledui.com/api.php/api",
+	host_main: "http://www.ledui.com",
+	host_api: "http://www.ledui.com/api.php/api",
 	uploadHost:"http://www.ledui.com/image/upload",
 	//登录
 	/**
@@ -49,7 +50,7 @@ var API = {
 			var param={token:token,uid:uid,uuid:uuid};
 			$.ajax({
 				type: "POST",
-				url: API.host+"/user/islogin",
+				url: API.host_api+"/user/islogin",
 				data: param,
 				dataType: "JSON",
 				success: function(msg){
@@ -72,7 +73,7 @@ var API = {
 		DB.setToken("","");
 		$.ajax({
 			type: "POST",
-			url: API.host+"/user/login",
+			url: API.host_api+"/user/login",
 			data: param,
 			dataType: "JSON",
 			success: function(msg){
@@ -93,7 +94,7 @@ var API = {
 	register: function(param,ok,error){
 		$.ajax({
 			type: "POST",
-			url: API.host+"/user/register",
+			url: API.host_api+"/user/register",
 			data: param,
 			dataType: "JSON",
 			success: function(msg){
@@ -125,7 +126,7 @@ var API = {
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 			type: "POST",
-			url: API.host+"/postcard/post",
+			url: API.host_api+"/postcard/post",
 			data: param,
 			dataType: "JSON",
 			success: function(msg){
@@ -170,6 +171,34 @@ var API = {
 		});
 		
 	},
+	//get Order
+	getOrder:function(OrderID,ok,error){
+		var param={};
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.OrderID= OrderID;
+		$.ajax({
+			type: "POST",
+			url: API.host_main+"/order.main.get",
+			data: param,
+			dataType: "JSON",
+			success: function(msg){
+				if(msg && msg.result && msg.error_code==0){
+					//console.log(msg.result);
+					//OrderID
+					//PayURL
+					//PostCard
+					//LocalID(postcard)
+					if(ok){ ok(msg); }
+				}else{
+					if(error && msg.error_msg){ error(msg.error_msg); }
+				}
+			},
+			error:function(msg){
+				if(error){ error(msg); }
+			}
+		});
+	},
 	//删除服务器的明信片(其实只是一个标记位)
 	delPostCard:function(PostCard,ok,error){
 		var param={};
@@ -178,7 +207,7 @@ var API = {
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 			type: "POST",
-			url: API.host+"/postcard/del",
+			url: API.host_api+"/postcard/del",
 			data: param,
 			dataType: "JSON",
 			success: function(msg){
@@ -206,7 +235,7 @@ var API = {
 		param.id= id;
 		$.ajax({
 		   type: "POST",
-		   url: API.host+"/address/del",
+		   url: API.host_api+"/address/del",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
@@ -237,7 +266,7 @@ var API = {
 		param.uid= DB.getUID();
 		$.ajax({
 		   type: "POST",
-		   url: API.host+"/address/list",
+		   url: API.host_api+"/address/list",
 		   data: param,
 		   dataType: "JSON",
 		   success: function(msg){
