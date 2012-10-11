@@ -2,139 +2,196 @@ $(document).ready(function(){
 	Touch.init();
 	UI.redefine();
 	Adapta.init();
-	PageMgr.init(1);
+	PageMgr.init();
 });
 
 //UI系统
 var UI = {
 	istouch: ('createTouch' in document),
 	redefine: function(){
-		window.alert_old=window.alert;
-		window.alert = function(msg){
-			Overlay.show('alert', msg);	
-		}
-		window.confirm_old=window.confirm;
-		window.confirm = function(msg, callback){
-			Overlay.show('confirm', msg, callback);	
-		}
+		window.Alert = window.alert;
+		window.alert = function(msg){ Overlay.show('alert', msg);	}
+		window.Confirm = window.confirm;
+		window.confirm = function(msg, callback){ Overlay.show('confirm', msg, callback); }
 	}
 } 
 //页面显示控制
 var PageMgr = {	
-	pages: [], current: -1, current_prev: -1, total: 0, htmlattr: '_page', screen: $('.screen'), lock: false,
-	scrollers: {},
-	sindex: -1,
+	pages: [], current: -1, current_prev: -1, total: 0, lock: false, isinit: false,
 	init: function(n){
 		var n = arguments[0] ? arguments[0] : 0;
 		this.pages = this.seri();
 		this.total = this.pages.length;
-		if(!this.total){ return; }
-		this.show(n);
+		this.isinit = true;
 	},
-	show: function(n, callback, scrollpos){
+	show: function(n, params, type){
+		if(!this.isinit){ this.init(); }
+		if($('.apptitlebar').css('display') == 'none'){ $('.apptitlebar').show(); }
 		var n = parseInt(n, 10);
-		if(this.lock){ return; }
+		n = isNaN(n) ? 0 : n;
+		if(this.lock || !this.total){ return; }
 		if(n<0 || n>=this.total || n == this.current){ return; }
 		var page_current = this.getpage(this.current), page = this.getpage(n);
+		var _this = this;
+		var delayunlock = function(){
+			setTimeout(function(){ _this.lock = false; execcallback(); }, 350);
+		}
+		var execcallback = function(){
+			if(params){
+				if(typeof(params.callback) == 'function'){
+					params.callback();	
+				}	
+			}	
+		}
 		if(!page){ return; }
-		
-		var n0 = this.current;
-		var show_direction = n > n0 ? 'right' : 'left'
-			,hide_direction = n > n0 ? 'left' :  'right'
-			,_this = this;
-		
-		if(page_current){
-			this.lock = true;
-			//page_current.find('.panel_body').hide();
-			//page.find('.panel_body').show();
-			page_current.addClass('hidefrom'+ hide_direction);
-			page.addClass('showfrom'+ show_direction).show();
-			
-			setTimeout(function(){					
-				page_current.hide().removeClass('hidefrom' + hide_direction);
-				page.removeClass('showfrom' + show_direction);
-				_this.lock = false;
-			}, 500);
-			
-			//'animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd'
-			setTimeout(function(){				 
-				if(typeof(callback) == 'function'){ callback(); }				
-				_this.chkscroll(page, scrollpos);	
-			}, 350);
-		}else{			
-			//first page load
+		this.lock = true;
+		if(type == 'go'){
+			if(page_current){ page_current.hide('left'); }
+			page.show('right');
+			delayunlock();
+		}else if(type == 'back'){
+			if(page_current){ page_current.hide('right'); }
+			page.show('left');
+			delayunlock();
+		}else{
+			if(page_current){ page_current.hide(); }
 			page.show();
-			//fake title bar delay show
-			setTimeout(function(){ $('.apptitlebar').show(); }, 2000);
-			if(typeof(callback) == 'function'){ callback(); }	
-			this.chkscroll(page, scrollpos);	
+			this.lock = false;
+			execcallback();
 		}
 		
 		this.current_prev = this.current;
 		this.current = n;
 		
-		if( page.attr('layout_width') != Adapta.layoutinfo.width 
-			|| page.attr('layout_height') != Adapta.layoutinfo.height){
-			Adapta.layout();
-		}	
-		
-		var appnav = $('#appnav'); 
-		if(page.attr('_hasnav')){ 
-			appnav.slideDown(); 
-			//appnav.show();
-			$.each(appnav.find('li'), function(){
-				var li = $(this);
-				if(parseInt(li.attr('mark'), 10) ==  n){
-					li.addClass('current');	
-				}else{
-					li.removeClass('current');
-				}
-			});
-		}
-		else{ appnav.hide(); }
-		
 		return this;
 	},
-	next: function(){
-		var next = this.current + 1;
-		if(next > this.total - 1){ return; }
-		this.show(next);
+	go: function(n, params){
+		this.show(n, params, 'go')
 		return this;
 	},
-	prev: function(){
-		var prev = this.current - 1;
-		if(prev < 0){ return; }
-		this.show(prev);
-		return this;
-	},
-	back: function(){
-		if(this.current_prev<=0 && this.current_prev == this.current){ return; }
-		this.show(this.current_prev);
+	back: function(n, params){
+		this.show(n, params, 'back');
 		return this;
 	},	
 	//存储顺序与html顺序无关，并纠正错误标记，相同前者优先，未标 记为0
 	seri: function(){
 		var pages = [], ps = $('.page'), tmp = {}, _this = this;
 		ps.each(function(){
-			var p = $(this), n = p.attr(_this.htmlattr);
+			var p = $(this), n = p.attr('_page');
 			if(!n){ n = 0; }
 			n = parseInt(n, 10);
 			if(tmp[n]){ tmp[n].push(p); } else{ tmp[n] = [p]; }
 		});
 		for(var key in tmp){
 			var t = tmp[key];
-			for(var i=0; i<t.length; i++){ pages.push(t[i]); }
+			for(var i=0; i<t.length; i++){ 
+				var o = t[i] 
+					,index = pages.length
+					,name =  o.attr('_name')
+					,title = ''
+					,appview = o
+					,apphead = o.find('.panel_head') 
+					,appbody = o.find('.panel_body')
+					,appfoot = o.find('.panel_foot')
+					,titlebar = o.find('.titlebar')
+					,hasnav = o.attr('_hasnav') == 'true' ? true : false;
+				apphead  = apphead.length ? apphead : null;
+				appbody  = appbody.length ? appbody : null;
+				appfoot  = appfoot.length ? appfoot : null;
+				titlebar  = titlebar.length ? titlebar : null;
+				if(titlebar){
+				title = titlebar.find('.title').html();
+				}
+				var page = new Page({
+					index: index,
+					name: name,
+					title: title,
+					appview: appview,
+					apphead: apphead,
+					appbody: appbody,
+					appfoot: appfoot,
+					titlebar: titlebar,
+					hasnav: hasnav
+				});
+				pages.push(page);
+			
+			}
 		}
+		
 		return pages;
 	},
 	getpage: function(n){ return this.pages[n]; },
 	getpages: function(){ return this.pages; },
 	gettotal: function(){ return this.total; },
 	getcurrent: function(){ return this.current; },
-	getcurrentpage: function(){ return this.getpage(this.current); },
-	chkscroll: function(page, scrollpos){
-		var pg = page
-			,bd = pg.find('.panel_body')
+	getcurrentpage: function(){ return this.getpage(this.current); }
+}
+
+var Page = function(params){
+	for(var key in params){ this[key] = params[key];	}
+	this.scroller = null;
+	this.layoutinfo = { width:0, height:0 };
+	this.firstuse = true;
+	this.callback_show = [];
+	this.callback_hide = [];
+	this.callback_use = [];
+}
+Page.prototype = {
+	exec: function(eventname){
+		var eventhandlers = this['callback_' + eventname];
+		if(eventhandlers && eventhandlers.length){
+			for(var i=0; i<eventhandlers.length; i++){
+				eventhandlers[i]();	
+			}	
+		}
+	},
+	bind: function(eventname, func){
+		if(typeof(func) == 'function' && this['callback_' + eventname]){
+			this['callback_' + eventname].push(func);
+		}
+		return this;	
+	},
+	show: function(type){		
+		if(this.firstuse){
+			this.firstuse = false;
+			this.exec('use');	
+		}
+		this.exec('show');
+		this.appview.removeClass('showfromleft showfromright hidefromleft hidefromright');		
+		if(type == 'left'){ this.appview.addClass('showfromleft').show(); }
+		else if(type == 'right'){ this.appview.addClass('showfromright').show(); }
+		else{ this.appview.show(); }
+		var appnav = $('#appnav'); 
+		if(this.hasnav){ 
+			appnav.slideDown(); 
+			//appnav.show();
+			var index = this.index;
+			$.each(appnav.find('li'), function(){
+				var li = $(this);
+				if(parseInt(li.attr('mark'), 10) == index){ li.addClass('current'); }
+				else{ li.removeClass('current'); }
+			});
+		}
+		else{ appnav.hide(); }
+		this.layout();
+		
+		return this;
+	},
+	hide: function(type){
+		this.appview.removeClass('showfromleft showfromright hidefromleft hidefromright');
+		if(type == 'left'){ this.appview.addClass('hidefromleft'); }
+		else if(type == 'right'){ this.appview.addClass('hidefromright'); }
+		else{ this.appview.hide(); }
+		this.exec('hide');
+		
+		return this;
+	},
+	settitle: function(){
+		
+	},
+	chkscroll: function(){
+		var pg = this.appview
+			,bd = this.appbody
 			,box = bd.find('.panel_body_box')
 			,h = 0
 			,_this = this
@@ -160,57 +217,50 @@ var PageMgr = {
 		box.css('height', h);
 		
 		if(bd.height() < h){
-			var sindex = -1;
-			if(!bd.attr('scrollinstall')){
-				this.sindex ++;
-				sindex = this.sindex;
-				this.scrollers[sindex] = new iScroll(bd.get(0), config);
-				bd.attr('scrollinstall', 'true').attr('scrollindex', this.sindex);
-			}
-			if(scrollpos){
-				sindex = bd.attr('scrollindex');
-				this.scrollers[sindex].refresh();
-				var x = scrollpos.x ? scrollpos.x : 0;
-				var y = scrollpos.y ? scrollpos.y : 0;
-				this.scrollers[sindex].scrollTo(x, y, 200);
+			if(!this.scroller){
+				this.scroller = new iScroll(bd.get(0), config);
 			}
 		}else{
-			var sindex = bd.attr('scrollindex');
-			if(sindex){
-				bd.removeAttr('scrollinstall').removeAttr('scrollindex');
-				_this.scrollers[sindex].destroy();
-				delete(_this.scrollers[sindex]);
+			if(this.scroller){
+				this.scroller.destroy();
+				this.scroller = null;
 			}
 		}
-	}
-}
-
-var Page = function(params){
-	this.index = params.index ? params.index : null;
-	this.title = params.title ? params.title : '';
-	this.name = params.name ? params.name : '';
-	this.titlebar = params.titlebar ? params.titlebar : null; 
-	this.appview = params.appview ? params.appview : null;
-	this.apphead = params.apphead ? params.apphead : null;
-	this.appbody = params.appbody ? params.appbody : null;
-	this.appfoot = params.appfoot ? params.appfoot : null;
-	this.appnav = params.appnav ? params.appnav : false;
-}
-Page.prototype = {
-	show: function(){
 		
-	},
-	hide: function(){
-			
-	},
-	chkscroll: function(){
-		
+		return this;
 	},
 	f5scroll: function(){
-		
+		if(this.scroller){ this.scroller.refresh(); }
+		return this;
 	},
-	adpta: function(){
+	scrollto: function(x, y){
+		if(this.scroller){ this.scroller.scrollTo(x, y, 200); }
+		return this;
+	},
+	layout: function(){	
+		var  pg = this.appview	
+			,hd = this.apphead
+			,bd = this.appbody
+			,ft = this.appfoot
+			,H = Adapta.layoutinfo.height/Adapta.ratio
+			,h1 = hd ? hd.outerHeight(true) : 0
+			,h3 = ft ? ft.outerHeight(true) : 0
+			,h2 = H - h1 - h3;
+			
+		if(this.layoutinfo.width != Adapta.layoutinfo.width 
+			|| this.layoutinfo.height != Adapta.layoutinfo.height){
+			$('.screen').css('height', H);
+			pg.css('height', H);
+			bd.css('top', h1).css('height', h2);
+			this.layoutinfo = {
+				width: Adapta.layoutinfo.width,
+				height: Adapta.layoutinfo.height
+			};
+		}
 		
+		this.chkscroll();
+		
+		return this;
 	}
 }
 
@@ -218,7 +268,7 @@ Page.prototype = {
 //屏幕适配器
 var Adapta = {
 	ratio: 1,
-	layoutinfo: {width:0, height: 0},
+	layoutinfo: {width:$(window).width(), height: $(window).height()},
 	init: function(){
 		if(UI.istouch){ this.scale(); }
 		this.bind();
@@ -259,30 +309,16 @@ var Adapta = {
 		return this;
 	},
 	layout: function(){		
-		var  pg = PageMgr.getcurrentpage()	
-			,hd = pg.find('.panel_head')
-			,bd = pg.find('.panel_body')
-			,ft = pg.find('.panel_foot')
-			,win_w = $(window).width()
-			,win_h = $(window).height()
-			,H = win_h/this.ratio
-			,h1 = hd.outerHeight(true)
-			,h3 = ft.outerHeight(true)
-			,h2 = H - h1 - h3;
-		$('.screen').css('height', H);
-		pg.css('height', H);
-		bd.css('top', h1).css('height', h2);
-		this.layoutinfo = {width: win_w,  height: win_h};
-		pg.attr('layout_width', win_w).attr('layout_height', win_h);
-		
-		PageMgr.chkscroll(pg);
+		this.layoutinfo = { width: $(window).width(), height: $(window).height() };
+		var page = PageMgr.getcurrentpage();
+		if(page){ page.layout(); }
 		return this;
 	}
 }
 
 //遮罩层
 var Overlay = {
-	isinit: false, curname: '', layers: {}, mask: null, lock:false,
+	isinit: false, curname: '', layers: {}, mask: null, lock:false, opacity:0.5,
 	init: function(){
 		var overlays = $('.overlay')
 			,overlay_mask = $('.overlay_mask')
@@ -323,6 +359,7 @@ var Overlay = {
 							callback.ok();	
 						}
 					}
+					btnok.unbind();btncancel.unbind();
 				});
 			});
 			btncancel.bind('tapone', function(){ 
@@ -332,6 +369,7 @@ var Overlay = {
 							callback.cancel();	
 						}
 					}
+					btnok.unbind();btncancel.unbind();
 				});
 			});
 			info.html(message);
@@ -339,7 +377,7 @@ var Overlay = {
 		$('.overlays').show();
 		o.addClass('showfromtop').show();
 		this.curname = name; 
-		this.mask.stop().animate({opacity: 0.5}, 350).show();
+		this.mask.stop().animate({opacity: this.opacity}, 350).show();
 		setTimeout(function(){ o.removeClass('showfromtop'); _this.lock = false; }, 350);			
 	},
 	hide: function(callback){
@@ -511,15 +549,16 @@ var PhotoEditor = {
 		if(!img){ return; }
 		this.zoom_ui = this._getzoom();
 		this.isready = false;
-		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0 };
+		this.info = { o: img, w: 0, h: 0, x: 0, y: 0, r: 0, cx: 0, cy: 0 };
 		this.box = $('#photo');
 		this.panel = $('#photopanel');
 		this.loading = $('#photoloading');
+		this.canvas = $('#photoeditorcanvas').get(0);
 		this.box.html('');
 		this.loading.show();
 		//img loaded bind event
 		var _this = this;
-		this.img = $('<img id="photoeditorimg" deg="0"/>')
+		this.img = $('<img id="photoeditorimg" cx="0" cy="0" deg="0"/>')
 		.bind('load', function(){
 			var size = _this.getimgsize();
 			_this.setinfo({ 'o': img, 'w': size.width, 'h': size.height });
@@ -528,7 +567,7 @@ var PhotoEditor = {
 			setTimeout(function(){
 			_this.loading.hide();
 			_this.center();
-			_this.img.stop().animate({opacity: 1}, 300);
+			_this.img.animate({opacity: 1}, 300);
 			}, 200);
 			if(_this.isfirstrun){ _this.bind(); _this.isfirstrun = false; }
 			_this.isready = true;
@@ -677,8 +716,8 @@ var PhotoEditor = {
 		var w = this.info.w;
 		var h = this.info.h;
 		var x = (this.w_target - this.info.w)/2;
-		var y = (this.h_target - this.info.h)/2;		
-		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y }, 300);		
+		var y = (this.h_target - this.info.h)/2;
+		this.img.css({ 'width': w, 'height': h, 'left': x, 'top': y });		
 		this.info.x = x;
 		this.info.y = y;
 		return this;
@@ -686,10 +725,14 @@ var PhotoEditor = {
 	reset: function(){
 		this.info.w = this.w_target;
 		this.info.h = this.info.w / this.ratio_img;
+		this.info.cx = 0;
+		this.info.cy = 0;
+		this.img.attr({'cx': 0, 'cy': 0});
 		this.center().setrotate(0);
 		return this;
 	},
-	rotate: function(deg, frombuttom){
+	rotate: function(deg, frombutton){
+		
 		if(arguments[1]){ //按钮点击向下去整， 附加整角度
 			if(deg<0){
 				deg = Math.ceil(this.info.r/90)*90 + deg;	
@@ -699,12 +742,49 @@ var PhotoEditor = {
 		}else{		
 			deg = this.info.r + deg;
 		}
+		
+		var cw = deg>this.info.r ? true : false;
+		var acw = deg<this.info.r ? true : false;
+		
 		//吸附正角度
 		var deg_ajust = Math.round(deg/90)*90;
-		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust }
+		if(Math.abs(deg_ajust - deg) < 10){ deg = deg_ajust; }
 		if(deg >=360){ deg = deg - 360; }
 		else if(deg < 0){ deg = 360 + deg; }
-		this.setrotate(deg);
+		
+		var cx = this.info.cx;
+		var cy = this.info.cy;
+		var R = this.info.r*Math.PI/180;
+		if(deg != this.info.r){
+			var offset = deg-this.info.r;
+			//顺时针
+			if(offset>=90 && offset<180){
+				cx = this.info.cy;
+				cy = -this.info.cx;
+			}else if(offset>=180 && offset<270){
+				cx = -this.info.cx;
+				cy = -this.info.cy;
+			}else if(offset>=270 && offset<360){
+				cx = -this.info.cy;
+				cy = this.info.cx;
+			}
+			//逆时针
+			else if(offset<=-90 && offset>-180){
+				cx = -this.info.cy;
+				cy = this.info.cx;	
+			}else if(offset>=-180 && offset>-270){
+				cx = -this.info.cx;
+				cy = -this.info.cy;
+			}else if(offset>=-270 && offset>-360){
+				cx = this.info.cy;
+				cy = -this.info.cx;
+			}
+			
+			this.img.attr({'cx': cx, 'cy': cy});
+			
+			this.setrotate(deg);		
+		}
+		
 		return this;
 	},
 	setrotate: function(deg){
@@ -712,8 +792,9 @@ var PhotoEditor = {
 				 ($.browser.mozilla) ? '-moz-' :
 				 ($.browser.ms)      ? '-o-' :
 				 ($.browser.opera)   ? '-ms-' : '';
-		this.img.css(prefix + 'transform', 'rotate('+ deg +'deg)');
-		this.img.attr('deg', deg);
+
+		this.img.css(prefix + 'transform', 'rotate('+ deg +'deg)').attr({'deg': deg});
+
 		return this;
 	},
 	move: function(offset){
@@ -721,15 +802,33 @@ var PhotoEditor = {
 		var dy = offset.y*this.zoom_ui;
 		var x = Math.round(this.info.x + dx);
 		var y = Math.round(this.info.y + dy);
+		var cx = this.info.cx;
+		var cy = this.info.cy;
+		var r = this.info.r*Math.PI/180;
+		if(this.info.r<90){
+			cx = Math.round(this.info.cx + dx);
+			cy = Math.round(this.info.cy + dy);
+		}else if(this.info.r<180){
+			cx = Math.round(this.info.cx + dy);
+			cy = Math.round(this.info.cy - dx);
+		}else if(this.info.r<270){
+			cx = Math.round(this.info.cx - dx);
+			cy = Math.round(this.info.cy - dy);
+		}else if(this.info.r<360){
+			cx = Math.round(this.info.cx - dy);
+			cy = Math.round(this.info.cy + dx);
+		}		
 		var w = this.info.w; 
 		var h = this.info.h;		
 		if(this.check(x, y, w, h)){
 			//吸附边缘
 			//if(Math.abs(x)<10){ x = 0; }//else if(Math.abs(this.w_target-x) < 10){ x = this.w_target -w; }
 			//if(Math.abs(y)<10){ y = 0; }//else if(Math.abs(this.h_target-h) < 10){ y = this.h_target -h; }
-			this.img.css({'left': x, 'top': y });
+			this.img.css({'left': x, 'top': y }).attr({'cx': cx, 'cy': cy});
 			this.info.x = x;
 			this.info.y = y;
+			this.info.cx = cx;
+			this.info.cy = cy;
 		}
 		return this;
 	},
@@ -756,15 +855,50 @@ var PhotoEditor = {
 	},
 	saveinfo: function(){
 		this.setinfo({
-			'w': parseFloat(this.img.css('width')),
-			'h': parseFloat(this.img.css('height')),
-			'x': parseFloat(this.img.css('left')),
-			'y': parseFloat(this.img.css('top')),
-			'r': parseFloat(this.img.attr('deg'))
+			'w': Math.round(parseFloat(this.img.css('width'))),
+			'h': Math.round(parseFloat(this.img.css('height'))),
+			'x': Math.round(parseFloat(this.img.css('left'))),
+			'y': Math.round(parseFloat(this.img.css('top'))),
+			'cx': Math.round(parseFloat(this.img.attr('cx'))),
+			'cy': Math.round(parseFloat(this.img.attr('cy'))),
+			'r': Math.round(parseFloat(this.img.attr('deg')))
 		});		
 		return this;
 	},
 	getinfo: function(){
 		return this.info;
+	},
+	
+	getimage: function(scale){
+		if(!this.isready){ return ''; }	
+		var scale = arguments[0] ? arguments[0] : 1  
+			,canvas = this.canvas
+			,ctx = canvas.getContext("2d")
+			,width = this.w_target*scale
+			,height = this.h_target*scale
+			,o = $(this.img).get(0)
+			,w = this.info.w*scale
+			,h = this.info.h*scale
+			,x = this.info.x*scale
+			,y = this.info.y*scale
+			,cx = this.info.cx*scale
+			,cy = this.info.cy*scale
+			,r = this.info.r*Math.PI/180
+
+		canvas.width = width;
+		canvas.height = height;
+			
+		ctx.save();
+		ctx.clearRect(0, 0, width, height);
+		ctx.translate(width/2, height/2);
+		ctx.rotate(r);
+		ctx.translate(-w/2+cx, -h/2+cy);
+		
+		ctx.drawImage(o, 0, 0, w, h);
+		ctx.restore();
+		
+		return canvas.toDataURL();
+		
 	}
+	
 }

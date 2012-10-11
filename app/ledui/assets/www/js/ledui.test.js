@@ -5,7 +5,7 @@ var Test = {
 	},
 	testpage: function(){
 		
-		var testpanel = $('<div style="zoom:2;position:fixed;top:0;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
+		var testpanel = $('<div style="zoom:2;position:fixed;top:150px;right:0;text-align:right;z-index:1000;"></div>').appendTo($(document.body));
 		testpanel.css('zoom', Adapta.ratio);
 		$('<button>reload</button>')
 		.appendTo($(testpanel))
@@ -17,13 +17,23 @@ var Test = {
 		
 		var total = PageMgr.gettotal();
 		var current = PageMgr.getcurrent();
-		var ops = '';
-		for(var i=0; i<total; i++){ ops += '<option value="'+ i +'"'+ ((i == current) ? ' selected' : '') + '>'+ i + ':' + PageMgr.getpage(i).attr('_name') +'</option>'; }
-		var sel = $('<select>'+ ops +'</select>')
+		var ops="";
+		
+		var sel = $('<select id="selpage">'+ ops +'</select>')
 		.appendTo(testpanel)
-		.change(function(){
-			PageMgr.show($(this).val())				 
-		});
+		.change(function(){ PageMgr.show($(this).val()); });
+		for(var i=0; i<total; i++){ 
+			var op = $('<option value="'+ i +'">'+ i + ':' + PageMgr.getpage(i).name +'</option>');
+			op.appendTo(sel);
+			(function(i){
+				PageMgr.getpage(i).bind('show', function(){
+					$('#selpage').get(0).selectedIndex = i;									 
+				})  
+			})(i);
+		}
+		
+		
+		
 		
 		/*
 		$('<button>prev</button>')
@@ -68,8 +78,10 @@ var Test = {
 				PhotoEditor.init($(this).val());	 
 			}
 		});	
+		var op = '<option value="http://www.ledui.com/image/010000000003505BF15F0159"></option>';
+			sel.append(op);
 		for(var i=1; i<=20; i++){
-			var op = $('<option value="http://42.121.85.21/test/testimg/test'+ i +'.jpg">photo'+ i +'</option>');
+			var op = $('<option value="testimg/test'+ i +'.jpg">photo'+ i +'</option>');
 			sel.append(op);
 		}
 		//PhotoEditor.init(ps[0]);

@@ -12,6 +12,8 @@
 <link href="icon.png" rel="apple-touch-icon-precomposed" />
 </head>
 <body>
+<canvas id="photoeditorcanvas" width="240" height="150" style="display:none;background:#f00;position:absolute;top:0;left:0;z-index:100;"></canvas>
+				
 <div class="screen">
 <div class="pages"> 
 <!--
@@ -159,14 +161,14 @@
 			<div class="item"><input name="Mobile" type="tel" placeholder="收件人手机号码" /></div>
 			<div class="item"><label>收件地址</label>
 							<div><select name="Country" id="country">
-								<option value='中国'>中国(含港澳台)</option>
-								<option value='国外'>国外</option>
+								<option value='CN' tr="CN">中国(含港澳台)</option>
+								<option value='OTHER' tr="OTHER">国外</option>
 							</select></div>
 							<div><select name="Privince" id="privince">
-								<option value="">选择</option>
+								<option value="" tr="choose">选择</option>
 							</select></div>
 							<div><select name="City" id="city" class="hide">
-								<option value="">选择</option>
+								<option value="" tr="choose">选择</option>
 							</select></div>							
 			</div>
 			<div class="item"><input type="text" name="Address" placeholder="详细地址" /></div>
@@ -279,7 +281,7 @@
 			<div class="title">支付邮费</div>
 			<div class="action">
 				<div class="l">
-					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+					<div class="button button_s button_s_back" _back="5" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 			</div>
 		</div>
@@ -287,25 +289,36 @@
 	<div class="panel_body">
 	<div class="panel_body_box">	
 		<div class="payinfo">
-			<div class="info"> 每张明信片需支付 <span class="m">&yen;15</span> 或 <span class="m">$2</span><br />
-				帐户可抵用积分为: <span class="m">128</span>分<br />
-				目前可使用
-				<select>
-					<option>50</option>
-				</select>
-				积分抵用 <span class="m">&yen;0.5</span> </div>
-			<div class="sum">合计: <span class="m">&yen;14.5</span></div>
+			<div class="info"> 
+				每张明信片需支付 &yen;<span id="Price"></span> <br />
+				你共寄出<span id="PostCardCount"></span>张，共<span class="m" id="OrderTotalPrice"></span>元<br />
+				
+				帐户剩余<span id="MoneyCurrent">元，可用<span id="ScoreCurrent"></span>积分<br />
+				可使用<input  max="128" min="0" style="width:50px" type="number" />
+				积分抵用 <span class="m">&yen;0.5</span> <br/>
+				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input max="5.9" min="0" style="width:50px" type="number" />
+				<br/>
+				</div>
+			<div class="sum">总支付: <span class="m" id="OrderAmount"></span></div>
 		</div>
 	</div>
 	</div>
 	<div class="panel_foot">
 		<div class="payaction" id="payaction">
 			<div class="dtext">前往支付</div>
-			<div class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
-			<div class="button button_pay" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
+			<div id="payaction_alipal" class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
+			<div id="payaction_paypal" class=" button button_pay" style="display:none" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
 		</div>
-		<div class="paytip"> 如您通过美元账户支付, 请选择PayPal支付<br />
-			本次合计 <span>$1.49</span><br />
+		<div class="paytip">
+		选择其它货币支付
+			
+				<select id="currency">
+					<option value="RMB" selected="true">选择货币</option>
+					<option value="RMB">RMB</option>
+					<option value="USD">美元USD</option>
+				</select><!--
+			 如您通过美元账户支付, 请选择PayPal支付<br />
+			本次合计 <span>$1.49</span><br />-->
 		</div>
 	</div>
 </div>
@@ -578,7 +591,7 @@
 	</ul>
 	<ul id="islogin">
 		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
-		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱(0)</li>
+		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
 		<li active="yes" class="CAccount" tr="account"  mark="10">账号</li>
 		<li active="yes" class="CLogout" tr="logout" mark="11">退出</li>
 	</ul>
@@ -592,7 +605,7 @@
 <script src="cordova.js"></script> 
 <script src="js/jquery-1.8.1.min.js"></script>
 <script src="js/jgestures.min.js"></script>  
-<script src="js/hammer.js"></script> 
+<script src="js/hammer.js"></script>
 <script src="js/iscroll-min.js"></script> 
 <script src="js/ledui.ui.js"></script> 
 <script src="js/ledui.test.js"></script>
