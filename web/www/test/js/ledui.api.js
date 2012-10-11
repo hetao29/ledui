@@ -4,7 +4,6 @@
 var CurrentPostCard = new LeduiPostCard;
 var AvaliableCurrency={};
 //}}}
-
 //{{{
 var AjaxSetup={
 	stat: 0, //0,1 start, 2 complete
@@ -335,21 +334,21 @@ var API = {
 		param.data_src = JSON.stringify(LeduiPostCardObject);
 		param.data = JSON.stringify(realObject);
 		options.params = param;
-		
 		var ft = new FileTransfer();
 		ft.upload(
 			realObject.photo.o,
 			API.uploadHost,
 			function ok(r){
 				//更新当前明信片状态为上传成功(TODO)
-				var r = JSON.parse(r);
-				if(parseInt(r.result)==1){
+				var o = JSON.parse(r.response);
+				if(parseInt(o.result)==1){
 					realObject.Status = 3;
 				}else{
 					realObject.Status = -1;
 				}
 				(new LeduiPostCard).add(realObject);
 				Control.updatePostCardStatus(realObject);
+				alert(o.error_msg);
 			},
 			function fail(){
 				//更新当前明信片状态为上传失败(TODO)
@@ -992,11 +991,11 @@ var Control = {
 			var st="";
 			var st_css="pass";
 			//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
-			switch(PostCard.Status){
+			switch(parseInt(PostCard.Status)){
 				case 1:st="st_unpay".tr();st_css="wait";break;
 				case 2:st="st_uploading".tr();break;
 				case 3:
-				       switch(PostCard.OrderStatus){
+				       switch(parseInt(PostCard.OrderStatus)){
 					       /*
 						 -3	OrderFailed	支付失败
 						 -2	OrderTimeout	订单超时
@@ -1014,7 +1013,7 @@ var Control = {
 
 				       };
 				       break;
-
+				case -1:st="st_uploaderror".tr();st_css="wait";break;
 				default:st="st_unpay".tr();st_css="wait";break;
 			}
 			ul.find("li[LocalID='"+LocalID+"']").find(".status").children().removeClass().addClass(st_css).html(st);

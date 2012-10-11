@@ -11,6 +11,7 @@ var LOCALE = {
 		//明信片状态
 		st_unpay:"未支付",
 		st_uploading:"上传中",
+		st_uploaderror:"上传失败",
 		st_printing:"等到打印",
 		st_posting:"等到邮寄",
 		st_posted:"已经寄出",
