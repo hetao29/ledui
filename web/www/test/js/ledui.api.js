@@ -1130,7 +1130,7 @@ $(document).ready(function(){
 	var postcard = (new LeduiPostCard).list();
 	//{{{ check change
 	for(var i=0;i<postcard.length;i++){
-		if(postcard[i].OrderStatus==3 && postcard[i].Status!=3){
+		if(parseInt(postcard[i].OrderStatus)==3 && parseInt(postcard[i].Status)!=3){
 			console.log("AUTO UPLOAD");
 			console.log(postcard[i]);
 			API.upload(postcard[i]);
