@@ -4,6 +4,34 @@ class order_main extends STpl{
 	var $token;
 	var $uid;
 	/**
+	  * 订单状态检查
+	  **/
+	public function pageGet($inPath){
+		$this->result = new api_result;
+		if(empty($_REQUEST['OrderID']) || empty($_REQUEST['uid']) || empty($_REQUEST['token'])){
+			$this->result->error_msg=SLanguage::tr("error_1","error");
+			$this->result->error_code=-1;
+			return $this->result;
+		}
+		$this->token = $_REQUEST['token'];
+		$this->uid = $_REQUEST['uid'];
+
+		if(user_api::isLoginMobile($this->uid,$this->token) != true){
+			$this->result->error_msg=SLanguage::tr("error_4","error");
+			$this->result->error_code=-4;
+			return $this->result;
+		}
+		$order_db = new order_db;
+		$Order = $order_db->getOrder($_REQUEST['OrderID']);
+		if(empty($Order) || $Order['UserID']!=$this->uid){
+			$this->result->error_msg=SLanguage::tr("error_40001","error");
+			$this->result->error_code=-40001;
+			return $this->result;
+		}
+		$this->result->result=$Order;
+		return $this->result;
+	}
+	/**
 	 * 支付接口
 	 * http://www.ledui.com/order.main.pay/
 	 * OrderID=$OrderID&
@@ -52,6 +80,30 @@ class order_main extends STpl{
 		}else{
 			$Currency=$_REQUEST['Currency'];
 		}
+		/**
+		  * TODO 积分，当用积分支付时
+		  * 1.判定积分数量是不是足够 
+		  * 2.当积分够时，记录将要扣除的积分到t_order表，在成功支付后，真正扣除，并记录在log里
+		  * 在一定情况下，有可能会为负数(TODO)。
+		  * 先下2个订单，然后一个一个支付的时候，就会为负，需要LOCK
+		  */
+		if(!empty($_REQUEST['Score'])){
+			//获取当前用户总积分
+			if(true){
+			}else{
+			}
+			//$Order['Score'] = $_REQUEST['Score'];
+		}
+
+		//TODO 余额支付
+		if(!empty($_REQUEST['Money'])){
+			//获取当前用户可用余额
+			if(true){
+			}else{
+			}
+			//$Order['Money'] = $_REQUEST['Money'];
+		}
+		//计算 OrderAmount
 		//根据货币，与汇率，动态算出实际支付
 		$rate = $currS[$Currency]['rate'];
 		$Order['ActualMoneyAmount'] = ceil($Order['OrderAmount']/$rate);
@@ -61,17 +113,6 @@ class order_main extends STpl{
 
 		//TODO version判定
 		$Order['_version'] = $Order['_version']+1;
-		/**
-		  * TODO 积分，当用积分支付时
-		  * 1.判定积分数量是不是足够 
-		  * 2.减少当前可用积分，锁定这订单积分数，当支付成功时，再实际扣除,订单取消或者超时时返还
-		  */
-		if(!empty($_REQUEST['Score'])){
-		}
-
-		//TODO 余额支付
-		if(!empty($_REQUEST['Money'])){
-		}
 		$order_db->updateOrder($Order);
 		//开始支付
 		if($Currency==money_config::$defaultCurrency){
