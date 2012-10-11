@@ -121,6 +121,8 @@ var API = {
 	//创建明信片，返回明信片ID，更新本地明信片状态，然后开始上传具体的文件
 	postPostCard:function(PostCard,ok,error){
 		var param={};
+						var postcard = (new LeduiPostCard).get(PostCard.LocalID);
+						console.log(postcard);
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
 		PostCard.ThumbnailData="TMP CLEAR";
@@ -675,12 +677,16 @@ var Control = {
 			//预览，生成明信片数据,并保存到本地,然后判断登录情况，提示登录
 			//登录成功后，保存明信片数据到服务器，并得到支付ID，然后跳转到支付页面
 			$("#toSend").bind("tapone", function(e){
+						var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
+					console.log(postcard);
 				API.islogin(function(isLogin){
 					if(isLogin){
 						//开始掉用接口
 						//修改登录，注册，返回页面为 0
-						var postobj  = new LeduiPostCard;
-						var postcard = postobj.get(CurrentPostCard.LocalID);
+						//var postobj  = new LeduiPostCard;
+					console.log(CurrentPostCard);
+						var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
+					console.log(postcard);
 						API.postPostCard(
 							postcard,function ok(r){
 								$("#titlebar_login .button_s_back").attr("_back",0);
@@ -959,8 +965,10 @@ var Control = {
 		$("#postinfo [name='PostCode']").html(add.PostCode);
 		$("#msginfo [name='Name']").html(add.Name);
 		$("#msginfo [name='Comments']").html(CurrentPostCard.Comments);
-		var postcard = new LeduiPostCard();
-		postcard.add(CurrentPostCard);
+		var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
+		if(!postcard){
+			(new LeduiPostCard).add(CurrentPostCard);
+		}
 		//获取登录者的名字
 		//$("#msginfo [name='FromName']").html();
 		if(CurrentPostCard.photo){
@@ -1130,14 +1138,16 @@ $(document).ready(function(){
 	var postcard = (new LeduiPostCard).list();
 	//{{{ check change
 	for(var i=0;i<postcard.length;i++){
-		if(parseInt(postcard[i].OrderStatus)==3 && parseInt(postcard[i].Status)!=3){
-			console.log("AUTO UPLOAD");
-			console.log(postcard[i]);
-			API.upload(postcard[i]);
-		}
-		//上传成功，更新最新的状态
-		if(postcard[i].Status==3){
-			API.getOrder(postcard[i].TradeNo);
+		if(parseInt(postcard[i].PostCardID)>0){
+			if(parseInt(postcard[i].OrderStatus)==3 && parseInt(postcard[i].Status)!=3){
+				console.log("AUTO UPLOAD");
+				console.log(postcard[i]);
+				API.upload(postcard[i]);
+			}
+			//上传成功，更新最新的状态
+			if(postcard[i].Status==3){
+				API.getOrder(postcard[i].TradeNo);
+			}
 		}
 	};
 });

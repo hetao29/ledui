@@ -32,7 +32,7 @@ class api_postcard{
 	public function pagePost($inPath){
 		$result = new api_result;
 		$data=new stdclass;
-		$result->result=&$data;
+		//$result->result=&$data;
 
 		$postcard_tmp = SJson::decode($_REQUEST['PostCard']);
 		if(empty($postcard_tmp) || empty($postcard_tmp->Address) || empty($postcard_tmp->photo)){
@@ -62,31 +62,27 @@ class api_postcard{
 		}
 		//}}}
 		//{{{ * 2.判定是不是已经有PostCardID，如果有值，且数据库里的值，且是本人的话，就是修改，没有就是新增
-		$isNewPostCard=true;
-		if(empty($postcard_tmp->PostCardID)){
-		}else{
-			$newPostCard = $db->getPostCard($postcard_tmp->PostCardID,$this->uid);
-			if(!empty($newPostCard)){
-				$isNewPostCard=false;
-			}
+		//$isNewPostCard=true;
+		$PostCard=array();
+		if(!empty($postcard_tmp->PostCardID)){
+			$PostCard = $db->getPostCard($postcard_tmp->PostCardID,$this->uid);
 		}
-		if($isNewPostCard){
+		if(empty($PostCard)){
 			//
-			$newPostCard = array();
-			$newPostCard['UserID']		=$this->uid;
-			$newPostCard['Latitude']	=$postcard_tmp->Latitude;
-			$newPostCard['Longitude']	=$postcard_tmp->Longitude;
-			$newPostCard['Sender']		=$postcard_tmp->Sender;
-			$newPostCard['IP']		=SUtil::getIP(true);
-			$newPostCard['Comment']		=$postcard_tmp->Comments;
-			$newPostCard['ImageFileID']	=$postcard_tmp->ImageFileID;
-			$newPostCard['_insertTime']	=date("Y-m-d H:i:s");
+			$PostCard['UserID']		=$this->uid;
+			$PostCard['Latitude']	=$postcard_tmp->Latitude;
+			$PostCard['Longitude']	=$postcard_tmp->Longitude;
+			$PostCard['Sender']		=$postcard_tmp->Sender;
+			$PostCard['IP']		=SUtil::getIP(true);
+			$PostCard['Comment']		=$postcard_tmp->Comments;
+			$PostCard['ImageFileID']	=$postcard_tmp->ImageFileID;
+			$PostCard['_insertTime']	=date("Y-m-d H:i:s");
 			if(!empty($postcard_tmp->photo)){
-				$newPostCard['ImageWidth']	=$postcard_tmp->photo->w;
-				$newPostCard['ImageHeight']	=$postcard_tmp->photo->h;
-				$newPostCard['ImageX']		=$postcard_tmp->photo->x;
-				$newPostCard['ImageY']		=$postcard_tmp->photo->y;
-				$newPostCard['ImageRotate']	=$postcard_tmp->photo->r;
+				$PostCard['ImageWidth']	=$postcard_tmp->photo->w;
+				$PostCard['ImageHeight']	=$postcard_tmp->photo->h;
+				$PostCard['ImageX']		=$postcard_tmp->photo->x;
+				$PostCard['ImageY']		=$postcard_tmp->photo->y;
+				$PostCard['ImageRotate']	=$postcard_tmp->photo->r;
 			}
 			//{{{地址处理
 			$address=array();
@@ -132,10 +128,10 @@ class api_postcard{
 				//根据国家，算出不同的价格和生成不同的资费，如果用户语言为非中文简体，就美元支付
 			}
 			//}}}
-			$newPostCard['Address']		=implode(",",$address);
-			$newPostCard['PostCardID']	=$db->addPostCard($newPostCard);
+			$PostCard['Address']		=implode(",",$address);
+			$PostCard['PostCardID']	=$db->addPostCard($PostCard);
 		}
-		$data->PostCardID 	= $newPostCard['PostCardID'];
+		$data->PostCardID 	= $PostCard['PostCardID'];
 		$data->LocalID		= $postcard_tmp->LocalID;
 		$data->FileTmpID	= $postcard_tmp->FileTmpID;
 		$data->ImageFileID	= $postcard_tmp->ImageFileID;
@@ -194,9 +190,11 @@ class api_postcard{
 		$data->MoneyCurrent=0;//TODO
 		$data->_insertTime=date("Y-m-d H:i:s");
 		$data->AvaliableCurrency=money_config::currency();//TODO
+		$result->result=$data;
 
 		//$data->PayURL		= "http://www.ledui.com/order.main.pay/";
 		//}}}
+		error_log(var_export($result,true),3,"/tmp/postcard.log");
 		return $result;
 	}
 	/**
