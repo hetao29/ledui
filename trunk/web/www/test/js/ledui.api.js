@@ -342,15 +342,18 @@ var API = {
 			API.uploadHost,
 			function ok(r){
 				//更新当前明信片状态为上传成功(TODO)
-				realObject.Status = 3;
-				var postcard = new LeduiPostCard;
-				postcard.add(realObject);
+				var r = JSON.parse(r);
+				if(parseInt(r.result)==1){
+					realObject.Status = 3;
+				}else{
+					realObject.Status = -1;
+				}
+				(new LeduiPostCard).add(realObject);
 			},
 			function fail(){
 				//更新当前明信片状态为上传失败(TODO)
 				realObject.Status = -1;
-				var postcard = new LeduiPostCard;
-				postcard.add(realObject);
+				(new LeduiPostCard).add(realObject);
 			
 			}, 
 			options
@@ -444,7 +447,7 @@ var Interface = {
 var Control = {
 	init: function(){
 		this.bind();		
-		PageMgr.show(9);
+		PageMgr.show(0);
 		Control.autoLogin();
 	},
 	bind: function(){
