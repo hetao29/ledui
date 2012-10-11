@@ -123,6 +123,7 @@ var API = {
 		var param={};
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
+		PostCard.ThumbnailData="TMP CLEAR";
 		param.PostCard = JSON.stringify(PostCard);
 		$.ajax({
 			type: "POST",
@@ -342,7 +343,6 @@ var API = {
 				realObject.Status = 3;
 				var postcard = new LeduiPostCard;
 				postcard.add(realObject);
-				alert(r.response);									 
 			},
 			function fail(){
 				//更新当前明信片状态为上传失败(TODO)
