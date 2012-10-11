@@ -103,6 +103,7 @@ LeduiPostCard.prototype = {
 	},
 	get: function(LocalID){
 		var postcards = _DB.get(this._key) || [];
+		console.log(postcards);
 		for(var i=0;i<postcards.length;i++){
 			if(postcards[i].LocalID == LocalID){
 				if(postcards[i].AddressID.length>0){
