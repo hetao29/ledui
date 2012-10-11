@@ -69,6 +69,7 @@ var LeduiPostCard=function(){
 	this.Comments="";
 	this.photo={}; //width:"", //height:"", //x:"", //y:"", //rotate:"",
 	this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
+	this.ThumbnailData="";//截图内容，base64后的内容
 	
 	this._key="PostCard";	
 }
@@ -79,11 +80,9 @@ LeduiPostCard.prototype = {
 		for(var i=0;i<postcards.length;i++){
 			if(postcards[i].LocalID == LeduiPostCardObject.LocalID){
 				//VERY GOOD MODE(MERGE,NOT REPLACE)
-				console.log(LeduiPostCardObject);
 				for(var j in LeduiPostCardObject){
 					postcards[i][j]=LeduiPostCardObject[j];
 				}
-				console.log(postcards[i]);
 				postcards.splice(i,1,postcards[i]);
 				isnew = false;
 			}
