@@ -34,4 +34,7 @@ class postcard_db{
 	function updatePostCardStatus($PostCardID,$PostCardStatus){
 		return $this->_db->update("t_postcard",array("PostCardID"=>$PostCardID),array("PostCardStatus"=>$PostCardStatus));
 	}
+	function updatePostCardImageFileID($PostCardID,$ImageFileID){
+		return $this->_db->update("t_postcard",array("PostCardID"=>$PostCardID),array("ImageFileID"=>$ImageFileID));
+	}
 }

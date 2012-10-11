@@ -67,7 +67,12 @@ class api_postcard{
 		if(!empty($postcard_tmp->PostCardID)){
 			$PostCard = $db->getPostCard($postcard_tmp->PostCardID,$this->uid);
 		}
-		if(empty($PostCard)){
+		if(!empty($PostCard)){
+			//更新新的ImageFileID
+			if($PostCard['ImageFileID']!=$postcard_tmp->ImageFileID){
+				$db->updatePostCardImageFileID($PostCard['PostCardID'],$postcard_tmp->ImageFileID);
+			}
+		}else{
 			//
 			$PostCard['UserID']		=$this->uid;
 			$PostCard['Latitude']	=$postcard_tmp->Latitude;
