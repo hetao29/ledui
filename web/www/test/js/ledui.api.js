@@ -1145,7 +1145,7 @@ $(document).ready(function(){
 				API.upload(postcard[i]);
 			}
 			//上传成功，更新最新的状态
-			if(postcard[i].Status==3){
+			if(parseInt(postcard[i].Status)==3){
 				API.getOrder(postcard[i].TradeNo);
 			}
 		}
