@@ -137,7 +137,7 @@ var API = {
 						var postcard = pst.get(msg.result.LocalID);
 						postcard.PostCardID = msg.result.PostCardID;
 						postcard.ImageFileID = msg.result.ImageFileID;
-						postcard.OrderID = msg.result.OrderID;
+						postcard.TradeNo= msg.result.TradeNo;
 						pst.add(postcard);
 					}
 					if(msg.result.AvaliableCurrency){
@@ -152,12 +152,14 @@ var API = {
 						}
 
 					}
+					$("#payForm [name='TradeNo']").val(msg.result.TradeNo);
+					$("#payForm [name='token']").val(DB.getToken());
+					$("#payForm [name='uid']").val(DB.getUID());
 					//console.log(msg.result);
-					//OrderID
 					//PayURL
-					if(msg.result.PayURL){
-						$("#payaction .button_pay").attr("src",msg.result.PayURL);
-					}
+					//if(msg.result.PayURL){
+					//	$("#payaction .button_pay").attr("src",msg.result.PayURL);
+					//}
 					//PostCard
 					//UserID
 					if(ok){ ok(msg.result); }
@@ -172,11 +174,11 @@ var API = {
 		
 	},
 	//get Order
-	getOrder:function(OrderID,ok,error){
+	getOrder:function(TradeNo,ok,error){
 		var param={};
 		param.token= DB.getToken();
 		param.uid= DB.getUID();
-		param.OrderID= OrderID;
+		param.TradeNo= TradeNo;
 		$.ajax({
 			type: "POST",
 			url: API.host_main+"/order.main.get",
@@ -185,11 +187,10 @@ var API = {
 			success: function(msg){
 				if(msg && msg.result && msg.error_code==0){
 					//console.log(msg.result);
-					//OrderID
 					//PayURL
 					//PostCard
 					//LocalID(postcard)
-					if(ok){ ok(msg); }
+					if(ok){ ok(msg.result); }
 				}else{
 					if(error && msg.error_msg){ error(msg.error_msg); }
 				}
@@ -213,7 +214,6 @@ var API = {
 			success: function(msg){
 				if(msg && msg.result && msg.error_code==0){
 					//console.log(msg.result);
-					//OrderID
 					//PayURL
 					//PostCard
 					//LocalID(postcard)
@@ -722,19 +722,31 @@ var Control = {
 				}
 			});			
 			$("#payaction .button_pay").bind("tapone",function(e){
+				var url=API.host_main+"/order.main.pay?"+$("#payForm").serialize();
 				confirm("payedConfirm".tr(),{
 					cancel:function(){
 					},ok:function(){
 						//检测是不是真的已经支付
+						API.getOrder($("#payForm [name='TradeNo']").val(),function(Order){
+							if(Order.OrderStatus==3){
+							//已经支付
+							PageMgr.go(7, {
+								callback:function(){
+									API.upload(CurrentPostCard);
+								}
+							});
+							}else{
+							alert("支付失败，请重新支付");
+							}
+						});
 						//如果已经支付，修改支付状态PayStatus为2
-						API.upload(CurrentPostCard);
 						//定位到，我的信箱，显示上传状态
 					}
 				});
 				try{
-					navigator.app.loadUrl($(this).attr("src"),{openExternal:true});
+					navigator.app.loadUrl(url,{openExternal:true});
 				}catch(e){
-					window.open($(this).attr("src"));
+					window.open(url);
 				}
 			});
 		});	

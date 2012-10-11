@@ -8,7 +8,7 @@ class order_main extends STpl{
 	  **/
 	public function pageGet($inPath){
 		$this->result = new api_result;
-		if(empty($_REQUEST['OrderID']) || empty($_REQUEST['uid']) || empty($_REQUEST['token'])){
+		if(empty($_REQUEST['TradeNo']) || empty($_REQUEST['uid']) || empty($_REQUEST['token'])){
 			$this->result->error_msg=SLanguage::tr("error_1","error");
 			$this->result->error_code=-1;
 			return $this->result;
@@ -22,7 +22,7 @@ class order_main extends STpl{
 			return $this->result;
 		}
 		$order_db = new order_db;
-		$Order = $order_db->getOrder($_REQUEST['OrderID']);
+		$Order = $order_db->getOrderByTradeNo($_REQUEST['TradeNo']);
 		if(empty($Order) || $Order['UserID']!=$this->uid){
 			$this->result->error_msg=SLanguage::tr("error_40001","error");
 			$this->result->error_code=-40001;
@@ -43,7 +43,7 @@ class order_main extends STpl{
 	 */
 	public function pagePay($inPath){
 		$this->result = new api_result;
-		if(empty($_REQUEST['OrderID']) || empty($_REQUEST['uid']) || empty($_REQUEST['token'])){
+		if(empty($_REQUEST['TradeNo']) || empty($_REQUEST['uid']) || empty($_REQUEST['token'])){
 			$this->result->error_msg=SLanguage::tr("error_1","error");
 			$this->result->error_code=-1;
 			return $this->result;
@@ -57,7 +57,7 @@ class order_main extends STpl{
 			return $this->result;
 		}
 		$order_db = new order_db;
-		$Order = $order_db->getOrder($_REQUEST['OrderID']);
+		$Order = $order_db->getOrderByTradeNo($_REQUEST['TradeNo']);
 		if(empty($Order) || $Order['UserID']!=$this->uid){
 			$this->result->error_msg=SLanguage::tr("error_40001","error");
 			$this->result->error_code=-40001;
