@@ -185,6 +185,7 @@ class api_postcard{
 		}else{
 		}
 		$data->OrderID=$order['OrderID'];
+		$data->TradeNo=$order['TradeNo'];
 		$data->OrderAmount=$order['OrderAmount'];
 		$data->Price=money_config::$postcardPrice;
 		$data->OrderTotalPrice=$order['OrderTotalPrice'];
