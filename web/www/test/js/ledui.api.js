@@ -349,11 +349,13 @@ var API = {
 					realObject.Status = -1;
 				}
 				(new LeduiPostCard).add(realObject);
+				Control.updatePostCardStatus(realObject);
 			},
 			function fail(){
 				//更新当前明信片状态为上传失败(TODO)
 				realObject.Status = -1;
 				(new LeduiPostCard).add(realObject);
+				Control.updatePostCardStatus(realObject);
 			
 			}, 
 			options
@@ -982,6 +984,42 @@ var Control = {
 		}
 		Preview.show();
 	},
+	updatePostCardStatus:function(PostCard){
+		var ul = $("#maillist ul");
+		//更新支付状态
+		{
+			var LocalID=PostCard.LocalID;
+			var st="";
+			var st_css="pass";
+			//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
+			switch(PostCard.Status){
+				case 1:st="st_unpay".tr();st_css="wait";break;
+				case 2:st="st_uploading".tr();break;
+				case 3:
+				       switch(PostCard.OrderStatus){
+					       /*
+						 -3	OrderFailed	支付失败
+						 -2	OrderTimeout	订单超时
+						 -1	OrderCancel	订单取消
+						 1	OrderDefault	默认类型,新订单
+						 2	OrderPaying	支付中
+						 3	OrderPaid	已经支付
+						 4	OrderDelivering	发货中，已经发货
+						 5	OrderRecived	确认收货
+						 6	OrderFinish	定单完成
+						 */
+					       case 3:st="st_printing".tr();break;
+					       case 4:st="st_posting".tr();break;
+					       default:st="st_posted".tr();break;
+
+				       };
+				       break;
+
+				default:st="st_unpay".tr();st_css="wait";break;
+			}
+			ul.find("li[LocalID='"+LocalID+"']").find(".status").children().removeClass().addClass(st_css).html(st);
+		}
+	},
 	showPostCard:function(){
 		var postcard = new LeduiPostCard;
 		var postcards = postcard.list();
@@ -999,36 +1037,7 @@ var Control = {
 			var ul = $("#maillist ul");
 			//更新支付状态
 			for(var i=postcards.length-1;i>=0;i--){
-				var LocalID=postcards[i].LocalID;
-				var st="";
-				var st_css="pass";
-				//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
-				switch(postcards[i].Status){
-					case 1:st="st_unpay".tr();st_css="wait";break;
-					case 2:st="st_uploading".tr();break;
-					case 3:
-					       switch(postcards[i].OrderStatus){
-						       /*
-							 -3	OrderFailed	支付失败
-							 -2	OrderTimeout	订单超时
-							 -1	OrderCancel	订单取消
-							 1	OrderDefault	默认类型,新订单
-							 2	OrderPaying	支付中
-							 3	OrderPaid	已经支付
-							 4	OrderDelivering	发货中，已经发货
-							 5	OrderRecived	确认收货
-							 6	OrderFinish	定单完成
-							 */
-						       case 3:st="st_printing".tr();break;
-						       case 4:st="st_posting".tr();break;
-						       default:st="st_posted".tr();break;
-
-					       };
-					       break;
-
-					default:st="st_unpay".tr();st_css="wait";break;
-				}
-				ul.find("li[LocalID='"+LocalID+"']").find(".status").children().removeClass().addClass(st_css).html(st);
+				Control.updatePostCardStatus(postcards[i]);
 			}
 			ul.show();
 		}else{
@@ -1044,37 +1053,7 @@ var Control = {
 				}
 
 				var st="";
-				var st_css="pass";
-				//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
-				//支付状态	1,没有支付，2,已经支付
-				switch(parseInt(postcards[i].Status)){
-					case 1:st="st_unpay".tr();st_css="wait";break;
-					case 2:st="st_uploading".tr();break;
-					case 3:
-					       switch(parseInt(postcards[i].OrderStatus)){
-						       /*
-							 -3	OrderFailed	支付失败
-							 -2	OrderTimeout	订单超时
-							 -1	OrderCancel	订单取消
-							 1	OrderDefault	默认类型,新订单
-							 2	OrderPaying	支付中
-							 3	OrderPaid	已经支付
-							 4	OrderDelivering	发货中，已经发货
-							 5	OrderRecived	确认收货
-							 6	OrderFinish	定单完成
-							 */
-						       case 3:st="st_printing".tr();break;
-						       case 4:st="st_posting".tr();break;
-						       default:st="st_posted".tr();break;
-
-					       };
-					       break;
-
-					default:st="st_unpay".tr();st_css="wait";break;
-				}
-					       console.log(postcards[i].OrderStatus);
-					       console.log(st);
-				
+				var st_css="";
 				var style = Photoinfo.tostyle(photo);
 				var html='<li active="yes" LocalID="'+postcards[i].LocalID+'">'+
 					'<div class="cardinfo"><div class="cover">'+
@@ -1127,6 +1106,7 @@ var Control = {
 					);
 				});			
 				ul.append(li);
+				Control.updatePostCardStatus(postcards[i]);
 			}
 			
 		}

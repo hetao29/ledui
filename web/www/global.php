@@ -38,3 +38,4 @@ if(!empty($_COOKIE['language'])){
 //}}}
 //for test
 //SLanguage::setLocale("en");
+define("DEBUG",true);

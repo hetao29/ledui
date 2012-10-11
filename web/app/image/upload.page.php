@@ -98,6 +98,7 @@ class image_upload{
 		$postcard_db->updatePostCardStatus($PostCardID,postcard_status::IMAGE_UPLOADED);
 		//}}}
 		$this->result->result=1;
+error_log(var_export($this->result,true),3,"/tmp/upload.log");
 		return $this->result;
 	}
 }
