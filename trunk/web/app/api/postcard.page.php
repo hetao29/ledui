@@ -144,8 +144,8 @@ class api_postcard{
 	 	//* 3.判定有没有订单，如果没有，生成订单(根据接收人数据，国家，判定价格)
 	 	//*   如果有订单了的话，就修改/调整订单，然后返回
 		$order_db = new order_db;
-		if(!empty($postcard_tmp->OrderID)){
-			$order = $order_db->getOrder($postcard_tmp->OrderID,$this->uid);
+		if(!empty($postcard_tmp->TradeNo)){
+			$order = $order_db->getOrderByTradeNo($postcard_tmp->TradeNo,$this->uid);
 		}
 		$data->PostCardCount=count($postcard_tmp->Address);
 		if(empty($order)){
@@ -179,12 +179,11 @@ class api_postcard{
 			$order['ActualMoneyAmount']=$order['OrderAmount']*$order['ActualMoneyExchangeRate'];
 			$id = $order_db->addOrder($order);
 			if(!empty($id)){
-				$order['OrderID'] = $id;
+				$order = $order_db->getOrder($id);
 			}else{
 			}
 		}else{
 		}
-		$data->OrderID=$order['OrderID'];
 		$data->TradeNo=$order['TradeNo'];
 		$data->OrderAmount=$order['OrderAmount'];
 		$data->Price=money_config::$postcardPrice;

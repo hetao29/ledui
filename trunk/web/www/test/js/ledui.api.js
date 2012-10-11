@@ -186,10 +186,16 @@ var API = {
 			dataType: "JSON",
 			success: function(msg){
 				if(msg && msg.result && msg.error_code==0){
-					//console.log(msg.result);
-					//PayURL
-					//PostCard
-					//LocalID(postcard)
+					//已经支付，更新本地状态
+					var postcard = (new LeduiPostCard).list();
+					for(var i=0;i<postcard.length;i++){
+						if(postcard[i].TradeNo==TradeNo){
+							postcard[i].OrderStatus=msg.result.OrderStatus;
+							(new LeduiPostCard).add(postcard[i]);
+							break;
+						}
+					}
+
 					if(ok){ ok(msg.result); }
 				}else{
 					if(error && msg.error_msg){ error(msg.error_msg); }
@@ -739,7 +745,6 @@ var Control = {
 							alert("支付失败，请重新支付");
 							}
 						});
-						//如果已经支付，修改支付状态PayStatus为2
 						//定位到，我的信箱，显示上传状态
 					}
 				});
@@ -981,6 +986,39 @@ var Control = {
 		//}}}
 		if(isNew==false){
 			var ul = $("#maillist ul");
+			//更新支付状态
+			for(var i=postcards.length-1;i>=0;i--){
+				var LocalID=postcards[i].LocalID;
+				var st="";
+				var st_css="pass";
+				//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
+				switch(postcards[i].Status){
+					case 1:st="st_unpay".tr();st_css="wait";break;
+					case 2:st="st_uploading".tr();break;
+					case 3:
+					       switch(postcards[i].OrderStatus){
+						       /*
+							 -3	OrderFailed	支付失败
+							 -2	OrderTimeout	订单超时
+							 -1	OrderCancel	订单取消
+							 1	OrderDefault	默认类型,新订单
+							 2	OrderPaying	支付中
+							 3	OrderPaid	已经支付
+							 4	OrderDelivering	发货中，已经发货
+							 5	OrderRecived	确认收货
+							 6	OrderFinish	定单完成
+							 */
+						       case 3:st="st_printing".tr();break;
+						       case 4:st="st_posting".tr();break;
+						       default:st="st_posted".tr();break;
+
+					       };
+					       break;
+
+					default:st="st_unpay".tr();st_css="wait";break;
+				}
+				ul.find("li[LocalID='"+LocalID+"']").find(".status").children().removeClass().addClass(st_css).html(st);
+			}
 			ul.show();
 		}else{
 			var ul = $("#maillist ul");
@@ -998,13 +1036,33 @@ var Control = {
 				var st_css="pass";
 				//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
 				//支付状态	1,没有支付，2,已经支付
-				switch(postcards[i].Status){
+				switch(parseInt(postcards[i].Status)){
 					case 1:st="st_unpay".tr();st_css="wait";break;
 					case 2:st="st_uploading".tr();break;
-					case 3:st="st_printing".tr();break;
-					case 4:st="st_posting".tr();break;
-					case 5:st="st_posted".tr();break;
+					case 3:
+					       switch(parseInt(postcards[i].OrderStatus)){
+						       /*
+							 -3	OrderFailed	支付失败
+							 -2	OrderTimeout	订单超时
+							 -1	OrderCancel	订单取消
+							 1	OrderDefault	默认类型,新订单
+							 2	OrderPaying	支付中
+							 3	OrderPaid	已经支付
+							 4	OrderDelivering	发货中，已经发货
+							 5	OrderRecived	确认收货
+							 6	OrderFinish	定单完成
+							 */
+						       case 3:st="st_printing".tr();break;
+						       case 4:st="st_posting".tr();break;
+						       default:st="st_posted".tr();break;
+
+					       };
+					       break;
+
+					default:st="st_unpay".tr();st_css="wait";break;
 				}
+					       console.log(postcards[i].OrderStatus);
+					       console.log(st);
 				
 				var style = Photoinfo.tostyle(photo);
 				var html='<li active="yes" LocalID="'+postcards[i].LocalID+'">'+
@@ -1068,6 +1126,20 @@ var Control = {
 $(document).ready(function(){
 	//DB.clear();
 	Control.init();
+	//判断现有明信片，状态，如果支付成功，但是上传没有成功的，重新上传
+	var postcard = (new LeduiPostCard).list();
+	//{{{ check change
+	for(var i=0;i<postcard.length;i++){
+		if(postcard[i].OrderStatus==3 && postcard[i].Status!=3){
+			console.log("AUTO UPLOAD");
+			console.log(postcard[i]);
+			API.upload(postcard[i]);
+		}
+		//上传成功，更新最新的状态
+		if(postcard[i].Status==3){
+			API.getOrder(postcard[i].TradeNo);
+		}
+	};
 });
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
 //}}}
