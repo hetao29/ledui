@@ -23,6 +23,7 @@ class image_upload{
 	}
 	/**
 	  * 上传图片接口
+	  * http://www.ledui.com/image/upload?uid=1&token=9joorfh148ud5nsevbn4d6r5l5&PostCardID=1&ImageFileID=010000000003505ACFB400C7
 	  */
 	public function pageEntry($inPath){
 		$PostCardID = $_REQUEST['PostCardID'];
