@@ -6,7 +6,7 @@ class image_main{
 	  * 显示图片
 	  * /image/$ImageFileID
 	  * 例子：
-	  * http://www.ledui.com/image/010000000003505BF15F0159
+	  * http://www.ledui.com/image/show/0100000000035076E32C0266
 	  */
 	public function pageView($inPath){
 		$ImageFileID=$inPath[3];
