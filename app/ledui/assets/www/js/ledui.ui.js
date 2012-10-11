@@ -359,7 +359,7 @@ var Overlay = {
 							callback.ok();	
 						}
 					}
-					btnok.unbind();btncancel.unbind();
+					//btnok.unbind();btncancel.unbind();
 				});
 			});
 			btncancel.bind('tapone', function(){ 
@@ -369,7 +369,7 @@ var Overlay = {
 							callback.cancel();	
 						}
 					}
-					btnok.unbind();btncancel.unbind();
+					//btnok.unbind();btncancel.unbind();
 				});
 			});
 			info.html(message);
