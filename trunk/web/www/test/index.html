@@ -49,7 +49,7 @@
 					<div class="button button_s button_s_back" active="yes" _back="0"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 				<div class="r">
-					<div class="button button_s" active="yes" id="choosePic2">重选</div>
+					<div class="button button_s" active="yes" tr="rechoose" id="choosePic2">重选</div>
 				</div>
 			</div>
 		</div>
@@ -99,14 +99,14 @@
 			</div>
 		</div>
 		<div class="rcvcreate" id="rcvcreate">
-			<div class="button button_m" active="yes">增加新地址</div>				
+			<div class="button button_m" active="yes" tr="addAddress">增加新地址</div>				
 		</div>
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">
 		<div class="rcvlist" id="rcvlist">
 			<div class="list">
-				<div class="null hide">没有可选地址，请添加</div>
+				<div class="null hide" tr="noAddress">没有可选地址，请添加</div>
 				<ul class="hide">
 					<li>
 						<div class="edit" active="yes"><div class="icon"></div></div>						
@@ -143,12 +143,12 @@
 					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
 				</div>
 				<div class="r">
-					<div class="button button_s hide" active="yes" id="delAddress">删除</div>
+					<div class="button button_s hide" active="yes" tr="del" id="delAddress">删除</div>
 				</div>
 			</div>
 		</div>
 		<div class="adrchk" id="adrchk">
-			<div class="button button_m" active="yes">从通讯录选择</div>
+			<div class="button button_m" active="yes" tr="choosefromCat">从通讯录选择</div>
 		</div>
 	</div>
 	<div class="panel_body">		
@@ -157,9 +157,9 @@
 			<form id="rcvform">
 			<input name="AddressID" type="hidden" />
 			<input name="LocalID" type="hidden" />
-			<div class="item"><input name="Name" type="text" placeholder="收件人姓名" /></div>
-			<div class="item"><input name="Mobile" type="tel" placeholder="收件人手机号码" /></div>
-			<div class="item"><label>收件地址</label>
+			<div class="item"><input name="Name" type="text" tr="recvName" placeholder="收件人姓名" /></div>
+			<div class="item"><input name="Mobile" type="tel" tr="recvMobile" placeholder="收件人手机号码" /></div>
+			<div class="item"><label tr="recvAddr">收件地址</label>
 							<div><select name="Country" id="country">
 								<option value='CN' tr="CN">中国(含港澳台)</option>
 								<option value='OTHER' tr="OTHER">国外</option>
@@ -171,15 +171,15 @@
 								<option value="" tr="choose">选择</option>
 							</select></div>							
 			</div>
-			<div class="item"><input type="text" name="Address" placeholder="详细地址" /></div>
-			<div class="item"><input type="tel" name="PostCode" placeholder="邮政编码" /></div>
+			<div class="item"><input type="text" name="Address" tr="recvAddr" placeholder="详细地址" /></div>
+			<div class="item"><input type="tel" name="PostCode" tr="recvZipCode" placeholder="邮政编码" /></div>
 			</form>
 		</div>
 	</div>	
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes" id="addAddress">添加</div>
+			<div class="button button_l" active="yes" id="addAddress" tr="add">添加</div>
 		</div>
 	</div>
 </div>
@@ -202,7 +202,7 @@
 	<div class="panel_body">
 	<div class="panel_body_box">	
 		<div class="msgcon">
-			<textarea class="textarea" id="comments" placeholder="请输入留言，限200字。"></textarea>
+			<textarea class="textarea" id="comments" tr="comments" placeholder="请输入留言，限200字。"></textarea>
 			<div class="counter"><span>0</span>/<span>200</span></div>
 		</div>
 	</div>
@@ -234,8 +234,8 @@
 		<div class="preview">
 			<div class="choice" id="chardchoice">
 				<ul>
-				<li active="yes">正面</li>
-				<li active="yes">反面</li>
+				<li active="yes" tr="front">正面</li>
+				<li active="yes" tr="back">反面</li>
 				</ul>
 			</div>
 			<div class="view">
@@ -266,7 +266,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" __to="6" id="toSend" active="yes">发送</div>
+			<div class="button button_l" __to="6" id="toSend" active="yes" tr="send">发送</div>
 		</div>
 	</div>
 </div>
@@ -278,7 +278,7 @@
 <div class="page" _page="6" _name="支付邮费">
 	<div class="panel_head">
 		<div class="titlebar">
-			<div class="title">支付邮费</div>
+			<div class="title" tr="payTitle">支付邮费</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="5" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -309,8 +309,8 @@
 	</div>
 	<div class="panel_foot">
 		<div class="payaction" id="payaction">
-			<div class="dtext">前往支付</div>
-			<div id="payaction_alipal" class="button button_pay" active="yes"><span class="ico ico_alipay"><em>支付宝</em></span></div>
+			<div class="dtext" tr="pay">前往支付</div>
+			<div id="payaction_alipal" class="button button_pay" active="yes"><span class="ico ico_alipay"><em tr="alipay">支付宝</em></span></div>
 			<div id="payaction_paypal" class=" button button_pay" style="display:none" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
 		</div>
 		<div class="paytip">
@@ -335,7 +335,7 @@
 <div class="page" _page="7" _name="支付完成">
 	<div class="panel_head">
 		<div class="titlebar">
-			<div class="title">支付完成</div>
+			<div class="title" tr="payFinish">支付完成</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -360,7 +360,7 @@
 		<div class="cteatenext">
 			<div class="info">当然, 您还可以继续</div>
 			<div class="action">
-				<div class="button button_l" id="choosePic3" active="yes">创建一张明信片</div>
+				<div class="button button_l" id="choosePic3" tr="create" active="yes">创建一张明信片</div>
 			</div>
 		</div>
 		<div class="photos">
@@ -380,7 +380,7 @@
 <div class="page" _page="8" _name="关于" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar" id="titlebar_about">
-			<div class="title">关于乐兑</div>
+			<div class="title" tr="about">关于乐兑</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -409,7 +409,7 @@
 <div class="page" _page="9" _name="我的信箱" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar" id="titlebar_postcard">
-			<div class="title">我的信箱</div>
+			<div class="title" tr="postcard">我的信箱</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -458,7 +458,7 @@
 <div class="page" _page="10" _name="登录" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar" id="titlebar_login">
-			<div class="title">登录</div>
+			<div class="title" tr="login">登录</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -477,7 +477,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes" id="IDLogin">登录</div>
+			<div class="button button_l" active="yes" tr="login" id="IDLogin">登录</div>
 		</div>		
 		<div class="navplacehold"></div>
 	</div>
@@ -491,7 +491,7 @@
 <div class="page" _page="11" _name="注册" _hasnav="true">
 	<div class="panel_head">
 		<div class="titlebar" id="titlebar_register">
-			<div class="title">注册</div>
+			<div class="title" tr="register">注册</div>
 			<div class="action">
 				<div class="l">
 					<div class="button button_s button_s_back"  _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
@@ -511,7 +511,7 @@
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" id="IDRegister" active="yes">注册</div>
+			<div class="button button_l" id="IDRegister" active="yes" tr="register">注册</div>
 		</div>		
 		<div class="navplacehold"></div>
 	</div>
@@ -530,13 +530,13 @@
 <div class="overlay chkphoto" _name="chkphoto">
 	<div class="overlay_box">
 		<div class="hd">
-			<div class="title">选择相片</div>
+			<div class="title" tr="choosePic">选择相片</div>
 			<div class="close" active="yes"><div class="handle">X</div></div>
 		</div>
 		<div class="bd">
 			<ul class="list">
-				<li id="choosePicFromAlbum" active="yes"><span class="g"><span class="ico ico_album"></span></span><label>相册</label></li>
-				<li id="choosePicFromCamera" style="border:none;" active="yes"><span class="g"><span class="ico ico_camera"></span></span><label>拍摄</label></li>
+				<li id="choosePicFromAlbum" active="yes"><span class="g"><span class="ico ico_album"></span></span><label tr="album">相册</label></li>
+				<li id="choosePicFromCamera" style="border:none;" active="yes"><span class="g"><span class="ico ico_camera"></span></span><label tr="camera">拍摄</label></li>
 				<!--<li style="border:none;" active="yes"><span class="g"><span class="ico ico_renren"></span></span><label>人人网</label></li>-->
 			</ul>
 		</div>
@@ -546,14 +546,14 @@
 <div class="overlay confirm" _name="confirm">
 	<div class="overlay_box">
 		<div class="hd">
-			<div class="title">注意</div>
+			<div class="title" tr="attention">注意</div>
 			<div class="close" active="yes"><div class="handle">X</div></div>
 		</div>
 		<div class="bd">
 			<div class="info"></div>
 			<div class="action">
-				<div class="button button_o" active="yes">取消</div>
-				<div class="button button_o" active="yes">确认</div>
+				<div class="button button_o" active="yes" tr="cancel">取消</div>
+				<div class="button button_o" active="yes" tr="ok">确认</div>
 			</div>
 		</div>
 		<div class="ft"></div>
@@ -562,12 +562,12 @@
 <div class="overlay alert" _name="alert">
 	<div class="overlay_box">
 		<div class="hd">
-			<div class="title">错误</div>
+			<div class="title" tr="error">错误</div>
 		</div>
 		<div class="bd">
 			<div class="info"></div>
 			<div class="action">
-				<div class="button button_o" active="yes">确认</div>
+				<div class="button button_o" active="yes" tr="ok">确认</div>
 			</div>
 		</div>
 		<div class="ft"></div>
