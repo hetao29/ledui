@@ -28,7 +28,7 @@
 	<feature name="http://api.phonegap.com/1.0/device"/>
 
 	<!--<preference name="orientation" value="default" />-->
-	<preference name="phonegap-version" value="2.0.0" />
+	<preference name="phonegap-version" value="2.1.0" />
 	<!--<preference name="stay-in-webview" value="true" />-->
 	<preference name="android-minSdkVersion" value="7" />
 	<preference name="orientation" value="portrait" />
