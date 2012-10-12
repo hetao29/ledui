@@ -61,6 +61,7 @@ var LOCALE = {
 		,failure_message: "There was a problem including the file"
 		,email: 'Email'
 		,password: 'Password'
+		,password2: 'Repeat Password'
 		
 		,title_editphoto: 'Edit photo'//编辑图片
 		,title_addresseeinfo: 'Addressee info'//收件人信息
@@ -91,6 +92,10 @@ var LOCALE = {
 		,ok:"ok"
 		,error:"error"
 		,register:"register"
+		,choose:"choose"
+		,accept:"accept"
+		,provision:"provision"
+
 		
 	},
 	//日语
