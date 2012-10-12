@@ -5,7 +5,7 @@ var LOCALE = {
 		add:"添加",
 		addAddress:"输入新地址",
 		editAddress:"修改地址",
-    		edit:"编辑",
+    	edit:"编辑",
 		need2login:"需要登录后才能继续...",
 		delConfirm:"确认删除",
 		//明信片状态
@@ -25,7 +25,7 @@ var LOCALE = {
 		add:"添加",
 		addAddress:"輸入新地址",
 		editAddress:"修改地址",
-		    edit:"編輯",
+		edit:"編輯",
 		need2login:"需要登錄後才能繼續...",
 		delConfirm:"確認刪除",
 		//明信片狀態
@@ -71,7 +71,7 @@ var LOCALE = {
 		,OTHER:"Other Country"
 		,recvName:"Recipient's name"
 		,recvMobile:"The recipient's mobile phone number"
-		,recvAddr:"Recipient address"
+		,recvAddr:"Address"
 		,recvZipCode:"Zip code"
 		,add:"Add"
 		,comments:"Please enter a message, limited to 200 words."
@@ -90,6 +90,7 @@ var LOCALE = {
 		,cancel:"cancel"
 		,ok:"ok"
 		,error:"error"
+		,register:"register"
 		
 	},
 	//日语

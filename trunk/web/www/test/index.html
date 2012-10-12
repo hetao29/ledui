@@ -157,8 +157,8 @@
 			<form id="rcvform">
 			<input name="AddressID" type="hidden" />
 			<input name="LocalID" type="hidden" />
-			<div class="item"><input name="Name" type="text" tr="recvName" placeholder="收件人姓名" /></div>
-			<div class="item"><input name="Mobile" type="tel" tr="recvMobile" placeholder="收件人手机号码" /></div>
+			<div class="item"><input name="Name" type="text" tr_placeholder="recvName" placeholder="收件人姓名" /></div>
+			<div class="item"><input name="Mobile" type="tel" tr_placeholder="recvMobile" placeholder="收件人手机号码" /></div>
 			<div class="item"><label tr="recvAddr">收件地址</label>
 							<div><select name="Country" id="country">
 								<option value='CN' tr="CN">中国(含港澳台)</option>
@@ -171,8 +171,8 @@
 								<option value="" tr="choose">选择</option>
 							</select></div>							
 			</div>
-			<div class="item"><input type="text" name="Address" tr="recvAddr" placeholder="详细地址" /></div>
-			<div class="item"><input type="tel" name="PostCode" tr="recvZipCode" placeholder="邮政编码" /></div>
+			<div class="item"><input type="text" name="Address" tr_placeholder="recvAddr" placeholder="详细地址" /></div>
+			<div class="item"><input type="tel" name="PostCode" tr_placeholder="recvZipCode" placeholder="邮政编码" /></div>
 			</form>
 		</div>
 	</div>	
@@ -503,9 +503,9 @@
 	<div class="panel_body_box">	
 		<div class="regform" id="register">
 			<div class="errorbox hide">注册失败~~~</div>
-			<div class="item"><input type="email" class="sid" placeholder="邮箱地址" /></div>
-			<div class="item"><input type="password" class="pwd" placeholder="密码" /></div>
-			<div class="item"><input type="password" class="pwd2" placeholder="重复密码" /></div>
+			<div class="item"><input type="email" class="sid" tr_placeholder="email" placeholder="邮箱地址" /></div>
+			<div class="item"><input type="password" class="pwd" tr_placeholder="password"  placeholder="密码" /></div>
+			<div class="item"><input type="password" class="pwd2" tr_placeholder="repeat password"  placeholder="重复密码" /></div>
 		</div>
 	</div>	
 	</div>
