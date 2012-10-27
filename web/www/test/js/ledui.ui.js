@@ -350,27 +350,23 @@ var Overlay = {
 			info.html(message);	
 		}else if(name == 'confirm'){
 			var info = o.find('.info');
+			var action = o.find('.action');
+			action.html('<div class="button button_o" active="yes" tr="cancel">'+ ('cancel').tr() +'</div><div class="button button_o" active="yes" tr="ok">'+ ('ok').tr() +'</div>');
 			var btnok = o.find('.button').eq(1);
 			var btncancel = o.find('.button').eq(0);
 			btnok.bind('tapone', function(){ 
-				_this.hide(function(){
-					if(callback){ 
-						if(typeof(callback.ok) == 'function'){
-							callback.ok();	
-						}
-					}
-					//btnok.unbind();btncancel.unbind();
-				});
+				if(callback && typeof(callback.ok) == 'function'){
+					_this.hide(function(){ callback.ok(); });
+				}else{
+					_this.hide();	
+				}
 			});
 			btncancel.bind('tapone', function(){ 
-				_this.hide(function(){
-					if(callback){ 
-						if(typeof(callback.cancel) == 'function'){
-							callback.cancel();	
-						}
-					}
-					//btnok.unbind();btncancel.unbind();
-				});
+				if(callback && typeof(callback.cancel) == 'function'){
+					_this.hide(function(){ callback.cancel();	});
+				}else{
+					_this.hide();	
+				}
 			});
 			info.html(message);
 		}

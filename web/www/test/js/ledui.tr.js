@@ -6,6 +6,8 @@ var LOCALE = {
 		addAddress:"输入新地址",
 		editAddress:"修改地址",
     	edit:"编辑",
+		ok:"确定",
+		cancel:"取消",
 		need2login:"需要登录后才能继续...",
 		delConfirm:"确认删除",
 		//明信片状态
@@ -26,6 +28,8 @@ var LOCALE = {
 		addAddress:"輸入新地址",
 		editAddress:"修改地址",
 		edit:"編輯",
+		ok:"確定",
+		cancel:"取消",
 		need2login:"需要登錄後才能繼續...",
 		delConfirm:"確認刪除",
 		//明信片狀態
