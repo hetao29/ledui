@@ -184,6 +184,9 @@ Page.prototype = {
 		else if(type == 'right'){ this.appview.addClass('hidefromright'); }
 		else{ this.appview.hide(); }
 		this.exec('hide');
+		this.appview.find('input').each(function(){
+			$(this).get(0).blur();
+		});
 		
 		return this;
 	},

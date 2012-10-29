@@ -1042,7 +1042,7 @@ var Control = {
 		var li = $("#maillist ul li");
 		var isNew = false;
 		if(li.size()==0)isNew=true;
-		for(var i=postcards.length-1,j=0;i>=0,j<li.size();i--,j++){
+		for(var i=postcards.length-1,j=0;i>=0 && j<li.size();i--,j++){
 			var localid1 = postcards[i].LocalID;
 			var localid2 = li.eq(j).attr("LocalID");
 			if(localid1 != localid2){ isNew=true;}
