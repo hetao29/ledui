@@ -157,8 +157,8 @@
 			<form id="rcvform">
 			<input name="AddressID" type="hidden" />
 			<input name="LocalID" type="hidden" />
-			<div class="item"><input name="Name" type="text" tr_placeholder="recvName" placeholder="收件人姓名" /></div>
-			<div class="item"><input name="Mobile" type="tel" tr_placeholder="recvMobile" placeholder="收件人手机号码" /></div>
+			<div class="item"><input autocomplete="off" name="Name" type="text" tr_placeholder="recvName" placeholder="收件人姓名" /></div>
+			<div class="item"><input autocomplete="off" name="Mobile" type="tel" tr_placeholder="recvMobile" placeholder="收件人手机号码" /></div>
 			<div class="item"><label tr="recvAddr">收件地址</label>
 							<div><select name="Country" id="country">
 								<option value='CN' tr="CN">中国(含港澳台)</option>
@@ -171,8 +171,8 @@
 								<option value="" tr="choose">选择</option>
 							</select></div>							
 			</div>
-			<div class="item"><input type="text" name="Address" tr_placeholder="recvAddr" placeholder="详细地址" /></div>
-			<div class="item"><input type="tel" name="PostCode" tr_placeholder="recvZipCode" placeholder="邮政编码" /></div>
+			<div class="item"><input autocomplete="off" type="text" name="Address" tr_placeholder="recvAddr" placeholder="详细地址" /></div>
+			<div class="item"><input autocomplete="off" type="tel" name="PostCode" tr_placeholder="recvZipCode" placeholder="邮政编码" /></div>
 			</form>
 		</div>
 	</div>	
@@ -298,9 +298,9 @@
 				你共寄出<span id="PostCardCount"></span>张，共<span class="m" id="OrderTotalPrice"></span>元<br />
 				
 				帐户剩余<span id="MoneyCurrent">元，可用<span id="ScoreCurrent"></span>积分<br />
-				可使用<input  max="128" min="0" style="width:50px" type="number" id="Score" name="Score"/>
+				可使用<input  autocomplete="off" max="128" min="0" style="width:50px" type="number" id="Score" name="Score"/>
 				积分抵用 <span class="m">&yen;0.5</span> <br/>
-				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input max="5.9" min="0" style="width:50px" type="number" id="Money" name="Money"/>
+				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input autocomplete="off" max="5.9" min="0" style="width:50px" type="number" id="Money" name="Money"/>
 				<br/>
 				</div>
 			<div class="sum">总支付: <span class="m" id="OrderAmount"></span></div>
@@ -470,8 +470,8 @@
 	<div class="panel_body_box">
 		<div class="logform" id="login" >
 			<div class="errorbox hide">登录失败~~~</div>
-			<div class="item"><input type="email" class="sid" placeholder="邮箱地址" tr_placeholder="email" /></div>
-			<div class="item"><input type="password" class="pwd" placeholder="密码" tr_placeholder="password" /></div>
+			<div class="item"><input autocomplete="off" type="email" class="sid" placeholder="邮箱地址" tr_placeholder="email" /></div>
+			<div class="item"><input autocomplete="off" type="password" class="pwd" placeholder="密码" tr_placeholder="password" /></div>
 		</div>
 	</div>	
 	</div>
@@ -503,9 +503,9 @@
 	<div class="panel_body_box">	
 		<div class="regform" id="register">
 			<div class="errorbox hide">注册失败~~~</div>
-			<div class="item"><input type="email" class="sid" tr_placeholder="email" placeholder="邮箱地址" /></div>
-			<div class="item"><input type="password" class="pwd" tr_placeholder="password"  placeholder="密码" /></div>
-			<div class="item"><input type="password" class="pwd2" tr_placeholder="password2"  placeholder="重复密码" /></div>
+			<div class="item"><input autocomplete="off" type="email" class="sid" tr_placeholder="email" placeholder="邮箱地址" /></div>
+			<div class="item"><input autocomplete="off" type="password" class="pwd" tr_placeholder="password"  placeholder="密码" /></div>
+			<div class="item"><input autocomplete="off" type="password" class="pwd2" tr_placeholder="password2"  placeholder="重复密码" /></div>
 		</div>
 	</div>	
 	</div>
