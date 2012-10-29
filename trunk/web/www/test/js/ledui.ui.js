@@ -161,6 +161,7 @@ Page.prototype = {
 		if(type == 'left'){ this.appview.addClass('showfromleft').show(); }
 		else if(type == 'right'){ this.appview.addClass('showfromright').show(); }
 		else{ this.appview.show(); }
+		
 		var appnav = $('#appnav'); 
 		if(this.hasnav){ 
 			appnav.slideDown(); 
