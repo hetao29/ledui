@@ -13,6 +13,11 @@ var UI = {
 		window.alert = function(msg){ Overlay.show('alert', msg);	}
 		window.Confirm = window.confirm;
 		window.confirm = function(msg, callback){ Overlay.show('confirm', msg, callback); }
+	},
+	//解决安卓input驻留， 使其失焦
+	blurinput: function(range){
+		if(!range){ range = PageMgr.getcurrentpage().appview; }
+		range.find('input').each(function(){$(this).get(0).blur(); });	
 	}
 } 
 //页面显示控制
@@ -186,9 +191,7 @@ Page.prototype = {
 		else if(type == 'right'){ this.appview.addClass('hidefromright');setTimeout(function(){ _this.appview.removeClass('hidefromright').hide(); }, 350); }
 		else{ this.appview.hide(); }
 		this.exec('hide');
-		this.appview.find('input').each(function(){
-			$(this).get(0).blur();
-		});
+		UI.blurinput(this.appview);
 		
 		return this;
 	},
@@ -347,6 +350,7 @@ var Overlay = {
 		var o = this.layers[name];
 		var _this = this;
 		if(!o || this.lock){ return; }
+		UI.blurinput();
 		this.lock = true;
 		if(this.curname){ this.hide(this.curname); }		
 		if(name == 'alert'){
@@ -406,6 +410,7 @@ var Loading = {
 	},
 	show: function(text){
 		if(!this.isinit){ this.init(); }
+		UI.blurinput();
 		this.loading.show();
 		if(!text){ text = '正在加载...' }
 		this.text.html(text);
