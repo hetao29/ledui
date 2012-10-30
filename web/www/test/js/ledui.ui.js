@@ -157,9 +157,11 @@ Page.prototype = {
 			this.exec('use');	
 		}
 		this.exec('show');
-		this.appview.removeClass('showfromleft showfromright hidefromleft hidefromright');		
-		if(type == 'left'){ this.appview.addClass('showfromleft').show(); }
-		else if(type == 'right'){ this.appview.addClass('showfromright').show(); }
+		var _this = this;
+		
+		this.appview.attr('class', 'page');	
+		if(type == 'left'){ this.appview.addClass('showfromleft').show(); setTimeout(function(){ _this.appview.removeClass('showfromleft');	}, 350); }
+		else if(type == 'right'){ this.appview.addClass('showfromright').show(); setTimeout(function(){ _this.appview.removeClass('showfromright');	}, 350); }
 		else{ this.appview.show(); }
 		
 		var appnav = $('#appnav'); 
@@ -179,9 +181,9 @@ Page.prototype = {
 		return this;
 	},
 	hide: function(type){
-		this.appview.removeClass('showfromleft showfromright hidefromleft hidefromright');
-		if(type == 'left'){ this.appview.addClass('hidefromleft'); }
-		else if(type == 'right'){ this.appview.addClass('hidefromright'); }
+		var _this = this;
+		if(type == 'left'){ this.appview.addClass('hidefromleft'); setTimeout(function(){ _this.appview.removeClass('hidefromleft').hide();	}, 350); }
+		else if(type == 'right'){ this.appview.addClass('hidefromright');setTimeout(function(){ _this.appview.removeClass('hidefromright').hide(); }, 350); }
 		else{ this.appview.hide(); }
 		this.exec('hide');
 		this.appview.find('input').each(function(){
