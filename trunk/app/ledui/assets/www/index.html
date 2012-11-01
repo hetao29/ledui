@@ -288,6 +288,8 @@
 	</div>
 	<form id="payForm">
 	<input type="hidden" name="TradeNo"/>
+	<input type="hidden" name="OrderTotalPrice"/>
+	<input type="hidden" name="OrderAmount"/>
 	<input type="hidden" name="uid"/>
 	<input type="hidden" name="token"/>
 	<div class="panel_body">
@@ -317,9 +319,9 @@
 		选择其它货币支付
 			
 				<select id="currency" name="Currency">
-					<option value="RMB" selected="true">选择货币</option>
+					<!--<option value="RMB" selected="true">选择货币</option>
 					<option value="RMB">RMB</option>
-					<option value="USD">美元USD</option>
+					<option value="USD">美元USD</option>-->
 				</select><!--
 			 如您通过美元账户支付, 请选择PayPal支付<br />
 			本次合计 <span>$1.49</span><br />-->
@@ -608,6 +610,7 @@
 
 
 <script src="cordova.js"></script> 
+
 <script src="mini.js"></script>
 </body>
 </html>
