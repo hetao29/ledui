@@ -144,6 +144,13 @@ var API = {
 					}
 					if(msg.result.AvaliableCurrency){
 						AvaliableCurrency = msg.result.AvaliableCurrency;
+						//{{{更新支付代码
+						$("#currency").html('<option value="CNY" selected="true">选择货币</option>');
+						for(var i in AvaliableCurrency){
+							$('#currency').append('<option value="'+i+'">'+AvaliableCurrency[i].name+'</option>');
+						}
+
+						//}}}
 					}
 					if(msg.result.Address){
 						var adr = new LeduiAddress;
@@ -157,6 +164,8 @@ var API = {
 					$("#payForm [name='TradeNo']").val(msg.result.TradeNo);
 					$("#payForm [name='token']").val(DB.getToken());
 					$("#payForm [name='uid']").val(DB.getUID());
+					$("#payForm [name='OrderTotalPrice']").val(msg.result.OrderTotalPrice);
+					$("#payForm [name='OrderAmount']").val(msg.result.OrderAmount);
 					//console.log(msg.result);
 					//PayURL
 					//if(msg.result.PayURL){
@@ -742,16 +751,20 @@ var Control = {
 		
 		page6.bind('use', function(){
 			$("#currency").bind("change",function(e){
-				if($(this).val()!="RMB"){
-					$("#OrderAmount").html("$5");
+				if($(this).val()!="CNY"){
 					//重新计算货币值与显示值
 					$("#payaction_alipal").hide();
 					$("#payaction_paypal").show();
 				}else{
-					$("#OrderAmount").html("&yen;14.5");
 					$("#payaction_alipal").show();
 					$("#payaction_paypal").hide();
 				}
+				for(var i in AvaliableCurrency){
+					if(i==$(this).val()){
+					$("#OrderAmount").html(AvaliableCurrency[i].symbol+Math.ceil($("#payForm [name='OrderTotalPrice']").val()/AvaliableCurrency[i].rate)/100);
+					}
+				}
+
 			});			
 			$("#payaction .button_pay").bind("tapone",function(e){
 				var url=API.host_main+"/order.main.pay?"+$("#payForm").serialize();
@@ -967,7 +980,7 @@ var Control = {
 		$("#OrderAmount").html("&yen;"+msg.OrderAmount/100);
 		$("#ScoreCurrent").html(msg.ScoreCurrent);
 		$("#PostCardCount").html(msg.PostCardCount);
-		$("#OrderTotalPrice").html("&yen;"+msg.OrderTotalPrice);
+		$("#OrderTotalPrice").html("&yen;"+msg.OrderTotalPrice/100);
 		$("#PostCardCount").html(msg.PostCardCount);
 		PageMgr.go(6);
 	},
