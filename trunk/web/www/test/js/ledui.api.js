@@ -415,21 +415,25 @@ var Interface = {
 		   //_DB.uuid=Interface.Device.uuid;
 		}
 		
-		
-		//判断现有明信片，状态，如果支付成功，但是上传没有成功的，重新上传
-		var postcard = (new LeduiPostCard).list();
-		//{{{ check change
-		for(var i=0;i<postcard.length;i++){
-			if(parseInt(postcard[i].PostCardID)>0){
-				if(parseInt(postcard[i].OrderStatus)==3 && parseInt(postcard[i].Status)!=3){
-					API.upload(postcard[i]);
-				}
-				//上传成功，更新最新的状态
-				if(parseInt(postcard[i].Status)==3){
-					API.getOrder(postcard[i].TradeNo);
-				}
+		API.islogin(function(isLogin){
+			if(isLogin){
+				//判断现有明信片，状态，如果支付成功，但是上传没有成功的，重新上传
+				var postcard = (new LeduiPostCard).list();
+				//{{{ check change
+				for(var i=0;i<postcard.length;i++){
+					if(parseInt(postcard[i].PostCardID)>0){
+						if(parseInt(postcard[i].OrderStatus)==3 && parseInt(postcard[i].Status)!=3){
+							API.upload(postcard[i]);
+						}
+						//上传成功，更新最新的状态
+						if(parseInt(postcard[i].Status)==3){
+							API.getOrder(postcard[i].TradeNo);
+						}
+					}
+				};
+
 			}
-		};
+		});
 		//test
 		/*
 		var options = new ContactFindOptions();
