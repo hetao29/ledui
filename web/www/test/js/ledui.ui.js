@@ -187,8 +187,8 @@ Page.prototype = {
 	},
 	hide: function(type){
 		var _this = this;
-		if(type == 'left'){ this.appview.addClass('hidefromleft'); setTimeout(function(){ _this.appview.removeClass('hidefromleft').hide();	}, 350); }
-		else if(type == 'right'){ this.appview.addClass('hidefromright');setTimeout(function(){ _this.appview.removeClass('hidefromright').hide(); }, 350); }
+		if(type == 'left'){ this.appview.addClass('hidefromleft'); setTimeout(function(){ _this.appview.hide().removeClass('hidefromleft');	}, 350); }
+		else if(type == 'right'){ this.appview.addClass('hidefromright');setTimeout(function(){ _this.appview.hide().removeClass('hidefromright'); }, 350); }
 		else{ this.appview.hide(); }
 		this.exec('hide');
 		
