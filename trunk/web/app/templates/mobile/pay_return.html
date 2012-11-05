@@ -3,13 +3,25 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta charset="utf-8" />
-<title>乐兑网名信片 ledui.com</title>
+<title>乐兑网名信片-{$title}</title>
 <meta content="width=device-width, user-scalable=0" name="viewport" />
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 <meta content="telephone=no" name="format-detection" />
 <link href="/assets/css/ledui.page.css" rel="stylesheet" type="text/css" />
 <link href="icon.png" rel="apple-touch-icon-precomposed" />
+<script src="/assets/js/jquery-1.7.1.min.js"></script>
+<script src="/assets/js/ledui.ui.js"></script>
+<script>
+function cl(){
+}
+$(document).ready(function(){
+	$("#IDLogin").bind("touchstart",function(){
+		window.history.go(-1);
+
+	});
+});
+</script>
 </head>
 <body>
 				
@@ -19,7 +31,7 @@
 <div class="page">
 	<div class="panel_head">
 		<div class="titlebar" id="titlebar_login">
-			<div class="title">登录</div>
+			<div class="title">支付结果</div>
 			<div class="action">
 				<div class="l">
 				</div>
@@ -29,15 +41,13 @@
 	<div class="panel_body">
 	<div class="panel_body_box">
 		<div class="logform" id="login" >
-			<div class="errorbox hide">登录失败~~~</div>
-			<div class="item"><input autocomplete="off" type="email" class="sid" placeholder="邮箱地址" tr_placeholder="email" /></div>
-			<div class="item"><input autocomplete="off" type="password" class="pwd" placeholder="密码" tr_placeholder="password" /></div>
+		<h1>{if $result}支付成功{else}支付失败!!!{/if}</h1>
 		</div>
 	</div>	
 	</div>
 	<div class="panel_foot">
 		<div class="nextaction">
-			<div class="button button_l" active="yes" tr="login" id="IDLogin">登录</div>
+			<div class="button button_l" active="yes" tr="login" id="IDLogin">返回</div>
 		</div>		
 	</div>
 </div>
