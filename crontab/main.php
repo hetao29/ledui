@@ -6,7 +6,7 @@ SLog::$LOGFILE="log/run.log";
 SConfig::$CACHE=false;
 $info=array();
 for(;;){
-	usleep(1000*100);
+	usleep(1000*500);
 	$config=SConfig::parse("crontab.conf");
 	foreach($config as $conf){
 		if(!empty($conf->app) || !empty($conf->interval)){
