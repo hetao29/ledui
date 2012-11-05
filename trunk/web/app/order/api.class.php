@@ -83,7 +83,7 @@ class order_api{
 			$status = getDataForXML ( $_POST ['notify_data'], '/notify/trade_status' );
 			if ($status == 'TRADE_FINISHED'){
 				//成功
-				$TradeNo = $_POST['out_trade_no']; 
+				$TradeNo = getDataForXML ( $_POST ['notify_data'], '/notify/out_trade_no' );
 
 				$order_db = new order_db;
 				$Order = $order_db->getOrderByTradeNo($TradeNo);
