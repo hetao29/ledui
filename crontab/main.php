@@ -35,17 +35,10 @@ for(;;){
 					SLog::write("Exec $command");
 					include($command);
 					unlink("/tmp/$cpid");
-					unset($params);
-					unset($ret);
-					unset($cpid);
-					unset($command);
 					exit;
 				}
 			}
 		}
 		pcntl_wait($c_status,WNOHANG);
-		unset($c_status);
-		unset($conf);
 	}
-	unset($config);
 }
