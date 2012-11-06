@@ -41,8 +41,15 @@ for(;;){
 					unset($command);
 					exit;
 				}
+				unset($params);
+				unset($ret);
+				unset($cpid);
+				unset($command);
 			}
 		}
 		pcntl_wait($c_status,WNOHANG);
+		unset($c_status);
+		unset($conf);
 	}
+	unset($config);
 }
