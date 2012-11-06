@@ -36,6 +36,9 @@ for(;;){
 					include($command);
 					unlink("/tmp/$cpid");
 					unset($params);
+					unset($ret);
+					unset($cpid);
+					unset($command);
 					exit;
 				}
 			}
