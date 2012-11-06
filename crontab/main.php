@@ -35,6 +35,7 @@ for(;;){
 					SLog::write("Exec $command");
 					include($command);
 					unlink("/tmp/$cpid");
+					unset($params);
 					exit;
 				}
 			}
