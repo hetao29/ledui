@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>manage</title>
+<script src="/assets/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<table border=1>
+	<th>UserID</th>
+	<th>UserAccount</th>
+	<th>Edit</th>
+	{foreach($users->items as $num=>$val)}
+	<tr>
+	<td>{$val['UserID']}</td>
+	<td>{$val['UserSID']}</td>
+	<td><a href='/manage.main.EditUser?userId={$val["UserID"]}'>Edit</a></td>
+	</tr>
+	{/foreach}
+</table>
+<a href={$users->prevUrl}>PREV</a>
+<a href={$users->nextUrl}>NEXT</a>
+</body>
+</html>
