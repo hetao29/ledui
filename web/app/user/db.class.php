@@ -82,5 +82,13 @@ class user_db{
 	function getAddressListByUserID($UserID,$IsDel){
 		return $this->_db->select("t_user_address",array("UserID"=>$UserID,"_isDel"=>$IsDel),"",array("_isDef"=>"desc","AddressID"=>"asc"));
 	}
+	function getUserTotal($Where){
+		return $this->_db->execute("select count(*) from t_user where $Where"); 
+	}
+	function listUsers($Where,$Page,$Limit){
+		$this->_db->setLimit($Limit);
+		$this->_db->setPage($Page);
+		return $this->_db->select("t_user",$Where);
+	}
 
 }

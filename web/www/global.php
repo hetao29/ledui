@@ -2,6 +2,7 @@
 date_default_timezone_set("Asia/Shanghai");
 define("ROOT",				dirname(__FILE__)."/../");
 define("ROOT_WWW",			ROOT."/www");
+define("ROOT_LIB",			ROOT."/libs");
 define("ROOT_APP",			ROOT."/app");
 define("ROOT_CONFIG",		ROOT."/config");
 define("ROOT_SLIGHTPHP",	ROOT."/slightphp/");
@@ -11,6 +12,8 @@ require_once(ROOT_SLIGHTPHP."/SlightPHP.php");
 function __autoload($class){
 	if($class{0}=="S"){
 		$file = ROOT_PLIGUNS."/$class.class.php";
+	}elseif($class{0}=="L"){
+		$file = ROOT_LIB."/$class.class.php";
 	}else{
 		$file = SlightPHP::$appDir."/".str_replace("_","/",$class).".class.php";
 	}

@@ -1,8 +1,9 @@
 <?php
 class money_config{
 	public static $scoreRate=0.01;			//1积分兑换1分
-	public static $postcardPrice=590;		//明信片单价590分
-	public static $postcardPriceOther=1790;		//明信片单价(国外)590分
+	//public static $postcardPrice=590;		//明信片单价590分
+	public static $postcardPrice=1;		//明信片单价590分
+	public static $postcardPriceOther=1;		//明信片单价(国外)590分
 	public static $postcardShippingCost=0;		//明信片单价运费
 	public static $postcardShippingCostOther=0;	//明信片单价运费(国外)
 	public static $defaultCurrency="CNY";
@@ -13,7 +14,7 @@ class money_config{
 			"HKD"=>array("name"=>"HKD","code"=>"HKD","symbol"=>"$","rate"=>0.8),	//港元
 			"CAD"=>array("name"=>"CAD","code"=>"CAD","symbol"=>"$","rate"=>6.4),	//加拿大元
 			"AUD"=>array("name"=>"AUD","code"=>"AUD","symbol"=>"$","rate"=>6.5),	//澳大利亚元
-			"MYR"=>array("name"=>"MYR","code"=>"MYR","symbol"=>"M","rate"=>2.0)		//马来西亚林吉特 
+			//"MYR"=>array("name"=>"MYR","code"=>"MYR","symbol"=>"M","rate"=>2.0)		//马来西亚林吉特 
 		);
 	public static function currency(){
 		foreach(self::$Currency as $k=>&$v){

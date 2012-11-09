@@ -3,6 +3,22 @@ class order_main extends STpl{
 	var $result;
 	var $token;
 	var $uid;
+	public function pagetest(){
+		$order_db = new order_db;
+		$Order = $order_db->getOrderByTradeNo("13517608381055");
+		if(empty($Order)){
+			SLog::write("Fail: TradeNo:$TradeNo not exists");
+			return false;
+		}
+		if($Order['OrderStatus']!=order_status::OrderPaying){
+			SLog::write("Success,but may be re paied?,status is:".$Order['OrderStatus']);
+		}else{
+			SLog::write("Success");
+		}
+		//更新订单
+		$Order['OrderStatus']=order_status::OrderPaid;
+		$order_db->updateOrder($Order);
+	}
 	/**
 	  * 订单状态检查
 	  **/
@@ -135,14 +151,16 @@ class order_main extends STpl{
 	public function PageAliPayReturn($inPath){
 		$r = order_api::alipayReturn();
 		if($r){
-			echo "OK";
+		//	echo "OK";
 		}else{
-			echo "NO";
+		//	echo "NO";
 		}
+		error_log("\n".date("Y-m-d H:i:s")."\n",3,"/tmp/pay.log");
 		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
 		error_log(var_export($_REQUEST,true),3,"/tmp/pay.log");
-		print_r($inPath);
-		print_r($_GET);
+		$params=array();
+		$params['result']=$r;
+		return $this->render("mobile/pay_return.html",$params);
 	}
 	public function PageAliPayCancel($inPath){
 		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
@@ -165,14 +183,17 @@ class order_main extends STpl{
 	public function PagePaypalReturn($inPath){
 		$r = order_api::paypalReturn();
 		if($r){
-			echo "OK";
+			//echo "OK";
 		}else{
-			echo "NO";
+			//echo "NO";
 		}
 		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
 		error_log(var_export($_REQUEST,true),3,"/tmp/pay.log");
 		print_r($inPath);
 		print_r($_GET);
+		$params=array();
+		$params['result']=$r;
+		return $this->render("mobile/pay_return.html",$params);
 	}
 	public function PagePaypalCancel($inPath){
 		error_log(__FILE__.":".__LINE__."\n",3,"/tmp/pay.log");
