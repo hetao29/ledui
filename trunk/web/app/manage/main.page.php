@@ -18,6 +18,13 @@ class manage_main extends STpl{
 		$data['page'] = $pageArr;
 		echo $this->render("manage/listusers.html",$data);
 	}
+	function pageEditUser($inPath){
+		$userId = $REQUEST['userId'];
+		$db = $new user_db;
+		$user = $db->getUserByID($userId);
+		var_dump($user);
+		echo $this->render("manage/edituser.html",$user);
+	}
 	function pageLogin($inPath){
 		if(!empty($_POST)){
 			$db = new user_db;
