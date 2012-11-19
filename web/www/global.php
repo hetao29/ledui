@@ -38,6 +38,9 @@ SLanguage::$defaultLocale="zh-CN";
 if(!empty($_COOKIE['language'])){
     SLanguage::setLocale($_COOKIE['language']);
 }
+if(!empty($_REQUEST['language'])){
+    SLanguage::setLocale($_COOKIE['language']);
+}
 //}}}
 //for test
 //SLanguage::setLocale("en");
