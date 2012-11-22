@@ -30,7 +30,7 @@ import org.apache.cordova.*;
 /*
 import android.view.*;
 import android.webkit.WebView;
-import android.webkit.WebSettings;
+import android.webkit.WebSettings;	
 import android.webkit.WebSettings.ZoomDensity;
 import 	java.lang.reflect.Field;
 import android.view.inputmethod.EditorInfo;
