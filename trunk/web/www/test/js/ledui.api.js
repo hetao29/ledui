@@ -38,6 +38,23 @@ var API = {
 	host_api: "http://www.ledui.com/api.php/api",
 	uploadHost:"http://www.ledui.com/image/upload",
 	login_status:false,
+	empty:function(mixed_var) {
+	  var undef, key, i, len;
+	  var emptyValues = [undef, null, false, 0, "", "0"];
+
+	  for (i = 0, len = emptyValues.length; i < len; i++) {
+		if (mixed_var === emptyValues[i]) {
+		  return true;
+		}
+	  }
+	  if (typeof mixed_var === "object") {
+		for (key in mixed_var) {
+		  return false;
+		}
+		return true;
+	  }
+	  return false;
+	},
 	//登录
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
@@ -50,10 +67,7 @@ var API = {
 		var token = DB.getToken();
 		var uid = DB.getUID();
 		var uuid = DB.getUUID();
-			var param={token:token,uid:uid,uuid:uuid};
-			API.debug("islogin");
-			//API.debug(this.caller);
-			//API.debug(param);
+		var param={token:token,uid:uid,uuid:uuid};
 		if(token && token !=""){
 			$.ajax({
 				type: "POST",
@@ -61,7 +75,6 @@ var API = {
 				data: param,
 				dataType: "JSON",
 				success: function(msg){
-			//API.debug(msg);
 					if(msg){
 						if(callback){ callback(true);API.login_status=true; }
 					}else{
@@ -463,15 +476,15 @@ var Interface = {
 		   //_DB.uuid=Interface.Device.uuid;
 		}
 		
-		API.islogin(function(isLogin){
-			if(isLogin){
-
-				
+		var token = DB.getToken();
+		var uid = DB.getUID();
+		if(!API.emtpy(token) && !API.empty(uid)){
 		  		$("#login").find(".errorbox").fadeOut();
 		  		$("#isnotlogin").hide();
 		  		$("#islogin").show();
-
-
+		}
+		API.islogin(function(isLogin){
+			if(isLogin){
 				//判断现有明信片，状态，如果支付成功，但是上传没有成功的，重新上传
 				var postcard = (new LeduiPostCard).list();
 				//{{{ check change
@@ -748,6 +761,12 @@ var Control = {
 					}
 				}else{
 					city.html('').slideUp("fast");
+				}
+			}).trigger("change");
+			city.bind("change",function(e){
+				var zp = City.getZipCode(privince.val(),$(this).val());
+				if(zp!=""){
+					$("#rcvform [name='PostCode']").val(zp);
 				}
 			});
 		});
