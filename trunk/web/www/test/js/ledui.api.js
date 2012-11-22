@@ -1006,16 +1006,24 @@ var Control = {
 		var adr = new LeduiAddress;
 		var add = adr.get(CurrentPostCard.AddressID[0]);
 		if(!add){ return; }
-		$("#postinfo [name='Name']").html(add.Name);
-		$("#postinfo [name='Address']").html(
+		$(".card [name='Name']").html(add.Name);
+		$(".card [name='Address']").html(
 				add.Country+" "+
 				add.Privince +" "+
 				add.City+" "+
 				add.Address+" "
 				);
-		$("#postinfo [name='PostCode']").html(add.PostCode);
-		$("#msginfo [name='Name']").html(add.Name);
-		$("#msginfo [name='Comments']").html(CurrentPostCard.Comments);
+		
+		add.PostCode += '';
+		var htmlpcode = '';
+		for(var i=0; i<add.PostCode.length; i++){
+			htmlpcode += '<span>'+ add.PostCode[i] +'</span>';
+			if(i==5){ break; }	
+		}		
+					
+		$(".card [name='PostCode']").html(htmlpcode);
+		$(".card [name='Name']").html(add.Name);
+		$(".card [name='Comments']").html(CurrentPostCard.Comments);
 		var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
 		if(!postcard){
 			(new LeduiPostCard).add(CurrentPostCard);

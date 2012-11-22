@@ -241,14 +241,18 @@
 			<div class="view">
 				<!--背面--->
 				<div class="card card_back">
-					<div class="postinfo" id="postinfo">
-						<div name="Name"></div>
-						<div name="Address"></div>
-						<div name="PostCode"></div>
-					</div>
+					<div class="postcode" name="PostCode"></div>
+					<div class="name" name="Name"></div>
+					<div class="address" name="Address"></div>
 					<div class="msginfo" id="msginfo">
 						<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
-						<div class="t2" name="Comments"></div>
+						<table cellpadding="0" cellspacing="0" width="100%" height="88" class="t2">
+						<tr><td  name="Comments">
+						
+						helloword run西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼
+						
+						</td></tr>
+						</table>
 						<div class="t3" name="FromName">您的朋友</div>
 					</div>
 				</div>
@@ -299,7 +303,7 @@
 				每张明信片需支付 &yen;<span id="Price"></span> <br />
 				你共寄出<span id="PostCardCount"></span>张，共<span class="m" id="OrderTotalPrice"></span>元<br />
 				
-				帐户剩余<span id="MoneyCurrent">元，可用<span id="ScoreCurrent"></span>积分<br />
+				帐户剩余<span id="MoneyCurrent"></span>元，可用<span id="ScoreCurrent"></span>积分<br />
 				可使用<input  autocomplete="off" max="128" min="0" style="width:50px" type="number" id="Score" name="Score"/>
 				积分抵用 <span class="m">&yen;0.5</span> <br/>
 				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input autocomplete="off" max="5.9" min="0" style="width:50px" type="number" id="Money" name="Money"/>
@@ -392,10 +396,8 @@
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">
-		<div class="">
-			<div class="">
-				<div tr="aboutme_content"></div>
-			</div>
+		<div class="aboutme">
+			<div tr="aboutme_content"></div>
 		</div>
 	</div>	
 	</div>

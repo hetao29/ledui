@@ -558,12 +558,14 @@ opacity:1;
 }
 .preview .photo img{position:absolute;top:0;left:0;width:100%;}
 
-.preview .card .postinfo{position:absolute;top:110px;left:28px;width:138px;text-align:right;}
-.preview .card .postinfo div{line-height:28px;font-size:12px;}
-.preview .card .msginfo{position:absolute;top:115px;left:230px;font-size:12px;line-height:20px;width:290px;}
+.preview .card .postcode{position:absolute;top:14px;left:15px;line-height:28px;font-size:12px;width:300px;}
+.preview .card .postcode span{width:23px;height:20px;display:block;float:left;margin-right:7px;text-align:center;line-height:20px;}
+.preview .card .name{position:absolute;top:175px;left:340px;width:200px;text-align:center;font-size:12px;}
+.preview .card .address{position:absolute;left:340px;bottom:180px;width:200px;line-height:24px;font-size:12px;}
+.preview .card .msginfo{position:absolute;top:70px;left:20px;font-size:12px;line-height:20px;width:280px;}
 .preview .card .msginfo .t1{margin-bottom:5px;}
 .preview .card .msginfo .t2{text-indent:2em;line-height:22px;text-justify:inter-ideograph;text-align:justify;}
-.preview .card .msginfo .t3{margin-top:5px;text-align:right;padding-right:10px;}
+.preview .card .msginfo .t3{margin-top:5px;padding-right:10px;}
 .preview .agreement{position:relative;padding-left:40px;width:520px;height:30px;margin:0 auto;line-height:30px;font-size:30px;}
 .preview .agreement .ico{position:absolute;top:0;left:0;}
 .preview .agreement a{color:#d30000;}
@@ -667,6 +669,9 @@ border-bottom-color:#555;
 .maillist .act:active,
 .maillist .act.active{opacity:0.5;}
 .maillist .list .mark{background:#eee;box-shadow:inset 0 -5px 10px #e5e5e5;}
+
+.aboutme{padding:30px 20px;}
+.aboutme *{font-size:14px;line-height:24px;}
 
 /*animate*/
 @-webkit-keyframes showfromright { 
