@@ -316,7 +316,8 @@ var API = {
 		});
 		
 	},
-    	//,移到worker里去，实现多进程隐藏上传
+
+
 	upload:function(LeduiPostCardObject){
 		//更新当前明信片状态为上传(TODO)
 		
@@ -344,6 +345,19 @@ var API = {
 		param.data = JSON.stringify(realObject);
 		options.params = param;
 		var ft = new FileTransfer();
+
+
+		ft.onprogress = function(progressEvent) {
+			Control.updatePostCardStatus(realObject,loaded,total);
+			//if (progressEvent.lengthComputable) {
+				//realObject.loaded = progressEvent.loaded;
+				//realObject.total = progressEvent.total;
+				//postcard.add(realObject);
+			//} else {
+			//  loadingStatus.increment();
+			//}
+		};
+
 		ft.upload(
 			realObject.photo.o,
 			API.uploadHost,
@@ -1016,7 +1030,7 @@ var Control = {
 		}
 		Preview.show();
 	},
-	updatePostCardStatus:function(PostCard){
+	updatePostCardStatus:function(PostCard,loaded,total){
 		var ul = $("#maillist ul");
 		//更新支付状态
 		{
@@ -1024,30 +1038,35 @@ var Control = {
 			var st="";
 			var st_css="pass";
 			//上传状态	1,未开始 2,上传中，还没有成功，3,成功，-1,失败，
-			switch(parseInt(PostCard.Status)){
-				case 1:st="st_unpay".tr();st_css="wait";break;
-				case 2:st="st_uploading".tr();break;
-				case 3:
-				       switch(parseInt(PostCard.OrderStatus)){
-					       /*
-						 -3	OrderFailed	支付失败
-						 -2	OrderTimeout	订单超时
-						 -1	OrderCancel	订单取消
-						 1	OrderDefault	默认类型,新订单
-						 2	OrderPaying	支付中
-						 3	OrderPaid	已经支付
-						 4	OrderDelivering	发货中，已经发货
-						 5	OrderRecived	确认收货
-						 6	OrderFinish	定单完成
-						 */
-					       case 3:st="st_printing".tr();break;
-					       case 4:st="st_posting".tr();break;
-					       default:st="st_posted".tr();break;
+			if(loaded && total){
+				st_css="wait";
+				st = Math.ceil(loaded/total*10000)/100 + "%";
+			}else{
+				switch(parseInt(PostCard.Status)){
+					case 1:st="st_unpay".tr();st_css="wait";break;
+					case 2:st="st_uploading".tr();break;
+					case 3:
+						   switch(parseInt(PostCard.OrderStatus)){
+							   /*
+							 -3	OrderFailed	支付失败
+							 -2	OrderTimeout	订单超时
+							 -1	OrderCancel	订单取消
+							 1	OrderDefault	默认类型,新订单
+							 2	OrderPaying	支付中
+							 3	OrderPaid	已经支付
+							 4	OrderDelivering	发货中，已经发货
+							 5	OrderRecived	确认收货
+							 6	OrderFinish	定单完成
+							 */
+							   case 3:st="st_printing".tr();break;
+							   case 4:st="st_posting".tr();break;
+							   default:st="st_posted".tr();break;
 
-				       };
-				       break;
-				case -1:st="st_uploaderror".tr();st_css="wait";break;
-				default:st="st_unpay".tr();st_css="wait";break;
+						   };
+						   break;
+					case -1:st="st_uploaderror".tr();st_css="wait";break;
+					default:st="st_unpay".tr();st_css="wait";break;
+				}
 			}
 			ul.find("li[LocalID='"+LocalID+"']").find(".status").children().removeClass().addClass(st_css).html(st);
 		}
