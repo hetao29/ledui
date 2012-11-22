@@ -23,7 +23,7 @@ $.ajaxSetup({
 				AjaxSetup.showLoading = true;
 				AjaxSetup.stat = 0;
 			}
-		},600);
+		},1000);
 	}
 	,complete:function(e){
 		AjaxSetup.stat = 2;
@@ -37,24 +37,33 @@ var API = {
 	host_main: "http://www.ledui.com",
 	host_api: "http://www.ledui.com/api.php/api",
 	uploadHost:"http://www.ledui.com/image/upload",
+	login_status:false,
 	//登录
 	/**
 	 * API.login({email:'hetao@hetao.name',passwd:''},function ok(result){alert("OK");},function error(result){alert("NO");});
 	 */
 	islogin:function(callback){
+		/*if(API.login_status){
+			if(callback){ callback(true); }
+			return;
+		}*/
 		var token = DB.getToken();
 		var uid = DB.getUID();
 		var uuid = DB.getUUID();
-		if(token && token !=""){
 			var param={token:token,uid:uid,uuid:uuid};
+			API.debug("islogin");
+			//API.debug(this.caller);
+			//API.debug(param);
+		if(token && token !=""){
 			$.ajax({
 				type: "POST",
 				url: API.host_api+"/user/islogin",
 				data: param,
 				dataType: "JSON",
 				success: function(msg){
+			//API.debug(msg);
 					if(msg){
-						if(callback){ callback(true); }
+						if(callback){ callback(true);API.login_status=true; }
 					}else{
 						if(callback){ callback(false); }
 					}
@@ -113,6 +122,7 @@ var API = {
 	},
 	//登出
 	logout: function(param,ok,error){
+		API.login_status=false;
 		DB.setToken("","");
 		if(ok){ ok(); }
 		return;
@@ -244,6 +254,28 @@ var API = {
 			}
 		});
 	},
+	debug:function(Info,ok,error){
+		var param={};
+		param.token= DB.getToken();
+		param.uid= DB.getUID();
+		param.Info = JSON.stringify(Info);
+		$.ajax({
+			type: "POST",
+			url: API.host_api+"/debug",
+			data: param,
+			dataType: "JSON",
+			success: function(msg){
+				if(msg){
+					if(ok){ ok(msg); }
+				}else{
+					error(msg.error_msg);
+				}
+			},
+			error:function(msg){
+				if(error){ error(msg); }
+			}
+		});
+	},
 	//删除地址
 	delAddress:function(id,ok,error){
 		var param={};
@@ -348,7 +380,9 @@ var API = {
 
 
 		ft.onprogress = function(progressEvent) {
-			Control.updatePostCardStatus(realObject,loaded,total);
+			//API.debug(progressEvent);
+			//API.debug(realObject);
+			Control.updatePostCardStatus(realObject,progressEvent.loaded,progressEvent.total);
 			//if (progressEvent.lengthComputable) {
 				//realObject.loaded = progressEvent.loaded;
 				//realObject.total = progressEvent.total;
@@ -431,11 +465,19 @@ var Interface = {
 		
 		API.islogin(function(isLogin){
 			if(isLogin){
+
+				
+		  		$("#login").find(".errorbox").fadeOut();
+		  		$("#isnotlogin").hide();
+		  		$("#islogin").show();
+
+
 				//判断现有明信片，状态，如果支付成功，但是上传没有成功的，重新上传
 				var postcard = (new LeduiPostCard).list();
 				//{{{ check change
 				for(var i=0;i<postcard.length;i++){
 					if(parseInt(postcard[i].PostCardID)>0){
+						/*
 						if(parseInt(postcard[i].OrderStatus)==3 && parseInt(postcard[i].Status)!=3){
 							API.upload(postcard[i]);
 						}
@@ -443,6 +485,15 @@ var Interface = {
 						if(parseInt(postcard[i].Status)==3){
 							API.getOrder(postcard[i].TradeNo);
 						}
+
+						*/
+						API.getOrder(postcard[i].TradeNo,function(Order){
+							if(Order.OrderStatus==3 && parseInt(postcard[i].Status)!=3){
+								API.upload(postcard[i]);
+							}
+						});
+
+
 					}
 				};
 
@@ -492,7 +543,7 @@ var Control = {
 	init: function(){
 		this.bind();		
 		PageMgr.show(0);
-		Control.autoLogin();
+		//Control.autoLogin();
 	},
 	bind: function(){
 
@@ -902,7 +953,7 @@ var Control = {
 
 				
 	},
-	
+	/*
 	autoLogin: function(){
 		API.islogin(function(r){
 		  	if(r){
@@ -912,7 +963,7 @@ var Control = {
 		  	}
 		});
 	},
-	
+	*/
 	logout: function(){
 		API.logout(
 			{},
