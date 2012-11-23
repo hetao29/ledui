@@ -80,6 +80,7 @@ class api_postcard{
 			$PostCard['Sender']		=$postcard_tmp->Sender;
 			$PostCard['IP']		=SUtil::getIP(true);
 			$PostCard['Comment']		=$postcard_tmp->Comments;
+			$PostCard['Sender']		=$postcard_tmp->Sender;
 			$PostCard['ImageFileID']	=$postcard_tmp->ImageFileID;
 			$PostCard['_insertTime']	=date("Y-m-d H:i:s");
 			if(!empty($postcard_tmp->photo)){
