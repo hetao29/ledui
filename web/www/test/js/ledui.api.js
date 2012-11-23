@@ -570,6 +570,7 @@ var Control = {
 		
 		//导航
 		var appnav = $("#appnav"); 
+		appnav.find(".CIndex").bind("tapone", function(e){ PageMgr.show(0); });
 		appnav.find(".CAbout").bind("tapone", function(e){ PageMgr.show(8); });
 		appnav.find(".CLogin").bind("tapone", function(e){ PageMgr.show(10); });		
 		appnav.find(".CRegister").bind("tapone", function(e){ PageMgr.show(11); });
