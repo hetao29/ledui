@@ -1110,6 +1110,8 @@ var Control = {
 		$(".card [name='Comments']").html(CurrentPostCard.Comments);
 		if(CurrentPostCard.Sender!=""){
 			$(".card [name='Sender']").html(CurrentPostCard.Sender);
+		}else{
+			$(".card [name='Sender']").html("您的朋友");
 		}
 		var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
 		if(!postcard){
