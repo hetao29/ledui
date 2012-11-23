@@ -201,9 +201,12 @@
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">	
-		<div class="msgcon">
-			<textarea class="textarea" id="comments" tr_placeholder="comments" placeholder="请输入留言，限200字。"></textarea>
-			<div class="counter"><span>0</span>/<span>200</span></div>
+		<div class="rcvform">
+			<div class="item"><input autocomplete="off" id="Sender" name="Sender" type="text" tr_placeholder="senderName" placeholder="你的姓名" /></div>
+			<div>
+				<textarea class="textarea msgcon" id="comments" tr_placeholder="comments" placeholder="你的留言，限200字。"></textarea>
+				<div class="counter"><span>0</span>/<span>200</span></div>
+			</div>
 		</div>
 	</div>
 	</div>
@@ -241,15 +244,15 @@
 			<div class="view">
 				<!--背面--->
 				<div class="card card_back">
-					<div class="postinfo" id="postinfo">
-						<div name="Name"></div>
-						<div name="Address"></div>
-						<div name="PostCode"></div>
-					</div>
+					<div class="postcode" name="PostCode"></div>
+					<div class="name">收件人:<span  name="Name"></span></div>
+					<div class="address" name="Address"></div>
 					<div class="msginfo" id="msginfo">
 						<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
-						<div class="t2" name="Comments"></div>
-						<div class="t3" name="FromName">您的朋友</div>
+						<table cellpadding="0" cellspacing="0" width="100%" height="88" class="t2">
+						<tr><td  name="Comments"></td></tr>
+						</table>
+						<div class="t3" name="Sender">您的朋友</div>
 					</div>
 				</div>
 				<!--正面-->
@@ -299,13 +302,13 @@
 				每张明信片需支付 &yen;<span id="Price"></span> <br />
 				你共寄出<span id="PostCardCount"></span>张，共<span class="m" id="OrderTotalPrice"></span>元<br />
 				
-				帐户剩余<span id="MoneyCurrent">元，可用<span id="ScoreCurrent"></span>积分<br />
+				<!--帐户剩余<span id="MoneyCurrent"></span>元，可用<span id="ScoreCurrent"></span>积分<br />
 				可使用<input  autocomplete="off" max="128" min="0" style="width:50px" type="number" id="Score" name="Score"/>
 				积分抵用 <span class="m">&yen;0.5</span> <br/>
-				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input autocomplete="off" max="5.9" min="0" style="width:50px" type="number" id="Money" name="Money"/>
+				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input autocomplete="off" max="5.9" min="0" style="width:50px" type="number" id="Money" name="Money"/>-->
 				<br/>
 				</div>
-			<div class="sum">总支付: <span class="m" id="OrderAmount"></span></div>
+			<div class="sum">请支付: <span class="m" id="OrderAmount"></span></div>
 		</div>
 	</div>
 	</div>
@@ -392,10 +395,8 @@
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">
-		<div class="">
-			<div class="">
-				<div tr="aboutme_content"></div>
-			</div>
+		<div class="aboutme">
+			<div tr="aboutme_content"></div>
 		</div>
 	</div>	
 	</div>
@@ -591,15 +592,16 @@
 
 <div class="appnav" id="appnav">
 	<ul id="isnotlogin">
-		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+		<li active="yes" class="CIndex" tr="index" mark="0">首页</li>
 		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
 		<li active="yes" class="CLogin" tr="login"  mark="10">登录</li>
 		<li active="yes" class="CRegister" tr="signup" mark="11">注册</li>
 	</ul>
 	<ul id="islogin">
-		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+		<li active="yes" class="CIndex" tr="index" mark="0">首页</li>
 		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
-		<li active="yes" class="CAccount" tr="account"  mark="10">账号</li>
+		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+		<!--<li active="yes" class="CAccount" tr="account"  mark="10">账号</li>-->
 		<li active="yes" class="CLogout" tr="logout" mark="11">退出</li>
 	</ul>
 </div>
@@ -610,18 +612,6 @@
 
 
 <script src="cordova.js"></script> 
-<script src="js/jquery-1.8.1.min.js"></script>
-<script src="js/jgestures.min.js"></script>  
-<script src="js/hammer.js"></script>
-<script src="js/iscroll-min.js"></script> 
-<script src="js/ledui.ui.js"></script> 
-<script src="js/ledui.test.js"></script> 
-<script src="js/ledui.db.js"></script>
-<script src="js/ledui.api.js"></script>
-<script src="js/ledui.tr.js"></script>
-<script src="js/ledui.data.city.js"></script>
-<!--
 <script src="mini.js"></script>
--->
 </body>
 </html>
