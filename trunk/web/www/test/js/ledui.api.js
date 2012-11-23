@@ -1122,6 +1122,11 @@ var Control = {
 			var img = $('<img style="'+ style +'" src="'+ photoinfo.o +'" />');
 			$('.card_front .photo').html('').append(img);
 		}
+		if(parseInt(CurrentPostCard.Status)==1 && parseInt(CurrentPostCard.OrderStatus)<3){
+			$("#toSend").show();
+		}	else{
+			$("#toSend").hide();
+		}
 		Preview.show();
 	},
 	updatePostCardStatus:function(PostCard,loaded,total){
