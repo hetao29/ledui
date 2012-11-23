@@ -75,6 +75,13 @@ class api_postcard{
 		}else{
 			//
 			$PostCard['UserID']		=$this->uid;
+			if(empty($postcard_tmp->Latitude) && empty($postcard_tmp->Longitude)){
+				$IP		=SUtil::getIP();
+				$ct = file_get_contents("http://api.ipinfodb.com/v3/ip-city/?key=e7e03bf26bff2c0068eb27898227c0ff53423140f0a711942d2e89f3761cbb70&ip=$IP&format=json");
+				$ct = SJson::decode($ct);
+				if(!empty($ct->latitude)) $postcard_tmp->Latitude = $ct->latitude;
+				if(!empty($ct->longitude)) $postcard_tmp->Longitude = $ct->longitude;
+			}
 			$PostCard['Latitude']	=$postcard_tmp->Latitude;
 			$PostCard['Longitude']	=$postcard_tmp->Longitude;
 			$PostCard['Sender']		=$postcard_tmp->Sender;
