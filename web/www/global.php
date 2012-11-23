@@ -2,6 +2,7 @@
 date_default_timezone_set("Asia/Shanghai");
 define("ROOT",				dirname(__FILE__)."/../");
 define("ROOT_WWW",			ROOT."/www");
+define("ROOT_LOG",			ROOT."/../log");
 define("ROOT_LIB",			ROOT."/libs");
 define("ROOT_APP",			ROOT."/app");
 define("ROOT_CONFIG",		ROOT."/config");
