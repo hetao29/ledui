@@ -201,9 +201,12 @@
 	</div>
 	<div class="panel_body">
 	<div class="panel_body_box">	
-		<div class="msgcon">
-			<textarea class="textarea" id="comments" tr_placeholder="comments" placeholder="请输入留言，限200字。"></textarea>
-			<div class="counter"><span>0</span>/<span>200</span></div>
+		<div class="rcvform">
+			<div class="item"><input autocomplete="off" id="Sender" name="Sender" type="text" tr_placeholder="senderName" placeholder="你的姓名" /></div>
+			<div>
+				<textarea class="textarea msgcon" id="comments" tr_placeholder="comments" placeholder="你的留言，限200字。"></textarea>
+				<div class="counter"><span>0</span>/<span>200</span></div>
+			</div>
 		</div>
 	</div>
 	</div>
@@ -242,18 +245,14 @@
 				<!--背面--->
 				<div class="card card_back">
 					<div class="postcode" name="PostCode"></div>
-					<div class="name" name="Name"></div>
+					<div class="name">收件人:<span  name="Name"></span></div>
 					<div class="address" name="Address"></div>
 					<div class="msginfo" id="msginfo">
 						<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
 						<table cellpadding="0" cellspacing="0" width="100%" height="88" class="t2">
-						<tr><td  name="Comments">
-						
-						helloword run西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼西藏呼和浩特他妈的三楼
-						
-						</td></tr>
+						<tr><td  name="Comments"></td></tr>
 						</table>
-						<div class="t3" name="FromName">您的朋友</div>
+						<div class="t3" name="Sender">您的朋友</div>
 					</div>
 				</div>
 				<!--正面-->
