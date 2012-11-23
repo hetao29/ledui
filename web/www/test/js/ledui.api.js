@@ -4,6 +4,7 @@
 var CurrentPostCard = new LeduiPostCard;
 var AvaliableCurrency={};
 //}}}
+
 //{{{
 var AjaxSetup={
 	stat: 0, //0,1 start, 2 complete
@@ -478,7 +479,7 @@ var Interface = {
 		
 		var token = DB.getToken();
 		var uid = DB.getUID();
-		if(!API.emtpy(token) && !API.empty(uid)){
+		if(!API.empty(token) && !API.empty(uid)){
 		  		$("#login").find(".errorbox").fadeOut();
 		  		$("#isnotlogin").hide();
 		  		$("#islogin").show();
@@ -1260,6 +1261,18 @@ var Control = {
 $(document).ready(function(){
 	//DB.clear();
 	Control.init();
+
+	//{{{for browser
+
+	
+		var token = DB.getToken();
+		var uid = DB.getUID();
+		if(!API.empty(token) && !API.empty(uid)){
+		  		$("#login").find(".errorbox").fadeOut();
+		  		$("#isnotlogin").hide();
+		  		$("#islogin").show();
+		}
+	//}}}
 });
 document.addEventListener("deviceready", Interface.onDeviceReady, false);
 //}}}
