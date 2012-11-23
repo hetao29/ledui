@@ -1105,7 +1105,8 @@ var Control = {
 		
 		if(add.Name)recv_item += add.Name;
 		if(add.Mobile)recv_item +="("+add.Mobile+") ";
-		$(".card [name='Name']").html(recv_item);
+		$(".card [name='NameStr']").html(recv_item);
+		$(".card [name='Name']").html(add.Name);
 		$(".card [name='Comments']").html(CurrentPostCard.Comments);
 		if(CurrentPostCard.Sender!=""){
 			$(".card [name='Sender']").html(CurrentPostCard.Sender);
