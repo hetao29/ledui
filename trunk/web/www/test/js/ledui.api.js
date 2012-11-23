@@ -781,6 +781,10 @@ var Control = {
 				//评论信息
 				CurrentPostCard.Comments = $(this).val();
 			});
+			$("#Sender").bind("change", function(e){
+				//评论信息
+				CurrentPostCard.Sender = $(this).val();
+			});
 			$("#toPreview").bind("tapone", function(e){
 				$("#titlebar_preview .button_s_back").attr("_back",4);
 				PageMgr.go(5);
@@ -1077,14 +1081,17 @@ var Control = {
 		var add = adr.get(CurrentPostCard.AddressID[0]);
 		if(!add){ return; }
 		$(".card [name='Name']").html(add.Name);
-		$(".card [name='Address']").html(
-				add.Country+" "+
-				add.Privince +" "+
-				add.City+" "+
-				add.Address+" "
-				);
+
+		var addr_item = "";
+		if(add.Country=="CN")addr_item +="中国 ";
+		if(add.Privince)addr_item +=add.Privince+" ";
+		if(add.City)addr_item +=add.City+" ";
+		if(add.Address)addr_item +=add.Address+" ";
+	//	if(add.Phone)addr_item +=add.Phone+" ";
+
 		
-		add.PostCode += '';
+		$(".card [name='Address']").html(addr_item);
+		
 		var htmlpcode = '';
 		for(var i=0; i<add.PostCode.length; i++){
 			htmlpcode += '<span>'+ add.PostCode[i] +'</span>';
@@ -1092,8 +1099,15 @@ var Control = {
 		}		
 					
 		$(".card [name='PostCode']").html(htmlpcode);
-		$(".card [name='Name']").html(add.Name);
+		var recv_item="";
+		
+		if(add.Name)recv_item += add.Name;
+		if(add.Mobile)recv_item +="("+add.Mobile+") ";
+		$(".card [name='Name']").html(recv_item);
 		$(".card [name='Comments']").html(CurrentPostCard.Comments);
+		if(CurrentPostCard.Sender!=""){
+			$(".card [name='Sender']").html(CurrentPostCard.Sender);
+		}
 		var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
 		if(!postcard){
 			(new LeduiPostCard).add(CurrentPostCard);

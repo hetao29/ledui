@@ -78,6 +78,7 @@ var LeduiPostCard=function(){
 	this.Address=[];//发送地址,[LeduiAddress]
 	this.AddressID=[];//发送地址,[LeduiAddress.LocalID]
 	this.Comments="";
+	this.Sender="";
 	this.photo={}; //width:"", //height:"", //x:"", //y:"", //rotate:"",
 	this.date=(new Date()).getFullYear()+"-"+(new Date()).getMonth()+"-"+(new Date()).getDate();
 	this.ThumbnailData="";//截图内容，base64后的内容
