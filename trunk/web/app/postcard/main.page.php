@@ -4,10 +4,12 @@ class postcard_main extends STpl{
 	 * 明信片预览
 	 */
 	public function pagePreView($inPath){
-		$PostCardID=$_REQUEST['id'];
-		$AddressID=$_REQUEST['aid'];
+		$PostCardID=$inPath['3'];
+		$AddressID=$inPath['4'];
+		$token =$inPath['5'];
 		$db = new postcard_db;
 		$user_db = new user_db;
+		print_r($inPath);
 		if(($postcard=$db->getPostcard($PostCardID))!=false){
 			$adds = $postcard['Address'];
 			$adds_array = split(",",$adds);
@@ -24,6 +26,77 @@ class postcard_main extends STpl{
 			return $this->render("postcard/preview.html");
 
 		}
+	}
+	//正面地址
+	public function pagePreViewFront($inPath){
+		$PostCardID=$inPath['3'];
+		$AddressID=$inPath['4'];
+		$token =$inPath['5'];
+		$db = new postcard_db;
+		if(($postcard=$db->getPostcard($PostCardID))!=false){
+			//print_r($postcard);
+			$imageUrl = "http://www.ledui.com/image/show/".$postcard['ImageFileID'];
+			//if(!in_array($AddressID,$adds_array)){
+			//	//地址错误
+			//	$AddressID = $adds_array[0];
+			//}
+			//if($postcard['PostCardStatus']){
+
+			//}
+			//$addr = $user_db->getAddress($AddressID);
+			//print_r($addr);
+			//print_r($postcard);
+			return $this->render("postcard/preview_front.html",array("postcard"=>$postcard));
+
+		}
+	}
+	//背面地址
+	public function pagePreViewBackend($inPath){
+		$PostCardID=$inPath['3'];
+		$AddressID=$inPath['4'];
+		$token =$inPath['5'];
+		$db = new postcard_db;
+		if(($postcard=$db->getPostcard($PostCardID))!=false){
+			$adds = $postcard['Address'];
+			$adds_array = split(",",$adds);
+			if(!in_array($AddressID,$adds_array)){
+				//地址错误
+				die("ERROR ADDRESS!");
+			}
+			$user_db = new user_db;
+			$addr = $user_db->getAddress($AddressID);
+			if(empty($addr)){
+				die("EMPTY ADDRESS!");
+			}
+			$addrStr="";
+			if($addr['Country']=="CN")$addrStr="中国 ";
+			if(!empty($addr['Privince']))$addrStr.=$addr['Privince']." ";
+			if(!empty($addr['City']))$addrStr.=$addr['City']." ";
+			if(!empty($addr['Address']))$addrStr.=$addr['Address']." ";
+			$nameStr="";
+			if(!empty($addr['Name']))$nameStr.=$addr['Name'];
+			if(!empty($addr['Mobile']))$nameStr.="(".$addr['Mobile'].")";
+			$zpStr="";
+			if(!empty($addr['PostCode'])){
+				for($i=0,$l=strlen($addr['PostCode']);$i<$l;$i++){
+					$zpStr.="<span>".$addr['PostCode']{$i}."</span>";
+				}
+			}
+			$params=array();
+			$params['postcard'] = $postcard;
+			$params['address'] = $addr;
+			$params['addrStr'] = $addrStr;
+			$params['nameStr'] = $nameStr;
+			$params['zpStr'] = $zpStr;
+			$params['url'] = "http://www.ledui.com/postcard.main.preview/1.24.j32io";
+			return $this->render("postcard/preview_backend.html",$params);
+
+		}
+	}
+	public function pageRCode($inPath){
+		$data=$_REQUEST['msg'];
+		include(ROOT_LIB."/phpqrcode/qrlib.php");
+		return QRcode::png($data, false, 'L', 8, 2,true);
 	}
 	/**
 	 * 支付接口
