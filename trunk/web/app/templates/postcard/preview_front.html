@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Front</title>
+</head>
+<style>
+*{
+padding:0;margin:0;
+}
+.front{
+position:relative;width:1920px;height:1338px;overflow:hidden;
+}
+.front img{
+display:block;position:absolute;
+}
+</style>
+<body>
+
+<div class="front">
+<img id="photoeditorimg" style="width: {$postcard['ImageWidth']}px; height: {$postcard['ImageHeight']}px; left: {$postcard['ImageX']}px; top: {$postcard['ImageY']}px; -webkit-transform: rotate({$postcard['ImageRotate']}deg); " src="http://www.ledui.com/image/show/{$postcard['ImageFileID']}">
+</div>
+
+</body>
+</html>

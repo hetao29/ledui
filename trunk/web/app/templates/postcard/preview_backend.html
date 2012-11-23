@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Front</title>
+<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+<script type="text/javascript"> 
+  var geocoder; 
+  var map; 
+  function initialize() { 
+    geocoder = new google.maps.Geocoder(); 
+    var latlng = new google.maps.LatLng({$postcard['Latitude']|default:39.9075}, {$postcard['Longitude']|default:116.397}); 
+
+    var myOptions = { 
+      zoom: 12, 
+      center: latlng, 
+      mapTypeId: google.maps.MapTypeId.ROADMAP 
+    } 
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions); 
+var mark = new google.maps.Marker({ map:map,position:new google.maps.LatLng({$postcard['Latitude']|default:39.9075}, {$postcard['Longitude']|default:116.397}),visible:true});
+  } 
+</script>
+</head>
+<style>
+*{
+padding:0;margin:0;font-family:Arial, Helvetica, sans-serif;
+}
+.back{
+position:relative;width:1920px;height:1338px;overflow:hidden;background:url(/assets/img/backend.png) no-repeat;
+}
+.back *{ font-size:50px;font-weight:bold;line-height:80px;}
+.back .postcode{ position:absolute;top:60px;left:50px;line-height:28px;width:800px;}
+.back .postcode span{ width:80px;height:75px;display:block;float:left;margin-right:24px;text-align:center;line-height:80px;}
+.back .name{ position:absolute;top:720px;left:1160px;width:720px;text-align:center;}
+.back .address{ position:absolute;left:1160px;bottom:660px;width:720px;}
+.back .msginfo{ position:absolute;top:270px;left:50px;width:940px;}
+.back .msginfo .t1{ margin-bottom:40px;}
+.back .msginfo .t2{ text-indent:2em;text-justify:inter-ideograph;text-align:justify;}
+.back .msginfo .t3{ margin-top:40px;padding-right:10px;}
+.back .d1{ position:absolute;top:1000px;left:64px;width:160px;height:160px;}
+.back .d2{ position:absolute;top:984px;left:1174px;width:680px;height:180px;}
+</style>
+<body onLoad="initialize()"> 
+
+<div class="back">
+	<div class="postcode" name="PostCode">{$zpStr}</div>
+	<div class="name">收件人:<span name="name">{$nameStr}</span></div>
+	<div class="address" name="Address">{$addrStr}</div>
+	<div class="msginfo" id="msginfo">
+		<div class="t1">亲爱的<span name="Name">{$address['Name']}</span>, 您好</div>
+		<div class="t2">
+		<table cellpadding="0" cellspacing="0" width="100%" height="320" class="t2">
+		<tr><td name="Comments">{$address['Comments']}</td></tr>
+		</table>
+		</div>
+		<div class="t3" name="FromName">{$postcard['Sender']}</div>
+	</div>
+	<!--二维码 160*160-->
+	<div class="d1"><img width="160" height="160" src="/postcard.main.rcode?msg={$url}" /></div>
+	<!--地理位置 680*180-->
+	<div class="d2" style="height:180px" id="map_canvas"></div>
+</div>
+
+</body>
+</html>
