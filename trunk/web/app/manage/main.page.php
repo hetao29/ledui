@@ -6,8 +6,8 @@ class manage_main extends STpl{
 			return $this->render("user/nav.tpl");
 	}
 	function pageListUsers($inPath){
-		$currentPage = $REQUEST['currentPage'];
-		$pageCapacity = $REQUEST['pageCapacity'];
+		$currentPage = $_REQUEST['currentPage'];
+		$pageCapacity = $_REQUEST['pageCapacity'];
 		$db = new user_db;
 		$totalCapacity = $db->getUserTotal($where);
 		$page = new LPage();
@@ -19,8 +19,8 @@ class manage_main extends STpl{
 		echo $this->render("manage/listusers.html",$data);
 	}
 	function pageEditUser($inPath){
-		$userId = $REQUEST['userId'];
-		$db = $new user_db;
+		$userId = $_REQUEST['userId'];
+		$db = new user_db;
 		$user = $db->getUserByID($userId);
 		var_dump($user);
 		echo $this->render("manage/edituser.html",$user);
