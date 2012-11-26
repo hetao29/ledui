@@ -49,6 +49,7 @@ var LOCALE = {
 		aboutme_content:"With Ledui, our phone application, you can make and deliver postcards at any location and any time. Ledui is not sending the E-cards, but delivering the real paper cards to your families and friends. Wherever you are, you no longer have to worry about buying the cards and finding the post office. You only need to open your album or shoot the beautiful scenery, choose your favorite stamp, and fill in the address you want to deliver, all the rest will be taken care by us. If your photo contains GPS information, we will also map your location on the cards, which will enrich the recipient the visual feeling of your greetings from distance. Send your care and yearning to your families and share your travel experience with your friends. What are you waiting for? Just Invites your friends to enjoy Ledui together!",
 		 create:"Create postcard"
 		,about:"About"
+		,index:"Home"
 		,postcard:"Postcard"
 		,login:"Login"
 		,rechoose:"Re-election"
