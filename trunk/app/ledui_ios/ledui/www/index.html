@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta charset="utf-8" />
+<title>乐兑网名信片 ledui.com</title>
+<meta content="width=device-width, user-scalable=0" name="viewport" />
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta content="telephone=no" name="format-detection" />
+<link href="css/ledui.app.css" rel="stylesheet" type="text/css" />
+<link href="icon.png" rel="apple-touch-icon-precomposed" />
+</head>
+<body>
+<canvas id="photoeditorcanvas" width="240" height="150" style="display:none;background:#f00;position:absolute;top:0;left:0;z-index:100;"></canvas>
+				
+<div class="screen">
+<div class="pages"> 
+<!--
+*************************************
+* page0 首页
+*************************************
+-->
+<div class="page" _page="0" _name="首页" _hasnav="true">
+	<div class="panel_body">
+	<div class="panel_body_box">
+		<div class="banner">
+			<div class="createcard">
+				<div class="button button_l" id="choosePic" active="yes"><span tr="create" class="label">创建一张明信片</span></div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="panel_foot">
+		<div class="navplacehold"></div>
+	</div>
+</div> 
+<!--
+*************************************
+* page1 编辑图片
+*************************************
+-->
+<div class="page" _page="1" _name="编辑图片">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title" tr="title_editphoto">编辑图片</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" active="yes" _back="0"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+				<div class="r">
+					<div class="button button_s" active="yes" tr="rechoose" id="choosePic2">重选</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">
+		<div class="photoeditor">
+			<div class="loading" id="photoloading"><div class="ico"></div><div class="lay"></div></div>
+			<div class="view">
+				<div class="selection" id="photoselection"></div>
+				<div class="photo" id="photo"></div>
+				<div class="mask"><div class="l"></div><div class="r"></div><div class="t"></div><div class="b"></div></div>
+				<div class="panel" id="photopanel"></div>
+			</div>
+			<div class="tool">
+				<div class="icos">
+					<ul>
+						<li active="yes"><span class="ico ico_rotate_acw" id="ico_rotate_acw"><em>逆时针旋转</em></span></li>
+						<li active="yes" style="margin-right:60px;"><span class="ico ico_rotate_cw" id="ico_rotate_cw"><em>顺时针旋转</em></span></li>
+						<li active="yes"><span class="ico ico_zoom_out" id="ico_zoom_out"><em>缩小</em></span></li>
+						<li active="yes"><span class="ico ico_zoom_in" id="ico_zoom_in"><em>放大</em></span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" id="toAddress" active="yes" tr="next">下一步</div>
+		</div>
+	</div>
+</div> 
+<!--
+*************************************
+* page2 收件人信息
+*************************************
+-->
+<div class="page" _page="2" _name="收件人信息">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title" tr="title_addresseeinfo">收件人信息</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" active="yes" _back="1"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="rcvcreate" id="rcvcreate">
+			<div class="button button_m" active="yes" tr="addAddress">增加新地址</div>				
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">
+		<div class="rcvlist" id="rcvlist">
+			<div class="list">
+				<div class="null hide" tr="noAddress">没有可选地址，请添加</div>
+				<ul class="hide">
+					<li>
+						<div class="edit" active="yes"><div class="icon"></div></div>						
+						<div class="info">
+							<div class="checkbox"><div class="icon"></div></div>
+							<span class="name"></span>
+							<span class="phone"></span>
+							<span class="address"></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" __to="4" id="toComments" active="yes" tr="next">下一步</div>
+		</div>
+	</div>
+</div> 
+
+<!--
+*************************************
+* page3 添加收件人信息
+*************************************
+-->
+<div class="page" _page="3" _name="添加收件人信息">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title" tr="title_newaddress" id="adrtitle">输入新地址</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+				<div class="r">
+					<div class="button button_s hide" active="yes" tr="del" id="delAddress">删除</div>
+				</div>
+			</div>
+		</div>
+		<div class="adrchk" id="adrchk">
+			<div class="button button_m" active="yes" tr="choosefromCat">从通讯录选择</div>
+		</div>
+	</div>
+	<div class="panel_body">		
+	<div class="panel_body_box">	
+		<div class="rcvform">
+			<form id="rcvform">
+			<input name="AddressID" type="hidden" />
+			<input name="LocalID" type="hidden" />
+			<div class="item"><input autocomplete="off" name="Name" type="text" tr_placeholder="recvName" placeholder="收件人姓名" /></div>
+			<div class="item"><input autocomplete="off" name="Mobile" type="tel" tr_placeholder="recvMobile" placeholder="收件人手机号码" /></div>
+			<div class="item"><label tr="recvAddr">收件地址</label>
+							<div><select name="Country" id="country">
+								<option value='CN' tr="CN">中国(含港澳台)</option>
+								<option value='OTHER' tr="OTHER">国外</option>
+							</select></div>
+							<div><select name="Privince" id="privince">
+								<option value="" tr="choose">选择</option>
+							</select></div>
+							<div><select name="City" id="city" class="hide">
+								<option value="" tr="choose">选择</option>
+							</select></div>							
+			</div>
+			<div class="item"><input autocomplete="off" type="text" name="Address" tr_placeholder="recvAddr" placeholder="详细地址" /></div>
+			<div class="item"><input autocomplete="off" type="tel" name="PostCode" tr_placeholder="recvZipCode" placeholder="邮政编码" /></div>
+			</form>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" active="yes" id="addAddress" tr="add">添加</div>
+		</div>
+	</div>
+</div>
+<!--
+*************************************
+* page4 输入留言信息
+*************************************
+-->
+<div class="page" _page="4" _name="输入留言信息">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title" tr="title_inputmessage">输入留言信息</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="2" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">	
+		<div class="rcvform">
+			<div class="item"><input autocomplete="off" id="Sender" name="Sender" type="text" tr_placeholder="senderName" placeholder="你的姓名" /></div>
+			<div>
+				<textarea class="textarea msgcon" id="comments" tr_placeholder="comments" placeholder="你的留言，限200字。"></textarea>
+				<div class="counter"><span>0</span>/<span>200</span></div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" __to="5" id="toPreview" active="yes" tr="next">下一步</div>
+		</div>
+	</div>
+</div> 
+<!--
+*************************************
+* page5 预览
+*************************************
+-->
+<div class="page" _page="5" _name="预览">
+	<div class="panel_head">
+		<div class="titlebar" id="titlebar_preview">
+			<div class="title" tr="title_preview">预览</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="4" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">	
+		<div class="preview">
+			<div class="choice" id="chardchoice">
+				<ul>
+				<li active="yes" tr="front">正面</li>
+				<li active="yes" tr="back">反面</li>
+				</ul>
+			</div>
+			<div class="view">
+				<!--背面--->
+				<div class="card card_back">
+					<div class="postcode" name="PostCode"></div>
+					<div class="name">收件人:<span  name="Name"></span></div>
+					<div class="address" name="Address"></div>
+					<div class="msginfo" id="msginfo">
+						<div class="t1">亲爱的<span name="Name">龚华彬</span>, 您好</div>
+						<table cellpadding="0" cellspacing="0" width="100%" height="88" class="t2">
+						<tr><td  name="Comments"></td></tr>
+						</table>
+						<div class="t3" name="Sender">您的朋友</div>
+					</div>
+				</div>
+				<!--正面-->
+				<div class="card card_front">
+					<div class="photo">
+					</div>
+				</div>				
+			</div>
+			<div class="agreement">
+				<span class="ico ico_agree"></span><span tr="accept">我已接受</span> <a href="#" tr="provision">条款</a>
+			</div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" __to="6" id="toSend" active="yes" tr="send">发送</div>
+		</div>
+	</div>
+</div>
+<!--
+*************************************
+* page6 支付邮费
+*************************************
+-->
+<div class="page" _page="6" _name="支付邮费">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title" tr="payTitle">支付邮费</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="5" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<form id="payForm">
+	<input type="hidden" name="TradeNo"/>
+	<input type="hidden" name="OrderTotalPrice"/>
+	<input type="hidden" name="OrderAmount"/>
+	<input type="hidden" name="uid"/>
+	<input type="hidden" name="token"/>
+	<div class="panel_body">
+	<div class="panel_body_box">	
+		<div class="payinfo">
+			<div class="info"> 
+				每张明信片需支付 &yen;<span id="Price"></span> <br />
+				你共寄出<span id="PostCardCount"></span>张，共<span class="m" id="OrderTotalPrice"></span>元<br />
+				
+				<!--帐户剩余<span id="MoneyCurrent"></span>元，可用<span id="ScoreCurrent"></span>积分<br />
+				可使用<input  autocomplete="off" max="128" min="0" style="width:50px" type="number" id="Score" name="Score"/>
+				积分抵用 <span class="m">&yen;0.5</span> <br/>
+				可使用余额共 &yen;<span id="MoneyCurrent"></span>元，使用<input autocomplete="off" max="5.9" min="0" style="width:50px" type="number" id="Money" name="Money"/>-->
+				<br/>
+				</div>
+			<div class="sum">请支付: <span class="m" id="OrderAmount"></span></div>
+		</div>
+	</div>
+	</div>
+	<div class="panel_foot">
+		<div class="payaction" id="payaction">
+			<div class="dtext" tr="pay">前往支付</div>
+			<div id="payaction_alipal" class="button button_pay" active="yes"><span class="ico ico_alipay"><em tr="alipay">支付宝</em></span></div>
+			<div id="payaction_paypal" class=" button button_pay" style="display:none" active="yes"><span class="ico ico_paypal"><em>PayPal</em></span></div>
+		</div>
+		<div class="paytip">
+		选择其它货币支付
+			
+				<select id="currency" name="Currency">
+					<!--<option value="RMB" selected="true">选择货币</option>
+					<option value="RMB">RMB</option>
+					<option value="USD">美元USD</option>-->
+				</select><!--
+			 如您通过美元账户支付, 请选择PayPal支付<br />
+			本次合计 <span>$1.49</span><br />-->
+		</div>
+	</div>
+	</form>
+</div>
+<!--
+*************************************
+* page7 支付完成
+*************************************
+-->
+<div class="page" _page="7" _name="支付完成">
+	<div class="panel_head">
+		<div class="titlebar">
+			<div class="title" tr="payFinish">支付完成</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">	
+		<div class="paysuccess">
+			<div class="icon"><span class="ico ico_post"></span></div>
+			<div class="dtext">您成功支付邮费</div>
+			<div class="info"> 非常感谢您对乐兑的支持<br>
+				您将获得: <span class="m">10</span>分<br>
+				明信片将会在3个工作日内寄出<br>
+				并且会通过乐兑客户端通知您<br>
+			</div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">
+		<div class="cteatenext">
+			<div class="info">当然, 您还可以继续</div>
+			<div class="action">
+				<div class="button button_l" id="choosePic3" tr="create" active="yes">创建一张明信片</div>
+			</div>
+		</div>
+		<div class="photos">
+			<ul>
+				<li><img src="img/photo/1.png" alt="photo1" /></li>
+				<li><img src="img/photo/2.png" alt="photo2" /></li>
+				<li><img src="img/photo/3.png" alt="photo3" /></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!--
+*************************************
+* page8 关于
+*************************************
+-->
+<div class="page" _page="8" _name="关于" _hasnav="true">
+	<div class="panel_head">
+		<div class="titlebar" id="titlebar_about">
+			<div class="title" tr="about">关于乐兑</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">
+		<div class="aboutme">
+			<div tr="aboutme_content"></div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">		
+		<div class="navplacehold"></div>
+	</div>
+</div>
+<!--
+*************************************
+* page9 信箱
+*************************************
+-->
+<div class="page" _page="9" _name="我的信箱" _hasnav="true">
+	<div class="panel_head">
+		<div class="titlebar" id="titlebar_postcard">
+			<div class="title" tr="postcard">我的信箱</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">
+		<div class="maillist" id="maillist">
+			<div class="list">
+			<ul>
+				<!--
+				<li>
+					<div class="cover">
+						<div class="photo">
+							<img style="" />
+						</div>
+						<div class="selc"></div>
+						<div class="fake"></div>
+					</div>
+					<div class="title"></div>
+					<div class="status"></div>
+					<div class="time"></div>
+					<div class="actions">
+						<div class="act" active="yes"><span class="ico ico_view"><em></em></span></div>
+						<div class="act" active="yes"><span class="ico ico_delete"><em></em></span></div>
+					</div>
+				</li>
+				-->
+			</ul>
+			</div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">		
+		<div class="navplacehold"></div>
+	</div>
+</div>
+
+<!--
+*************************************
+* page10 登录
+*************************************
+-->
+<div class="page" _page="10" _name="登录" _hasnav="true">
+	<div class="panel_head">
+		<div class="titlebar" id="titlebar_login">
+			<div class="title" tr="login">登录</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back" _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">
+		<div class="logform" id="login" >
+			<div class="errorbox hide">登录失败~~~</div>
+			<div class="item"><input autocomplete="off" type="email" class="sid" placeholder="邮箱地址" tr_placeholder="email" /></div>
+			<div class="item"><input autocomplete="off" type="password" class="pwd" placeholder="密码" tr_placeholder="password" /></div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" active="yes" tr="login" id="IDLogin">登录</div>
+		</div>		
+		<div class="navplacehold"></div>
+	</div>
+</div>
+
+<!--
+*************************************
+* page11 登录
+*************************************
+-->
+<div class="page" _page="11" _name="注册" _hasnav="true">
+	<div class="panel_head">
+		<div class="titlebar" id="titlebar_register">
+			<div class="title" tr="register">注册</div>
+			<div class="action">
+				<div class="l">
+					<div class="button button_s button_s_back"  _back="0" active="yes"><span class="arrow"><em></em></span><span tr="back">返回</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel_body">
+	<div class="panel_body_box">	
+		<div class="regform" id="register">
+			<div class="errorbox hide">注册失败~~~</div>
+			<div class="item"><input autocomplete="off" type="email" class="sid" tr_placeholder="email" placeholder="邮箱地址" /></div>
+			<div class="item"><input autocomplete="off" type="password" class="pwd" tr_placeholder="password"  placeholder="密码" /></div>
+			<div class="item"><input autocomplete="off" type="password" class="pwd2" tr_placeholder="password2"  placeholder="重复密码" /></div>
+		</div>
+	</div>	
+	</div>
+	<div class="panel_foot">
+		<div class="nextaction">
+			<div class="button button_l" id="IDRegister" active="yes" tr="register">注册</div>
+		</div>		
+		<div class="navplacehold"></div>
+	</div>
+</div>
+
+</div><!--pages end--> 
+
+
+<!--
+*************************************
+* overlay
+*************************************
+-->
+<div class="overlays">
+<div class="overlay_mask"></div>
+<div class="overlay chkphoto" _name="chkphoto">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title" tr="choosePic">选择相片</div>
+			<div class="close" active="yes"><div class="handle">X</div></div>
+		</div>
+		<div class="bd">
+			<ul class="list">
+				<li id="choosePicFromAlbum" active="yes"><span class="g"><span class="ico ico_album"></span></span><label tr="album">相册</label></li>
+				<li id="choosePicFromCamera" style="border:none;" active="yes"><span class="g"><span class="ico ico_camera"></span></span><label tr="camera">拍摄</label></li>
+				<!--<li style="border:none;" active="yes"><span class="g"><span class="ico ico_renren"></span></span><label>人人网</label></li>-->
+			</ul>
+		</div>
+		<div class="ft"></div>
+	</div>
+</div>
+<div class="overlay confirm" _name="confirm">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title" tr="attention">注意</div>
+			<div class="close" active="yes"><div class="handle">X</div></div>
+		</div>
+		<div class="bd">
+			<div class="info"></div>
+			<div class="action">
+				<div class="button button_o" active="yes" tr="cancel">取消</div>
+				<div class="button button_o" active="yes" tr="ok">确认</div>
+			</div>
+		</div>
+		<div class="ft"></div>
+	</div>
+</div>
+<div class="overlay alert" _name="alert">
+	<div class="overlay_box">
+		<div class="hd">
+			<div class="title" tr="error">错误</div>
+		</div>
+		<div class="bd">
+			<div class="info"></div>
+			<div class="action">
+				<div class="button button_o" active="yes" tr="ok">确认</div>
+			</div>
+		</div>
+		<div class="ft"></div>
+	</div>
+</div>
+
+</div><!--overlays end-->
+
+<div class="apploading">
+	<div class="box">
+		<div class="icon"><div class="loadingicon"><div class="c1"></div><div class="c2"></div></div></div>
+		<div class="text"></div>
+		<div class="back"></div>
+	</div>
+	<div class="mask"></div>
+</div>
+
+<div class="apptitlebar"></div>
+
+<div class="appnav" id="appnav">
+	<ul id="isnotlogin">
+		<li active="yes" class="CIndex" tr="index" mark="0">首页</li>
+		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
+		<li active="yes" class="CLogin" tr="login"  mark="10">登录</li>
+		<li active="yes" class="CRegister" tr="signup" mark="11">注册</li>
+	</ul>
+	<ul id="islogin">
+		<li active="yes" class="CIndex" tr="index" mark="0">首页</li>
+		<li active="yes" class="CPostCard" tr="postcard" mark="9">信箱</li>
+		<li active="yes" class="CAbout" tr="about" mark="8">关于</li>
+		<!--<li active="yes" class="CAccount" tr="account"  mark="10">账号</li>-->
+		<li active="yes" class="CLogout" tr="logout" mark="11">退出</li>
+	</ul>
+</div>
+
+
+
+</div><!--screen end-->
+
+
+<script src="cordova.js"></script> 
+<script src="mini.js"></script>
+</body>
+</html>
