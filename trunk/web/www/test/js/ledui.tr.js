@@ -50,6 +50,7 @@ var LOCALE = {
 		 create:"Create postcard"
 		,about:"About"
 		,index:"Home"
+		,logout:"Logout"
 		,postcard:"Postcard"
 		,login:"Login"
 		,rechoose:"Re-election"
