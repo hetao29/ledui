@@ -93,6 +93,7 @@
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* ledui-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ledui-Prefix.pch"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ledui-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ledui-Info.plist"; path = "../ledui-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B40DF04C166367FD00BA87CA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B42931E916635E3C002AA061 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		B42931EA16635E3C002AA061 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		B42931EB16635E3C002AA061 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
@@ -458,6 +459,7 @@
 				B429321A1663662E002AA061 /* ja */,
 				B429321B1663662F002AA061 /* de */,
 				B429321C16636630002AA061 /* es */,
+				B40DF04C166367FD00BA87CA /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
