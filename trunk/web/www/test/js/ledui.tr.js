@@ -7,6 +7,7 @@ var LOCALE = {
 		editAddress:"修改地址",
     	edit:"编辑",
 		ok:"确定",
+		
 		cancel:"取消",
 		need2login:"需要登录后才能继续...",
 		delConfirm:"确认删除",
@@ -20,6 +21,7 @@ var LOCALE = {
 		CN:"中国(含港澳台)",
 		OTHER:"国外"
 		,time:"时间"
+		,to:"给"
 		,choose:"选择"
 		,payedConfirm:"您已经支付完成了？"
 	},
@@ -137,15 +139,17 @@ var Lang = Lang_app =  (function(){
 })();
 
 function tr(k){
-	if(LOCALE[Lang_app] && LOCALE[Lang_app][k]){
-		return LOCALE[Lang_app][k];
+	k = k.toString();
+	var r="";
+	if(LOCALE[Lang_app]){
+		if(LOCALE[Lang_app][k]) r = LOCALE[Lang_app][k];
 	}else{
 		if(Lang.indexOf('_') > 0){
 			Lang_app = Lang.split('_')[0]
-			if(LOCALE[Lang_app][k])return LOCALE[Lang_app][k];
+			if(LOCALE[Lang_app][k]) r = LOCALE[Lang_app][k];
 		}
 	}
-	return k;
+	if(r)return r;else return k;
 }
 String.prototype.tr=function(){
 	return tr(this);
@@ -159,7 +163,6 @@ String.prototype.tr=function(){
 
 
 $(document).ready(function(){
-	//if(Lang == 'zh_cn'){ return; }					   
 	$("[tr]").each(function(){
 		var e = $(this)					
 			,k = e.attr("tr")

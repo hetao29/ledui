@@ -1218,7 +1218,7 @@ var Control = {
 					'<div class="fake"></div>'+
 					'<div class="status"><span class="'+st_css+'">'+st+'</span></div>'+
 				'</div>'+
-				'<div class="title">给 <span>'+(to.join(", "))+'</span></div>'+
+				'<div class="title">'+'to'.tr()+' <span>'+(to.join(", "))+'</span></div>'+
 				'<div class="time"><label>'+('time'.tr())+'</label>: <span>'+postcards[i].date+'</span></div>'+
 				'<div class="actions">'+
 					'<div class="act" active="yes"><span class="ico ico_view" LocalID="'+postcards[i].LocalID+'"><em>查看</em></span></div>'+
