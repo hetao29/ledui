@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.ledui.postcard" android:versionName="1.0" android:versionCode="5" android:imeOptions="flagNoExtractUi">
+      package="com.ledui.postcard" android:versionName="1.0" android:versionCode="6" android:imeOptions="flagNoExtractUi">
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
