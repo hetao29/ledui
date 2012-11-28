@@ -19,6 +19,7 @@ var LOCALE = {
 		st_posted:"已经寄出",
 		CN:"中国(含港澳台)",
 		OTHER:"国外"
+		,time:"时间"
 		,choose:"选择"
 		,payedConfirm:"您已经支付完成了？"
 	},
@@ -136,15 +137,15 @@ var Lang = Lang_app =  (function(){
 })();
 
 function tr(k){
-	if(LOCALE[Lang_app]){
+	if(LOCALE[Lang_app] && LOCALE[Lang_app][k]){
 		return LOCALE[Lang_app][k];
 	}else{
 		if(Lang.indexOf('_') > 0){
 			Lang_app = Lang.split('_')[0]
-			return LOCALE[Lang_app][k];
+			if(LOCALE[Lang_app][k])return LOCALE[Lang_app][k];
 		}
 	}
-	return undefined;
+	return k;
 }
 String.prototype.tr=function(){
 	return tr(this);
