@@ -138,7 +138,7 @@ var Lang = Lang_app =  (function(){
 	return lang;
 })();
 
-function tr(k){
+function tr(k,returnk){
 	k = k.toString();
 	var r="";
 	if(LOCALE[Lang_app]){
@@ -149,15 +149,15 @@ function tr(k){
 			if(LOCALE[Lang_app][k]) r = LOCALE[Lang_app][k];
 		}
 	}
-	if(r)return r;else return k;
+	if(r)return r;else if(returnk)return k;
 }
 String.prototype.tr=function(){
-	return tr(this);
+	return tr(this,true);
 };
 (function($) {       
 	$.fn.tr= function() {     
 		var t = tr($(this).text());
-		$(this).text(t);
+		if(t) $(this).text(t);
 	};     
 })(jQuery);
 
