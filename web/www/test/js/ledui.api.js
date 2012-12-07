@@ -807,9 +807,7 @@ var Control = {
 						//开始掉用接口
 						//修改登录，注册，返回页面为 0
 						//var postobj  = new LeduiPostCard;
-					console.log(CurrentPostCard);
 						var postcard = (new LeduiPostCard).get(CurrentPostCard.LocalID);
-					console.log(postcard);
 						API.postPostCard(
 							postcard,function ok(r){
 								$("#titlebar_login .button_s_back").attr("_back",0);
@@ -932,7 +930,8 @@ var Control = {
 					},
 					function error(result){
 						//登录失败，提示错误信息
-						if(result.error_msg) $("#login .errorbox").html(result.error_msg);
+						if(result && result.error_msg) $("#login .errorbox").html(result.error_msg);
+						else $("#login .errorbox").html("error_network".tr());
 						$("#login .errorbox").slideDown("fast",function(){
 								setTimeout(function(){
 									$("#login .errorbox").slideUp();
@@ -962,6 +961,7 @@ var Control = {
 					function error(result){
 						//登录失败，提示错误信息
 						if(result.error_msg) $("#register .errorbox").html(result.error_msg);
+						else $("#login .errorbox").html("error_network".tr());
 						$("#register .errorbox").slideDown("fast",function(){
 							setTimeout(function(){
 								$("#register .errorbox").slideUp();
